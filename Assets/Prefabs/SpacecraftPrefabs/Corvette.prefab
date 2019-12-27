@@ -200,7 +200,7 @@ MonoBehaviour:
   bAgentStartsEnabled: 1
   mainEnginePower: 1.5
   turningPower: 10
-  maneuverPower: 1
+  maneuverPower: 1.5
   spacecraftName: Corvette
   thrustParticles: {fileID: 2379070149716345965}
   destroyedParticlesPrefab: {fileID: 2766248710761914840, guid: 05469ee24ae991f41b944cbcf9f43ad0,
@@ -246,7 +246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 739771861e5c898468b6db50f07dae77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  routeVectorPoints: 25
+  routeVectorPoints: 5
   updateInterval: 2
   autopilotSkill: 9
   autopilotAreaRange: 10

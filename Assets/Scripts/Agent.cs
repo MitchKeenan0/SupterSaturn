@@ -126,6 +126,7 @@ public class Agent : MonoBehaviour
 	public void SetMoveOrder(Vector3 position, Transform follow)
 	{
 		autopilot.SetMoveCommand(position);
+
 		if (follow != null)
 		{
 			followTransform = follow;

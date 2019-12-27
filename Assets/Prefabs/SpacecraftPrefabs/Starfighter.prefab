@@ -321,7 +321,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 739771861e5c898468b6db50f07dae77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  routeVectorPoints: 25
+  routeVectorPoints: 10
   updateInterval: 1
   autopilotSkill: 3
   autopilotAreaRange: 10

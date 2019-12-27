@@ -45,8 +45,6 @@ public class Autopilot : MonoBehaviour
 
 	public void SpacecraftNavigationCommands()
 	{
-		Debug.DrawLine(transform.position, commandMoveVector, Color.blue);
-
 		if ((followTransform != null) && 
 			(routeVectors.Count <= 1) &&
 			(Vector3.Distance(followTransform.position, transform.position) >= 3f))
@@ -79,7 +77,7 @@ public class Autopilot : MonoBehaviour
 
 	public void SetMoveCommand(Vector3 value)
 	{
-		commandMoveVector = value - transform.position;
+		commandMoveVector = value;
 		if (commandMoveVector.magnitude > 1f)
 		{
 			GenerateRoute();
@@ -105,8 +103,10 @@ public class Autopilot : MonoBehaviour
 		{
 			Vector3 routeStep = GenerateRouteVector(i);
 			routeVectors.Add(routeStep);
+
 			if ((spacecraft.GetMarks() > 0) || (spacecraft.GetAgent().teamID == 0))
 				routeVisualizer.SetLine(i, previousRouteVector, routeStep);
+
 			previousRouteVector = routeStep;
 		}
 	}
@@ -116,15 +116,13 @@ public class Autopilot : MonoBehaviour
 		Vector3 newRouteVector = Vector3.zero;
 		Vector3 velocity = Vector3.zero;
 
+		// move command
+		if (commandMoveVector != Vector3.zero)
+			velocity += (commandMoveVector - previousRouteVector) / routeVectorPoints;
+
 		// gravity negotiation
 		Vector3 gravityEscapeRoute = GetGravityEscapeFrom(previousRouteVector);
 		velocity += gravityEscapeRoute - previousRouteVector;
-
-		// move command
-		if (bInGravity)
-			velocity += (gravityCommandMoveVector / routeVectorPoints);
-		else
-			velocity += (commandMoveVector / routeVectorPoints);
 
 		// follow command
 		if (followTransform != null)
@@ -181,13 +179,13 @@ public class Autopilot : MonoBehaviour
 					&& (hit.distance < g.radius))
 				{
 					float dangerScale = (3.14f / hit.distance);
-					gravityEscape = (position - g.transform.position) * spacecraft.mainEnginePower * dangerScale;
+					gravityEscape =  hit.point + (hit.normal * spacecraft.mainEnginePower * dangerScale);
 					bInGravity = true;
 
 					RaycastHit commandMoveHit;
 					if (Physics.Raycast(position, commandMoveVector - transform.position, out commandMoveHit))
 					{
-						gravityCommandMoveVector = Vector3.ProjectOnPlane(commandMoveVector, hit.normal);
+						gravityCommandMoveVector = Vector3.ProjectOnPlane(commandMoveVector - transform.position, hit.normal);
 					}
 				}
 			}

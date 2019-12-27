@@ -8,6 +8,7 @@ public class RouteVisualizer : MonoBehaviour
 	private Autopilot autoPilot;
 	private List<LineRenderer> lineRenderList;
 	private int numLines = 0;
+	private int numClearedLines = 0;
 
 	void Start()
 	{
@@ -41,17 +42,22 @@ public class RouteVisualizer : MonoBehaviour
 	{
 		if (lineIndex == -1)
 		{
+			numClearedLines = 0;
 			foreach (LineRenderer line in lineRenderList)
 				line.enabled = false;
 		}
 		else
 		{
-			if (lineRenderList[lineIndex] != null)
+			int currentLine = lineIndex + numClearedLines;
+			if (lineRenderList[currentLine] != null)
 			{
-				LineRenderer line = lineRenderList[lineIndex];
-				line.enabled = false;
-				line.gameObject.SetActive(false);
-				Debug.Log("Cleared line " + lineIndex);
+				LineRenderer line = lineRenderList[currentLine];
+				if (line.enabled)
+				{
+					line.enabled = false;
+					line.gameObject.SetActive(false);
+					numClearedLines++;
+				}
 			}
 		}
 	}

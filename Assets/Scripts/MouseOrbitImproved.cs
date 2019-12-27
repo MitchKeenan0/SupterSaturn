@@ -36,6 +36,7 @@ public class MouseOrbitImproved : MonoBehaviour
 	Vector3 moveInput = Vector3.zero;
 	Vector3 roamVector = Vector3.zero;
 	Vector3 lastRoamPosition = Vector3.zero;
+	Vector3 lastMovePosition = Vector3.zero;
 	private Vector3 moveVector = Vector3.zero;
 	private Vector3 lastWidePosition = Vector3.zero;
 	private Quaternion lastWideRotation = Quaternion.identity;
@@ -53,81 +54,12 @@ public class MouseOrbitImproved : MonoBehaviour
 		target = orbitAnchor;
 		moveVector = transform.position;
 		distance = distanceMax = orbitAnchor.localPosition.magnitude;
+		lastMovePosition = transform.position;
 	}
 
 	void Update()
 	{
 		MoveInput();
-	}
-
-	void MoveInput()
-	{
-		inputX = Input.GetAxisRaw("Horizontal");
-		inputZ = Input.GetAxisRaw("Vertical");
-		inputElevation = Input.GetAxisRaw("Elevation");
-
-		Vector3 rawMove = (
-			(cameraMain.transform.right * inputX)
-			+ (cameraMain.transform.forward * inputZ)
-			).normalized * moveSpeed;
-
-		rawMove = Vector3.ProjectOnPlane(rawMove, Vector3.up);
-		rawMove += (cameraMain.transform.up * inputElevation) * moveSpeed * 0.6f;
-
-		float turnAroundKicker = 1f;
-		float turnAroundValue = Vector3.Dot(rawMove.normalized, moveVector.normalized);
-		if (turnAroundValue < 0.9f)
-		{
-			turnAroundKicker = moveAcceleration * Mathf.Abs(turnAroundValue + 1);
-		}
-
-		moveVector = Vector3.Lerp(moveVector, rawMove, Time.deltaTime * moveAcceleration * turnAroundKicker);
-
-		bInputting = ((inputX != 0f) || (inputZ != 0f) || (inputElevation != 0f));
-		if (bInputting)
-		{
-			roamVector += moveVector * Time.deltaTime;
-			lastRoamPosition = roamVector;
-		}
-		else
-		{
-			if (target == orbitAnchor)
-			{
-				roamVector = Vector3.Lerp(roamVector, Vector3.zero, Time.deltaTime * moveAcceleration);
-			}
-			else
-			{
-				roamVector = Vector3.Lerp(roamVector, lastRoamPosition, Time.deltaTime * moveAcceleration);
-			}
-		}
-	}
-
-	void MouseScreenEdgeInput()
-	{
-		Vector3 mousePosition = Input.mousePosition;
-		bEdgeMousing = false;
-		int margin = 3;
-
-		if (mousePosition.x <= 0f + margin)
-		{
-			lx += -mousePanSpeed;
-			bEdgeMousing = true;
-		}
-		if (mousePosition.x >= Screen.width - margin)
-		{
-			lx += mousePanSpeed;
-			bEdgeMousing = true;
-		}
-		if (mousePosition.y <= 0f + margin)
-		{
-			ly += -mousePanSpeed;
-			bEdgeMousing = true;
-		}
-		if (mousePosition.y >= Screen.height - margin)
-		{
-			ly += mousePanSpeed;
-			bEdgeMousing = true;
-		}
 	}
 
 	void LateUpdate()
@@ -169,6 +101,83 @@ public class MouseOrbitImproved : MonoBehaviour
 		else
 		{
 			SetOrbitTarget(null);
+		}
+	}
+
+	void MoveInput()
+	{
+		inputX = Input.GetAxisRaw("Horizontal");
+		inputZ = Input.GetAxisRaw("Vertical");
+		inputElevation = Input.GetAxisRaw("Elevation");
+
+		Vector3 rawMove = (
+			(cameraMain.transform.right * inputX)
+			+ (cameraMain.transform.forward * inputZ)
+			).normalized * moveSpeed;
+
+		// catching quick-response booster before plane normalization
+		float turnAroundKicker = 1f;
+		if (rawMove != Vector3.zero)
+		{
+			Vector3 cameraVelocity = transform.position - lastMovePosition;
+			float turnAroundValue = Vector3.Dot(rawMove.normalized, cameraVelocity.normalized);
+			if (turnAroundValue < 0.5f)
+			{
+				turnAroundKicker = Mathf.Clamp(moveAcceleration * Mathf.Abs(distance - turnAroundValue), 1f, 100f);
+			}
+		}
+
+		// normalize and set move vector
+		rawMove = Vector3.ProjectOnPlane(rawMove, Vector3.up);
+		rawMove += (cameraMain.transform.up * inputElevation) * moveSpeed * 0.6f;
+		moveVector = Vector3.Lerp(moveVector, rawMove, Time.deltaTime * moveAcceleration * turnAroundKicker);
+		lastMovePosition = transform.position;
+
+		// coast after input
+		bInputting = ((inputX != 0f) || (inputZ != 0f) || (inputElevation != 0f));
+		if (bInputting)
+		{
+			roamVector += moveVector * Time.deltaTime;
+			lastRoamPosition = roamVector;
+		}
+		else
+		{
+			if (target == orbitAnchor)
+			{
+				roamVector = Vector3.Lerp(roamVector, Vector3.zero, Time.deltaTime * moveAcceleration);
+			}
+			else
+			{
+				roamVector = Vector3.Lerp(roamVector, lastRoamPosition, Time.deltaTime * moveAcceleration);
+			}
+		}
+	}
+
+	void MouseScreenEdgeInput()
+	{
+		Vector3 mousePosition = Input.mousePosition;
+		bEdgeMousing = false;
+		int margin = 3;
+
+		if (mousePosition.x <= 0f + margin)
+		{
+			lx += -mousePanSpeed * Time.deltaTime;
+			bEdgeMousing = true;
+		}
+		if (mousePosition.x >= Screen.width - margin)
+		{
+			lx += mousePanSpeed * Time.deltaTime;
+			bEdgeMousing = true;
+		}
+		if (mousePosition.y <= 0f + margin)
+		{
+			ly += -mousePanSpeed * Time.deltaTime;
+			bEdgeMousing = true;
+		}
+		if (mousePosition.y >= Screen.height - margin)
+		{
+			ly += mousePanSpeed * Time.deltaTime;
+			bEdgeMousing = true;
 		}
 	}
 
