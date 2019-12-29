@@ -123,6 +123,11 @@ public class Agent : MonoBehaviour
 	}
 
 	// External functions
+	public void EnableMoveCommand(bool value)
+	{
+		autopilot.EnableMoveCommand(value);
+	}
+
 	public void SetMoveOrder(Vector3 position, Transform follow)
 	{
 		autopilot.SetMoveCommand(position);

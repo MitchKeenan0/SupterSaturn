@@ -61,4 +61,13 @@ public class RouteVisualizer : MonoBehaviour
 			}
 		}
 	}
+
+	public void SetRouteColor(Color value)
+	{
+		foreach (LineRenderer line in lineRenderList)
+		{
+			line.startColor = value;
+			line.endColor = value;
+		}
+	}
 }

@@ -42,15 +42,23 @@ public class MouseCommandHUD : MonoBehaviour
 
 	void Update()
 	{
+		UpdateMouseInput();
+	}
+
+	void UpdateMouseInput()
+	{
 		if (Input.GetButtonDown("Fire2"))
 		{
 			SetEnabled(true);
 		}
+
 		if (Input.GetButton("Fire2"))
 		{
 			UpdateMouseMovement();
 			UpdateCircleRender();
+			VisualizeMoveOrder(moveCommandPosition);
 		}
+
 		if (Input.GetButtonUp("Fire2"))
 		{
 			if (mouseContext.GetSpacecraftInformation() != null)
@@ -61,7 +69,7 @@ public class MouseCommandHUD : MonoBehaviour
 		}
 	}
 
-	public void UpdateMouseMovement()
+	void UpdateMouseMovement()
 	{
 		Vector3 deltaMouse = (Input.mousePosition - lastMousePosition);
 		mouseX = deltaMouse.x;
@@ -96,7 +104,7 @@ public class MouseCommandHUD : MonoBehaviour
 		moveCommandPosition = elevationLine;
 	}
 
-	public void UpdateCircleRender()
+	void UpdateCircleRender()
 	{
 		float deltaTheta = (float)(2.0 * Mathf.PI) / numCircleSegments;
 		float theta = 0f;
@@ -134,6 +142,18 @@ public class MouseCommandHUD : MonoBehaviour
 
 		return closestVertical;
 	}
+
+	void VisualizeMoveOrder(Vector3 position)
+	{
+		selectedSpacecraftList = mouseSelection.GetSelectedSpacecraft();
+		foreach (Spacecraft sp in selectedSpacecraftList)
+		{
+			if (sp.GetAgent().teamID == 0)
+			{
+				sp.GetAgent().SetMoveOrder(position, null);
+			}
+		}
+	}
 	
 	void SetMoveOrder(Vector3 position)
 	{
@@ -142,7 +162,7 @@ public class MouseCommandHUD : MonoBehaviour
 		{
 			if (sp.GetAgent().teamID == 0)
 			{
-				sp.GetAgent().SetMoveOrder(position, null);
+				sp.GetAgent().EnableMoveCommand(true);
 			}
 		}
 	}
