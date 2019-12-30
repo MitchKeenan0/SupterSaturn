@@ -34,8 +34,6 @@ public class MouseOrbitImproved : MonoBehaviour
 	bool bInputting = false;
 	bool bEdgeMousing = false;
 	Vector3 moveInput = Vector3.zero;
-	Vector3 roamVector = Vector3.zero;
-	Vector3 lastRoamPosition = Vector3.zero;
 	Vector3 lastMovePosition = Vector3.zero;
 	private Vector3 moveVector = Vector3.zero;
 	private Vector3 lastWidePosition = Vector3.zero;
@@ -52,7 +50,6 @@ public class MouseOrbitImproved : MonoBehaviour
 		x = angles.y;
 		y = angles.x;
 		target = orbitAnchor;
-		moveVector = transform.position;
 		distance = distanceMax = orbitAnchor.localPosition.magnitude;
 		lastMovePosition = transform.position;
 	}
@@ -96,7 +93,7 @@ public class MouseOrbitImproved : MonoBehaviour
 			transform.rotation = rotation;
 			transform.position = position;
 
-			transform.position += roamVector;
+			transform.position += moveVector;
 		}
 		else
 		{
@@ -106,50 +103,26 @@ public class MouseOrbitImproved : MonoBehaviour
 
 	void MoveInput()
 	{
-		inputX = Input.GetAxisRaw("Horizontal");
-		inputZ = Input.GetAxisRaw("Vertical");
-		inputElevation = Input.GetAxisRaw("Elevation");
+		inputX = Input.GetAxis("Horizontal");
+		inputZ = Input.GetAxis("Vertical");
+		inputElevation = Input.GetAxis("Elevation");
 
-		Vector3 rawMove = (
-			(cameraMain.transform.right * inputX)
-			+ (cameraMain.transform.forward * inputZ)
-			).normalized * moveSpeed;
-
-		// catching quick-response booster before plane normalization
-		float turnAroundKicker = 1f;
-		if (rawMove != Vector3.zero)
-		{
-			Vector3 cameraVelocity = transform.position - lastMovePosition;
-			float turnAroundValue = Vector3.Dot(rawMove.normalized, cameraVelocity.normalized);
-			if (turnAroundValue < 0.5f)
-			{
-				turnAroundKicker = Mathf.Clamp(moveAcceleration * Mathf.Abs(distance - turnAroundValue), 1f, 100f);
-			}
-		}
-
-		// normalize and set move vector
-		rawMove = Vector3.ProjectOnPlane(rawMove, Vector3.up);
-		rawMove += (cameraMain.transform.up * inputElevation) * moveSpeed * 0.6f;
-		moveVector = Vector3.Lerp(moveVector, rawMove, Time.deltaTime * moveAcceleration * turnAroundKicker);
-		lastMovePosition = transform.position;
-
-		// coast after input
-		bInputting = ((inputX != 0f) || (inputZ != 0f) || (inputElevation != 0f));
+		bInputting = !((inputX == 0f) && (inputZ == 0f) && (inputElevation == 0f));
 		if (bInputting)
 		{
-			roamVector += moveVector * Time.deltaTime;
-			lastRoamPosition = roamVector;
+			Vector3 rawMove = (
+				(cameraMain.transform.right * inputX)
+				+ (cameraMain.transform.forward * inputZ)
+				).normalized * moveSpeed;
+			rawMove = Vector3.ProjectOnPlane(rawMove, Vector3.up);
+			rawMove += (cameraMain.transform.up * inputElevation) * moveSpeed;
+
+			moveVector = Vector3.Lerp(moveVector, rawMove, Time.deltaTime * moveAcceleration);
+			moveVector = Vector3.ClampMagnitude(moveVector, moveSpeed);
 		}
 		else
 		{
-			if (target == orbitAnchor)
-			{
-				roamVector = Vector3.Lerp(roamVector, Vector3.zero, Time.deltaTime * moveAcceleration);
-			}
-			else
-			{
-				roamVector = Vector3.Lerp(roamVector, lastRoamPosition, Time.deltaTime * moveAcceleration);
-			}
+			moveVector = Vector3.Lerp(moveVector, Vector3.zero, Time.deltaTime * moveAcceleration * 2);
 		}
 	}
 
@@ -161,22 +134,22 @@ public class MouseOrbitImproved : MonoBehaviour
 
 		if (mousePosition.x <= 0f + margin)
 		{
-			lx += -mousePanSpeed * Time.deltaTime;
+			//lx += -mousePanSpeed * Time.deltaTime;
 			bEdgeMousing = true;
 		}
 		if (mousePosition.x >= Screen.width - margin)
 		{
-			lx += mousePanSpeed * Time.deltaTime;
+			//lx += mousePanSpeed * Time.deltaTime;
 			bEdgeMousing = true;
 		}
 		if (mousePosition.y <= 0f + margin)
 		{
-			ly += -mousePanSpeed * Time.deltaTime;
+			//ly += -mousePanSpeed * Time.deltaTime;
 			bEdgeMousing = true;
 		}
 		if (mousePosition.y >= Screen.height - margin)
 		{
-			ly += mousePanSpeed * Time.deltaTime;
+			//ly += mousePanSpeed * Time.deltaTime;
 			bEdgeMousing = true;
 		}
 	}
@@ -192,7 +165,7 @@ public class MouseOrbitImproved : MonoBehaviour
 
 	public void SetOrbitTarget(Transform t)
 	{
-		roamVector = Vector3.zero;
+		moveVector = Vector3.zero;
 		if (t != null)
 		{
 			target = t;

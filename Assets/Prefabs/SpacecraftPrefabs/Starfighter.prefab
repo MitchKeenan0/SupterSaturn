@@ -149,7 +149,7 @@ TrailRenderer:
   m_Time: 10
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.01
+    widthMultiplier: 0.005
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -321,7 +321,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 739771861e5c898468b6db50f07dae77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  routeVectorPoints: 25
+  routeVectorPoints: 21
   updateInterval: 1
   autopilotSkill: 3
   autopilotAreaRange: 10
@@ -338,6 +338,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponSpeed: 5000
+  weaponAccuracy: 0.95
   munitionPrefab: {fileID: 298334711150030353, guid: 70345f5aeca2efd448dac5714d0187c8,
     type: 3}
   armingParticles: {fileID: 1333520053312347335}
@@ -648,6 +649,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 838495658025710544, guid: 6f9bdfaf72bfc9743882259f2d0ce16d,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 838495658025710544, guid: 6f9bdfaf72bfc9743882259f2d0ce16d,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 838495658025710544, guid: 6f9bdfaf72bfc9743882259f2d0ce16d,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 5155169036934119614, guid: 6f9bdfaf72bfc9743882259f2d0ce16d,
         type: 3}
       propertyPath: m_IsActive
@@ -751,7 +767,7 @@ PrefabInstance:
     - target: {fileID: 6715163017642703592, guid: c28c55a50ed9a2946a4a734934ddb48b,
         type: 3}
       propertyPath: m_Name
-      value: SpacecraftThrustParticles
+      value: ThrustParticles
       objectReference: {fileID: 0}
     - target: {fileID: 6715163017642703599, guid: c28c55a50ed9a2946a4a734934ddb48b,
         type: 3}

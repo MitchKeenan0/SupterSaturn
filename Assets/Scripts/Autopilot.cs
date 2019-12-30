@@ -20,7 +20,7 @@ public class Autopilot : MonoBehaviour
 	private Vector3 commandMoveVector = Vector3.zero;
 	private Vector3 gravityEscapePosition = Vector3.zero;
 	private Vector3 targetCombatPosition = Vector3.zero;
-	private Vector3 prevStablePosition = Vector3.zero;
+	private Vector3 holdPosition = Vector3.zero;
 	private Vector3 autoPilotStartPosition = Vector3.zero;
 	private Vector3 maneuverVector = Vector3.zero;
 	private Vector3 previousRouteVector = Vector3.zero;
@@ -36,6 +36,7 @@ public class Autopilot : MonoBehaviour
 		objectManager = FindObjectOfType<ObjectManager>();
 
 		routeVectors = new List<Vector3>();
+		holdPosition = transform.position;
 		targetCombatPosition = transform.position;
 		autoPilotStartPosition = transform.position;
 		previousRouteVector = transform.position;
@@ -44,24 +45,21 @@ public class Autopilot : MonoBehaviour
 
 	public void SpacecraftNavigationCommands()
 	{
-		//if ((followTransform != null) && 
-		//	(routeVectors.Count <= 1) &&
-		//	(Vector3.Distance(followTransform.position, transform.position) >= 3f))
-		//{
-		//	GenerateRoute();
-		//}
-
 		if (bExecutingMoveCommand && (routeVectors.Count > 0))
 		{
 			Vector3 currentRouteVector = routeVectors.ElementAt(0);
 			FlyTo(currentRouteVector);
 
-			if ((routeVectors.Count > 1) 
+			if ((routeVectors.Count > 1)
 				&& (Vector3.Distance(transform.position, currentRouteVector) < 1f))
 			{
 				routeVectors.Remove(currentRouteVector);
 				routeVisualizer.ClearLine(0);
 			}
+		}
+		else if (holdPosition != Vector3.zero)
+		{
+			FlyTo(holdPosition);
 		}
 	}
 
@@ -87,7 +85,7 @@ public class Autopilot : MonoBehaviour
 	{
 		bExecutingMoveCommand = value;
 		if (value)
-			routeVisualizer.SetRouteColor(Color.white);
+			routeVisualizer.SetRouteColor(Color.green);
 	}
 
 	public void SetFollowTransform(Transform value)
@@ -119,11 +117,11 @@ public class Autopilot : MonoBehaviour
 
 		// move command
 		if (commandMoveVector != Vector3.zero)
-			velocity += (commandMoveVector - previousRouteVector) / routeVectorPoints;
+			velocity += (commandMoveVector - transform.position) / routeVectorPoints;
 
 		// gravity negotiation
 		Vector3 gravityEscapeRoute = GetGravityEscapeFrom(previousRouteVector + velocity);
-		velocity += gravityEscapeRoute;
+		//velocity += gravityEscapeRoute;
 
 		// follow command
 		//if (followTransform != null)
@@ -144,7 +142,7 @@ public class Autopilot : MonoBehaviour
 		// counteracting unwanted velocity
 		Vector3 myVelocity = rb.velocity;
 		float velocityDotToTarget = Vector3.Dot(myVelocity.normalized, toDestination.normalized);
-		if (velocityDotToTarget <= 0.95f)
+		if ((velocityDotToTarget <= 0.95f) || (toDestination.magnitude <= 1f))
 		{
 			Vector3 unwantedVelocity = Vector3.ProjectOnPlane(rb.velocity, toDestination.normalized);
 			maneuverVector = unwantedVelocity * -1 * spacecraft.maneuverPower * (1f - velocityDotToTarget);

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
 	public float weaponSpeed = 1000f;
+	public float weaponAccuracy = 0.95f;
 	public Transform munitionPrefab;
 	public ParticleSystem armingParticles;
 	public float prefireTime = 0.1f;
@@ -31,7 +32,6 @@ public class Weapon : MonoBehaviour
 	void Fire()
 	{
 		Transform munition = Instantiate(munitionPrefab, transform.position, Quaternion.identity);
-		//munition.LookAt(targetTransform);
 
 		Projectile projectile = munition.GetComponent<Projectile>();
 		if (projectile != null)
@@ -40,11 +40,12 @@ public class Weapon : MonoBehaviour
 			float random = Random.Range(55f, 60f);
 			float predictionScalar = (distToTarget / weaponSpeed) * random;
 			Vector3 targetAtVelocity = targetTransform.position + (targetTransform.GetComponent<Rigidbody>().velocity * predictionScalar);
-			munition.transform.rotation = Quaternion.LookRotation((targetAtVelocity - transform.position), Vector3.up);
+			Vector3 accuracyVector = Random.onUnitSphere * (1f / weaponAccuracy) * distToTarget * 0.01f;
+			Vector3 fireVector = (targetAtVelocity + accuracyVector) - transform.position;
 
+			munition.transform.rotation = Quaternion.LookRotation(fireVector, Vector3.up);
 			Rigidbody munitionRb = munition.GetComponent<Rigidbody>();
 			munitionRb.AddForce(munition.forward * weaponSpeed);
-
 			projectile.ArmProjectile(transform);
 		}
 

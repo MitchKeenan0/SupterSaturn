@@ -151,8 +151,8 @@ MonoBehaviour:
   yMaxLimit: 89
   distanceMin: 0.5
   distanceMax: 5
-  moveSpeed: 0.1
-  moveAcceleration: 80
+  moveSpeed: 0.2
+  moveAcceleration: 2
   turnAcceleration: 10
 --- !u!1 &8142777121736568127
 GameObject:
