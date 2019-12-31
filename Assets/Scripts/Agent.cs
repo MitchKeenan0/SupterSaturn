@@ -11,6 +11,7 @@ public class Agent : MonoBehaviour
 	private Autopilot autopilot;
 	private FireCoordinator fireCoordinator;
 	private Scanner scanner;
+	private TargetPredictionHUD predictionHud;
 	private ObjectManager objectManager;
 	private RaycastManager raycastManager;
 	private TeamFleetHUD teamFleetHUD;
@@ -27,6 +28,7 @@ public class Agent : MonoBehaviour
 		autopilot = GetComponent<Autopilot>();
 		fireCoordinator = GetComponent<FireCoordinator>();
 		scanner = GetComponentInChildren<Scanner>();
+		predictionHud = FindObjectOfType<TargetPredictionHUD>();
 		objectManager = FindObjectOfType<ObjectManager>();
 		raycastManager = FindObjectOfType<RaycastManager>();
 		teamFleetHUD = FindObjectOfType<TeamFleetHUD>();
@@ -162,11 +164,12 @@ public class Agent : MonoBehaviour
 		return targetTransform;
 	}
 	
-	public void NotifyTargetDestroyed()
+	public void NotifyTargetDestroyed(Spacecraft sp)
 	{
 		targetTransform = null;
 		autopilot.SetTarget(null);
 		fireCoordinator.StandDown();
+		predictionHud.SetPrediction(sp, Vector3.zero, Vector3.zero, 0f);
 		targetDestroyedRestCoroutine = TargetDestroyedRest(0.2f);
 		StartCoroutine(targetDestroyedRestCoroutine);
 	}

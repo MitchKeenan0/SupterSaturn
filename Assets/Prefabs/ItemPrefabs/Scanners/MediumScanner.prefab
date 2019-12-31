@@ -44,12 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e874bf0cf30e8a64cb5f6acdd14716b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scanInterval: 2
+  scanInterval: 3
   intervalDeviation: 0.1
   scanSpeed: 100
   maxRadius: 30
   updateInterval: 0.01
-  scanRecoveryPeriod: 1
+  scanRecoveryPeriod: 3
 --- !u!1 &5155169036934119614
 GameObject:
   m_ObjectHideFlags: 0

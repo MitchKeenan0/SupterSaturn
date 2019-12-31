@@ -11,6 +11,8 @@ public class TargetPredictionHUD : MonoBehaviour
 	private List<Prediction> predictionList;
 	private List<Spacecraft> enemyList;
 
+	public List<Prediction> GetPredictions() { return predictionList; }
+
     void Start()
     {
 		teamFleetHud = FindObjectOfType<TeamFleetHUD>();
@@ -38,7 +40,7 @@ public class TargetPredictionHUD : MonoBehaviour
 		for (int i = 0; i < numTargets; i++)
 		{
 			Prediction pre = CreateNewPrediction();
-			pre.SetPrediction(enemyList[i], Vector3.zero, Vector3.zero);
+			pre.SetPrediction(enemyList[i], Vector3.zero, Vector3.zero, 0f);
 		}
 	}
 
@@ -51,7 +53,7 @@ public class TargetPredictionHUD : MonoBehaviour
 		return pre;
 	}
 
-	public void SetPrediction(Spacecraft sp, Vector3 position, Vector3 velocity)
+	public void SetPrediction(Spacecraft sp, Vector3 position, Vector3 velocity, float period)
 	{
 		if (predictionList.Count == 0)
 			InitPredictionPool();
@@ -66,6 +68,6 @@ public class TargetPredictionHUD : MonoBehaviour
 		}
 
 		if (predictionToSet != null)
-			predictionToSet.SetPrediction(sp, position, velocity);
+			predictionToSet.SetPrediction(sp, position, velocity, period);
 	}
 }

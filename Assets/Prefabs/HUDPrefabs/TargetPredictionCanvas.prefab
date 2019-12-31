@@ -88,7 +88,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b05da5981da8af4587d5b6f7a102eaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  predictionOpacity: 0.5
   spacecraft: {fileID: 0}
+  img: {fileID: 0}
   position: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
 --- !u!120 &4693447173485692352
@@ -108,7 +110,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 0e5a3571a6bcbd445959ea9cd94cbdee, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -133,7 +135,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 0.1
     widthCurve:
       serializedVersion: 2
       m_Curve:

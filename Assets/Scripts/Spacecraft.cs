@@ -136,7 +136,7 @@ public class Spacecraft : MonoBehaviour
 			Agent killerAgent = responsibleTransform.GetComponent<Agent>();
 			if (killerAgent != null)
 			{
-				killerAgent.NotifyTargetDestroyed();
+				killerAgent.NotifyTargetDestroyed(this);
 			}
 		}
 

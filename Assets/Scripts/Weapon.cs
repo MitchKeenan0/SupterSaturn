@@ -40,7 +40,7 @@ public class Weapon : MonoBehaviour
 			float random = Random.Range(55f, 60f);
 			float predictionScalar = (distToTarget / weaponSpeed) * random;
 			Vector3 targetAtVelocity = targetTransform.position + (targetTransform.GetComponent<Rigidbody>().velocity * predictionScalar);
-			Vector3 accuracyVector = Random.onUnitSphere * (1f / weaponAccuracy) * distToTarget * 0.01f;
+			Vector3 accuracyVector = Random.onUnitSphere * (0.1f / weaponAccuracy) * distToTarget * 0.05f;
 			Vector3 fireVector = (targetAtVelocity + accuracyVector) - transform.position;
 
 			munition.transform.rotation = Quaternion.LookRotation(fireVector, Vector3.up);

@@ -75,7 +75,7 @@ public class Scanner : MonoBehaviour
 							sp.GetComponent<Spacecraft>().AddMarkValue(1);
 
 							if (spacecraft.GetAgent().teamID == 0)
-								predictionHud.SetPrediction(sp, Vector3.zero, Vector3.zero);
+								predictionHud.SetPrediction(sp, Vector3.zero, Vector3.zero, 0f);
 						}
 					}
 				}
@@ -114,7 +114,7 @@ public class Scanner : MonoBehaviour
 				Spacecraft sp = c.GetComponent<Spacecraft>();
 				sp.AddMarkValue(-1);
 				if (spacecraft.GetAgent().teamID == 0)
-					predictionHud.SetPrediction(sp, c.transform.position, c.GetComponent<Rigidbody>().velocity);
+					predictionHud.SetPrediction(sp, c.transform.position, c.GetComponent<Rigidbody>().velocity, scanInterval);
 			}
 		}
 		targetList.Clear();

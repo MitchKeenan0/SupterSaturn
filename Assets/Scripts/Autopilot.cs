@@ -120,7 +120,7 @@ public class Autopilot : MonoBehaviour
 			velocity += (commandMoveVector - transform.position) / routeVectorPoints;
 
 		// gravity negotiation
-		Vector3 gravityEscapeRoute = GetGravityEscapeFrom(previousRouteVector + velocity);
+		//Vector3 gravityEscapeRoute = GetGravityEscapeFrom(previousRouteVector + velocity);
 		//velocity += gravityEscapeRoute;
 
 		// follow command

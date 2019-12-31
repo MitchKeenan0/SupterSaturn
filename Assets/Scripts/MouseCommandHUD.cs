@@ -27,12 +27,17 @@ public class MouseCommandHUD : MonoBehaviour
 	private float mouseX = 0;
 	private float mouseY = 0;
 
+	void Awake()
+	{
+		cameraMain = Camera.main;
+	}
+
 	void Start()
 	{
 		moveCommandPosition = transform.position;
 		mouseSelection = FindObjectOfType<MouseSelection>();
 		mouseContext = FindObjectOfType<MouseContextHUD>();
-		cameraMain = Camera.main;
+		
 		circleLineRenderer.positionCount = numCircleSegments + 1;
 		selectedSpacecraftList = new List<Spacecraft>();
 
@@ -50,6 +55,7 @@ public class MouseCommandHUD : MonoBehaviour
 		if (Input.GetButtonDown("Fire2"))
 		{
 			SetEnabled(true);
+			SetCirclePosition();
 		}
 
 		if (Input.GetButton("Fire2"))
@@ -121,31 +127,40 @@ public class MouseCommandHUD : MonoBehaviour
 
 	Vector3 ClosestLineToMouse()
 	{
-		Vector3 mouseScreenPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0f);
-		mouseScreenPosition = cameraMain.ScreenToWorldPoint(mouseScreenPosition);
-		mouseScreenPosition = mouseScreenPosition - cameraMain.transform.position;
-
-		Vector3 closestVertical = mouseScreenPosition * numCircleSegments;
+		Vector3 mousePos = Vector3.zero;
+		Vector3 closestLinePosition = Vector3.positiveInfinity;
 		Vector3[] linePositions = new Vector3[circleLineRenderer.positionCount];
 		circleLineRenderer.GetPositions(linePositions);
+
+		float closestDistance = Mathf.Infinity;
 		int numPos = linePositions.Length;
-		for (int i = 0; i < numPos; i++)
-		{
-			Debug.DrawLine(mouseScreenPosition, linePositions[i], Color.blue);
+		for (int i = 0; i < numPos; i++){
 			float dotToLine = Vector3.Dot(cameraMain.transform.forward, (linePositions[i] - cameraMain.transform.position).normalized);
-			if (dotToLine > 0.1f)
+			if (dotToLine > 0.5f)
 			{
-				Vector3 thisLinePosition = linePositions[i];
-				thisLinePosition.z = 0f;
-				Vector3 lineScreenPosition = cameraMain.ScreenToWorldPoint(thisLinePosition);
-				float dist = Vector3.Distance(mouseScreenPosition, lineScreenPosition);
-				if (dist < closestVertical.magnitude)
+				Vector3 lineToCamera = cameraMain.transform.position - linePositions[i];
+				var mouseRay = cameraMain.ScreenPointToRay(Input.mousePosition);
+				mousePos = mouseRay.GetPoint(Mathf.Abs(lineToCamera.magnitude));
+				Vector3 mouseToLine = (linePositions[i] - mousePos).normalized;
+				mouseToLine.z = 0f;
+				mouseToLine.y = 0f;
+				float lateralDistance = mouseToLine.x;
+				if (Mathf.Abs(lateralDistance) < Mathf.Abs(closestDistance))
 				{
-					closestVertical = linePositions[i];
+					closestLinePosition = linePositions[i];
+					closestDistance = lateralDistance;
 				}
 			}
 		}
-		return closestVertical;
+
+		return closestLinePosition;
+	}
+
+	void SetCirclePosition()
+	{
+		var ray = cameraMain.ScreenPointToRay(Input.mousePosition);
+		var pos = ray.GetPoint(Mathf.Abs(20f));
+		circleLineRenderer.transform.position = pos;
 	}
 
 	void VisualizeMoveOrder(Vector3 position)
