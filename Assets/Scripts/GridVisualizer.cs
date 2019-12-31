@@ -62,6 +62,7 @@ public class GridVisualizer : MonoBehaviour
 		for (int i = 0; i < gridDefinition; i++)
 		{
 			GameObject line = Instantiate(linePrefab, Vector3.zero, Quaternion.identity);
+			line.transform.SetParent(transform);
 			LineRenderer lr = line.GetComponent<LineRenderer>();
 
 			Vector3 positionOffset = Vector3.zero;

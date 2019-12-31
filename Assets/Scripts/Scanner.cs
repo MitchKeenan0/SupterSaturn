@@ -16,6 +16,7 @@ public class Scanner : MonoBehaviour
 	private GameObject scanRender;
 	private MeshRenderer meshRenderer;
 	private Spacecraft spacecraft;
+	private TargetPredictionHUD predictionHud;
 	private IEnumerator scanCoroutine;
 	private IEnumerator updateCoroutine;
 	private IEnumerator recoveryCoroutine;
@@ -29,6 +30,7 @@ public class Scanner : MonoBehaviour
     {
 		targetList = new List<GameObject>();
 		spacecraft = GetComponentInParent<Spacecraft>();
+		predictionHud = FindObjectOfType<TargetPredictionHUD>();
 
 		meshRenderer = GetComponentInChildren<MeshRenderer>();
 		scanRender = meshRenderer.gameObject;
@@ -71,6 +73,9 @@ public class Scanner : MonoBehaviour
 						{
 							targetList.Add(hit.gameObject);
 							sp.GetComponent<Spacecraft>().AddMarkValue(1);
+
+							if (spacecraft.GetAgent().teamID == 0)
+								predictionHud.SetPrediction(sp, Vector3.zero, Vector3.zero);
 						}
 					}
 				}
@@ -79,7 +84,7 @@ public class Scanner : MonoBehaviour
 
 		currentRadius += (scanSpeed * Time.deltaTime);
 		float timeAlive = Time.time - timeAtScan;
-		bool bScanFinished = (currentRadius >= maxRadius) || (timeAlive >= scanInterval);
+		bool bScanFinished = (timeAlive >= scanInterval);
 		if (bScanFinished)
 		{
 			ClearTargets();
@@ -105,7 +110,12 @@ public class Scanner : MonoBehaviour
 		foreach(GameObject c in targetList)
 		{
 			if (c != null)
-				c.GetComponent<Spacecraft>().AddMarkValue(-1);
+			{
+				Spacecraft sp = c.GetComponent<Spacecraft>();
+				sp.AddMarkValue(-1);
+				if (spacecraft.GetAgent().teamID == 0)
+					predictionHud.SetPrediction(sp, c.transform.position, c.GetComponent<Rigidbody>().velocity);
+			}
 		}
 		targetList.Clear();
 	}

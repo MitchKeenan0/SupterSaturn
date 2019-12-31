@@ -20,6 +20,7 @@ public class TeamFleetHUD : MonoBehaviour
 
 	void Start()
     {
+		spacecraftList = new List<Spacecraft>();
 		cameraController = FindObjectOfType<CameraController>();
 		objectManager = FindObjectOfType<ObjectManager>();
 		InitTeamFleet();
@@ -116,6 +117,11 @@ public class TeamFleetHUD : MonoBehaviour
 		}
 
 		return list;
+	}
+
+	public List<Spacecraft> GetEnemyList()
+	{
+		return enemyList;
 	}
 
 	public void Highlight(Spacecraft sp)

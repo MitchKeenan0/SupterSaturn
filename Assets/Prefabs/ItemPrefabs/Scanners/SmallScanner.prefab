@@ -46,10 +46,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scanInterval: 1
   intervalDeviation: 0.1
-  scanSpeed: 50
+  scanSpeed: 100
   maxRadius: 15
   updateInterval: 0.01
-  scanRecoveryPeriod: 1
+  scanRecoveryPeriod: 0.5
 --- !u!1 &5155169036934119614
 GameObject:
   m_ObjectHideFlags: 0
