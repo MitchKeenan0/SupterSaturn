@@ -25,6 +25,7 @@ public class Spacecraft : MonoBehaviour
 	private Vector3 turningVector = Vector3.zero;
 	private Quaternion turningRotation = Quaternion.identity;
 	private GameObject hudIcon;
+	private GameObject gridObject;
 	private MeshRenderer[] meshRenderComponents;
 	private ParticleSystem[] particleComponents;
 	private TrailRenderer[] trailComponents;
@@ -47,6 +48,7 @@ public class Spacecraft : MonoBehaviour
 		meshRenderComponents = GetComponentsInChildren<MeshRenderer>();
 		particleComponents = GetComponentsInChildren<ParticleSystem>();
 		trailComponents = GetComponentsInChildren<TrailRenderer>();
+		gridObject = GetComponentInChildren<GridVisualizer>().gameObject;
 	}
 
 	void Start()
@@ -68,7 +70,7 @@ public class Spacecraft : MonoBehaviour
 	{
 		if (IsAlive())
 		{
-			if (turningRotation != Quaternion.identity)
+			if (turningRotation.normalized != Quaternion.identity)
 			{
 				rb.MoveRotation(turningRotation);
 			}
@@ -171,6 +173,9 @@ public class Spacecraft : MonoBehaviour
 		{
 			trailComponents[i].emitting = value;
 		}
+
+		if (gridObject != null)
+			gridObject.SetActive(value);
 	}
 
 	public void SetHUDIcon(GameObject value)

@@ -55,11 +55,12 @@ public class MouseCommandHUD : MonoBehaviour
 		if (Input.GetButtonDown("Fire2"))
 		{
 			SetEnabled(true);
-			SetCirclePosition();
+			//SetCircleLocation();
 		}
 
 		if (Input.GetButton("Fire2"))
 		{
+			SetCircleLocation();
 			UpdateMouseMovement();
 			UpdateCircleRender();
 			VisualizeMoveOrder(moveCommandPosition);
@@ -125,6 +126,24 @@ public class MouseCommandHUD : MonoBehaviour
 		}
 	}
 
+	void SetCircleLocation()
+	{
+		selectedSpacecraftList = mouseSelection.GetSelectedSpacecraft();
+		Vector3 combinedPositions = Vector3.zero;
+		int numSpacecrafts = 0;
+		if (selectedSpacecraftList.Count > 0)
+		{
+			foreach(Spacecraft sp in selectedSpacecraftList)
+			{
+				combinedPositions += sp.transform.position;
+				numSpacecrafts++;
+			}
+		}
+		Vector3 centerPosition = combinedPositions / Mathf.Round(numSpacecrafts);
+		if (centerPosition != Vector3.zero && (centerPosition.normalized != Vector3.zero))
+			circleLineRenderer.transform.position = centerPosition;
+	}
+
 	Vector3 ClosestLineToMouse()
 	{
 		Vector3 mousePos = Vector3.zero;
@@ -154,13 +173,6 @@ public class MouseCommandHUD : MonoBehaviour
 		}
 
 		return closestLinePosition;
-	}
-
-	void SetCirclePosition()
-	{
-		var ray = cameraMain.ScreenPointToRay(Input.mousePosition);
-		var pos = ray.GetPoint(Mathf.Abs(20f));
-		circleLineRenderer.transform.position = pos;
 	}
 
 	void VisualizeMoveOrder(Vector3 position)

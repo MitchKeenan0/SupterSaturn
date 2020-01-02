@@ -36,10 +36,15 @@ public class Weapon : MonoBehaviour
 		Projectile projectile = munition.GetComponent<Projectile>();
 		if (projectile != null)
 		{
-			float distToTarget = Vector3.Distance(targetTransform.position, transform.position + targetTransform.GetComponent<Rigidbody>().velocity);
+			Vector3 targetPosition = targetTransform.position;
+			Vector3 targetVelocity = Vector3.zero;
+			if (targetTransform.gameObject.GetComponent<Rigidbody>())
+				targetVelocity = targetTransform.GetComponent<Rigidbody>().velocity;
+
+			float distToTarget = Vector3.Distance(targetPosition, transform.position + targetVelocity);
 			float random = Random.Range(55f, 60f);
 			float predictionScalar = (distToTarget / weaponSpeed) * random;
-			Vector3 targetAtVelocity = targetTransform.position + (targetTransform.GetComponent<Rigidbody>().velocity * predictionScalar);
+			Vector3 targetAtVelocity = targetPosition + (targetVelocity * predictionScalar);
 			Vector3 accuracyVector = Random.onUnitSphere * (0.1f / weaponAccuracy) * distToTarget * 0.05f;
 			Vector3 fireVector = (targetAtVelocity + accuracyVector) - transform.position;
 

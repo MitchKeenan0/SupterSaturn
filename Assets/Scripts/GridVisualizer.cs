@@ -5,13 +5,16 @@ using UnityEngine;
 public class GridVisualizer : MonoBehaviour
 {
 	public GameObject linePrefab;
-	public int gridComplexity = 3;
+	public bool bUpdating = false;
+	public float updateInterval = 0.1f;
+	public int gridLayers = 3;
 	public float lineSpacing = 1f;
 	public float layerSpacing = 1f;
-	public int gridDefinition = 25;
+	public int rowPopulation = 10;
 	public float lineLength = 50f;
 
 	private Transform cameraTransform;
+	private Transform updateTransform;
 	private List<LineRenderer> northSouthList;
 	private List<LineRenderer> upDownList;
 	private List<LineRenderer> leftRightList;
@@ -23,12 +26,20 @@ public class GridVisualizer : MonoBehaviour
     {
 		cameraTransform = Camera.main.transform;
 		InitGrid();
-    }
+		if (bUpdating)
+		{
+			updateTransform = transform.parent;
+			Debug.Log("Set updateParent " + updateTransform.name);
+			transform.SetParent(null);
+			updateCoroutine = TimedUpdate(updateInterval);
+			StartCoroutine(updateCoroutine);
+		}
+	}
 
 	void InitGrid()
 	{
 		northSouthList = new List<LineRenderer>();
-		for (int i = 0; i < gridComplexity; i++)
+		for (int i = 0; i < gridLayers; i++)
 		{
 			CreateLineRow(Vector3.forward, 1, i, northSouthList);
 			CreateLineRow(Vector3.forward, 1, -i, northSouthList);
@@ -37,7 +48,7 @@ public class GridVisualizer : MonoBehaviour
 		}
 
 		upDownList = new List<LineRenderer>();
-		for (int i = 0; i < gridComplexity; i++)
+		for (int i = 0; i < gridLayers; i++)
 		{
 			CreateLineRow(Vector3.up, 1, i, upDownList);
 			CreateLineRow(Vector3.up, 1, -i, upDownList);
@@ -46,7 +57,7 @@ public class GridVisualizer : MonoBehaviour
 		}
 
 		leftRightList = new List<LineRenderer>();
-		for (int i = 0; i < gridComplexity; i++)
+		for (int i = 0; i < gridLayers; i++)
 		{
 			CreateLineRow(Vector3.right, 1, i, leftRightList);
 			CreateLineRow(Vector3.right, 1, -i, leftRightList);
@@ -58,11 +69,11 @@ public class GridVisualizer : MonoBehaviour
 	void CreateLineRow(Vector3 axis, int normal, int layer, List<LineRenderer> list)
 	{
 		List<LineRenderer> row = new List<LineRenderer>();
-
-		for (int i = 0; i < gridDefinition; i++)
+		for (int i = 0; i < rowPopulation; i++)
 		{
 			GameObject line = Instantiate(linePrefab, Vector3.zero, Quaternion.identity);
 			line.transform.SetParent(transform);
+			transform.rotation = Quaternion.identity;
 			LineRenderer lr = line.GetComponent<LineRenderer>();
 
 			Vector3 positionOffset = Vector3.zero;
@@ -89,9 +100,8 @@ public class GridVisualizer : MonoBehaviour
 			float layerIndexScale = layer * layerSpacing;
 			positionOffset += layerOffset * layerIndexScale;
 
-			Vector3 linePointA = positionOffset + (axis * lineLength);
-			Vector3 linePointB = positionOffset + (-axis * lineLength);
-
+			Vector3 linePointA = transform.position + positionOffset + (axis * lineLength);
+			Vector3 linePointB = transform.position + positionOffset + (-axis * lineLength);
 			lr.SetPosition(0, linePointA);
 			lr.SetPosition(1, linePointB);
 			list.Add(lr);
@@ -104,17 +114,11 @@ public class GridVisualizer : MonoBehaviour
 		while (true)
 		{
 			yield return new WaitForSeconds(intervalTime);
-
-		}
-	}
-
-	void UpdateLines()
-	{
-		Vector3 cameraPosition = cameraTransform.position;
-		foreach (LineRenderer lr in northSouthList)
-		{
-			Vector3 lineVector = lr.GetPosition(1) - lr.GetPosition(0);
-			//float xDist = line
+			if (updateTransform != null)
+			{
+				transform.position = updateTransform.position;
+				transform.rotation = Quaternion.identity;
+			}
 		}
 	}
 }

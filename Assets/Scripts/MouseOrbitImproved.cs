@@ -11,8 +11,6 @@ public class MouseOrbitImproved : MonoBehaviour
 	public float xSpeed = 120.0f;
 	public float ySpeed = 120.0f;
 	public float mousePanSpeed = 0.01f;
-	public Vector3 startPosition;
-	public Quaternion startRotation;
 
 	public float yMinLimit = -20f;
 	public float yMaxLimit = 80f;
@@ -54,9 +52,6 @@ public class MouseOrbitImproved : MonoBehaviour
 		target = orbitAnchor;
 		distance = distanceMax = orbitAnchor.localPosition.magnitude;
 		lastMovePosition = transform.position;
-
-		transform.position = startPosition;
-		transform.rotation = startRotation;
 	}
 
 	void Update()

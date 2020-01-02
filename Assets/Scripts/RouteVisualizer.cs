@@ -10,9 +10,13 @@ public class RouteVisualizer : MonoBehaviour
 	private int numLines = 0;
 	private int numClearedLines = 0;
 
-	void Start()
+	void Awake()
 	{
 		lineRenderList = new List<LineRenderer>();
+	}
+
+	void Start()
+	{
 		autoPilot = GetComponentInParent<Autopilot>();
 		InitLines();
 	}
@@ -31,11 +35,14 @@ public class RouteVisualizer : MonoBehaviour
 
 	public void SetLine(int lineIndex, Vector3 lineStart, Vector3 lineEnd)
 	{
-		LineRenderer line = lineRenderList[lineIndex];
-		line.SetPosition(0, lineStart);
-		line.SetPosition(1, lineEnd);
-		line.enabled = true;
-		line.gameObject.SetActive(true);
+		if (lineRenderList != null && (lineRenderList.Count > 0))
+		{
+			LineRenderer line = lineRenderList[lineIndex];
+			line.SetPosition(0, lineStart);
+			line.SetPosition(1, lineEnd);
+			line.enabled = true;
+			line.gameObject.SetActive(true);
+		}
 	}
 
 	public void ClearLine(int lineIndex)
@@ -43,8 +50,11 @@ public class RouteVisualizer : MonoBehaviour
 		if (lineIndex == -1)
 		{
 			numClearedLines = 0;
-			foreach (LineRenderer line in lineRenderList)
-				line.enabled = false;
+			if ((lineRenderList != null) && (lineRenderList.Count > 0))
+			{
+				foreach (LineRenderer line in lineRenderList)
+					line.enabled = false;
+			}
 		}
 		else
 		{
@@ -64,10 +74,13 @@ public class RouteVisualizer : MonoBehaviour
 
 	public void SetRouteColor(Color value)
 	{
-		foreach (LineRenderer line in lineRenderList)
+		if (lineRenderList != null)
 		{
-			line.startColor = value;
-			line.endColor = value;
+			foreach (LineRenderer line in lineRenderList)
+			{
+				line.startColor = value;
+				line.endColor = value;
+			}
 		}
 	}
 }

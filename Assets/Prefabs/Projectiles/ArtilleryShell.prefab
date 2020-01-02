@@ -189,7 +189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdaad8505f6428c44aa36c8ca0e960bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
+  damage: 2
   impactPrefab: {fileID: 4929095700065580019, guid: a3764d103d069fa41ad9f6e2ddabde43,
     type: 3}
   maxLifetime: 10

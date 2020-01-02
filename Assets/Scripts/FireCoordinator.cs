@@ -7,11 +7,12 @@ public class FireCoordinator : MonoBehaviour
 	private Spacecraft spacecraft;
 	private Agent agent;
 	private List<Weapon> weapons;
-	private Transform targetTransform;
+	private List<Prediction> predictions;
 
     void Start()
     {
 		spacecraft = GetComponent<Spacecraft>();
+		predictions = new List<Prediction>();
 		agent = GetComponent<Agent>();
 		InitWeapons();
     }
@@ -28,14 +29,16 @@ public class FireCoordinator : MonoBehaviour
 
     public void UpdateFireCoordinator()
 	{
-		if (agent.GetTargetTransform() != null)
-		{
-			targetTransform = agent.GetTargetTransform();
-			foreach (Weapon wp in weapons)
+		if (agent.GetTargetTransform() != null){
+			Transform fireTransform = agent.GetTargetTransform();
+			if (fireTransform != null)
 			{
-				if (wp.CanFire())
+				foreach (Weapon wp in weapons)
 				{
-					wp.FireAt(targetTransform);
+					if (wp.CanFire())
+					{
+						wp.FireAt(fireTransform);
+					}
 				}
 			}
 		}

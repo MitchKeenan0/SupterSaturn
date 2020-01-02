@@ -120,8 +120,8 @@ public class Autopilot : MonoBehaviour
 			velocity += (commandMoveVector - transform.position) / routeVectorPoints;
 
 		// gravity negotiation
-		//Vector3 gravityEscapeRoute = GetGravityEscapeFrom(previousRouteVector + velocity);
-		//velocity += gravityEscapeRoute;
+		Vector3 gravityEscapeRoute = GetGravityEscapeFrom(previousRouteVector + velocity);
+		velocity += gravityEscapeRoute;
 
 		// follow command
 		//if (followTransform != null)
@@ -137,7 +137,8 @@ public class Autopilot : MonoBehaviour
 	{
 		// steering
 		Vector3 toDestination = destination - transform.position;
-		spacecraft.Maneuver(destination);
+		if (toDestination.magnitude > 1f)
+			spacecraft.Maneuver(destination);
 
 		// counteracting unwanted velocity
 		Vector3 myVelocity = rb.velocity;
@@ -152,11 +153,10 @@ public class Autopilot : MonoBehaviour
 
 		// thrust
 		float dotToTarget = Vector3.Dot(transform.forward, toDestination.normalized);
-		if (dotToTarget > 0f)
+		if (Mathf.Abs(dotToTarget) > 0.1f)
 		{
-			float thrustPower = Mathf.Pow(Mathf.Abs(dotToTarget), 2f);
-			thrustPower *= toDestination.magnitude / 10f;
-			thrustPower = Mathf.Clamp(thrustPower, 0f, 1f);
+			float thrustPower = dotToTarget;
+			thrustPower = Mathf.Clamp(thrustPower, -1, 1f);
 			spacecraft.MainEngines(thrustPower);
 		}
 	}
@@ -167,12 +167,14 @@ public class Autopilot : MonoBehaviour
 		foreach (Gravity g in objectManager.GetGravityList())
 		{
 			RaycastHit hit;
-			if (Physics.Raycast(position, (g.transform.position - position), out hit))
+			Vector3 toGravity = g.transform.position - position;
+			if (Physics.Raycast(position, toGravity, out hit))
 			{
-				if ((hit.transform == g.transform) && (hit.distance < g.radius))
+				if ((hit.collider == g.GetComponent<Collider>()) && (hit.distance < g.radius))
 				{
-					float dangerScale = (3.14f / hit.distance);
-					gravityEscape =  hit.point + (hit.normal * spacecraft.mainEnginePower * dangerScale);
+					float dangerScale = (1f / hit.distance);
+					gravityEscape = (hit.normal * spacecraft.mainEnginePower * dangerScale);
+					Debug.DrawRay(transform.position, gravityEscape, Color.green);
 				}
 			}
 		}
