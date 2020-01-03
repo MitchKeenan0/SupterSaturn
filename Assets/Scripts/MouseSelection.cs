@@ -20,6 +20,8 @@ public class MouseSelection : MonoBehaviour
 	private RectTransform rt;
 	private bool isSelecting;
 
+	private SelectionSquad selectionSquad;
+
 	void Awake()
 	{
 		if (canvas == null)
@@ -34,6 +36,8 @@ public class MouseSelection : MonoBehaviour
 			rt.anchorMax = Vector2.one * .5f;
 			selectionBox.gameObject.SetActive(false);
 		}
+
+		selectionSquad = GetComponent<SelectionSquad>();
 	}
 
 	void Update()
@@ -82,6 +86,7 @@ public class MouseSelection : MonoBehaviour
 		if (Input.GetMouseButtonUp(0))
 		{
 			isSelecting = false;
+			selectionSquad.SetSquad(GetSelectedSpacecraft());
 		}
 
 		selectionBox.gameObject.SetActive(isSelecting);

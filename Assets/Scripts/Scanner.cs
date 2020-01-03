@@ -71,11 +71,14 @@ public class Scanner : MonoBehaviour
 					{
 						if (sp.GetAgent().teamID != spacecraft.GetAgent().teamID)
 						{
-							targetList.Add(hit.gameObject);
-							sp.GetComponent<Spacecraft>().AddMarkValue(1);
+							if (spacecraft.GetAgent().LineOfSight(sp.transform.position, sp.transform))
+							{
+								targetList.Add(hit.gameObject);
+								sp.GetComponent<Spacecraft>().AddMarkValue(1);
 
-							if (spacecraft.GetAgent().teamID == 0)
-								predictionHud.SetPrediction(sp, Vector3.zero, Vector3.zero, 0f);
+								if (spacecraft.GetAgent().teamID == 0)
+									predictionHud.SetPrediction(sp, Vector3.zero, Vector3.zero, 0f);
+							}
 						}
 					}
 				}

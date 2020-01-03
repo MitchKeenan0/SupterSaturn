@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.0004303209, g: 0.006150441, b: 0.018519662, a: 1}
+  m_IndirectSpecularColor: {r: 0.00042194026, g: 0.006126042, b: 0.018545577, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -568,6 +568,7 @@ GameObject:
   - component: {fileID: 502444715}
   - component: {fileID: 502444716}
   - component: {fileID: 502444717}
+  - component: {fileID: 502444718}
   m_Layer: 0
   m_Name: GameSystems
   m_TagString: Untagged
@@ -628,6 +629,18 @@ MonoBehaviour:
   canvas: {fileID: 0}
   selectionBox: {fileID: 1315014659}
   copyKey: 306
+--- !u!114 &502444718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 502444713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 174b290190976ad408bf479f74865225, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &524521404
 GameObject:
   m_ObjectHideFlags: 0
@@ -1033,7 +1046,7 @@ MonoBehaviour:
   xForceDirection: 0
   yForceDirection: -0.01
   zForceDirection: 0
-  speedMultiplier: 1
+  speedMultiplier: 0.05
   worldPivot: 0
 --- !u!4 &1070408331
 Transform:

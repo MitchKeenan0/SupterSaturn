@@ -15,6 +15,7 @@ public class Autopilot : MonoBehaviour
 	private Spacecraft spacecraft;
 	private RouteVisualizer routeVisualizer;
 	private ObjectManager objectManager;
+	private SelectionSquad selectionSquad;
 	private Transform targetTransform;
 	private Transform followTransform;
 	private Vector3 commandMoveVector = Vector3.zero;
@@ -34,6 +35,7 @@ public class Autopilot : MonoBehaviour
 		spacecraft = GetComponent<Spacecraft>();
 		routeVisualizer = GetComponentInChildren<RouteVisualizer>();
 		objectManager = FindObjectOfType<ObjectManager>();
+		selectionSquad = FindObjectOfType<SelectionSquad>();
 
 		routeVectors = new List<Vector3>();
 		holdPosition = transform.position;
@@ -70,14 +72,13 @@ public class Autopilot : MonoBehaviour
 
 	public void SetMoveCommand(Vector3 value)
 	{
-		commandMoveVector = value;
-		if (commandMoveVector.magnitude > 1f)
+		if (commandMoveVector != value)
 		{
-			GenerateRoute();
-		}
-		else
-		{
-			ClearRoute();
+			commandMoveVector = value;
+			if (commandMoveVector.magnitude > 1f)
+			{
+				GenerateRoute();
+			}
 		}
 	}
 
@@ -90,10 +91,7 @@ public class Autopilot : MonoBehaviour
 
 	public void SetFollowTransform(Transform value)
 	{
-		if (value != null)
-		{
-			followTransform = value;
-		}
+		followTransform = value;
 	}
 
 	void GenerateRoute()
@@ -113,14 +111,18 @@ public class Autopilot : MonoBehaviour
 
 	Vector3 GenerateRouteVector()
 	{
-		Vector3 velocity = Vector3.zero;
+		Vector3 velocity = previousRouteVector;
 
 		// move command
 		if (commandMoveVector != Vector3.zero)
 			velocity += (commandMoveVector - transform.position) / routeVectorPoints;
 
+		// squad position
+		if (selectionSquad != null)
+			velocity += selectionSquad.GetOffsetOf(spacecraft) / routeVectorPoints;
+
 		// gravity negotiation
-		Vector3 gravityEscapeRoute = GetGravityEscapeFrom(previousRouteVector + velocity);
+		Vector3 gravityEscapeRoute = GetGravityEscapeFrom(velocity);
 		velocity += gravityEscapeRoute;
 
 		// follow command
@@ -130,7 +132,7 @@ public class Autopilot : MonoBehaviour
 		//	velocity += followingRoute;
 		//}
 
-		return previousRouteVector + velocity;
+		return velocity;
 	}
 
 	void FlyTo(Vector3 destination)
@@ -172,9 +174,8 @@ public class Autopilot : MonoBehaviour
 			{
 				if ((hit.collider == g.GetComponent<Collider>()) && (hit.distance < g.radius))
 				{
-					float dangerScale = (1f / hit.distance);
-					gravityEscape = (hit.normal * spacecraft.mainEnginePower * dangerScale);
-					Debug.DrawRay(transform.position, gravityEscape, Color.green);
+					gravityEscape = -toGravity.normalized * spacecraft.mainEnginePower;
+					Debug.DrawRay(hit.point, gravityEscape, Color.green);
 				}
 			}
 		}

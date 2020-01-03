@@ -17,6 +17,7 @@ public class MouseCommandHUD : MonoBehaviour
 
 	private MouseSelection mouseSelection;
 	private MouseContextHUD mouseContext;
+	private SelectionSquad selectedSquad;
 	private Camera cameraMain;
 	private List<Spacecraft> selectedSpacecraftList;
 	private Vector3 moveCommandPosition = Vector3.zero;
@@ -37,7 +38,8 @@ public class MouseCommandHUD : MonoBehaviour
 		moveCommandPosition = transform.position;
 		mouseSelection = FindObjectOfType<MouseSelection>();
 		mouseContext = FindObjectOfType<MouseContextHUD>();
-		
+		selectedSquad = FindObjectOfType<SelectionSquad>();
+
 		circleLineRenderer.positionCount = numCircleSegments + 1;
 		selectedSpacecraftList = new List<Spacecraft>();
 
@@ -189,13 +191,9 @@ public class MouseCommandHUD : MonoBehaviour
 	
 	void SetMoveOrder(Vector3 position)
 	{
-		selectedSpacecraftList = mouseSelection.GetSelectedSpacecraft();
-		foreach(Spacecraft sp in selectedSpacecraftList)
+		if (selectedSquad != null)
 		{
-			if (sp.GetAgent().teamID == 0)
-			{
-				sp.GetAgent().EnableMoveCommand(true);
-			}
+			selectedSquad.SetDestination(position);
 		}
 	}
 

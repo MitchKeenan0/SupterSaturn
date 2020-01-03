@@ -274,9 +274,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bAgentStartsEnabled: 1
-  mainEnginePower: 1
-  turningPower: 15
-  maneuverPower: 1.5
+  mainEnginePower: 0.115
+  turningPower: 5
+  maneuverPower: 5
   spacecraftName: Fighter
   thrustParticles: {fileID: 2104020796097920098}
   destroyedParticlesPrefab: {fileID: 2766248710761914840, guid: 05469ee24ae991f41b944cbcf9f43ad0,
@@ -801,11 +801,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 120049750544886664, guid: 46ea2727372f81140af84135ce35cdcc,
-        type: 3}
-      propertyPath: maxRadius
-      value: 15
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46ea2727372f81140af84135ce35cdcc, type: 3}
 --- !u!4 &5234424944614331586 stripped
@@ -889,7 +884,7 @@ PrefabInstance:
     - target: {fileID: 2262925762897097918, guid: d4d511709294c7b4193921eb4db902a5,
         type: 3}
       propertyPath: updateInterval
-      value: 0.1
+      value: 0.33
       objectReference: {fileID: 0}
     - target: {fileID: 2262925762897097918, guid: d4d511709294c7b4193921eb4db902a5,
         type: 3}

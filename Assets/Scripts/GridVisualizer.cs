@@ -29,7 +29,6 @@ public class GridVisualizer : MonoBehaviour
 		if (bUpdating)
 		{
 			updateTransform = transform.parent;
-			Debug.Log("Set updateParent " + updateTransform.name);
 			transform.SetParent(null);
 			updateCoroutine = TimedUpdate(updateInterval);
 			StartCoroutine(updateCoroutine);
