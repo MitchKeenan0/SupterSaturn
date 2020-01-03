@@ -40,7 +40,7 @@ public class Agent : MonoBehaviour
 
 	void Start()
 	{
-		SetMoveOrder(transform.position, null);
+		//SetMoveOrder(spacecraft.transform.position, null);
 	}
 
 	void Update()
@@ -157,10 +157,10 @@ public class Agent : MonoBehaviour
 	public void SetMoveOrder(Vector3 position, Transform follow)
 	{
 		autopilot.SetMoveCommand(position);
+		followTransform = follow;
 
 		if (follow != null)
 		{
-			followTransform = follow;
 			autopilot.SetFollowTransform(followTransform);
 		}
 	}

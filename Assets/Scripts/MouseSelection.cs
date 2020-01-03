@@ -19,6 +19,7 @@ public class MouseSelection : MonoBehaviour
 	private BoxCollider worldCollider;
 	private RectTransform rt;
 	private bool isSelecting;
+	private float timeAtMouseDown = 0f;
 
 	private SelectionSquad selectionSquad;
 
@@ -44,6 +45,7 @@ public class MouseSelection : MonoBehaviour
 	{
 		if (Input.GetMouseButtonDown(0))
 		{
+			timeAtMouseDown = Time.time;
 			Ray mouseToWorldRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hitInfo;
 			//Shoots a ray into the 3D world starting at our mouseposition
@@ -148,6 +150,12 @@ public class MouseSelection : MonoBehaviour
 	void ClearSelected()
 	{
 		selectables.ForEach(x => x.isSelected = false);
+	}
+
+
+	bool IsDoubleClick()
+	{
+		return (Time.time - timeAtMouseDown) <= 1f;
 	}
 
 }

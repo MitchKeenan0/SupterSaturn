@@ -38,11 +38,11 @@ public class Autopilot : MonoBehaviour
 		selectionSquad = FindObjectOfType<SelectionSquad>();
 
 		routeVectors = new List<Vector3>();
-		holdPosition = transform.position;
+		holdPosition = spacecraft.transform.position;
 		targetCombatPosition = transform.position;
 		autoPilotStartPosition = transform.position;
 		previousRouteVector = transform.position;
-		SetMoveCommand(transform.position);
+		//SetMoveCommand(spacecraft.transform.position);
 	}
 
 	public void SpacecraftNavigationCommands()
@@ -74,11 +74,13 @@ public class Autopilot : MonoBehaviour
 	{
 		if (commandMoveVector != value)
 		{
-			commandMoveVector = value;
-			if (commandMoveVector.magnitude > 1f)
-			{
-				GenerateRoute();
-			}
+			
+		}
+
+		commandMoveVector = value;
+		if (commandMoveVector.magnitude > 1f)
+		{
+			GenerateRoute();
 		}
 	}
 
@@ -123,7 +125,7 @@ public class Autopilot : MonoBehaviour
 
 		// gravity negotiation
 		Vector3 gravityEscapeRoute = GetGravityEscapeFrom(velocity);
-		velocity += gravityEscapeRoute;
+		velocity = gravityEscapeRoute;
 
 		// follow command
 		//if (followTransform != null)
@@ -137,29 +139,38 @@ public class Autopilot : MonoBehaviour
 
 	void FlyTo(Vector3 destination)
 	{
+		// calibrate for current velocity
+		float anteDest = 1f;
+		if (Mathf.Abs(rb.velocity.magnitude) > 1f)
+			anteDest = destination.magnitude / rb.velocity.magnitude;
+		Vector3 toDestination = (destination - (rb.velocity * anteDest)) - transform.position;
+
 		// steering
-		Vector3 toDestination = destination - transform.position;
-		if (toDestination.magnitude > 1f)
-			spacecraft.Maneuver(destination);
+		spacecraft.Maneuver(destination);
 
 		// counteracting unwanted velocity
-		Vector3 myVelocity = rb.velocity;
-		float velocityDotToTarget = Vector3.Dot(myVelocity.normalized, toDestination.normalized);
-		if ((velocityDotToTarget <= 0.95f) || (toDestination.magnitude <= 1f))
+		if (toDestination.magnitude > 0.15f)
 		{
 			Vector3 unwantedVelocity = Vector3.ProjectOnPlane(rb.velocity, toDestination.normalized);
-			maneuverVector = unwantedVelocity * -1 * spacecraft.maneuverPower * (1f - velocityDotToTarget);
+			Vector3 counterVector = (toDestination - unwantedVelocity).normalized;
+			float velocityDotToTarget = Vector3.Dot(rb.velocity.normalized, toDestination.normalized);
+			maneuverVector = counterVector * spacecraft.maneuverPower * (1f - velocityDotToTarget);
 			spacecraft.ManeuverEngines(maneuverVector);
-			Debug.DrawRay(transform.position, maneuverVector, Color.black);
 		}
 
 		// thrust
-		float dotToTarget = Vector3.Dot(transform.forward, toDestination.normalized);
-		if (Mathf.Abs(dotToTarget) > 0.1f)
+		if (toDestination.magnitude > 1f)
 		{
-			float thrustPower = dotToTarget;
-			thrustPower = Mathf.Clamp(thrustPower, -1, 1f);
-			spacecraft.MainEngines(thrustPower);
+			float dotToTarget = Vector3.Dot(transform.forward, toDestination.normalized);
+			if (Mathf.Abs(dotToTarget) > 0.5f)
+			{
+				float throttle = Mathf.Clamp(
+					spacecraft.mainEnginePower / Vector3.Distance(transform.position, destination),
+					-1f, 1f);
+				float thrustPower = dotToTarget * throttle;
+				thrustPower = Mathf.Clamp(thrustPower, -1, 1f);
+				spacecraft.MainEngines(thrustPower);
+			}
 		}
 	}
 
@@ -174,7 +185,7 @@ public class Autopilot : MonoBehaviour
 			{
 				if ((hit.collider == g.GetComponent<Collider>()) && (hit.distance < g.radius))
 				{
-					gravityEscape = -toGravity.normalized * spacecraft.mainEnginePower;
+					gravityEscape = hit.point + (-toGravity.normalized * spacecraft.mainEnginePower * g.radius);
 					Debug.DrawRay(hit.point, gravityEscape, Color.green);
 				}
 			}

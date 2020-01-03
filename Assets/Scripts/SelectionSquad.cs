@@ -71,7 +71,7 @@ public class SelectionSquad : MonoBehaviour
 	public Vector3 GetOffsetOf(Spacecraft sp)
 	{
 		Vector3 offset = Vector3.zero;
-		if (spacecraftList.Contains(sp))
+		if ((spacecraftList != null) && spacecraftList.Contains(sp))
 		{
 			Vector3 position = sp.transform.position;
 			offset = position - centerPoint;

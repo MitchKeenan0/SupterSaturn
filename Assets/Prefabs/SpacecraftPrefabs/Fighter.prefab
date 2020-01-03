@@ -276,7 +276,7 @@ MonoBehaviour:
   bAgentStartsEnabled: 1
   mainEnginePower: 0.1
   turningPower: 5
-  maneuverPower: 5
+  maneuverPower: 0.1
   spacecraftName: Fighter
   thrustParticles: {fileID: 2104020796097920098}
   destroyedParticlesPrefab: {fileID: 2766248710761914840, guid: 05469ee24ae991f41b944cbcf9f43ad0,
@@ -391,7 +391,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1906621234774554819}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 0.5
   m_Drag: 0.015
   m_AngularDrag: 0.1
   m_UseGravity: 0

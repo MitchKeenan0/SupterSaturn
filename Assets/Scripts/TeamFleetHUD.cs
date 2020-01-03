@@ -158,10 +158,13 @@ public class TeamFleetHUD : MonoBehaviour
 
 	public void ButtonPressed(int index)
 	{
-		if (teamList[index] != null)
-		{
-			cameraController.SetOrbitTarget(teamList[index].transform);
-		}
+		// mouse selection.add
+
+		// if double click
+		//if (teamList[index] != null)
+		//{
+		//	cameraController.SetOrbitTarget(teamList[index].transform);
+		//}
 	}
 
 	public void SpacecraftDestroyed(Spacecraft sp)

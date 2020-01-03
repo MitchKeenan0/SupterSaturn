@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3870545967297439268}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 30.16, y: 0, z: 0}
+  m_LocalPosition: {x: 15, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6143951963767822069}
@@ -41,7 +41,6 @@ GameObject:
   - component: {fileID: 5273469545884070276}
   - component: {fileID: 6778420731978736680}
   - component: {fileID: 5415455423628363378}
-  - component: {fileID: 8902657048972617469}
   - component: {fileID: 1524032912869490654}
   m_Layer: 0
   m_Name: PlanetMesh
@@ -109,19 +108,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!135 &8902657048972617469
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4766638517062956649}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1524032912869490654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,7 +123,7 @@ MonoBehaviour:
   xForceDirection: 0
   yForceDirection: 0.1
   zForceDirection: 0
-  speedMultiplier: 0.1
+  speedMultiplier: 0.05
   worldPivot: 0
 --- !u!1 &6143951963767822065
 GameObject:
@@ -189,7 +175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 15
-  strength: 1
+  strength: 0.1
   updateInterval: 0.1
 --- !u!135 &8303981145886502231
 SphereCollider:
@@ -372,7 +358,7 @@ PrefabInstance:
     - target: {fileID: 2262925762897097918, guid: d4d511709294c7b4193921eb4db902a5,
         type: 3}
       propertyPath: layerSpacing
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2262925762897097918, guid: d4d511709294c7b4193921eb4db902a5,
         type: 3}
@@ -382,7 +368,7 @@ PrefabInstance:
     - target: {fileID: 2262925762897097918, guid: d4d511709294c7b4193921eb4db902a5,
         type: 3}
       propertyPath: lineSpacing
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2262925762897097918, guid: d4d511709294c7b4193921eb4db902a5,
         type: 3}
@@ -392,12 +378,17 @@ PrefabInstance:
     - target: {fileID: 2262925762897097918, guid: d4d511709294c7b4193921eb4db902a5,
         type: 3}
       propertyPath: rowPopulation
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2262925762897097918, guid: d4d511709294c7b4193921eb4db902a5,
         type: 3}
       propertyPath: gridLayers
-      value: 10
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2262925762897097918, guid: d4d511709294c7b4193921eb4db902a5,
+        type: 3}
+      propertyPath: updateInterval
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2262925761331553153, guid: d4d511709294c7b4193921eb4db902a5,
         type: 3}
