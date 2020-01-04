@@ -7,11 +7,13 @@ public class CraftIconHUD : MonoBehaviour
 {
 	public GameObject iconParent;
 	public GameObject iconPrefab;
+	public Vector3 healthBarScale;
 
 	private Camera cameraMain;
 	private ObjectManager objectManager;
 	private List<Spacecraft> spacecraftList;
 	private List<Image> iconImageList;
+	private List<Image> healthBarList;
 
 	void Start()
     {
@@ -20,6 +22,73 @@ public class CraftIconHUD : MonoBehaviour
 		InitIconFleet();
     }
 
+	void OnGUI()
+	{
+		UpdateCraftIcons();
+	}
+
+	void UpdateCraftIcons()
+	{
+		spacecraftList = objectManager.GetSpacecraftList();
+		if (spacecraftList.Count > 0)
+		{
+			for (int i = 0; i < spacecraftList.Count; i++)
+			{
+				if (i < spacecraftList.Count && (spacecraftList[i] != null))
+				{
+					Spacecraft sp = spacecraftList[i];
+					Image img;
+					if (sp != null && sp.GetHUDIcon() != null)
+					{
+						img = sp.GetHUDIcon().GetComponent<Image>();
+
+						if ((sp.GetMarks() > 0) || (sp.GetAgent().teamID == 0))
+						{
+							img.enabled = true;
+							if (!img.gameObject.activeInHierarchy)
+								img.gameObject.SetActive(true);
+							img.sprite = sp.craftIcon;
+							img.rectTransform.sizeDelta = Vector2.one * sp.iconScale;
+							Vector3 craftScreenPosition = cameraMain.WorldToScreenPoint(sp.transform.position);
+							Vector3 craftToScreen = (sp.transform.position - cameraMain.transform.position).normalized;
+							float dotToCraft = Vector3.Dot(cameraMain.transform.forward, craftToScreen);
+							if (dotToCraft > 0f)
+							{
+								craftScreenPosition.x = Mathf.Clamp(craftScreenPosition.x, 0f, Screen.width);
+								craftScreenPosition.y = Mathf.Clamp(craftScreenPosition.y, 0f, Screen.height);
+								img.transform.position = craftScreenPosition;
+							}
+							else
+							{
+								img.sprite = null;
+								img.gameObject.SetActive(false);
+							}
+
+							Image healthBarImage = img.gameObject.GetComponentInChildren<Image>();
+							if (healthBarImage != null && healthBarImage.CompareTag("Health"))
+							{
+								Vector2 healthBarr = healthBarScale;
+								healthBarr.x *= sp.GetHealthPercent();
+								img.gameObject.GetComponentInChildren<Image>().rectTransform.sizeDelta = healthBarr;
+							}
+
+							Vector3 toCamera = cameraMain.transform.position - sp.transform.position;
+							Color iconColor = img.color;
+							iconColor.a = Mathf.Clamp(toCamera.magnitude * 0.1f, 0.1f, 1f);
+							img.color = iconColor;
+						}
+						else
+						{
+							img.enabled = false;
+							if (img.gameObject.activeInHierarchy)
+								img.gameObject.SetActive(false);
+						}
+					}
+				}
+			}
+		}
+	}
+
 	void InitIconFleet()
 	{
 		spacecraftList = objectManager.GetSpacecraftList();
@@ -27,8 +96,11 @@ public class CraftIconHUD : MonoBehaviour
 		Image[] images = GetComponentsInChildren<Image>();
 		foreach (Image img in images)
 		{
-			iconImageList.Add(img);
-			img.gameObject.SetActive(false);
+			if (!img.CompareTag("Health"))
+			{
+				iconImageList.Add(img);
+				img.gameObject.SetActive(false);
+			}
 		}
 		int numCrafts = spacecraftList.Count;
 		for (int i = 0; i < numCrafts; i++)
@@ -80,65 +152,6 @@ public class CraftIconHUD : MonoBehaviour
 		}
 
 		return product;
-	}
-
-	void OnGUI()
-	{
-		UpdateCraftIcons();
-	}
-
-	void UpdateCraftIcons()
-	{
-		spacecraftList = objectManager.GetSpacecraftList();
-		if (spacecraftList.Count > 0)
-		{
-			for (int i = 0; i < spacecraftList.Count; i++)
-			{
-				if (i < spacecraftList.Count && (spacecraftList[i] != null))
-				{
-					Spacecraft sp = spacecraftList[i];
-					Image img;
-					if (sp != null && sp.GetHUDIcon() != null)
-					{
-						img = sp.GetHUDIcon().GetComponent<Image>();
-
-						if ((sp.GetMarks() > 0) || (sp.GetAgent().teamID == 0))
-						{
-							img.enabled = true;
-							if (!img.gameObject.activeInHierarchy)
-								img.gameObject.SetActive(true);
-							img.sprite = sp.craftIcon;
-							img.rectTransform.localScale = Vector3.one * sp.iconScale;
-							Vector3 craftScreenPosition = cameraMain.WorldToScreenPoint(sp.transform.position);
-							Vector3 craftToScreen = (sp.transform.position - cameraMain.transform.position).normalized;
-							float dotToCraft = Vector3.Dot(cameraMain.transform.forward, craftToScreen);
-							if (dotToCraft > 0f)
-							{
-								craftScreenPosition.x = Mathf.Clamp(craftScreenPosition.x, 0f, Screen.width);
-								craftScreenPosition.y = Mathf.Clamp(craftScreenPosition.y, 0f, Screen.height);
-								img.transform.position = craftScreenPosition;
-							}
-							else
-							{
-								img.sprite = null;
-								img.gameObject.SetActive(false);
-							}
-
-							Vector3 toCamera = cameraMain.transform.position - sp.transform.position;
-							Color iconColor = img.color;
-							iconColor.a = Mathf.Clamp(toCamera.magnitude * 0.1f, 0.1f, 1f);
-							img.color = iconColor;
-						}
-						else
-						{
-							img.enabled = false;
-							if (img.gameObject.activeInHierarchy)
-								img.gameObject.SetActive(false);
-						}
-					}
-				}
-			}
-		}
 	}
 
 	public void ModifySpacecraftList(Spacecraft sp, bool stays)

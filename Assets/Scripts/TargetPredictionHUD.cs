@@ -15,26 +15,34 @@ public class TargetPredictionHUD : MonoBehaviour
 
     void Start()
     {
+		predictionList = new List<Prediction>();
 		teamFleetHud = FindObjectOfType<TeamFleetHUD>();
 		enemyList = teamFleetHud.GetEnemyList();
 		cameraMain = Camera.main;
-		predictionList = new List<Prediction>();
     }
 
 	void Update()
 	{
-		foreach(Prediction pre in predictionList)
+		if (predictionList != null && predictionList.Count == 0)
 		{
-			if (pre.position != Vector3.zero)
+			InitPredictionPool();
+		}
+		else
+		{
+			foreach (Prediction pre in predictionList)
 			{
-				Vector3 screenPosition = cameraMain.WorldToScreenPoint(pre.position);
-				pre.img.transform.position = screenPosition;
+				if (pre.position != Vector3.zero)
+				{
+					Vector3 screenPosition = cameraMain.WorldToScreenPoint(pre.position);
+					pre.img.transform.position = screenPosition;
+				}
 			}
 		}
 	}
 
 	void InitPredictionPool()
 	{
+		predictionList = new List<Prediction>();
 		enemyList = teamFleetHud.GetEnemyList();
 		int numTargets = enemyList.Count;
 		for (int i = 0; i < numTargets; i++)
@@ -55,16 +63,11 @@ public class TargetPredictionHUD : MonoBehaviour
 
 	public void SetPrediction(Spacecraft sp, Vector3 position, Vector3 velocity, float period)
 	{
-		if (predictionList.Count == 0)
-			InitPredictionPool();
-
 		Prediction predictionToSet = null;
-		foreach(Prediction pre in predictionList){
-			if (((pre.spacecraft != null) && (pre.spacecraft == sp))
-				|| (pre.position == Vector3.zero))
-			{
+		foreach (Prediction pre in predictionList)
+		{
+			if (pre.spacecraft == sp)
 				predictionToSet = pre;
-			}
 		}
 
 		if (predictionToSet != null)

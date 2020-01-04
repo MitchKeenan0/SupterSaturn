@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 120049750544886671}
   - component: {fileID: 120049750544886664}
   m_Layer: 0
-  m_Name: SmallScanner
+  m_Name: LargeScanner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,12 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e874bf0cf30e8a64cb5f6acdd14716b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scanInterval: 1
-  intervalDeviation: 0.05
-  scanSpeed: 5
-  maxRadius: 5
-  updateInterval: 0.03
-  scanRecoveryPeriod: 0.1
+  scanInterval: 2
+  intervalDeviation: 0.1
+  scanSpeed: 3
+  maxRadius: 35
+  updateInterval: 0.01
+  scanRecoveryPeriod: 5
 --- !u!1 &5155169036934119614
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,7 +101,7 @@ MeshRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
-  m_MotionVectors: 0
+  m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 1

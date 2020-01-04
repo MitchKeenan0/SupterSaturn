@@ -11,18 +11,21 @@ public class TeamFleetHUD : MonoBehaviour
 
 	private CameraController cameraController;
 	private ObjectManager objectManager;
+	private MouseSelection mouseSelection;
 	private SpacecraftInformation selectedSpacecraftInformation;
 	private List<Spacecraft> spacecraftList;
 	private List<Spacecraft> teamList;
 	private List<Spacecraft> enemyList;
 	private List<Image> teamImageList;
 	private List<Button> teamButtonList;
+	private float timeOfLastButtonPress = 0f;
 
 	void Start()
     {
 		spacecraftList = new List<Spacecraft>();
 		cameraController = FindObjectOfType<CameraController>();
 		objectManager = FindObjectOfType<ObjectManager>();
+		mouseSelection = FindObjectOfType<MouseSelection>();
 		InitTeamFleet();
     }
 
@@ -158,13 +161,11 @@ public class TeamFleetHUD : MonoBehaviour
 
 	public void ButtonPressed(int index)
 	{
-		// mouse selection.add
-
-		// if double click
-		//if (teamList[index] != null)
-		//{
-		//	cameraController.SetOrbitTarget(teamList[index].transform);
-		//}
+		if (Time.time - timeOfLastButtonPress >= 1f)
+			mouseSelection.UpdateSelection(teamList[index].GetComponent<Selectable>(), true);
+		else
+			cameraController.SetOrbitTarget(teamList[index].transform);
+		timeOfLastButtonPress = Time.time;
 	}
 
 	public void SpacecraftDestroyed(Spacecraft sp)

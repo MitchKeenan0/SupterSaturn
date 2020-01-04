@@ -8,19 +8,20 @@ public class Prediction : MonoBehaviour
 	public float predictionOpacity = 0.5f;
 	public Spacecraft spacecraft;
 	public Image img;
+	public Transform targetTransform;
 	public Vector3 position = Vector3.zero;
 	public Vector3 velocity = Vector3.zero;
-
+	
 	private float predictionPeriod = 0f;
 	private bool bEnabled = false;
 	private LineRenderer velocityLine;
 
 	void Start()
 	{
+		targetTransform.SetParent(null);
 		velocityLine = GetComponent<LineRenderer>();
 		img = GetComponent<Image>();
 		EnablePrediction(false);
-		/// ^^ Predictions are assigned in TargetPredictionHUD class
 	}
 
 	void EnablePrediction(bool value)
@@ -45,9 +46,15 @@ public class Prediction : MonoBehaviour
 		spacecraft = sp;
 		position = pos;
 		velocity = vel * period;
-		bool enableValue = (position != Vector3.zero);
-		if (enableValue != bEnabled)
-			EnablePrediction(enableValue);
+
+		if ((sp != null) && (pos != Vector3.zero))
+		{
+			targetTransform.transform.position = pos;
+		}
+
+		bool enableValue = (pos != Vector3.zero);
+		EnablePrediction(enableValue);
+
 		if (enableValue)
 		{
 			UpdateVelocityLine();

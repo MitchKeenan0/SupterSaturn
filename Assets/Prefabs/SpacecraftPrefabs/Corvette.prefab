@@ -198,16 +198,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bAgentStartsEnabled: 1
-  mainEnginePower: 1.5
+  mainEnginePower: 0.5
   turningPower: 2.5
-  maneuverPower: 0.5
+  maneuverPower: 1
   spacecraftName: Corvette
   thrustParticles: {fileID: 2379070149716345965}
   destroyedParticlesPrefab: {fileID: 2766248710761914840, guid: 05469ee24ae991f41b944cbcf9f43ad0,
     type: 3}
   craftIcon: {fileID: 21300000, guid: 575cc908f9138634bb43b8f84785203b, type: 3}
   craftDiagram: {fileID: 21300000, guid: be86249fa560a23458cbce450af653c3, type: 3}
-  iconScale: 0.16
+  iconScale: 15
 --- !u!114 &2482138470350234215
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246,7 +246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 739771861e5c898468b6db50f07dae77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  routeVectorPoints: 100
+  routeVectorPoints: 2
   updateInterval: 1
   autopilotSkill: 3
   autopilotAreaRange: 10
@@ -262,7 +262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e13fa68e42e8b8440943f266f3c67048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponSpeed: 5000
+  weaponSpeed: 3000
   weaponAccuracy: 0.95
   munitionPrefab: {fileID: 298334711150030353, guid: 207a3b16d330e8e4db11ab61331570d3,
     type: 3}
@@ -316,7 +316,7 @@ Rigidbody:
   m_GameObject: {fileID: 1906621234774554819}
   serializedVersion: 2
   m_Mass: 3
-  m_Drag: 0.015
+  m_Drag: 0.1
   m_AngularDrag: 0.15
   m_UseGravity: 0
   m_IsKinematic: 0
@@ -670,7 +670,7 @@ PrefabInstance:
     - target: {fileID: 2262925762897097918, guid: d4d511709294c7b4193921eb4db902a5,
         type: 3}
       propertyPath: lineLength
-      value: 20
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2262925762897097918, guid: d4d511709294c7b4193921eb4db902a5,
         type: 3}
@@ -680,7 +680,7 @@ PrefabInstance:
     - target: {fileID: 2262925762897097918, guid: d4d511709294c7b4193921eb4db902a5,
         type: 3}
       propertyPath: updateInterval
-      value: 0.33
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2262925762897097918, guid: d4d511709294c7b4193921eb4db902a5,
         type: 3}

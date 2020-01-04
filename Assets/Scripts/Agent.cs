@@ -15,16 +15,20 @@ public class Agent : MonoBehaviour
 	private ObjectManager objectManager;
 	private RaycastManager raycastManager;
 	private TeamFleetHUD teamFleetHUD;
-	private Transform targetTransform;
-	private Transform followTransform;
+	private Transform targetTransform = null;
+	private Transform followTransform = null;
 	private List<Spacecraft> spacecraftList;
 	private List<SpacecraftInformation> targetList;
 	private List<Prediction> predictionList;
 	private bool bEnabled = false;
+	private bool bPredictingTarget = false;
 	private IEnumerator targetDestroyedRestCoroutine;
 
     void Awake()
     {
+		spacecraftList = new List<Spacecraft>();
+		targetList = new List<SpacecraftInformation>();
+		predictionList = new List<Prediction>();
 		spacecraft = GetComponent<Spacecraft>();
 		autopilot = GetComponent<Autopilot>();
 		fireCoordinator = GetComponent<FireCoordinator>();
@@ -33,9 +37,6 @@ public class Agent : MonoBehaviour
 		objectManager = FindObjectOfType<ObjectManager>();
 		raycastManager = FindObjectOfType<RaycastManager>();
 		teamFleetHUD = FindObjectOfType<TeamFleetHUD>();
-		spacecraftList = new List<Spacecraft>();
-		targetList = new List<SpacecraftInformation>();
-		predictionList = new List<Prediction>();
 	}
 
 	void Start()
@@ -46,18 +47,46 @@ public class Agent : MonoBehaviour
 	void Update()
     {
 		UpdateTarget();
-		autopilot.SpacecraftNavigationCommands();
-    }
+		if (autopilot != null)
+			autopilot.SpacecraftNavigationCommands();
+	}
 
-	public bool LineOfSight(Vector3 target, Transform targetTrans)
+	void UpdateTarget()
 	{
-		bool result = false;
-		RaycastHit hit = raycastManager.CustomRaycast(transform.position, target - transform.position);
-		if (hit.transform == targetTrans)
+		if (bEnabled)
 		{
-			result = true;
+			if (targetTransform != null)
+			{
+				//Debug.DrawLine(transform.position, targetTransform.position, Color.red);
+
+				Spacecraft targetSpacecraft = targetTransform.GetComponent<Spacecraft>();
+				if (((targetSpacecraft != null) && (targetSpacecraft.GetMarks() > 0))
+					|| bPredictingTarget)
+				{
+					if (LineOfSight(targetTransform.position, targetTransform)
+						|| (targetSpacecraft == null))
+					{
+						if (fireCoordinator != null)
+						{
+							fireCoordinator.UpdateFireCoordinator();
+						}
+					}
+				}
+				else
+				{
+					AquireTarget();
+				}
+
+				//if (teamID == 0)
+					//Debug.Log("targeting " + targetTransform.name + " " + Time.time);
+			}
+			else
+			{
+				//if (teamID == 0)
+					//Debug.Log("no target " + Time.time);
+				AquireTarget();
+			}
 		}
-		return result;
 	}
 
 	void AquireTarget()
@@ -74,50 +103,31 @@ public class Agent : MonoBehaviour
 				{
 					SetTarget(ga.transform);
 					NotifyTeamOfTarget(ga.transform);
+					bPredictingTarget = false;
 				}
 			}
 		}
-		
+
 		if (targetTransform == null)
 		{
 			predictionList = predictionHud.GetPredictions();
-			if (predictionList.Count > 0)
+			if (predictionList != null)
 			{
-				Spacecraft predictionSpacecraft = predictionList[0].spacecraft;
-				if (predictionSpacecraft != null && (predictionSpacecraft.GetAgent().teamID != teamID))
+				int numPredictions = predictionList.Count;
+				for (int i = 0; i < numPredictions; i++)
 				{
-					SetTarget(predictionSpacecraft.transform);
-					NotifyTeamOfTarget(predictionSpacecraft.transform);
-				}
-			}
-		}
-	}
-
-	void UpdateTarget()
-	{
-		if (bEnabled)
-		{
-			if (targetTransform != null)
-			{
-				Spacecraft targetSpacecraft = targetTransform.GetComponent<Spacecraft>();
-				if (((targetSpacecraft != null) && (targetSpacecraft.GetMarks() > 0))
-					|| (targetSpacecraft == null))
-				{
-					if (LineOfSight(targetTransform.position, targetTransform)
-						|| (targetSpacecraft == null))
+					if (predictionList[i] != null)
 					{
-						fireCoordinator.UpdateFireCoordinator();
+						Spacecraft predictionSpacecraft = predictionList[i].spacecraft;
+						if ((predictionSpacecraft != null) && (predictionSpacecraft.GetAgent().teamID != teamID)
+							&& (predictionList[i].position != Vector3.zero))
+						{
+							SetTarget(predictionList[i].targetTransform);
+							bPredictingTarget = true;
+							break;
+						}
 					}
 				}
-				else
-				{
-					targetTransform = null;
-					AquireTarget();
-				}
-			}
-			else
-			{
-				AquireTarget();
 			}
 		}
 	}
@@ -125,8 +135,12 @@ public class Agent : MonoBehaviour
 	void SetTarget(Transform value)
 	{
 		targetTransform = value;
-		autopilot.SetTarget(value);
-		targetList.Add(value.gameObject.GetComponent<SpacecraftInformation>());
+		if (autopilot != null)
+			autopilot.SetTarget(value);
+		if (value != null)
+			targetList.Add(value.gameObject.GetComponent<SpacecraftInformation>());
+		else
+			targetList.Clear();
 	}
 
 	void NotifyTeamOfTarget(Transform value)
@@ -138,7 +152,7 @@ public class Agent : MonoBehaviour
 		List<Spacecraft> teamSpacecraftList = teamFleetHUD.GetTeamList(teamID);
 		foreach (Spacecraft sp in teamSpacecraftList)
 		{
-			if (((sp != null) && (teamID != targetTeam)) || (sp == null))
+			if ((sp != null) && (teamID != targetTeam))
 			{
 				if (LineOfSight(sp.transform.position, sp.transform))
 				{
@@ -149,6 +163,17 @@ public class Agent : MonoBehaviour
 	}
 
 	// External functions
+	public bool LineOfSight(Vector3 target, Transform targetTrans)
+	{
+		bool result = false;
+		RaycastHit hit = raycastManager.CustomRaycast(transform.position, target - transform.position);
+		if (hit.transform == targetTrans)
+		{
+			result = true;
+		}
+		return result;
+	}
+
 	public void EnableMoveCommand(bool value)
 	{
 		autopilot.EnableMoveCommand(value);
@@ -158,7 +183,6 @@ public class Agent : MonoBehaviour
 	{
 		autopilot.SetMoveCommand(position);
 		followTransform = follow;
-
 		if (follow != null)
 		{
 			autopilot.SetFollowTransform(followTransform);
@@ -190,10 +214,10 @@ public class Agent : MonoBehaviour
 	
 	public void NotifyTargetDestroyed(Spacecraft sp)
 	{
-		targetTransform = null;
 		autopilot.SetTarget(null);
 		fireCoordinator.StandDown();
 		predictionHud.SetPrediction(sp, Vector3.zero, Vector3.zero, 0f);
+		targetTransform = null;
 		targetDestroyedRestCoroutine = TargetDestroyedRest(0.2f);
 		StartCoroutine(targetDestroyedRestCoroutine);
 	}
@@ -216,5 +240,6 @@ public class Agent : MonoBehaviour
 	{
 		teamFleetHUD.SpacecraftDestroyed(spacecraft);
 		objectManager.SpacecraftDestroyed(spacecraft);
+		predictionHud.SetPrediction(spacecraft, Vector3.zero, Vector3.zero, 0f);
 	}
 }

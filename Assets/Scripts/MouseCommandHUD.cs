@@ -57,7 +57,6 @@ public class MouseCommandHUD : MonoBehaviour
 		if (Input.GetButtonDown("Fire2"))
 		{
 			SetEnabled(true);
-			//SetCircleLocation();
 		}
 
 		if (Input.GetButton("Fire2"))
@@ -84,32 +83,28 @@ public class MouseCommandHUD : MonoBehaviour
 		mouseX = deltaMouse.x;
 		mouseY = deltaMouse.y;
 		lastMousePosition = Input.mousePosition;
-
-		if (deltaMouse != Vector3.zero)
-		{
-			screenCenter = new Vector3(Screen.width / 2, Screen.height / 2, deltaMouse.z);
-
-			// command circle width control
-			Vector3 flatMousePosition = Input.mousePosition;
-			flatMousePosition.y = screenCenter.y;
-			float distToCenter = Vector3.Distance(flatMousePosition, screenCenter);
-
-			circleRadius = (distToCenter * originalRadius) / 10f;
-		}
+		
+		// command circle width control
+		Vector3 flatMousePosition = Input.mousePosition;
+		Vector3 squadScreenPosition = cameraMain.WorldToScreenPoint(selectedSquad.GetCenterPoint());
+		flatMousePosition.y = squadScreenPosition.y;
+		flatMousePosition.z = squadScreenPosition.z;
+		float distToCenter = (flatMousePosition - squadScreenPosition).x / 50;
+		circleRadius = distToCenter;
+		UpdateCircleRender();
 
 		// command line elevation
+		Vector3 lineOrigin = ClosestLineToMouse();
+		Vector3 originScreenPosition = cameraMain.WorldToScreenPoint(lineOrigin);
 		Vector3 verticalMousePosition = Input.mousePosition;
-		verticalMousePosition.x = screenCenter.x;
-		float distToMiddle = Vector3.Distance(verticalMousePosition, screenCenter);
-
-		lineElevation = distToMiddle * (Input.mousePosition - screenCenter).normalized.y / 10f;
-
-		Vector3 elevationOrigin = ClosestLineToMouse();
-		Vector3 elevationLine = elevationOrigin + (Vector3.up * lineElevation);
-
-		elevationLineRenderer.SetPosition(0, elevationOrigin);
+		verticalMousePosition.x = originScreenPosition.x;
+		verticalMousePosition.z = originScreenPosition.z;
+		float distToMiddle = (verticalMousePosition.y - originScreenPosition.y) / 50;
+		lineElevation = distToMiddle;
+		
+		Vector3 elevationLine = lineOrigin + (Vector3.up * lineElevation);
+		elevationLineRenderer.SetPosition(0, lineOrigin);
 		elevationLineRenderer.SetPosition(1, elevationLine);
-
 		moveCommandPosition = elevationLine;
 	}
 
@@ -157,15 +152,12 @@ public class MouseCommandHUD : MonoBehaviour
 		int numPos = linePositions.Length;
 		for (int i = 0; i < numPos; i++){
 			float dotToLine = Vector3.Dot(cameraMain.transform.forward, (linePositions[i] - cameraMain.transform.position).normalized);
-			if (dotToLine > 0.5f)
+			if (dotToLine > 0.1f)
 			{
 				Vector3 lineToCamera = cameraMain.transform.position - linePositions[i];
 				var mouseRay = cameraMain.ScreenPointToRay(Input.mousePosition);
 				mousePos = mouseRay.GetPoint(Mathf.Abs(lineToCamera.magnitude));
-				Vector3 mouseToLine = (linePositions[i] - mousePos).normalized;
-				mouseToLine.z = 0f;
-				mouseToLine.y = 0f;
-				float lateralDistance = mouseToLine.x;
+				float lateralDistance = (linePositions[i] - mousePos).magnitude;
 				if (Mathf.Abs(lateralDistance) < Mathf.Abs(closestDistance))
 				{
 					closestLinePosition = linePositions[i];
@@ -173,6 +165,8 @@ public class MouseCommandHUD : MonoBehaviour
 				}
 			}
 		}
+
+		Debug.DrawLine(mousePos, closestLinePosition, Color.blue);
 
 		return closestLinePosition;
 	}

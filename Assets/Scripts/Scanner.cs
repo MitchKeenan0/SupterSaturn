@@ -73,11 +73,14 @@ public class Scanner : MonoBehaviour
 						{
 							if (spacecraft.GetAgent().LineOfSight(sp.transform.position, sp.transform))
 							{
-								targetList.Add(hit.gameObject);
-								sp.GetComponent<Spacecraft>().AddMarkValue(1);
+								if (Vector3.Distance(sp.transform.position, transform.position) <= maxRadius)
+								{
+									targetList.Add(hit.gameObject);
+									sp.GetComponent<Spacecraft>().AddMarkValue(1);
 
-								if (spacecraft.GetAgent().teamID == 0)
-									predictionHud.SetPrediction(sp, Vector3.zero, Vector3.zero, 0f);
+									if (spacecraft.GetAgent().teamID == 0)
+										predictionHud.SetPrediction(sp, Vector3.zero, Vector3.zero, 0f);
+								}
 							}
 						}
 					}
@@ -85,9 +88,8 @@ public class Scanner : MonoBehaviour
 			}
 		}
 
-		currentRadius += (scanSpeed * Time.deltaTime);
-		float timeAlive = Time.time - timeAtScan;
-		bool bScanFinished = (timeAlive >= scanInterval);
+		currentRadius = Mathf.Lerp(currentRadius, maxRadius, (scanSpeed * Time.deltaTime));
+		bool bScanFinished = (Time.time - timeAtScan) >= scanInterval;
 		if (bScanFinished)
 		{
 			ClearTargets();
@@ -103,24 +105,26 @@ public class Scanner : MonoBehaviour
 
 		Color scanColor = meshRenderer.material.color;
 		float percentOfLifetime = 1f - ((Time.time - timeAtScan) / scanInterval);
-		float percentOfSize = 1f - (currentRadius / maxRadius);
-		scanColor.a = Mathf.Clamp(originalAlpha * percentOfLifetime * percentOfSize * percentOfLifetime, 0f, 1f);
+		scanColor.a = Mathf.Clamp(originalAlpha * percentOfLifetime, 0f, 1f);
 		meshRenderer.material.color = scanColor;
 	}
 
 	void ClearTargets()
 	{
-		foreach(GameObject c in targetList)
+		foreach (GameObject c in targetList)
 		{
 			if (c != null)
 			{
 				Spacecraft sp = c.GetComponent<Spacecraft>();
 				sp.AddMarkValue(-1);
 				if (spacecraft.GetAgent().teamID == 0)
+				{
 					predictionHud.SetPrediction(sp, c.transform.position, c.GetComponent<Rigidbody>().velocity, scanInterval);
+				}
 			}
 		}
 		targetList.Clear();
+		spacecraft.GetAgent().SuggestTarget(null);
 	}
 
 	private IEnumerator LoopingScanLaunch(float waitTime)

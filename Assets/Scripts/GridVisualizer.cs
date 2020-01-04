@@ -19,13 +19,16 @@ public class GridVisualizer : MonoBehaviour
 	private List<LineRenderer> upDownList;
 	private List<LineRenderer> leftRightList;
 	private int flipper = 1;
+	private float naturalWidth = 0;
 
 	private IEnumerator updateCoroutine;
 
     void Start()
     {
 		cameraTransform = Camera.main.transform;
+		naturalWidth = linePrefab.GetComponent<LineRenderer>().widthMultiplier;
 		InitGrid();
+		TimedUpdate(0f);
 		if (bUpdating)
 		{
 			updateTransform = transform.parent;
@@ -63,6 +66,7 @@ public class GridVisualizer : MonoBehaviour
 			CreateLineRow(Vector3.right, -1, i, leftRightList);
 			CreateLineRow(Vector3.right, -1, -i, leftRightList);
 		}
+		linePrefab.SetActive(false);
 	}
 
 	void CreateLineRow(Vector3 axis, int normal, int layer, List<LineRenderer> list)
@@ -118,6 +122,14 @@ public class GridVisualizer : MonoBehaviour
 				transform.position = updateTransform.position;
 				transform.rotation = Quaternion.identity;
 			}
+
+			float distToCamera = Vector3.Distance(transform.position, cameraTransform.position) / 1000;
+			foreach (LineRenderer line in upDownList)
+				line.widthMultiplier = naturalWidth * distToCamera;
+			foreach (LineRenderer line in northSouthList)
+				line.widthMultiplier = naturalWidth * distToCamera;
+			foreach (LineRenderer line in leftRightList)
+				line.widthMultiplier = naturalWidth * distToCamera;
 		}
 	}
 }

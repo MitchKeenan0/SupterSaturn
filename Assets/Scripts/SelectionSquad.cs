@@ -8,6 +8,8 @@ public class SelectionSquad : MonoBehaviour
 	private Vector3 destinationVector = Vector3.zero;
 	private Vector3 centerPoint = Vector3.zero;
 
+	public Vector3 GetCenterPoint() { return centerPoint; }
+
     void Start()
     {
 		spacecraftList = new List<Spacecraft>();
@@ -16,12 +18,12 @@ public class SelectionSquad : MonoBehaviour
 	void Update()
 	{
 		if (spacecraftList.Count > 0)
-			centerPoint = GetCenterPoint();
+			centerPoint = DeriveCenterPoint();
 		else
 			centerPoint = Vector3.zero;
 	}
 
-	Vector3 GetCenterPoint()
+	Vector3 DeriveCenterPoint()
 	{
 		Vector3 centerPosition = Vector3.zero;
 		if (spacecraftList.Count > 0){
@@ -46,7 +48,7 @@ public class SelectionSquad : MonoBehaviour
 			spacecraftList = spacecrafts;
 		else
 			spacecraftList.Clear();
-		centerPoint = GetCenterPoint();
+		centerPoint = DeriveCenterPoint();
 	}
 
 	public void SetDestination(Vector3 destination)

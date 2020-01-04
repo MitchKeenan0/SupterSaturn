@@ -5,11 +5,11 @@ using UnityEngine.Experimental.GlobalIllumination;
 
 public class SunLight : MonoBehaviour
 {
-	private DirectionalLight light;
+	private DirectionalLight directionallight;
 
     void Start()
     {
-		light = GetComponent<DirectionalLight>();
+		directionallight = GetComponent<DirectionalLight>();
     }
 
 

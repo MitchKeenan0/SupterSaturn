@@ -73,7 +73,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.05
+    widthMultiplier: 0.3
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -91,9 +91,9 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 0.007843138}
-      key1: {r: 1, g: 1, b: 1, a: 0.047058824}
-      key2: {r: 0, g: 0, b: 0, a: 0.007843138}
+      key0: {r: 1, g: 1, b: 1, a: 0.019607844}
+      key1: {r: 1, g: 1, b: 1, a: 0.019607844}
+      key2: {r: 0, g: 0, b: 0, a: 0.019607844}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
@@ -108,7 +108,7 @@ LineRenderer:
       ctime6: 0
       ctime7: 0
       atime0: 0
-      atime1: 32768
+      atime1: 65535
       atime2: 65535
       atime3: 0
       atime4: 0
@@ -117,7 +117,7 @@ LineRenderer:
       atime7: 0
       m_Mode: 0
       m_NumColorKeys: 2
-      m_NumAlphaKeys: 3
+      m_NumAlphaKeys: 2
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
@@ -173,8 +173,8 @@ MonoBehaviour:
   linePrefab: {fileID: 2262925761331553167}
   bUpdating: 0
   updateInterval: 0.1
-  gridComplexity: 10
+  gridLayers: 3
   lineSpacing: 5
   layerSpacing: 5
-  gridDefinition: 10
+  rowPopulation: 10
   lineLength: 50

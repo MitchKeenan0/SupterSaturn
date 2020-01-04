@@ -210,7 +210,7 @@ MonoBehaviour:
   damage: 3
   impactPrefab: {fileID: 4929095700065580019, guid: dfe7e3f07f908e2459bacc26332f0526,
     type: 3}
-  maxLifetime: 3
+  maxLifetime: 2
 --- !u!54 &298334711150030354
 Rigidbody:
   m_ObjectHideFlags: 0

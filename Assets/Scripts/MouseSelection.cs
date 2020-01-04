@@ -123,7 +123,7 @@ public class MouseSelection : MonoBehaviour
 	/// </summary>
 	/// <param name="s"></param>
 	/// <param name="value"></param>
-	void UpdateSelection(Selectable s, bool value)
+	public void UpdateSelection(Selectable s, bool value)
 	{
 		if (s.isSelected != value)
 			s.isSelected = value;

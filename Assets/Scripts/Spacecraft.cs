@@ -20,6 +20,7 @@ public class Spacecraft : MonoBehaviour
 	private Health health;
 	private SpacecraftInformation spacecraftInformation;
 	private CameraController cameraController;
+	private MouseSelection mouseSelection;
 	private Vector3 mainEnginesVector = Vector3.zero;
 	private Vector3 maneuverEnginesVector = Vector3.zero;
 	private Vector3 turningVector = Vector3.zero;
@@ -30,6 +31,7 @@ public class Spacecraft : MonoBehaviour
 	private ParticleSystem[] particleComponents;
 	private TrailRenderer[] trailComponents;
 	private int numMarked = 0;
+	private float timeAtLastClick = 0f;
 
 	public Agent GetAgent() { return agent; }
 
@@ -54,6 +56,7 @@ public class Spacecraft : MonoBehaviour
 	void Start()
     {
 		cameraController = FindObjectOfType<CameraController>();
+		mouseSelection = FindObjectOfType<MouseSelection>();
 		SetAgentEnabled(bAgentStartsEnabled);
 		turningVector = transform.position + transform.forward;
 		turningRotation = transform.rotation;
@@ -70,7 +73,8 @@ public class Spacecraft : MonoBehaviour
 	{
 		if (IsAlive())
 		{
-			if (turningRotation.normalized != Quaternion.identity)
+			if ((turningRotation.normalized != Quaternion.identity)
+				&& (turningRotation.normalized != null))
 			{
 				rb.MoveRotation(turningRotation);
 			}
@@ -141,6 +145,9 @@ public class Spacecraft : MonoBehaviour
 				killerAgent.NotifyTargetDestroyed(this);
 			}
 		}
+
+		TargetPredictionHUD predictionHud = FindObjectOfType<TargetPredictionHUD>();
+		predictionHud.SetPrediction(this, Vector3.zero, Vector3.zero, 0f);
 
 		Destroy(gameObject, 0.15f);
 	}
@@ -214,7 +221,11 @@ public class Spacecraft : MonoBehaviour
 
 	private void OnMouseDown()
 	{
-		cameraController.SetOrbitTarget(transform);
+		if ((Time.time - timeAtLastClick) >= 1f)
+			mouseSelection.UpdateSelection(GetComponent<Selectable>(), true);
+		else
+			cameraController.SetOrbitTarget(transform);
+		timeAtLastClick = Time.time;
 	}
 
 	private void OnCollisionEnter(Collision collision)
