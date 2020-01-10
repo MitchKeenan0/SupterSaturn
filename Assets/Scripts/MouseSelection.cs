@@ -5,7 +5,6 @@ using System.Linq;
 
 public class MouseSelection : MonoBehaviour
 {
-
 	public static List<Selectable> selectables = new List<Selectable>();
 
 	[Tooltip("Canvas is set automatically if not set in the inspector")]
@@ -22,6 +21,7 @@ public class MouseSelection : MonoBehaviour
 	private float timeAtMouseDown = 0f;
 
 	private SelectionSquad selectionSquad;
+	private SkillPanel skillPanel;
 
 	void Awake()
 	{
@@ -39,12 +39,24 @@ public class MouseSelection : MonoBehaviour
 		}
 
 		selectionSquad = GetComponent<SelectionSquad>();
+		skillPanel = FindObjectOfType<SkillPanel>();
 	}
 
 	void Update()
 	{
 		if (Input.GetMouseButtonDown(0))
 		{
+			RaycastHit hit;
+			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+			if (Physics.Raycast(ray, out hit))
+			{
+				if (hit.transform.name == "MyObjectName")
+				{ print("My object is clicked by mouse"); }
+
+				if (hit.collider.CompareTag("UI"))
+					return;
+			}
+
 			timeAtMouseDown = Time.time;
 			Ray mouseToWorldRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hitInfo;
@@ -87,8 +99,20 @@ public class MouseSelection : MonoBehaviour
 		//We finished our selection box when the key is released
 		if (Input.GetMouseButtonUp(0))
 		{
-			isSelecting = false;
-			selectionSquad.SetSquad(GetSelectedSpacecraft());
+			RaycastHit hit;
+			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+			if (Physics.Raycast(ray, out hit))
+			{
+				if (hit.transform.name == "MyObjectName")
+				{ print("My object is clicked by mouse"); }
+			}
+			else
+			{
+				isSelecting = false;
+				List<Spacecraft> sps = GetSelectedSpacecraft();
+				selectionSquad.SetSquad(sps);
+				skillPanel.SetSpacecraft(sps);
+			}
 		}
 
 		selectionBox.gameObject.SetActive(isSelecting);

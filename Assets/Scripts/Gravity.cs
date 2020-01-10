@@ -20,20 +20,32 @@ public class Gravity : MonoBehaviour
     void FixedUpdate()
     {
 		if (rbs.Length > 0){
-			foreach (Rigidbody r in rbs)
-			{
-				if (r != null && !r.isKinematic){
-					Vector3 toCenter = transform.position - r.position;
-					if (toCenter.magnitude <= radius)
-					{
-						float G = (1f / toCenter.magnitude) * r.mass;
-						Vector3 gravity = toCenter.normalized * G * strength;
-						r.AddForce(gravity);
-					}
+			foreach (Rigidbody r in rbs){
+				if (r != null && !r.isKinematic)
+				{
+					Vector3 g = GetGravity(r);
+					if (g != Vector3.zero)
+						r.AddForce(g);
 				}
 			}
 		}
     }
+
+	public Vector3 GetGravity(Rigidbody r)
+	{
+		Vector3 gravity = Vector3.zero;
+		if (r != null && !r.isKinematic)
+		{
+			Vector3 toCenter = transform.position - r.position;
+			if (toCenter.magnitude <= radius)
+			{
+				float G = (1f / toCenter.magnitude) * r.mass;
+				gravity = toCenter.normalized * G * strength;
+				r.AddForce(gravity);
+			}
+		}
+		return gravity;
+	}
 
 	private IEnumerator SurroundingCheck(float intervalTime)
 	{

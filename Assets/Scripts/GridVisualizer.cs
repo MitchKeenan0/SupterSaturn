@@ -130,6 +130,10 @@ public class GridVisualizer : MonoBehaviour
 				line.widthMultiplier = naturalWidth * distToCamera;
 			foreach (LineRenderer line in leftRightList)
 				line.widthMultiplier = naturalWidth * distToCamera;
+
+			Transform nameTransform = transform;
+			if (transform.parent != null)
+				nameTransform = transform.parent;
 		}
 	}
 }

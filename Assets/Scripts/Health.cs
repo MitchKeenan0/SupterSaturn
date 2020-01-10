@@ -8,6 +8,7 @@ public class Health : MonoBehaviour
 
 	private Spacecraft spacecraft;
 	private Agent agent;
+	private TeamFleetHUD teamHud;
 	private int currentHealth = -1;
 
     void Start()
@@ -15,20 +16,20 @@ public class Health : MonoBehaviour
 		currentHealth = maxHealth;
 		spacecraft = GetComponent<Spacecraft>();
 		agent = GetComponent<Agent>();
+		teamHud = FindObjectOfType<TeamFleetHUD>();
 	}
 
 	public void ModifyHealth(int value, Transform responsibleTransform)
 	{
 		currentHealth += value;
+
+		if (teamHud != null)
+			teamHud.SetHealthBarValue(spacecraft, Mathf.Floor(currentHealth) / Mathf.Floor(maxHealth));
+
 		if (currentHealth <= 0)
 		{
 			currentHealth = 0;
 			spacecraft.SpacecraftDestroyed(responsibleTransform);
-		}
-
-		if (value < 0f && (agent != null))
-		{
-
 		}
 	}
 

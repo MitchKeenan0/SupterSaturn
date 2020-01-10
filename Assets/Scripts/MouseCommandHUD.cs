@@ -96,11 +96,13 @@ public class MouseCommandHUD : MonoBehaviour
 		// command line elevation
 		Vector3 lineOrigin = ClosestLineToMouse();
 		Vector3 originScreenPosition = cameraMain.WorldToScreenPoint(lineOrigin);
+
 		Vector3 verticalMousePosition = Input.mousePosition;
 		verticalMousePosition.x = originScreenPosition.x;
 		verticalMousePosition.z = originScreenPosition.z;
 		float distToMiddle = (verticalMousePosition.y - originScreenPosition.y) / 50;
 		lineElevation = distToMiddle;
+		//Debug.Log("line elevation: " + lineElevation + " " + Time.time);
 		
 		Vector3 elevationLine = lineOrigin + (Vector3.up * lineElevation);
 		elevationLineRenderer.SetPosition(0, lineOrigin);
@@ -144,10 +146,9 @@ public class MouseCommandHUD : MonoBehaviour
 	Vector3 ClosestLineToMouse()
 	{
 		Vector3 mousePos = Vector3.zero;
-		Vector3 closestLinePosition = Vector3.positiveInfinity;
+		Vector3 closestLinePosition = Vector3.zero;
 		Vector3[] linePositions = new Vector3[circleLineRenderer.positionCount];
 		circleLineRenderer.GetPositions(linePositions);
-
 		float closestDistance = Mathf.Infinity;
 		int numPos = linePositions.Length;
 		for (int i = 0; i < numPos; i++){

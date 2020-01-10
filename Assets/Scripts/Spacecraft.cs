@@ -35,9 +35,9 @@ public class Spacecraft : MonoBehaviour
 
 	public Agent GetAgent() { return agent; }
 
-	public bool IsAlive() { return health.GetHealth() >= 1; }
+	public bool IsAlive() { return (health != null) && (health.GetHealth() >= 1); }
 
-	public int GetHealthPercent() { return health.GetHealth() / health.maxHealth; }
+	public float GetHealthPercent() { return Mathf.Floor(health.GetHealth()) / Mathf.Floor(health.maxHealth); }
 
 	public int GetMarks() { return numMarked; }
 
@@ -50,7 +50,8 @@ public class Spacecraft : MonoBehaviour
 		meshRenderComponents = GetComponentsInChildren<MeshRenderer>();
 		particleComponents = GetComponentsInChildren<ParticleSystem>();
 		trailComponents = GetComponentsInChildren<TrailRenderer>();
-		gridObject = GetComponentInChildren<GridVisualizer>().gameObject;
+		if (GetComponentInChildren<GridVisualizer>())
+			gridObject = GetComponentInChildren<GridVisualizer>().gameObject;
 	}
 
 	void Start()
@@ -60,13 +61,14 @@ public class Spacecraft : MonoBehaviour
 		SetAgentEnabled(bAgentStartsEnabled);
 		turningVector = transform.position + transform.forward;
 		turningRotation = transform.rotation;
-		if (agent.teamID != 0)
+		if (agent != null && (agent.teamID != 0))
 			SetRenderComponents(false);
 	}
 
 	void FixedUpdate()
 	{
-		UpdateSpacecraftPhysics();
+		if (mainEnginePower != 0)
+			UpdateSpacecraftPhysics();
 	}
 
 	void UpdateSpacecraftPhysics()
@@ -77,6 +79,7 @@ public class Spacecraft : MonoBehaviour
 				&& (turningRotation.normalized != null))
 			{
 				rb.MoveRotation(turningRotation);
+				transform.rotation = rb.rotation;
 			}
 
 			Vector3 rbForceVector = Vector3.zero;
@@ -95,7 +98,8 @@ public class Spacecraft : MonoBehaviour
 
 	void SetAgentEnabled(bool value)
 	{
-		agent.SetEnabled(value);
+		if (agent != null)
+			agent.SetEnabled(value);
 	}
 
 	public void MainEngines(float driveDirection)
@@ -124,15 +128,25 @@ public class Spacecraft : MonoBehaviour
 		turningVector = (targetPoint - transform.position);
 		if (turningVector != Vector3.zero)
 		{
+			float shoulderScale = Mathf.Clamp(1f / Vector3.Angle(turningVector.normalized, transform.forward), 3f, 1f);
 			Quaternion toRotation = Quaternion.LookRotation(turningVector, Vector3.up);
-			turningRotation = Quaternion.Lerp(transform.rotation, toRotation, turningPower * Time.deltaTime);
+			turningRotation = Quaternion.Lerp(transform.rotation, toRotation, turningPower * Time.deltaTime * shoulderScale);
 		}
 	}
 
 	public void SpacecraftDestroyed(Transform responsibleTransform)
 	{
-		agent.AgentSpacecraftDestroyed();
-		agent.SetEnabled(false);
+		if (agent != null)
+		{
+			agent.AgentSpacecraftDestroyed();
+			agent.SetEnabled(false);
+		}
+
+		GridVisualizer grid = GetComponentInChildren<GridVisualizer>();
+		if (grid != null)
+		{
+			Destroy(grid.gameObject);
+		}
 
 		Transform destroyedTransform = Instantiate(destroyedParticlesPrefab, transform.position, Quaternion.Euler(rb.velocity));
 		Destroy(destroyedTransform.gameObject, 10f);
@@ -182,7 +196,11 @@ public class Spacecraft : MonoBehaviour
 		}
 
 		if (gridObject != null)
-			gridObject.SetActive(value);
+		{
+			LineRenderer[] lines = gridObject.GetComponentsInChildren<LineRenderer>();
+			foreach (LineRenderer line in lines)
+				line.enabled = value;
+		}
 	}
 
 	public void SetHUDIcon(GameObject value)

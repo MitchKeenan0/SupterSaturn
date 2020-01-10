@@ -42,7 +42,7 @@ public class CraftIconHUD : MonoBehaviour
 					{
 						img = sp.GetHUDIcon().GetComponent<Image>();
 
-						if ((sp.GetMarks() > 0) || (sp.GetAgent().teamID == 0))
+						if ((sp.GetMarks() > 0) || (sp.GetAgent() && (sp.GetAgent().teamID == 0)))
 						{
 							img.enabled = true;
 							if (!img.gameObject.activeInHierarchy)
@@ -64,12 +64,12 @@ public class CraftIconHUD : MonoBehaviour
 								img.gameObject.SetActive(false);
 							}
 
-							Image healthBarImage = img.gameObject.GetComponentInChildren<Image>();
-							if (healthBarImage != null && healthBarImage.CompareTag("Health"))
+							var healthBar = img.transform.Find("HealthBar");
+							if ((healthBar != null) && healthBar.CompareTag("Health"))
 							{
 								Vector2 healthBarr = healthBarScale;
 								healthBarr.x *= sp.GetHealthPercent();
-								img.gameObject.GetComponentInChildren<Image>().rectTransform.sizeDelta = healthBarr;
+								healthBar.GetComponent<Image>().rectTransform.sizeDelta = healthBarr;
 							}
 
 							Vector3 toCamera = cameraMain.transform.position - sp.transform.position;
@@ -115,23 +115,29 @@ public class CraftIconHUD : MonoBehaviour
 					img = CreateSpacecraftIcon().GetComponent<Image>();
 
 				Color iconColor = img.color;
-				switch (sp.GetAgent().teamID)
+				if (sp.GetAgent() != null)
 				{
-					case 0:
-						iconColor = Color.white;
-						break;
-					case 1:
-						iconColor = Color.red;
-						break;
-					case 2:
-						iconColor = Color.blue;
-						break;
-					case 3:
-						iconColor = Color.green;
-						break;
-					default:
-						iconColor = img.color;
-						break;
+					switch (sp.GetAgent().teamID)
+					{
+						case 0:
+							iconColor = Color.blue;
+							break;
+						case 1:
+							iconColor = Color.red;
+							break;
+						case 2:
+							iconColor = Color.black;
+							break;
+						case 3:
+							iconColor = Color.white;
+							break;
+						case 4:
+							iconColor = Color.yellow;
+							break;
+						default:
+							iconColor = img.color;
+							break;
+					}
 				}
 
 				img.color = iconColor;

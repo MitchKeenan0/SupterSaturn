@@ -5,6 +5,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
 	public int damage = 1;
+	public float impactForce = 1f;
 	public Transform impactPrefab;
 	public float maxLifetime = 5f;
 
@@ -49,7 +50,7 @@ public class Projectile : MonoBehaviour
 		if (!bHit && !hit.collider.isTrigger && (hit.transform != owner) && (impactPrefab != null))
 		{
 			bHit = true;
-			Vector3 impactVelocity = rb.velocity;
+			Vector3 impactVelocity = rb.velocity * impactForce;
 			rb.isKinematic = true;
 
 			Transform impact = Instantiate(impactPrefab, hit.point, Quaternion.identity);

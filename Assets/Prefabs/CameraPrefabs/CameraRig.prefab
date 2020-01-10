@@ -147,14 +147,12 @@ MonoBehaviour:
   distance: 5
   xSpeed: 5
   ySpeed: 5
-  mousePanSpeed: 0.01
-  startPosition: {x: -20, y: 0, z: -20}
-  startRotation: {x: -45, y: 45, z: 0, w: 0}
+  mousePanSpeed: 2
   yMinLimit: -89
   yMaxLimit: 89
   distanceMin: 0.5
   distanceMax: 5
-  moveSpeed: 0.2
+  moveSpeed: 0.1
   moveAcceleration: 2
   turnAcceleration: 10
 --- !u!1 &7914395728188141914

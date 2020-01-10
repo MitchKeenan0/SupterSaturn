@@ -41,12 +41,13 @@ public class Agent : MonoBehaviour
 
 	void Start()
 	{
-		//SetMoveOrder(spacecraft.transform.position, null);
+		
 	}
 
 	void Update()
     {
-		UpdateTarget();
+		if (scanner != null)
+			UpdateTarget();
 		if (autopilot != null)
 			autopilot.SpacecraftNavigationCommands();
 	}
@@ -57,14 +58,13 @@ public class Agent : MonoBehaviour
 		{
 			if (targetTransform != null)
 			{
-				//Debug.DrawLine(transform.position, targetTransform.position, Color.red);
-
 				Spacecraft targetSpacecraft = targetTransform.GetComponent<Spacecraft>();
-				if (((targetSpacecraft != null) && (targetSpacecraft.GetMarks() > 0))
-					|| bPredictingTarget)
+				bool validSpacecraft = (targetSpacecraft != null) && (targetSpacecraft.GetMarks() > 0);
+				bool validPrediction = (bPredictingTarget && (targetTransform.position != Vector3.zero));
+
+				if (validSpacecraft || validPrediction)
 				{
-					if (LineOfSight(targetTransform.position, targetTransform)
-						|| (targetSpacecraft == null))
+					if (LineOfSight(targetTransform.position, targetTransform) || !validSpacecraft)
 					{
 						if (fireCoordinator != null)
 						{
@@ -76,14 +76,9 @@ public class Agent : MonoBehaviour
 				{
 					AquireTarget();
 				}
-
-				//if (teamID == 0)
-					//Debug.Log("targeting " + targetTransform.name + " " + Time.time);
 			}
 			else
 			{
-				//if (teamID == 0)
-					//Debug.Log("no target " + Time.time);
 				AquireTarget();
 			}
 		}
@@ -145,14 +140,10 @@ public class Agent : MonoBehaviour
 
 	void NotifyTeamOfTarget(Transform value)
 	{
-		int targetTeam = 0;
-		Spacecraft targetSpacecraft = value.gameObject.GetComponent<Spacecraft>();
-		if (targetSpacecraft != null)
-			targetTeam = value.gameObject.GetComponent<Spacecraft>().GetAgent().teamID;
 		List<Spacecraft> teamSpacecraftList = teamFleetHUD.GetTeamList(teamID);
 		foreach (Spacecraft sp in teamSpacecraftList)
 		{
-			if ((sp != null) && (teamID != targetTeam))
+			if ((sp != null))// && (teamID != targetTeam))
 			{
 				if (LineOfSight(sp.transform.position, sp.transform))
 				{

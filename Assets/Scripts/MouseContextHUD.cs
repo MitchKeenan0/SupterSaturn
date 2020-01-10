@@ -39,13 +39,10 @@ public class MouseContextHUD : MonoBehaviour
 			foreach (Text t in texts)
 				t.gameObject.SetActive(true);
 			ReadMouseContext();
-			//updateCoroutine = UpdateMouseContext(0.1f);
-			//StartCoroutine(updateCoroutine);
 		}
 		else
 		{
 			panel.SetActive(false);
-			//StopCoroutine(updateCoroutine);
 		}
 	}
 
@@ -70,10 +67,9 @@ public class MouseContextHUD : MonoBehaviour
 
 				texts[0].text = spacecraftInformation.GetSpacecraftName();
 				texts[1].text = spacecraftInformation.GetHeadline();
-				//GetDistance(cameraMain.transform.position).ToString("F1") + " km";
 
 				Vector3 spacecraftScreenPosition = cameraMain.WorldToScreenPoint(spacecraftInformation.GetPosition());
-				Vector3 offset = new Vector2(50f, -25f);
+				Vector3 offset = new Vector2(60f, -35f);
 				panel.transform.position = spacecraftScreenPosition + offset;
 			}
 			else

@@ -8,6 +8,7 @@ public class TeamFleetHUD : MonoBehaviour
 	public GameObject diagramPanel;
 	public GameObject diagramPrefab;
 	public GameObject highlightPrefab;
+	public Vector3 healthBarScale;
 
 	private CameraController cameraController;
 	private ObjectManager objectManager;
@@ -41,7 +42,7 @@ public class TeamFleetHUD : MonoBehaviour
 		enemyList = new List<Spacecraft>();
 		foreach (Spacecraft sp in spacecraftList)
 		{
-			if ((sp != null) && (sp.GetAgent() != null))
+			if ((sp != null) && (sp.GetAgent() != null) && !sp.CompareTag("Orbiter"))
 			{
 				if (sp.GetAgent().teamID == 0)
 					teamList.Add(sp);
@@ -54,7 +55,8 @@ public class TeamFleetHUD : MonoBehaviour
 		Image[] images = GetComponentsInChildren<Image>();
 		foreach (Image img in images)
 		{
-			if (!img.gameObject.CompareTag("Selection"))
+			if (!img.gameObject.CompareTag("Selection")
+				&& !img.gameObject.CompareTag("Health"))
 			{
 				teamImageList.Add(img);
 				img.gameObject.SetActive(false);
@@ -125,6 +127,24 @@ public class TeamFleetHUD : MonoBehaviour
 	public List<Spacecraft> GetEnemyList()
 	{
 		return enemyList;
+	}
+
+	public void SetHealthBarValue(Spacecraft sp, float value)
+	{
+		if (teamList.Contains(sp))
+		{
+			if (teamImageList[teamList.IndexOf(sp)] != null)
+			{
+				Image spDiagram = teamImageList[teamList.IndexOf(sp)];
+				var healthBar = spDiagram.transform.Find("HealthBar");
+				if ((healthBar != null) && healthBar.CompareTag("Health"))
+				{
+					Vector2 healthBarr = healthBarScale;
+					healthBarr.x *= sp.GetHealthPercent();
+					healthBar.GetComponent<Image>().rectTransform.sizeDelta = healthBarr;
+				}
+			}
+		}
 	}
 
 	public void Highlight(Spacecraft sp)

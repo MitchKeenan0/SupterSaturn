@@ -14,8 +14,9 @@ public class SpacecraftInformation : MonoBehaviour
     void Start()
     {
 		spacecraft = GetComponent<Spacecraft>();
-		spacecraftName = spacecraft.spacecraftName;
-    }
+		if (spacecraft != null)
+			spacecraftName = spacecraft.spacecraftName;
+	}
 
 	public string GetSpacecraftName()
 	{ return spacecraftName; }
@@ -30,8 +31,18 @@ public class SpacecraftInformation : MonoBehaviour
 	{ return spacecraft.GetMarks(); }
 
 	public int GetTeamID()
-	{ return spacecraft.GetAgent().teamID; }
+	{
+		if (spacecraft.GetAgent() != null)
+			return spacecraft.GetAgent().teamID;
+		else
+			return 0;
+	}
 
 	public string GetHeadline()
-	{ return spacecraft.GetAgent().GetHeadline(); }
+	{
+		if (spacecraft.GetAgent() != null)
+			return spacecraft.GetAgent().GetHeadline();
+		else
+			return "";
+	}
 }

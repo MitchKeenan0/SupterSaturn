@@ -11,8 +11,7 @@ public class Prediction : MonoBehaviour
 	public Transform targetTransform;
 	public Vector3 position = Vector3.zero;
 	public Vector3 velocity = Vector3.zero;
-	
-	private float predictionPeriod = 0f;
+
 	private bool bEnabled = false;
 	private LineRenderer velocityLine;
 
@@ -49,7 +48,13 @@ public class Prediction : MonoBehaviour
 
 		if ((sp != null) && (pos != Vector3.zero))
 		{
-			targetTransform.transform.position = pos;
+			targetTransform.position = pos;
+			targetTransform.name = sp.transform.name + " Prediction";
+		}
+		else
+		{
+			targetTransform.position = Vector3.zero;
+			targetTransform.name = "TargetTransform";
 		}
 
 		bool enableValue = (pos != Vector3.zero);
