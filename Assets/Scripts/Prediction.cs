@@ -48,7 +48,7 @@ public class Prediction : MonoBehaviour
 
 		if ((sp != null) && (pos != Vector3.zero))
 		{
-			targetTransform.position = pos;
+			targetTransform.position = pos + (vel * period);
 			targetTransform.name = sp.transform.name + " Prediction";
 		}
 		else

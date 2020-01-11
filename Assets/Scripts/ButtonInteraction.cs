@@ -8,10 +8,12 @@ using UnityEngine.UI;
 public class ButtonInteraction : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
 	private TeamFleetHUD teamFleetHUD;
+	private MouseSelection mouseSelection;
 	private Button button;
 
 	void Start()
     {
+		mouseSelection = FindObjectOfType<MouseSelection>();
 		teamFleetHUD = FindObjectOfType<TeamFleetHUD>();
 		button = GetComponent<Button>();
 		button.onClick.AddListener(TaskOnClick);
@@ -21,12 +23,14 @@ public class ButtonInteraction : MonoBehaviour, IPointerEnterHandler, IPointerEx
 	{
 		int siblingIndex = transform.GetSiblingIndex();
 		teamFleetHUD.ButtonHovered(true, siblingIndex);
+		mouseSelection.SetEnabled(false);
 	}
 
 	public void OnPointerExit(PointerEventData eventData)
 	{
 		int siblingIndex = transform.GetSiblingIndex();
 		teamFleetHUD.ButtonHovered(false, siblingIndex);
+		mouseSelection.SetEnabled(true);
 	}
 
 	void TaskOnClick()

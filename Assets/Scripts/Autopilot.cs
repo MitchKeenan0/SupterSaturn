@@ -52,17 +52,19 @@ public class Autopilot : MonoBehaviour
 			FlyTo(currentRouteVector);
 
 			if ((routeVectors.Count >= 1)
-				&& (Vector3.Distance(transform.position, currentRouteVector) < 3f))
+				&& (Vector3.Distance(transform.position, currentRouteVector) < 1f))
 			{
-				holdPosition = currentRouteVector;
+				//holdPosition = currentRouteVector;
 				routeVectors.Remove(currentRouteVector);
 				routeVisualizer.ClearLine(0);
 			}
 		}
 		else if (holdPosition != Vector3.zero)
 		{
-			if (Vector3.Distance(transform.position, holdPosition) > 3f)
+			if (Vector3.Distance(transform.position, holdPosition) > 0.1f)
+			{
 				FlyTo(holdPosition);
+			}
 		}
 	}
 
@@ -83,10 +85,16 @@ public class Autopilot : MonoBehaviour
 	public void EnableMoveCommand(bool value)
 	{
 		bExecutingMoveCommand = value;
-		if (value)
+
+		if (bExecutingMoveCommand)
+		{
 			routeVisualizer.SetRouteColor(Color.green);
+		}
 		else
+		{
 			routeVisualizer.SetRouteColor(Color.clear);
+			holdPosition = spacecraft.transform.position;
+		}
 	}
 
 	public void SetFollowTransform(Transform value)
@@ -141,7 +149,6 @@ public class Autopilot : MonoBehaviour
 		spacecraft.Maneuver(destination);
 
 		Vector3 toDestination = destination - transform.position;
-		Debug.DrawRay(transform.position, toDestination, Color.blue);
 		
 		// calibrate for current velocity
 		if (Mathf.Abs(rb.velocity.magnitude) > 0f)

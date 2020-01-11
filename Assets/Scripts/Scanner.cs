@@ -111,19 +111,29 @@ public class Scanner : MonoBehaviour
 
 	void ClearTargets()
 	{
-		foreach (GameObject c in targetList)
+		int numTargets = targetList.Count;
+		if (numTargets > 0)
 		{
-			if (c != null)
+			for(int i = 0; i < numTargets; i++)
 			{
-				Spacecraft sp = c.GetComponent<Spacecraft>();
-				sp.AddMarkValue(-1);
-				if (spacecraft.GetAgent().teamID == 0)
+				if (targetList[i] != null)
 				{
-					predictionHud.SetPrediction(sp, c.transform.position, c.GetComponent<Rigidbody>().velocity, scanInterval);
+					GameObject c = targetList[i];
+					if (!c.GetComponent<Prediction>() && c.GetComponent<Spacecraft>())
+					{
+						Spacecraft sp = c.GetComponent<Spacecraft>();
+						sp.AddMarkValue(-1);
+						if (spacecraft.GetAgent().teamID == 0)
+						{
+							predictionHud.SetPrediction(sp, c.transform.position, c.GetComponent<Rigidbody>().velocity, scanInterval - scanRecoveryPeriod);
+						}
+						targetList.Remove(sp.gameObject);
+					}
 				}
 			}
 		}
-		targetList.Clear();
+
+		//targetList.Clear();
 		spacecraft.GetAgent().SuggestTarget(null);
 	}
 

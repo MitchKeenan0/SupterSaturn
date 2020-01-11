@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7079820238998178495}
   - component: {fileID: 8515185754480034652}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -164,7 +164,7 @@ GameObject:
   - component: {fileID: 4860601835048803221}
   - component: {fileID: 4444319333198203530}
   - component: {fileID: 6250769167550283321}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ArtilleryShell
   m_TagString: Untagged
   m_Icon: {fileID: 0}

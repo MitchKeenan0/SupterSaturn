@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 298334710247496890}
   - component: {fileID: 298334710247496891}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -155,7 +155,7 @@ GameObject:
   - component: {fileID: 298334711150030353}
   - component: {fileID: 4830534661349052389}
   - component: {fileID: 298334711150030354}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LaserBolt
   m_TagString: Untagged
   m_Icon: {fileID: 0}

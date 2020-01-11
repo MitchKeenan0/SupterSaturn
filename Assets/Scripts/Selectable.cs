@@ -20,7 +20,7 @@ public class Selectable : MonoBehaviour
 
 			Renderer r = GetComponentInChildren<Renderer>();
 			if (r != null)
-				r.material.color = value ? Color.red : Color.white;
+				r.material.color = value ? Color.red : Color.blue;
 		}
 	}
 

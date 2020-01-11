@@ -105,6 +105,7 @@ public class Spacecraft : MonoBehaviour
 	public void MainEngines(float driveDirection)
 	{
 		mainEnginesVector = transform.forward * driveDirection * mainEnginePower;
+		Debug.DrawRay(transform.position, mainEnginesVector, Color.blue);
 		var ps = thrustParticles.main;
 		var em = thrustParticles.emission;
 		if (Mathf.Abs(driveDirection) > 0.1f)
