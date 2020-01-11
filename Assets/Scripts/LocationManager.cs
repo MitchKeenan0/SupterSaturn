@@ -10,13 +10,19 @@ public class LocationManager : MonoBehaviour
 	public GameObject[] uniqueLocations; 
 	public GameObject[] rareLocations;
 
+	private Campaign campaign;
+	private List<CampaignLocation> allLocations;
+
     void Start()
     {
+		campaign = GetComponent<Campaign>();
 		InitLocations();
+		campaign.InitFleetLocations(allLocations);
     }
 
 	void InitLocations()
 	{
+		allLocations = new List<CampaignLocation>();
 		for (int i = 0; i < locationCount; i++)
 		{
 			float rando = Random.Range(0f, 1f);
@@ -33,6 +39,7 @@ public class LocationManager : MonoBehaviour
 	{
 		GameObject prefab = array[Mathf.FloorToInt(Random.Range(0f, commonLocations.Length))];
 		GameObject g = Instantiate(prefab, RandomPositionOnDisk(), Quaternion.identity);
+		allLocations.Add(g.GetComponent<CampaignLocation>());
 	}
 
 	Vector3 RandomPositionOnDisk()
