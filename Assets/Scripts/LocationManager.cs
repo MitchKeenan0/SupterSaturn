@@ -37,7 +37,8 @@ public class LocationManager : MonoBehaviour
 
 	void SpawnRandomFrom(GameObject[] array)
 	{
-		GameObject prefab = array[Mathf.FloorToInt(Random.Range(0f, commonLocations.Length))];
+		int index = Random.Range(0, array.Length);
+		GameObject prefab = array[index];
 		GameObject g = Instantiate(prefab, RandomPositionOnDisk(), Quaternion.identity);
 		allLocations.Add(g.GetComponent<CampaignLocation>());
 	}

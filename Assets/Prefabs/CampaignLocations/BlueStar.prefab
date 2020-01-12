@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8705487829911034071}
   - component: {fileID: 4364703956214849214}
   m_Layer: 0
-  m_Name: StarSystem
+  m_Name: BlueStar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ebb9484f80f91aa4491d4f7fb4ef87b3, type: 2}
+  - {fileID: 2100000, guid: 75f3bf48f401400408919b6c0dd55fd5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

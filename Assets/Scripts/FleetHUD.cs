@@ -16,8 +16,10 @@ public class FleetHUD : MonoBehaviour
 
 	void Start()
     {
-		cameraMain = Camera.main;
 		fleetList = new List<Fleet>();
+		panelList = new List<FleetPanel>();
+		cameraMain = Camera.main;
+		
 		Fleet[] allFleets = FindObjectsOfType<Fleet>();
 		foreach(Fleet f in allFleets)
 			fleetList.Add(f);
@@ -44,17 +46,10 @@ public class FleetHUD : MonoBehaviour
 
 	void InitPanels()
 	{
-		panelList = new List<FleetPanel>();
-		panelList.Add(fleetPanelPrefab.GetComponent<FleetPanel>());
 		int numFleets = fleetList.Count;
 		for (int i = 0; i < numFleets; i++)
 		{
-			FleetPanel panel = null;
-			if (panelList.Count > i)
-				panel = panelList[i];
-			else
-				panel = CreateFleetPanel();
-
+			FleetPanel panel = CreateFleetPanel();
 			Fleet panelFleet = fleetList[i];
 			panel.SetFleet(panelFleet);
 		}

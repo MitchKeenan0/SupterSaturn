@@ -5,12 +5,14 @@ using UnityEngine;
 public class Campaign : MonoBehaviour
 {
 	private List<CampaignLocation> locationList;
+	private List<Fleet> fleetList;
 	private Camera cameraMain;
 	private FleetHUD fleetHud;
 
-	void Start()
+	void Awake()
     {
 		locationList = new List<CampaignLocation>();
+		fleetList = new List<Fleet>();
 		cameraMain = Camera.main;
 		fleetHud = FindObjectOfType<FleetHUD>();
     }
@@ -37,7 +39,7 @@ public class Campaign : MonoBehaviour
 			}
 		}
 
-		List<Fleet> fleetList = fleetHud.GetFleetList();
+		fleetList = fleetHud.GetFleetList();
 		foreach(Fleet f in fleetList)
 		{
 			if ((f.teamID == 0) && (myStartLocation != null))

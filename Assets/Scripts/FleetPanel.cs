@@ -11,7 +11,7 @@ public class FleetPanel : MonoBehaviour
 	private Fleet fleet;
 	private List<Spacecraft> spacecraftList;
 	private List<FleetPanelIcon> iconList;
-	private Text fleetNameText;
+	private Text fleetNameText = null;
 
 	public Fleet GetFleet() { return fleet; }
 
@@ -31,11 +31,7 @@ public class FleetPanel : MonoBehaviour
 		for (int i = 0; i < spacecraftList.Count; i++)
 		{
 			Spacecraft sp = spacecraftList[i];
-			FleetPanelIcon icon = null;
-			if (iconList.Count < i)
-				icon = iconList[i];
-			else
-				icon = CreateIcon();
+			FleetPanelIcon icon = CreateIcon();
 			icon.SetSpacecraft(sp);
 		}
 	}

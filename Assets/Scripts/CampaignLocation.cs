@@ -11,10 +11,10 @@ public class CampaignLocation : MonoBehaviour
 
     void Start()
     {
-		InitLines();
+		InitConnections();
     }
 
-	void InitLines()
+	void InitConnections()
 	{
 		connectedLocations = new List<CampaignLocation>();
 		lineRenderer = GetComponent<LineRenderer>();
