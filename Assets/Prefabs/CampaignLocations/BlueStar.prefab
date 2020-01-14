@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e285e6741bd3a147bb55120930e8c56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reach: 10
+  reach: 15
   connections: 4
   locationName: Name
   locationValue: 1
@@ -119,7 +119,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.1
+    widthMultiplier: 0.03
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -200,7 +200,7 @@ Transform:
   m_GameObject: {fileID: 6558441966256525324}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 1327140190271649246}
   m_RootOrder: 0
