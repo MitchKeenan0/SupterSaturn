@@ -10,7 +10,9 @@ public class FleetHUD : MonoBehaviour
 
 	private List<Fleet> fleetList;
 	private List<FleetPanel> panelList;
+	private LocationDisplay locationDisplay;
 	private Camera cameraMain;
+	private Fleet playerFleet;
 
 	public List<Fleet> GetFleetList() { return fleetList; }
 
@@ -19,10 +21,18 @@ public class FleetHUD : MonoBehaviour
 		fleetList = new List<Fleet>();
 		panelList = new List<FleetPanel>();
 		cameraMain = Camera.main;
+		locationDisplay = FindObjectOfType<LocationDisplay>();
 		
 		Fleet[] allFleets = FindObjectsOfType<Fleet>();
 		foreach(Fleet f in allFleets)
+		{
 			fleetList.Add(f);
+			if (f.teamID == 0)
+			{
+				playerFleet = f;
+				locationDisplay.SetPlayerFleet(playerFleet);
+			}
+		}
 
 		InitPanels();
 	}

@@ -9,11 +9,17 @@ public class LocationDisplay : MonoBehaviour
 	public Text nameText;
 	public Text valueText;
 
-	private CampaignLocation displayLocation;
+	private CampaignLocation displayLocation = null;
+	private Fleet playerFleet = null;
 
 	void Start()
     {
 		displayPanel.SetActive(false);
+	}
+
+	public void SetPlayerFleet(Fleet fleet)
+	{
+		playerFleet = fleet;
 	}
 
 	public void SetDisplayLocation(CampaignLocation location)
@@ -29,6 +35,14 @@ public class LocationDisplay : MonoBehaviour
 		else
 		{
 			displayPanel.SetActive(false);
+		}
+	}
+
+	public void MoveTo()
+	{
+		if ((displayLocation != null) && (playerFleet != null))
+		{
+			playerFleet.StandbyMove(displayLocation);
 		}
 	}
 

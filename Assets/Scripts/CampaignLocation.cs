@@ -12,17 +12,31 @@ public class CampaignLocation : MonoBehaviour
 
 	private NameLibrary nameLibrary;
 	private LineRenderer lineRenderer;
-	private List<CampaignLocation> connectedLocations;
 
-    void Start()
+	private List<CampaignLocation> connectedLocations;
+	public List<CampaignLocation> GetNeighbors() { return connectedLocations; }
+
+	private bool bMarkedForRoute = false;
+	public void SetMarked(bool value) { bMarkedForRoute = value; }
+	public bool IsMarked() { return bMarkedForRoute; }
+
+	private float distance = 0f;
+	public void SetDistance(float value) { distance = value; }
+	public float GetDistance() { return distance; }
+
+	private float prevDistance = 0f;
+	public void SetPrevDistance(float value) { prevDistance = value; }
+	public float GetPrevDistance() { return prevDistance; }
+
+	void Awake()
     {
+		connectedLocations = new List<CampaignLocation>();
 		InitName();
 		InitConnections();
     }
 
 	void InitConnections()
 	{
-		connectedLocations = new List<CampaignLocation>();
 		lineRenderer = GetComponent<LineRenderer>();
 		lineRenderer.positionCount = 3;
 		for (int i = 0; i < lineRenderer.positionCount; i++)

@@ -10,12 +10,19 @@ public class Fleet : MonoBehaviour
 
 	private List<Spacecraft> spacecraftList;
 	private CampaignLocation campaignLocation;
+	private FleetController fleetController;
 
     void Awake()
     {
 		spacecraftList = new List<Spacecraft>();
+		fleetController = GetComponent<FleetController>();
 		foreach (Spacecraft sp in initialFleet)
 			spacecraftList.Add(sp);
+	}
+
+	public void StandbyMove(CampaignLocation location)
+	{
+		fleetController.SetTargetLocation(location);
 	}
 
 	public void SetLocation(CampaignLocation location)
@@ -23,6 +30,8 @@ public class Fleet : MonoBehaviour
 		campaignLocation = location;
 		transform.position = campaignLocation.transform.position;
 	}
+
+	public CampaignLocation GetLocation() { return campaignLocation; }
 
 	public List<Spacecraft> GetSpacecraftList()
 	{

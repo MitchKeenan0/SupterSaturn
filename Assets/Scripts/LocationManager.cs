@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class LocationManager : MonoBehaviour
@@ -48,5 +49,57 @@ public class LocationManager : MonoBehaviour
 		Vector3 pos = Random.insideUnitSphere * spread;
 		pos.y *= 0.16f;
 		return pos;
+	}
+
+	public List<CampaignLocation> GetRouteTo(CampaignLocation start, CampaignLocation destination)
+	{
+		List<CampaignLocation> route = new List<CampaignLocation>();
+		int numLocations = allLocations.Count;
+		for (int i = 0; i < numLocations; i++)
+		{
+			CampaignLocation thisLocation = allLocations[i];
+			thisLocation.SetMarked(false);
+		}
+		CampaignLocation current = start;
+		Debug.Log("Starting at " + current.locationName);
+		for (int i = 0; i < numLocations; i++)
+		{
+			if (current != null)
+			{
+				current.SetMarked(true);
+				route.Add(current);
+				if (current == destination)
+					break;
+				CampaignLocation next = GetClosestLocation(current, destination);
+				current = next;
+			}
+		}
+		return route;
+	}
+
+	CampaignLocation GetClosestLocation(CampaignLocation start, CampaignLocation end)
+	{
+		CampaignLocation location = null;
+		float closestDistance = Mathf.Infinity;
+
+		int numLocations = allLocations.Count;
+		for (int i = 0; i < numLocations; i++)
+		{
+			CampaignLocation cl = allLocations[i];
+			if ((cl != start) && !cl.IsMarked())
+			{
+				float distance = Vector3.Distance(cl.transform.position, start.transform.position);
+				if ((distance < closestDistance))
+				{
+					closestDistance = distance;
+					location = cl;
+				}
+			}
+		}
+
+		if (start != null && location != null)
+			Debug.Log("Closest to " + start.locationName + " is " + location.locationName);
+
+		return location;
 	}
 }
