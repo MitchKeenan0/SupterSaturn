@@ -9,12 +9,19 @@ public class CampaignLocation : MonoBehaviour
 	public string locationName = "Name";
 	public int locationValue = 1;
 	public int rarity = 0;
+	public GameObject linePrefab;
 
 	private NameLibrary nameLibrary;
-	private LineRenderer lineRenderer;
+	private List<LineRenderer> lineList;
 
 	private List<CampaignLocation> connectedLocations;
 	public List<CampaignLocation> GetNeighbors() { return connectedLocations; }
+	public void AddConnection(CampaignLocation c)
+	{
+		if ((c != this) && !connectedLocations.Contains(c)
+			&& (connectedLocations.Count < connections))
+			connectedLocations.Add(c);
+	}
 
 	private bool bMarkedForRoute = false;
 	public void SetMarked(bool value) { bMarkedForRoute = value; }
@@ -24,40 +31,48 @@ public class CampaignLocation : MonoBehaviour
 	public void SetDistance(float value) { distance = value; }
 	public float GetDistance() { return distance; }
 
-	private float prevDistance = 0f;
-	public void SetPrevDistance(float value) { prevDistance = value; }
-	public float GetPrevDistance() { return prevDistance; }
+	private CampaignLocation previousLocation = null;
+	public void SetPreviousLocation(CampaignLocation value) { previousLocation = value; }
+	public CampaignLocation PreviousLocation() { return previousLocation; }
 
 	void Awake()
     {
 		connectedLocations = new List<CampaignLocation>();
+		lineList = new List<LineRenderer>();
 		InitName();
 		InitConnections();
     }
 
 	void InitConnections()
 	{
-		lineRenderer = GetComponent<LineRenderer>();
-		lineRenderer.positionCount = 3;
-		for (int i = 0; i < lineRenderer.positionCount; i++)
-			lineRenderer.SetPosition(i, transform.position);
-
 		for (int i = 0; i < connections; i++)
 		{
-			GetClosestConnection();
+			if (connectedLocations.Count < connections)
+			{
+				CampaignLocation connection = ConnectToClosestLocation();
+				if (connection != null)
+				{
+					AddConnection(connection);
+					connection.AddConnection(this);
+					CreateLineRenderer();
+				}
+			}
 		}
-
-		if (connectedLocations.Count >= 1)
-			lineRenderer.SetPosition(0, connectedLocations[0].transform.position);
-
-		lineRenderer.SetPosition(1, transform.position);
-
-		if (connectedLocations.Count > 1)
-			lineRenderer.SetPosition(2, connectedLocations[1].transform.position);
+		int numConnections = connectedLocations.Count;
+		if (numConnections > 0)
+		{
+			for (int i = 0; i < numConnections; i++)
+			{
+				LineRenderer thisLine = lineList[i];
+				thisLine.SetPosition(0, transform.position);
+				thisLine.SetPosition(1, connectedLocations[i].transform.position);
+			}
+		}
 	}
 
-	void GetClosestConnection()
+	CampaignLocation ConnectToClosestLocation()
 	{
+		CampaignLocation connection = null;
 		Collider[] cols = Physics.OverlapSphere(transform.position, reach);
 		float closestDistance = reach;
 		CampaignLocation closestLocation = null;
@@ -70,17 +85,18 @@ public class CampaignLocation : MonoBehaviour
 				CampaignLocation location = colGameObject.GetComponent<CampaignLocation>();
 				if (location != null)
 				{
-					if (!connectedLocations.Contains(location))
+					if (!connectedLocations.Contains(location) && (location != this)
+						&& (location.GetNeighbors().Count < location.connections))
 					{
 						closestDistance = distanceToObject;
 						closestLocation = location;
-						break;
 					}
 				}
 			}
 		}
 		if (closestLocation != null)
-			connectedLocations.Add(closestLocation);
+			connection = closestLocation;
+		return connection;
 	}
 
 	void InitName()
@@ -88,5 +104,12 @@ public class CampaignLocation : MonoBehaviour
 		nameLibrary = FindObjectOfType<NameLibrary>();
 		if (nameLibrary != null)
 			locationName = nameLibrary.GetLocationName(rarity);
+	}
+
+	void CreateLineRenderer()
+	{
+		GameObject lineObject = Instantiate(linePrefab, transform.position, Quaternion.identity);
+		LineRenderer liner = lineObject.GetComponent<LineRenderer>();
+		lineList.Add(liner);
 	}
 }

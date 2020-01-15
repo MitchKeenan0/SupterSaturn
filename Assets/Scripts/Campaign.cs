@@ -39,13 +39,18 @@ public class Campaign : MonoBehaviour
 			}
 		}
 
-		fleetList = fleetHud.GetFleetList();
-		foreach(Fleet f in fleetList)
+		fleetList = new List<Fleet>(fleetHud.GetFleetList());
+		int numFleets = fleetList.Count;
+		if (numFleets > 0)
 		{
-			if ((f.teamID == 0) && (myStartLocation != null))
-				f.SetLocation(myStartLocation);
-			if ((f.teamID != 0) && (enemyStartLocation != null))
-				f.SetLocation(enemyStartLocation);
+			for(int i = 0; i < numFleets; i++)
+			{
+				Fleet f = fleetList[i];
+				if ((f.teamID == 0) && (myStartLocation != null))
+					f.SetLocation(myStartLocation);
+				if ((f.teamID != 0) && (enemyStartLocation != null))
+					f.SetLocation(enemyStartLocation);
+			}
 		}
 	} 
 }

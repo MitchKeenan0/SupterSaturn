@@ -45,28 +45,11 @@ public class NameLibrary : MonoBehaviour
 		}
 
 		int randomIndex = Random.Range(0, nameArray.Length);
+		//while (usedList.Contains(randomIndex))
+		//	randomIndex = Random.Range(0, nameArray.Length);
+
 		string result = nameArray[randomIndex];
-		bool bEarlyAdd = false;
-		if (usedList.Contains(randomIndex))
-		{
-			int r = randomIndex;
-			while (usedList.Contains(r))
-			{
-				int nextIndex = Random.Range(0, nameArray.Length);
-				if ((nextIndex != randomIndex) && !usedList.Contains(nextIndex))
-				{
-					r = nextIndex;
-					usedList.Add(randomIndex);
-					bEarlyAdd = true;
-					break;
-				}
-			}
-			randomIndex = r;
-		}
-		
-		result = nameArray[randomIndex];
-		if (!bEarlyAdd)
-			usedList.Add(randomIndex);
+		usedList.Add(randomIndex);
 		return result;
 	}
 }

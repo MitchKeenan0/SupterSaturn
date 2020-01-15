@@ -25,14 +25,14 @@ public class FleetController : MonoBehaviour
 	public void SetTargetLocation(CampaignLocation location)
 	{
 		targetLocation = location;
-		lineRenderer.enabled = true;
 
 		if (!locationManager)
 			locationManager = FindObjectOfType<LocationManager>();
-		List<CampaignLocation> route = locationManager.GetRouteTo(fleet.GetLocation(), targetLocation);
 
-		Debug.Log("Route has " + route.Count + " nodes");
+		List<CampaignLocation> route = new List<CampaignLocation>();
+		route = locationManager.GetRouteTo(fleet.GetLocation(), targetLocation);
 
+		lineRenderer.positionCount = 0;
 		lineRenderer.positionCount = route.Count;
 		int routeSteps = route.Count;
 		for(int i = 0; i < routeSteps; i++)
@@ -40,5 +40,7 @@ public class FleetController : MonoBehaviour
 			if (route[i] != null)
 				lineRenderer.SetPosition(i, route[i].transform.position);
 		}
+
+		lineRenderer.enabled = true;
 	}
 }

@@ -48,7 +48,8 @@ public class LocationHUD : MonoBehaviour
 	{
 		string nameString = highlightedLocation.locationName.ToString();
 		locationNameText.text = nameString;
-		string valueString = highlightedLocation.locationValue.ToString();
+		string valueString = highlightedLocation.GetNeighbors().Count.ToString();
+			///highlightedLocation.locationValue.ToString();
 		locationValueText.text = valueString;
 
 		Vector3 locationScreenPosition = cameraMain.WorldToScreenPoint(highlightedLocation.transform.position);

@@ -16,10 +16,14 @@ public class FleetHUD : MonoBehaviour
 
 	public List<Fleet> GetFleetList() { return fleetList; }
 
-	void Start()
-    {
+	void Awake()
+	{
 		fleetList = new List<Fleet>();
 		panelList = new List<FleetPanel>();
+	}
+
+	void Start()
+    {
 		cameraMain = Camera.main;
 		locationDisplay = FindObjectOfType<LocationDisplay>();
 		
