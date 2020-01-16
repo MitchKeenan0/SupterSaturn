@@ -41,7 +41,7 @@ public class FleetHUD : MonoBehaviour
 		InitPanels();
 	}
 
-	void OnGUI()
+	void Update()
 	{
 		foreach(FleetPanel panel in panelList)
 		{
@@ -55,6 +55,10 @@ public class FleetHUD : MonoBehaviour
 		{
 			Vector3 fleetScreenPosition = cameraMain.WorldToScreenPoint(panel.GetFleet().transform.position);
 			panel.transform.position = fleetScreenPosition + panelOffset;
+		}
+		else
+		{
+			Debug.Log("no fleet to update screen position");
 		}
 	}
 

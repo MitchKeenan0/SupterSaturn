@@ -56,124 +56,41 @@ public class LocationManager : MonoBehaviour
 	public List<CampaignLocation> GetRouteTo(CampaignLocation start, CampaignLocation destination)
 	{
 		route = new List<CampaignLocation>();
-		int numLocations = allLocations.Count;
-		for (int i = 0; i < numLocations; i++)
-		{
-			CampaignLocation thisLocation = allLocations[i];
-			thisLocation.SetMarked(false);
-			thisLocation.SetDistance(Mathf.Infinity);
-			thisLocation.SetPreviousLocation(null);
-		}
-		start.SetDistance(0f);
+		route.Add(start);
 
-		List<CampaignLocation> unvisitedLocations = new List<CampaignLocation>(allLocations);
 		CampaignLocation current = start;
-		while (unvisitedLocations.Count > 0)
+		while (destination != current)
 		{
-			CampaignLocation nextLocation = null;
-			int numNeighbors = current.GetNeighbors().Count;
-			if (numNeighbors > 0)
-				nextLocation = GetClosestNeighbor(current, destination);
-			else
-				break;
-
-			current.SetMarked(true);
-			if (current == destination)
-				break;
-			
-			unvisitedLocations.Remove(current);
-
-			if (nextLocation != null)
-				current = nextLocation;
-			else
-				break;
-		}
-
-		if (destination.IsMarked())
-		{
-			Stack<CampaignLocation> locationStack = new Stack<CampaignLocation>();
-			CampaignLocation index = current;
-			locationStack.Push(index);
-			while(index != start)
+			CampaignLocation nextStep = GetNextNeighbor(current, destination);
+			if (nextStep != null)
 			{
-				index = index.PreviousLocation();
-				locationStack.Push(index);
+				route.Add(nextStep);
+				current = nextStep;
 			}
-
-			route.Clear();
-			int numLocales = locationStack.Count;
-			for(int i = 0; i < numLocales; i++)
+			else
 			{
-				route.Add(locationStack.Pop());
+				Debug.Log("Destination is unreachable");
+				break;
 			}
-		}
-		else
-		{
-			Debug.Log("Destination " + destination.locationName + " was not reached");
 		}
 
 		return route;
 	}
 
-	CampaignLocation GetClosestNeighbor(CampaignLocation start, CampaignLocation destination)
+	CampaignLocation GetNextNeighbor(CampaignLocation start, CampaignLocation destination)
 	{
 		CampaignLocation closestLocation = null;
-		List<CampaignLocation> neighbors = start.GetNeighbors();
-		int numNeighbors = neighbors.Count;
-		if (numNeighbors > 0)
-		{
-			float closestDistance = Mathf.Infinity;
-			for(int i = 0; i < numNeighbors; i++)
-			{
-				CampaignLocation thisNeighbor = neighbors[i];
-				if ((thisNeighbor != start) && !thisNeighbor.IsMarked())
-				{
-					if (thisNeighbor == destination)
-						return thisNeighbor;
-
-					thisNeighbor.SetPreviousLocation(start);
-					float neighborLocalDistance = Vector3.Distance(thisNeighbor.transform.position, start.transform.position);
-					float neighborTotalDistance = neighborLocalDistance + thisNeighbor.PreviousLocation().GetDistance();
-					thisNeighbor.SetDistance(neighborTotalDistance);
-
-					if (neighborTotalDistance < closestDistance)
-					{
-						closestDistance = neighborTotalDistance;
-						closestLocation = thisNeighbor;
-					}
-				}
-			}
-
-			// updating 'distant' neighbors
-			foreach (CampaignLocation neighbor in neighbors)
-			{
-				if ((neighbor != start) && (neighbor != closestLocation))
-				{
-					if (neighbor.GetDistance() > closestDistance)
-					{
-						neighbor.SetDistance(closestDistance);
-						neighbor.SetPreviousLocation(closestLocation);
-					}
-				}
-			}
-		}
-
-		return closestLocation;
-	}
-
-	CampaignLocation GetNextNeighbor(CampaignLocation value)
-	{
-		CampaignLocation neighbor = null;
-		List<CampaignLocation> neighbors = new List<CampaignLocation>();
-		neighbors = value.GetNeighbors();
+		List<CampaignLocation> neighbors = new List<CampaignLocation>(start.GetNeighbors());
+		float closestDistance = Mathf.Infinity;
 		foreach(CampaignLocation cl in neighbors)
 		{
-			if (!cl.IsMarked())
+			float distanceToDestination = Vector3.Distance(cl.transform.position, destination.transform.position);
+			if (distanceToDestination < closestDistance)
 			{
-				neighbor = cl;
-				break;
+				closestDistance = distanceToDestination;
+				closestLocation = cl;
 			}
 		}
-		return neighbor;
+		return closestLocation;
 	}
 }

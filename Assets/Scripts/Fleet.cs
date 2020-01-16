@@ -25,10 +25,16 @@ public class Fleet : MonoBehaviour
 		fleetController.SetTargetLocation(location);
 	}
 
-	public void SetLocation(CampaignLocation location)
+	public void SetPosition(Vector3 position)
+	{
+		transform.position = position;
+	}
+
+	public void SetLocation(CampaignLocation location, bool position)
 	{
 		campaignLocation = location;
-		transform.position = campaignLocation.transform.position;
+		if (position)
+			transform.position = location.transform.position;
 	}
 
 	public CampaignLocation GetLocation() { return campaignLocation; }

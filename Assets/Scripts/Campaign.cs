@@ -47,9 +47,9 @@ public class Campaign : MonoBehaviour
 			{
 				Fleet f = fleetList[i];
 				if ((f.teamID == 0) && (myStartLocation != null))
-					f.SetLocation(myStartLocation);
+					f.SetLocation(myStartLocation, true);
 				if ((f.teamID != 0) && (enemyStartLocation != null))
-					f.SetLocation(enemyStartLocation);
+					f.SetLocation(enemyStartLocation, true);
 			}
 		}
 	} 
