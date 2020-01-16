@@ -11,20 +11,33 @@ public class FleetController : MonoBehaviour
 	private LocationManager locationManager;
 	private CampaignLocation targetLocation;
 	private CampaignLocation moveLocation;
+	private Campaign campaign;
+	private CampaignBattle campaignBattle;
 	private LineRenderer lineRenderer;
 	private List<CampaignLocation> route;
+	private List<Fleet> allFleetsList;
 
 	private bool bTurnSubmitted = false;
 	public bool TurnSubmitted() { return bTurnSubmitted; }
 	public void SetTurnSubmitted(bool value) { bTurnSubmitted = value; }
 
 	private IEnumerator fleetMoveCoroutine;
-	private bool bMoving = false;
 
     void Start()
     {
 		route = new List<CampaignLocation>();
+		allFleetsList = new List<Fleet>();
+
 		fleet = GetComponent<Fleet>();
+		Fleet[] allFleets = FindObjectsOfType<Fleet>();
+		foreach(Fleet f in allFleets)
+		{
+			if (f != fleet)
+				allFleetsList.Add(f);
+		}
+
+		campaign = FindObjectOfType<Campaign>();
+		campaignBattle = FindObjectOfType<CampaignBattle>();
 		locationManager = FindObjectOfType<LocationManager>();
 		lineRenderer = GetComponent<LineRenderer>();
 		lineRenderer.enabled = false;
@@ -54,7 +67,6 @@ public class FleetController : MonoBehaviour
 		if (route.Count > 1)
 		{
 			moveLocation = route[1];
-			bMoving = true;
 			fleetMoveCoroutine = FleetMove(movementUpdateInterval);
 			StartCoroutine(fleetMoveCoroutine);
 		}
@@ -86,8 +98,17 @@ public class FleetController : MonoBehaviour
 	void FinishMove()
 	{
 		fleet.SetLocation(moveLocation, true);
-		bMoving = false;
 		if (targetLocation != null)
 			SetTargetLocation(targetLocation);
+
+		foreach(Fleet f in allFleetsList)
+		{
+			CampaignLocation thisLocation = fleet.GetLocation();
+			if ((f.GetLocation() == thisLocation) && f.teamID != fleet.teamID)
+			{
+				Fleet[] parties = new Fleet[] { fleet, f };
+				campaignBattle.HeraldBattle(thisLocation, parties);
+			}
+		}
 	}
 }

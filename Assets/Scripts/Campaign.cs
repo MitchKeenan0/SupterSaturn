@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class Campaign : MonoBehaviour
 {
-	private List<CampaignLocation> locationList;
-	private List<Fleet> fleetList;
 	private Camera cameraMain;
 	private FleetHUD fleetHud;
+	private CampaignBattle campaignBattle;
+	private List<CampaignLocation> locationList;
+	private List<Fleet> fleetList;
 
 	void Awake()
     {
@@ -15,6 +16,7 @@ public class Campaign : MonoBehaviour
 		fleetList = new List<Fleet>();
 		cameraMain = Camera.main;
 		fleetHud = FindObjectOfType<FleetHUD>();
+		campaignBattle = FindObjectOfType<CampaignBattle>();
     }
 
 	public void InitFleetLocations(List<CampaignLocation> locations)
@@ -52,5 +54,5 @@ public class Campaign : MonoBehaviour
 					f.SetLocation(enemyStartLocation, true);
 			}
 		}
-	} 
+	}
 }

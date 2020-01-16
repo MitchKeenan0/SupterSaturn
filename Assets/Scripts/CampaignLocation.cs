@@ -23,18 +23,6 @@ public class CampaignLocation : MonoBehaviour
 			connectedLocations.Add(c);
 	}
 
-	private bool bMarkedForRoute = false;
-	public void SetMarked(bool value) { bMarkedForRoute = value; }
-	public bool IsMarked() { return bMarkedForRoute; }
-
-	private float distance = 0f;
-	public void SetDistance(float value) { distance = value; }
-	public float GetDistance() { return distance; }
-
-	private CampaignLocation previousLocation = null;
-	public void SetPreviousLocation(CampaignLocation value) { previousLocation = value; }
-	public CampaignLocation PreviousLocation() { return previousLocation; }
-
 	void Awake()
     {
 		connectedLocations = new List<CampaignLocation>();

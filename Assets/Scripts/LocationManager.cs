@@ -55,11 +55,11 @@ public class LocationManager : MonoBehaviour
 
 	public List<CampaignLocation> GetRouteTo(CampaignLocation start, CampaignLocation destination)
 	{
-		route = new List<CampaignLocation>();
+		route.Clear();
 		route.Add(start);
 
 		CampaignLocation current = start;
-		while (destination != current)
+		while (current != destination)
 		{
 			CampaignLocation nextStep = GetNextNeighbor(current, destination);
 			if (nextStep != null)
@@ -84,11 +84,17 @@ public class LocationManager : MonoBehaviour
 		float closestDistance = Mathf.Infinity;
 		foreach(CampaignLocation cl in neighbors)
 		{
-			float distanceToDestination = Vector3.Distance(cl.transform.position, destination.transform.position);
-			if (distanceToDestination < closestDistance)
+			if (cl == destination)
+				return cl;
+
+			if (cl != start)
 			{
-				closestDistance = distanceToDestination;
-				closestLocation = cl;
+				float distanceToDestination = Vector3.Distance(cl.transform.position, destination.transform.position);
+				if (distanceToDestination < closestDistance)
+				{
+					closestDistance = distanceToDestination;
+					closestLocation = cl;
+				}
 			}
 		}
 		return closestLocation;
