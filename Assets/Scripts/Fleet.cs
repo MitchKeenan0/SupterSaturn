@@ -18,6 +18,7 @@ public class Fleet : MonoBehaviour
 		fleetController = GetComponent<FleetController>();
 		foreach (Spacecraft sp in initialFleet)
 			spacecraftList.Add(sp);
+		DontDestroyOnLoad(gameObject);
 	}
 
 	public void StandbyMove(CampaignLocation location)
