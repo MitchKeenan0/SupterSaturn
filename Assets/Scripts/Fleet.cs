@@ -15,15 +15,10 @@ public class Fleet : MonoBehaviour
     void Awake()
     {
 		spacecraftList = new List<Spacecraft>();
-		fleetController = GetComponent<FleetController>();
+		fleetController = GetComponentInChildren<FleetController>();
 		foreach (Spacecraft sp in initialFleet)
 			spacecraftList.Add(sp);
 		DontDestroyOnLoad(gameObject);
-	}
-
-	public void StandbyMove(CampaignLocation location)
-	{
-		fleetController.SetTargetLocation(location);
 	}
 
 	public void SetPosition(Vector3 position)

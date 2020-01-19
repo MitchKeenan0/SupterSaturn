@@ -43,7 +43,7 @@ public class Scanner : MonoBehaviour
 
 	void LaunchScan()
 	{
-		targetList.Clear();
+		ClearTargets();
 		currentRadius = 0f;
 		timeAtScan = Time.time;
 		updateCoroutine = UpdateScan(updateInterval);
@@ -112,14 +112,21 @@ public class Scanner : MonoBehaviour
 	void ClearTargets()
 	{
 		int numTargets = targetList.Count;
-		if (numTargets > 0)
-		{
-			for(int i = 0; i < numTargets; i++)
-			{
-				if (targetList[i] != null)
-				{
+		if (numTargets > 0){
+			// looping thru each target..
+			for(int i = 0; i < numTargets; i++){
+				if ((targetList.Count > i) && (targetList[i] != null)){
 					GameObject c = targetList[i];
-					if (!c.GetComponent<Prediction>() && c.GetComponent<Spacecraft>())
+
+					// optionally keep predictions unless theyre gone
+					Prediction targetPrediction = c.GetComponent<Prediction>();
+					if (targetPrediction != null)
+					{
+						if ((targetPrediction.spacecraft == null) || (!targetPrediction.spacecraft.IsAlive()))
+							targetList.Remove(targetPrediction.gameObject);
+					}
+					// create prediction and lose contact
+					else if (c.GetComponent<Spacecraft>())
 					{
 						Spacecraft sp = c.GetComponent<Spacecraft>();
 						sp.AddMarkValue(-1);
@@ -132,9 +139,6 @@ public class Scanner : MonoBehaviour
 				}
 			}
 		}
-
-		//targetList.Clear();
-		spacecraft.GetAgent().SuggestTarget(null);
 	}
 
 	private IEnumerator LoopingScanLaunch(float waitTime)

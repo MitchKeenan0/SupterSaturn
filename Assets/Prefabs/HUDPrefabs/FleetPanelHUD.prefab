@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5985299239373644265}
   - component: {fileID: 5985299239373644264}
   - component: {fileID: 5985299239373644267}
-  - component: {fileID: 5985299239373644266}
+  - component: {fileID: 6471421397617971134}
   - component: {fileID: 5985299239373644278}
   m_Layer: 5
   m_Name: FleetPanelHUD
@@ -82,7 +82,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
---- !u!114 &5985299239373644266
+--- !u!114 &6471421397617971134
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,11 +94,11 @@ MonoBehaviour:
   m_Script: {fileID: 1301386320, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
+  m_IgnoreReversedGraphics: 0
+  m_BlockingObjects: 3
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 23
 --- !u!114 &5985299239373644278
 MonoBehaviour:
   m_ObjectHideFlags: 0

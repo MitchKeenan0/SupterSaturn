@@ -16,11 +16,22 @@ public class CampaignLocation : MonoBehaviour
 
 	private List<CampaignLocation> connectedLocations;
 	public List<CampaignLocation> GetNeighbors() { return connectedLocations; }
-	public void AddConnection(CampaignLocation c)
+	public void AddConnection(CampaignLocation c, bool executive)
 	{
-		if ((c != this) && !connectedLocations.Contains(c)
-			&& (connectedLocations.Count < connections))
+		if (((c != this) && !connectedLocations.Contains(c) && (connectedLocations.Count < connections))
+			|| executive)
 			connectedLocations.Add(c);
+	}
+
+	public void GetScouted(CampaignLocation origin, GameObject connectionPrefab)
+	{
+		connectedLocations.Add(origin);
+		origin.AddConnection(this, true);
+
+		GameObject scoutConnectionLine = Instantiate(connectionPrefab, transform.position, Quaternion.identity);
+		LineRenderer connectionLine = scoutConnectionLine.GetComponent<LineRenderer>();
+		connectionLine.SetPosition(0, transform.position);
+		connectionLine.SetPosition(1, origin.transform.position);
 	}
 
 	void Awake()
@@ -40,8 +51,8 @@ public class CampaignLocation : MonoBehaviour
 				CampaignLocation connection = ConnectToClosestLocation();
 				if (connection != null)
 				{
-					AddConnection(connection);
-					connection.AddConnection(this);
+					AddConnection(connection, false);
+					connection.AddConnection(this, false);
 					CreateLineRenderer();
 				}
 			}

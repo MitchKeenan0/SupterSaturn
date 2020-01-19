@@ -26,23 +26,25 @@ public class LocationManager : MonoBehaviour
 	void InitLocations()
 	{
 		allLocations = new List<CampaignLocation>();
+		float concentricRange = 3.14f / locationCount;
 		for (int i = 0; i < locationCount; i++)
 		{
 			float rando = Random.Range(0f, 1f);
 			if (rando > 0.9f)
-				SpawnRandomFrom(rareLocations);
+				SpawnRandomFrom(rareLocations, concentricRange);
 			else if (rando > 0.6f)
-				SpawnRandomFrom(uniqueLocations);
+				SpawnRandomFrom(uniqueLocations, concentricRange);
 			else
-				SpawnRandomFrom(commonLocations);
+				SpawnRandomFrom(commonLocations, concentricRange);
+			concentricRange += (3.14f / locationCount);
 		}
 	}
 
-	void SpawnRandomFrom(GameObject[] array)
+	void SpawnRandomFrom(GameObject[] array, float range)
 	{
 		int index = Random.Range(0, array.Length);
 		GameObject prefab = array[index];
-		GameObject g = Instantiate(prefab, RandomPositionOnDisk(), Quaternion.identity);
+		GameObject g = Instantiate(prefab, RandomPositionOnDisk() * range, Quaternion.identity);
 		allLocations.Add(g.GetComponent<CampaignLocation>());
 	}
 
@@ -57,8 +59,8 @@ public class LocationManager : MonoBehaviour
 	{
 		route.Clear();
 		route.Add(start);
-
 		CampaignLocation current = start;
+		int safeIndex = 0;
 		while (current != destination)
 		{
 			CampaignLocation nextStep = GetNextNeighbor(current, destination);
@@ -72,6 +74,10 @@ public class LocationManager : MonoBehaviour
 				Debug.Log("Destination is unreachable");
 				break;
 			}
+
+			safeIndex++;
+			if (safeIndex >= (current.GetNeighbors().Count))
+				break;
 		}
 
 		return route;
@@ -82,8 +88,10 @@ public class LocationManager : MonoBehaviour
 		CampaignLocation closestLocation = null;
 		List<CampaignLocation> neighbors = new List<CampaignLocation>(start.GetNeighbors());
 		float closestDistance = Mathf.Infinity;
-		foreach(CampaignLocation cl in neighbors)
+		int numNeighbors = neighbors.Count;
+		for (int i = 0; i < numNeighbors; i++)
 		{
+			CampaignLocation cl = neighbors[i];
 			if (cl == destination)
 				return cl;
 

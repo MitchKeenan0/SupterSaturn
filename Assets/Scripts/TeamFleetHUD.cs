@@ -7,7 +7,6 @@ public class TeamFleetHUD : MonoBehaviour
 {
 	public GameObject diagramPanel;
 	public GameObject diagramPrefab;
-	public GameObject highlightPrefab;
 	public Vector3 healthBarScale;
 
 	private CameraController cameraController;

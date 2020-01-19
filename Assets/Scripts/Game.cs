@@ -10,6 +10,13 @@ public class Game : MonoBehaviour
 	private Fleet playerFleet;
 	private Fleet enemyFleet;
 
+	private int currentMission = -1;
+
+	void Start()
+	{
+		
+	}
+
 	public void SetPlayerFleet(Fleet fleet)
 	{
 		playerFleet = fleet;
@@ -32,8 +39,7 @@ public class Game : MonoBehaviour
 		file.Close();
 
 		// 3
-		//hits = 0;
-		//shots = 0;
+		currentMission = -1;
 		//shotsText.text = "Shots: " + shots;
 		//hitsText.text = "Hits: " + hits;
 

@@ -12,5 +12,12 @@ public class FleetAgent : MonoBehaviour
     {
 		fleet = GetComponent<Fleet>();
 		fleetController = GetComponent<FleetController>();
+		locationManager = FindObjectOfType<LocationManager>();
+		InitAgent();
     }
+
+	void InitAgent()
+	{
+		
+	}
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class FleetHUD : MonoBehaviour
@@ -13,6 +14,9 @@ public class FleetHUD : MonoBehaviour
 	private LocationDisplay locationDisplay;
 	private Camera cameraMain;
 	private Fleet playerFleet;
+
+	private bool bMouseOnUI = false;
+	public void MouseOnUI(bool value) { bMouseOnUI = value; }
 
 	public List<Fleet> GetFleetList() { return fleetList; }
 
@@ -34,7 +38,8 @@ public class FleetHUD : MonoBehaviour
 			if (f.teamID == 0)
 			{
 				playerFleet = f;
-				locationDisplay.SetPlayerFleet(playerFleet);
+				FleetController fc = playerFleet.gameObject.GetComponentInChildren<FleetController>();
+				locationDisplay.SetPlayerFleetController(fc);
 			}
 		}
 
@@ -43,10 +48,11 @@ public class FleetHUD : MonoBehaviour
 
 	void Update()
 	{
-		foreach(FleetPanel panel in panelList)
-		{
+		if (Input.GetButtonDown("Fire1") && !ClickedOnObject())
+			locationDisplay.SetDisplayLocation(null);
+
+		foreach (FleetPanel panel in panelList)
 			UpdateScreenPosition(panel);
-		}
 	}
 
 	void UpdateScreenPosition(FleetPanel panel)
@@ -60,6 +66,21 @@ public class FleetHUD : MonoBehaviour
 		{
 			Debug.Log("no fleet to update screen position");
 		}
+	}
+
+	bool ClickedOnObject()
+	{
+		bool bClickedObject = false;
+
+		if (bMouseOnUI)
+			bClickedObject = true;
+
+		RaycastHit hit;
+		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		if (Physics.Raycast(ray, out hit))
+			bClickedObject = true;
+		
+		return bClickedObject;
 	}
 
 	void InitPanels()

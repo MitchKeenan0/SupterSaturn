@@ -7,4 +7,6 @@ public class Save
 {
 	public Fleet playerFleet = null;
 	public Fleet enemyFleet = null;
+
+	public int currentMission = 0;
 }
