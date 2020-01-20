@@ -9,7 +9,7 @@ public class TimeScaler : MonoBehaviour
 
 	private float timescale = 1f;
 
-    void Start()
+    void Awake()
     {
 		timescale = warmupTimescale;
 		Time.timeScale = warmupTimescale;

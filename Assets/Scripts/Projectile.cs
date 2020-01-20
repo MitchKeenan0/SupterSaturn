@@ -10,7 +10,7 @@ public class Projectile : MonoBehaviour
 	public float maxLifetime = 5f;
 
 	private Rigidbody rb;
-	private Transform owner;
+	private Weapon owner;
 	private RaycastManager raycastManager;
 	private TrailRenderer trail;
 	private Vector3 lastPosition;
@@ -36,9 +36,9 @@ public class Projectile : MonoBehaviour
 		StartCoroutine(fadeAwayCoroutine);
 	}
 
-	public void ArmProjectile(Transform value)
+	public void ArmProjectile(Weapon ownerWeapon)
 	{
-		owner = value;
+		owner = ownerWeapon;
 		timeAtFired = Time.time;
 		if (!raycastManager)
 			raycastManager = FindObjectOfType<RaycastManager>();
@@ -59,7 +59,7 @@ public class Projectile : MonoBehaviour
 			Health hp = hit.transform.GetComponent<Health>();
 			if (hp != null)
 			{
-				hp.ModifyHealth(-damage, owner);
+				hp.ModifyHealth(-damage, owner.transform);
 			}
 
 			Rigidbody r = hit.transform.GetComponent<Rigidbody>();
@@ -78,7 +78,7 @@ public class Projectile : MonoBehaviour
 			return transform.forward * 2f;
 	}
 
-	public Transform GetOwner()
+	public Weapon GetOwner()
 	{
 		return owner;
 	}

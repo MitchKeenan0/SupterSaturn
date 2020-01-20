@@ -12,8 +12,11 @@ public class Weapon : MonoBehaviour
 	public float fireRate = 1f;
 	public float rateDeviation = 0.5f;
 
+	private Spacecraft spacecraft;
+	private BattleOutcome battleOutcome;
 	private Transform targetTransform;
 	private bool bCanFire = true;
+	private bool bHit = false;
 	private IEnumerator prefireCoroutine;
 	private IEnumerator recoveryCoroutine;
 
@@ -21,16 +24,15 @@ public class Weapon : MonoBehaviour
 
 	public void SetTarget(Transform value) { targetTransform = value; }
 
-	public void FireAt(Transform target)
+	void Start()
 	{
-		bCanFire = false;
-		SetTarget(target);
-		prefireCoroutine = Prefire(prefireTime);
-		StartCoroutine(prefireCoroutine);
+		spacecraft = GetComponent<Spacecraft>();
+		battleOutcome = FindObjectOfType<BattleOutcome>();
 	}
 
 	void Fire()
 	{
+		bHit = false;
 		Transform munition = Instantiate(munitionPrefab, transform.position, Quaternion.identity);
 
 		Projectile projectile = munition.GetComponent<Projectile>();
@@ -51,7 +53,7 @@ public class Weapon : MonoBehaviour
 			munition.transform.rotation = Quaternion.LookRotation(fireVector, Vector3.up);
 			Rigidbody munitionRb = munition.GetComponent<Rigidbody>();
 			munitionRb.AddForce(munition.forward * weaponSpeed);
-			projectile.ArmProjectile(transform);
+			projectile.ArmProjectile(this);
 		}
 
 		recoveryCoroutine = Recover(fireRate);
@@ -61,6 +63,26 @@ public class Weapon : MonoBehaviour
 	void Recover()
 	{
 		bCanFire = true;
+	}
+
+	public void FireAt(Transform target)
+	{
+		bCanFire = false;
+		SetTarget(target);
+		prefireCoroutine = Prefire(prefireTime);
+		StartCoroutine(prefireCoroutine);
+	}
+
+	public void ReturnHit(float damage, Vector3 hitLocation)
+	{
+		if (!bHit && (spacecraft.GetAgent().teamID == 0))
+		{
+			int distanceToHit = Mathf.Clamp(Mathf.FloorToInt(Vector3.Distance(hitLocation, transform.position)), 1, 10);
+			int hitScore = Mathf.FloorToInt(damage * distanceToHit);
+			battleOutcome.AddScore(hitScore);
+		}
+
+		bHit = true;
 	}
 
 	private IEnumerator Prefire(float waitTime)

@@ -117,12 +117,12 @@ public class MouseOrbitImproved : MonoBehaviour
 			rawMove = Vector3.ProjectOnPlane(rawMove, Vector3.up);
 			rawMove += (cameraMain.transform.up * inputElevation) * moveSpeed;
 
-			moveVector = Vector3.Lerp(moveVector, rawMove, Time.deltaTime * moveAcceleration);
+			moveVector = Vector3.Lerp(moveVector, rawMove, Time.deltaTime * moveAcceleration * 0.1f);
 			moveVector = Vector3.ClampMagnitude(moveVector, moveSpeed);
 		}
 		else
 		{
-			moveVector = Vector3.Lerp(moveVector, Vector3.zero, Time.deltaTime * moveAcceleration * 10);
+			moveVector = Vector3.Lerp(moveVector, Vector3.zero, Time.deltaTime * moveAcceleration);
 		}
 	}
 

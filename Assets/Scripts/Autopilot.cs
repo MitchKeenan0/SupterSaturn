@@ -54,7 +54,7 @@ public class Autopilot : MonoBehaviour
 			if ((routeVectors.Count >= 1)
 				&& (Vector3.Distance(transform.position, currentRouteVector) < 1f))
 			{
-				//holdPosition = currentRouteVector;
+				holdPosition = currentRouteVector;
 				routeVectors.Remove(currentRouteVector);
 				routeVisualizer.ClearLine(0);
 			}

@@ -33,6 +33,7 @@ public class GridVisualizer : MonoBehaviour
 		{
 			updateTransform = transform.parent;
 			transform.SetParent(null);
+			UpdateGrid();
 			updateCoroutine = TimedUpdate(updateInterval);
 			StartCoroutine(updateCoroutine);
 		}
@@ -117,23 +118,28 @@ public class GridVisualizer : MonoBehaviour
 		while (true)
 		{
 			yield return new WaitForSeconds(intervalTime);
-			if (updateTransform != null)
-			{
-				transform.position = updateTransform.position;
-				transform.rotation = Quaternion.identity;
-			}
-
-			float distToCamera = Vector3.Distance(transform.position, cameraTransform.position) / 1000;
-			foreach (LineRenderer line in upDownList)
-				line.widthMultiplier = naturalWidth * distToCamera;
-			foreach (LineRenderer line in northSouthList)
-				line.widthMultiplier = naturalWidth * distToCamera;
-			foreach (LineRenderer line in leftRightList)
-				line.widthMultiplier = naturalWidth * distToCamera;
-
-			Transform nameTransform = transform;
-			if (transform.parent != null)
-				nameTransform = transform.parent;
+			UpdateGrid();
 		}
+	}
+
+	void UpdateGrid()
+	{
+		if (updateTransform != null)
+		{
+			transform.position = updateTransform.position;
+			transform.rotation = Quaternion.identity;
+		}
+
+		float distToCamera = Vector3.Distance(transform.position, cameraTransform.position) / 1000;
+		foreach (LineRenderer line in upDownList)
+			line.widthMultiplier = naturalWidth * distToCamera;
+		foreach (LineRenderer line in northSouthList)
+			line.widthMultiplier = naturalWidth * distToCamera;
+		foreach (LineRenderer line in leftRightList)
+			line.widthMultiplier = naturalWidth * distToCamera;
+
+		Transform nameTransform = transform;
+		if (transform.parent != null)
+			nameTransform = transform.parent;
 	}
 }

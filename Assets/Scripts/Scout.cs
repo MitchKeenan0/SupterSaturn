@@ -54,6 +54,7 @@ public class Scout : MonoBehaviour
 	{
 		transform.SetParent(null);
 		scoutObject.transform.localScale = Vector3.one;
+		ScreenPosition(0.001f);
 		originLocation = origin;
 		scoutLocation = scout;
 

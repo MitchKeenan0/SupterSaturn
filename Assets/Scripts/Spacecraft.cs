@@ -21,6 +21,8 @@ public class Spacecraft : MonoBehaviour
 	private SpacecraftInformation spacecraftInformation;
 	private CameraController cameraController;
 	private MouseSelection mouseSelection;
+	private BattleOutcome battleOutcome;
+
 	private Vector3 mainEnginesVector = Vector3.zero;
 	private Vector3 maneuverEnginesVector = Vector3.zero;
 	private Vector3 turningVector = Vector3.zero;
@@ -58,6 +60,8 @@ public class Spacecraft : MonoBehaviour
     {
 		cameraController = FindObjectOfType<CameraController>();
 		mouseSelection = FindObjectOfType<MouseSelection>();
+		battleOutcome = FindObjectOfType<BattleOutcome>();
+
 		SetAgentEnabled(bAgentStartsEnabled);
 		turningVector = transform.position + transform.forward;
 		turningRotation = transform.rotation;
@@ -137,6 +141,11 @@ public class Spacecraft : MonoBehaviour
 
 	public void SpacecraftDestroyed(Transform responsibleTransform)
 	{
+		if (agent.teamID == 0)
+		{
+			battleOutcome.AddLost(health.maxHealth);
+		}
+
 		if (agent != null)
 		{
 			agent.AgentSpacecraftDestroyed();
@@ -251,10 +260,6 @@ public class Spacecraft : MonoBehaviour
 	{
 		if (collision.gameObject.GetComponent<Gravity>())
 		{
-			if (!health)
-				Debug.Log("No health");
-			if (!collision.gameObject.transform)
-				Debug.Log("No transform");
 			health.ModifyHealth(-99, collision.gameObject.transform);
 		}
 		else if (collision.gameObject.GetComponent<Spacecraft>())

@@ -211,7 +211,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.8627451}
+  m_Color: {r: 0.9245283, g: 0.9245283, b: 0.9245283, a: 0.8627451}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -219,7 +219,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 3b7e6ab18c4fb7441805e5abd9032a8c, type: 3}
+    m_Font: {fileID: 12800000, guid: 98117ef76f0e1b042ad3047f625b007d, type: 3}
     m_FontSize: 32
     m_FontStyle: 0
     m_BestFit: 0
@@ -268,7 +268,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: -50, y: 30}
-  m_SizeDelta: {x: 420, y: 75}
+  m_SizeDelta: {x: 415, y: 73}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &6205437417875467303
 CanvasRenderer:
@@ -291,7 +291,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.392}
+  m_Color: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -421,6 +421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37c640db2625ca44ebfe7893ea18bbc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  turnPassWaitTime: 1
   endTurnPanel: {fileID: 6205437417875467304}
   warningPanel: {fileID: 8776442626833296970}
   undoPanel: {fileID: 6587211280023533370}
@@ -459,10 +460,10 @@ RectTransform:
   m_Father: {fileID: 6205437417875467305}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 410, y: 69}
+  m_SizeDelta: {x: -6, y: -3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6205437418988346547
 CanvasRenderer:
@@ -521,11 +522,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 0.5882353}
-    m_HighlightedColor: {r: 1, g: 1, b: 1, a: 0.19607843}
-    m_PressedColor: {r: 0, g: 0, b: 0, a: 0.19607843}
-    m_SelectedColor: {r: 1, g: 1, b: 1, a: 0.39215687}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_NormalColor: {r: 0, g: 0, b: 0, a: 0.8627451}
+    m_HighlightedColor: {r: 0, g: 0, b: 0, a: 0.78431374}
+    m_PressedColor: {r: 0, g: 0, b: 0, a: 0.5882353}
+    m_SelectedColor: {r: 0, g: 0, b: 0, a: 0.78431374}
+    m_DisabledColor: {r: 0, g: 0, b: 0, a: 0}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -604,7 +605,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -338.1, y: 120}
+  m_AnchoredPosition: {x: -55.4, y: 120}
   m_SizeDelta: {x: 125, y: 50}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &4330193180950141214
@@ -710,7 +711,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 3b7e6ab18c4fb7441805e5abd9032a8c, type: 3}
+    m_Font: {fileID: 12800000, guid: 98117ef76f0e1b042ad3047f625b007d, type: 3}
     m_FontSize: 25
     m_FontStyle: 0
     m_BestFit: 0
@@ -760,7 +761,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -56.69995, y: 120}
+  m_AnchoredPosition: {x: -187.5, y: 120}
   m_SizeDelta: {x: 275, y: 50}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &113019091188704453
@@ -784,7 +785,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 0.19607843}
+  m_Color: {r: 1, g: 0, b: 0, a: 0.39215687}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:

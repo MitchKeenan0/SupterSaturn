@@ -11,6 +11,7 @@ public class ObjectManager : MonoBehaviour
 	private List<Gravity> gravityList;
 
 	private CraftIconHUD hud;
+	private BattleOutcome battleOutcome;
 
 	void Awake()
     {
@@ -21,6 +22,7 @@ public class ObjectManager : MonoBehaviour
 	void Start()
 	{
 		hud = FindObjectOfType<CraftIconHUD>();
+		battleOutcome = FindObjectOfType<BattleOutcome>();
 	}
 
 	void InitSpacecraftList()
@@ -43,9 +45,30 @@ public class ObjectManager : MonoBehaviour
 		}
 	}
 
+	void TestBattleConcluded()
+	{
+		int numSpacecraft = spacecraftList.Count;
+		int numTeam = 0;
+		int numEnemy = 0;
+		for(int i = 0; i < numSpacecraft; i++)
+		{
+			Spacecraft sp = spacecraftList[i];
+			if (sp.GetAgent().teamID == 0)
+				numTeam++;
+			else if (sp.GetAgent().teamID == 1)
+				numEnemy++;
+		}
+
+		if (numEnemy == 0)
+			battleOutcome.BattleOver(true);
+		else if (numTeam == 0)
+			battleOutcome.BattleOver(false);
+	}
+
 	public void SpacecraftDestroyed(Spacecraft value)
 	{
 		hud.ModifySpacecraftList(value, false);
 		spacecraftList.Remove(value);
+		TestBattleConcluded();
 	}
 }

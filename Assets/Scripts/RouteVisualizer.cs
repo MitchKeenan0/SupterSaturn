@@ -76,8 +76,10 @@ public class RouteVisualizer : MonoBehaviour
 	{
 		if (lineRenderList != null)
 		{
-			foreach (LineRenderer line in lineRenderList)
+			int numLines = lineRenderList.Count;
+			for(int i = 0; i < numLines; i++)
 			{
+				LineRenderer line = lineRenderList[i];
 				line.startColor = value;
 				line.endColor = value;
 			}

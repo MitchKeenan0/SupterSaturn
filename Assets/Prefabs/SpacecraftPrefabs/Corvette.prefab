@@ -64,9 +64,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bAgentStartsEnabled: 1
-  mainEnginePower: 2.1
-  turningPower: 1
-  maneuverPower: 1
+  mainEnginePower: 0.9
+  turningPower: 2
+  maneuverPower: 2
   spacecraftName: Corvette
   thrustParticles: {fileID: 2379070149716345965}
   destroyedParticlesPrefab: {fileID: 2766248710761914840, guid: 05469ee24ae991f41b944cbcf9f43ad0,
@@ -181,8 +181,8 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1906621234774554819}
   serializedVersion: 2
-  m_Mass: 3
-  m_Drag: 3
+  m_Mass: 4
+  m_Drag: 0.3
   m_AngularDrag: 0.15
   m_UseGravity: 0
   m_IsKinematic: 0

@@ -32,9 +32,10 @@ public class RaycastManager : MonoBehaviour
 					{
 						foreach (RaycastHit hit in hits)
 						{
-							if (hit.transform != pj.GetOwner())
+							if ((pj.GetOwner() != null) && (hit.transform != pj.GetOwner().transform))
 							{
 								pj.Hit(hit);
+								//pj.GetOwner().ReturnHit(pj.damage, hit.point);
 							}
 						}
 					}
