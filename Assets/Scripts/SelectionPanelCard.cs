@@ -7,10 +7,15 @@ using UnityEngine.EventSystems;
 public class SelectionPanelCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
 	public Image cardImage;
+	public string cardName;
 	public Text cardLevelText;
+	public int cardCost;
 
+	private Card card;
 	private FleetCreator fleetCreator;
 	private Button button;
+
+	public Card GetCard() { return card; }
 
 	void Start()
 	{
@@ -19,33 +24,41 @@ public class SelectionPanelCard : MonoBehaviour, IPointerEnterHandler, IPointerE
 		button.onClick.AddListener(TaskOnClick);
 	}
 
-    public void SetCard(Sprite spr, int lev)
+    public void SetCard(Card c)
 	{
-		cardImage.sprite = spr;
-		cardImage.preserveAspect = true;
+		card = c;
 
-		if (lev > 1)
-			cardLevelText.text = GetRomanNumeral(lev);
+		cardImage.sprite = c.cardSprite;
+		cardImage.preserveAspect = true;
+		cardCost = c.cardCost;
+
+		if (c != null)
+		{
+			cardName = c.cardName;
+			cardLevelText.text = GetRomanNumeral(c.cardLevel);
+		}
 		else
+		{
+			cardName = "";
 			cardLevelText.text = "";
+		}
 	}
 
 	public void OnPointerEnter(PointerEventData eventData)
 	{
 		int siblingIndex = transform.GetSiblingIndex();
-		//fleetCreator.
+		fleetCreator.DemoSlotSprite(cardImage.sprite, siblingIndex);
 	}
 
 	public void OnPointerExit(PointerEventData eventData)
 	{
-		int siblingIndex = transform.GetSiblingIndex();
-		//fleetCreator.
+		fleetCreator.DemoSlotSprite(null, 0);
 	}
 
 	void TaskOnClick()
 	{
 		int siblingIndex = transform.GetSiblingIndex();
-		fleetCreator.Select(siblingIndex);
+		fleetCreator.SelectSpacecraft(siblingIndex);
 	}
 
 	string GetRomanNumeral(int value)

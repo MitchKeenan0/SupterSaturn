@@ -48,3 +48,4 @@ MonoBehaviour:
   cardSprite: {fileID: 21300000, guid: 6c234c9dc9203534b93f4e615e24d416, type: 3}
   cardName: Fighter
   cardLevel: 1
+  cardCost: 250

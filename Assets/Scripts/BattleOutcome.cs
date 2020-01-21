@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class BattleOutcome : MonoBehaviour
 {
 	public GameObject conclusionPanel;
 	public GameObject scorePanel;
+	public GameObject optionPanel;
 	public Text conclusionText;
 	public Text scoreText;
 	public Text lostText;
@@ -25,7 +27,9 @@ public class BattleOutcome : MonoBehaviour
 		player = FindObjectOfType<Player>();
 		conclusionPanel.SetActive(false);
 		scorePanel.SetActive(false);
-    }
+		optionPanel.SetActive(false);
+
+	}
 
 	private IEnumerator UpdateTimescale(float updateInterval)
 	{
@@ -60,16 +64,19 @@ public class BattleOutcome : MonoBehaviour
 		lostText.text = playerLost.ToString();
 		conclusionPanel.SetActive(true);
 		scorePanel.SetActive(true);
+		optionPanel.SetActive(true);
 
+		// player score vs lost
+		player = FindObjectOfType<Player>();
 		if (player != null)
 		{
-			int totalNewChevrons = playerScore - playerLost;
-			player.AddChevrons(totalNewChevrons);
+			int totalNewChevrons = playerScore + playerLost;
+			player.UpdateChevronAccount(totalNewChevrons);
 			totalText.text = player.GetChevrons().ToString();
 		}
 		else
 		{
-			totalText.text = "!nope";
+			totalText.text = "00000";
 		}
 
 		targetTimescale = 0.01f;
@@ -84,5 +91,21 @@ public class BattleOutcome : MonoBehaviour
 		scorePanel.SetActive(false);
 		Time.timeScale = 1;
 		StopAllCoroutines();
+	}
+
+	public void Continue()
+	{
+		SceneManager.LoadScene("CampaignScene");
+	}
+
+	public void Return()
+	{
+		SceneManager.LoadScene("FleetScene");
+	}
+
+	public void ExitGame()
+	{
+		// save
+		Application.Quit();
 	}
 }

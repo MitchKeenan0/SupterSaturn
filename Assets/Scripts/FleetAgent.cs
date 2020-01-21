@@ -5,19 +5,21 @@ using UnityEngine;
 public class FleetAgent : MonoBehaviour
 {
 	private Fleet fleet;
-	private FleetController fleetController;
+	private FleetController playerFleetController;
 	private LocationManager locationManager;
+	private NameLibrary nameLibrary;
 
     void Start()
     {
-		fleet = GetComponent<Fleet>();
-		fleetController = GetComponent<FleetController>();
+		fleet = GetComponentInParent<Fleet>();
 		locationManager = FindObjectOfType<LocationManager>();
+		playerFleetController = GetComponent<FleetController>();
+		nameLibrary = FindObjectOfType<NameLibrary>();
 		InitAgent();
     }
 
 	void InitAgent()
 	{
-		
+		fleet.fleetName = nameLibrary.GetFleetName();
 	}
 }

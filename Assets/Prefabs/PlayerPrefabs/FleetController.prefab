@@ -141,7 +141,7 @@ MonoBehaviour:
   objectPanel: {fileID: 6545458922932986323}
   connectionPrefab: {fileID: 6188276859891317614, guid: 73b3201796e390e4ea2d08bb466d286e,
     type: 3}
-  scoutPanelOffset: {x: 150, y: 0, z: 0}
+  scoutPanelOffset: {x: 120, y: 0, z: 0}
 --- !u!120 &1276637840663844774
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -273,7 +273,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 275, y: 0}
-  m_SizeDelta: {x: 175, y: 50}
+  m_SizeDelta: {x: 175, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4667512492142783899
 CanvasRenderer:

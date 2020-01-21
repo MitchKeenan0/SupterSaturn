@@ -11,6 +11,8 @@ public class NameLibrary : MonoBehaviour
 	public string[] uniqueLocationNames = { "Reccez", "Aqua Nebula", "Karaoke Nebula", "Randal's Cloud", "The Maelstrom", "Teh Garden", "Hydrogean", "Helix Nebula", "Sauna", "Guedes Giant", "Harrow" };
 	public string[] rareLocationNames = { "Family Fortress", "Edne", "Reasearch Base", "Nike", "HG-413", "Lost Temple", "Super Saturn", "Seed of the Stars", "Matrices of Or", "Father Star", "Never", "Empress" };
 
+	public string[] fleetNames = { "Rogue Navy", "Scerzaron", "Thief Cartel", "Herald Fleet", "Bodysnatchers" };
+
 	public List<int> usedCommonLocations;
 	public List<int> usedUniqueLocations;
 	public List<int> usedRareLocations;
@@ -45,11 +47,16 @@ public class NameLibrary : MonoBehaviour
 		}
 
 		int randomIndex = Random.Range(0, nameArray.Length);
-		//while (usedList.Contains(randomIndex))
-		//	randomIndex = Random.Range(0, nameArray.Length);
-
 		string result = nameArray[randomIndex];
 		usedList.Add(randomIndex);
 		return result;
+	}
+
+	public string GetFleetName()
+	{
+		string fleetName = "";
+		int randomIndex = Random.Range(0, fleetNames.Length);
+		fleetName = fleetNames[randomIndex];
+		return fleetName;
 	}
 }

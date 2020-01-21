@@ -18,7 +18,6 @@ public class Fleet : MonoBehaviour
 		fleetController = GetComponentInChildren<FleetController>();
 		foreach (Spacecraft sp in initialFleet)
 			spacecraftList.Add(sp);
-		DontDestroyOnLoad(gameObject);
 	}
 
 	public void SetPosition(Vector3 position)

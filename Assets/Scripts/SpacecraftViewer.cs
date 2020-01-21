@@ -13,6 +13,8 @@ public class SpacecraftViewer : MonoBehaviour
     void Start()
     {
 		displayList = new List<GameObject>();
+		if (spawnWidget == null)
+			spawnWidget = FindObjectOfType<SpawnPositioner>().transform;
 		InitModels();
 		DisplaySpacecraft(0);
     }

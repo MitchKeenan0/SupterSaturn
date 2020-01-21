@@ -66,7 +66,7 @@ MonoBehaviour:
   bAgentStartsEnabled: 1
   mainEnginePower: 0.9
   turningPower: 2
-  maneuverPower: 2
+  maneuverPower: 0.5
   spacecraftName: Corvette
   thrustParticles: {fileID: 2379070149716345965}
   destroyedParticlesPrefab: {fileID: 2766248710761914840, guid: 05469ee24ae991f41b944cbcf9f43ad0,
@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponSpeed: 3000
-  weaponAccuracy: 0.95
+  weaponAccuracy: 5
   munitionPrefab: {fileID: 298334711150030353, guid: 207a3b16d330e8e4db11ab61331570d3,
     type: 3}
   armingParticles: {fileID: 8015741792548370538}

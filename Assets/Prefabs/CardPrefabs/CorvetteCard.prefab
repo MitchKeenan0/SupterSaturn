@@ -48,3 +48,4 @@ MonoBehaviour:
   cardSprite: {fileID: 21300000, guid: 41ff8e5c182c0b74a966d1645779afe9, type: 3}
   cardName: Corvette
   cardLevel: 1
+  cardCost: 500

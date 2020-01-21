@@ -9,6 +9,7 @@ public class Card : MonoBehaviour
 	public Sprite cardSprite;
 	public string cardName = "";
 	public int cardLevel = 1;
+	public int cardCost = 100;
 
 	public GameObject CashIn()
 	{

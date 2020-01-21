@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class LocationHUD : MonoBehaviour
 {
 	public GameObject locationPanel;
+	public Vector3 locationPanelOffset = new Vector3(0f, -50f, 0f);
+	public RectTransform namePanel;
 	public Text locationNameText;
 	public Text locationValueText;
 
@@ -48,11 +50,14 @@ public class LocationHUD : MonoBehaviour
 	{
 		string nameString = highlightedLocation.locationName.ToString();
 		locationNameText.text = nameString;
+		int numCharacters = nameString.Length;
+		float textWidth = (numCharacters + 1) * 10;
+		namePanel.sizeDelta = new Vector2(textWidth, 30f);
+
 		string valueString = highlightedLocation.GetNeighbors().Count.ToString();
-			///highlightedLocation.locationValue.ToString();
 		locationValueText.text = valueString;
 
 		Vector3 locationScreenPosition = cameraMain.WorldToScreenPoint(highlightedLocation.transform.position);
-		locationPanel.transform.position = locationScreenPosition;
+		locationPanel.transform.position = locationScreenPosition + locationPanelOffset;
 	}
 }

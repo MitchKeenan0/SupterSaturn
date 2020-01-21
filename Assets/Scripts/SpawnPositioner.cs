@@ -8,8 +8,11 @@ public class SpawnPositioner : MonoBehaviour
 
     void Start()
     {
-		float distance = transform.position.magnitude;
-		transform.position = Random.onUnitSphere * distance;
-		transform.rotation = Quaternion.Euler(-transform.position);
+		if (bRandomPosition)
+		{
+			float distance = transform.position.magnitude;
+			transform.position = Random.onUnitSphere * distance;
+			transform.rotation = Quaternion.Euler(-transform.position);
+		}
     }
 }

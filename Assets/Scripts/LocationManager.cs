@@ -105,6 +105,25 @@ public class LocationManager : MonoBehaviour
 				}
 			}
 		}
+
+		// backup case to explore all remaining neighbors
+		if (closestLocation == null)
+		{
+			for (int i = 0; i < numNeighbors; i++)
+			{
+				CampaignLocation thisNeighbor = neighbors[i];
+				CampaignLocation stepForward = GetNextNeighbor(thisNeighbor, destination);
+				if ((stepForward != null) && (stepForward != start))
+				{
+					if (stepForward == destination)
+						return start;
+
+					closestLocation = stepForward;
+					break;
+				}
+			}
+		}
+
 		return closestLocation;
 	}
 }

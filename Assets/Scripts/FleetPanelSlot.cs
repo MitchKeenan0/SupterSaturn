@@ -2,24 +2,85 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class FleetPanelSlot : MonoBehaviour
+public class FleetPanelSlot : MonoBehaviour, IDeselectHandler
 {
 	public Image slotImage;
-	public Text slotText;
+	public Text slotNameText;
+	public Text costText;
 
-    public void SetSlot(Sprite sp, string st)
+	private FleetCreator fleetCreator;
+	private Button button;
+	private Sprite originalSprite;
+	private Color originalImageColor;
+	private Color originalCostColor;
+	private Color originalNameColor;
+	private string originalSlotName = "";
+	private int originalSlotCost = 0;
+
+	public int GetCost() { return originalSlotCost; }
+
+	void Start()
 	{
-		slotImage.preserveAspect = true;
+		fleetCreator = GetComponentInParent<FleetCreator>();
+		button = GetComponent<Button>();
+		button.onClick.AddListener(TaskOnClick);
+	}
 
-		if (sp != null)
-			slotImage.sprite = sp;
+	void TaskOnClick()
+	{
+		int myIndex = transform.GetSiblingIndex();
+		fleetCreator.SelectSlot(myIndex);
+	}
+
+	public void OnDeselect(BaseEventData data)
+	{
+		fleetCreator.DeselectSlot();
+		PreviewSlot(null, null, 0);
+	}
+
+	public void PreviewSlot(Sprite sprite, string name, int cost)
+	{
+		if (sprite != null)
+		{
+			slotImage.sprite = sprite;
+			slotNameText.text = name;
+			costText.text = cost.ToString();
+			Color previewColor = new Color(1f, 1f, 1f, 0.5f);
+			slotNameText.color = costText.color = previewColor;
+		}
 		else
+		{
+			slotImage.sprite = originalSprite;
+			slotNameText.text = originalSlotName;
+			costText.text = originalSlotCost.ToString();
+			slotNameText.color = originalNameColor;
+			costText.color = originalCostColor;
+		}
+	}
+
+	public void SetSlot(Card card)
+	{
+		if (card != null)
+		{
+			slotImage.sprite = card.cardSprite;
+			originalImageColor = slotImage.color;
+			originalSprite = card.cardSprite;
+
+			slotNameText.text = card.cardName;
+			originalSlotName = card.cardName;
+			originalNameColor = slotNameText.color;
+
+			costText.text = card.cardCost.ToString();
+			originalCostColor = costText.color;
+			originalSlotCost = card.cardCost;
+		}
+		else
+		{
 			slotImage.enabled = false;
-		
-		if (st != null)
-			slotText.text = st;
-		else
-			slotText.text = "";
+			slotNameText.text = "";
+			slotNameText.text = "";
+		}
 	}
 }

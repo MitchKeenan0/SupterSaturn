@@ -9,6 +9,7 @@ TagManager:
   - Orbiter
   - UI
   - EndTurn
+  - SpawnWidget
   layers:
   - Default
   - TransparentFX

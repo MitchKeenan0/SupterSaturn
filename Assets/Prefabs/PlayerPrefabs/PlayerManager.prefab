@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spacecraftCards:
+  - {fileID: 2348000969105340941, guid: 46dbaead56586184dae9780563da1ee2, type: 3}
   - {fileID: 5883829961090761148, guid: f87ade3d4e2a75641a02aced5dc863f5, type: 3}
   - {fileID: 6284497026650748161, guid: c4d1d9ea973859949819b99569733775, type: 3}
-  - {fileID: 2348000969105340941, guid: 46dbaead56586184dae9780563da1ee2, type: 3}
+  initialChevrons: 1000

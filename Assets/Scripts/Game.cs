@@ -10,11 +10,14 @@ public class Game : MonoBehaviour
 	private Fleet playerFleet;
 	private Fleet enemyFleet;
 
-	//private int currentMission = -1;
+	private void Awake()
+	{
+		DontDestroyOnLoad(gameObject);
+	}
 
 	void Start()
 	{
-		
+		Screen.sleepTimeout = SleepTimeout.NeverSleep;
 	}
 
 	public void FleetCreator()

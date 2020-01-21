@@ -296,7 +296,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponSpeed: 3000
-  weaponAccuracy: 0.95
+  weaponAccuracy: 7
   munitionPrefab: {fileID: 298334711150030353, guid: 70345f5aeca2efd448dac5714d0187c8,
     type: 3}
   armingParticles: {fileID: 1333520053312347335}
