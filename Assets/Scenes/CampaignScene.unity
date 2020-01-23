@@ -165,11 +165,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   teamID: 0
-  initialFleet:
-  - {fileID: 1906621234774554821, guid: 61bd477724389754eb85c84db0ed45c6, type: 3}
-  - {fileID: 1906621234774554821, guid: 7db8bda081199fe47ac71f525c97b994, type: 3}
-  - {fileID: 1906621234774554821, guid: 7db8bda081199fe47ac71f525c97b994, type: 3}
   fleetName: My Fleek
+  fleetCapacity: 3
 --- !u!1 &190490293
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,12 +212,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   teamID: 1
-  initialFleet:
-  - {fileID: 1906621234774554821, guid: 61bd477724389754eb85c84db0ed45c6, type: 3}
-  - {fileID: 1906621234774554821, guid: 7db8bda081199fe47ac71f525c97b994, type: 3}
-  - {fileID: 1906621234774554821, guid: 7db8bda081199fe47ac71f525c97b994, type: 3}
-  - {fileID: 1906621234774554821, guid: b8b87167795a4fb4ab22dee047b4ed1c, type: 3}
   fleetName: Rogue Navy
+  fleetCapacity: 3
 --- !u!1001 &418302641
 PrefabInstance:
   m_ObjectHideFlags: 0

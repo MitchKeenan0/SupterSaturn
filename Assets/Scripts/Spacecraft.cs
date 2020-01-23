@@ -14,6 +14,7 @@ public class Spacecraft : MonoBehaviour
 	public Sprite craftIcon;
 	public Sprite craftDiagram;
 	public float iconScale = 1f;
+	public int numericID = 0;
 
 	private Rigidbody rb;
 	private Agent agent;
@@ -39,6 +40,7 @@ public class Spacecraft : MonoBehaviour
 
 	public bool IsAlive() { return (health != null) && (health.GetHealth() >= 1); }
 
+	public int GetHealth() { return health.GetHealth(); }
 	public float GetHealthPercent() { return Mathf.Floor(health.GetHealth()) / Mathf.Floor(health.maxHealth); }
 
 	public int GetMarks() { return numMarked; }

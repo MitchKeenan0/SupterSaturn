@@ -1,18 +1,39 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-	public GameObject loadingPanel;
+	public GameObject gameLoadingPanel;
+	public GameObject fleetLoadingPanel;
+
+	private Game game;
 
     void Start()
     {
-		loadingPanel.SetActive(false);
-    }
+		gameLoadingPanel.SetActive(false);
+		fleetLoadingPanel.SetActive(false);
+		game = FindObjectOfType<Game>();
+	}
 
-	public void ShowLoading()
+	public void GameLoading()
 	{
-		loadingPanel.SetActive(true);
+		gameLoadingPanel.SetActive(true);
+	}
+
+	public void FleetLoading()
+	{
+		fleetLoadingPanel.SetActive(true);
+	}
+
+	public void StartGame()
+	{
+		SceneManager.LoadScene("CampaignScene");
+	}
+
+	public void FleetCreator()
+	{
+		SceneManager.LoadScene("FleetScene");
 	}
 }

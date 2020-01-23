@@ -15,12 +15,13 @@ public class LocationManager : MonoBehaviour
 	private List<CampaignLocation> allLocations;
 	private List<CampaignLocation> route;
 
+	public List<CampaignLocation> GetAllLocations() { return allLocations; }
+
     void Start()
     {
 		route = new List<CampaignLocation>();
 		campaign = GetComponent<Campaign>();
 		InitLocations();
-		campaign.InitFleetLocations(allLocations);
     }
 
 	void InitLocations()

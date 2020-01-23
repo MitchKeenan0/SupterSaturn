@@ -6,12 +6,13 @@ using UnityEngine.UI;
 
 public class FleetCreator : MonoBehaviour
 {
-	public GameObject backupPlayerPrefab;
 	public GameObject fleetPanel;
 	public GameObject fleetPanelSlotPrefab;
 	public GameObject selectionPanel;
 	public GameObject selectionPanelCardPrefab;
 	public GameObject loadingPanel;
+	public Text playerNameText;
+	public Text placeholderNameText;
 	public Text chevronValueText;
 	public Text chevronBalanceText;
 	public Image chevronDividerImage;
@@ -21,6 +22,7 @@ public class FleetCreator : MonoBehaviour
 	public Color bankruptColor;
 	public Button startGameButton;
 
+	private Game game;
 	private Player player;
 	private SpacecraftViewer spacecraftViewer;
 	private FleetPanelSlot selectedPanelSlot; // :'D
@@ -30,6 +32,13 @@ public class FleetCreator : MonoBehaviour
 	private List<SelectionPanelCard> spacecraftCardList;
 
 	private IEnumerator deselectGraceCoroutine;
+	private IEnumerator loadGraceCoroutine;
+
+	void Awake()
+	{
+		player = FindObjectOfType<Player>();
+		game = FindObjectOfType<Game>();
+	}
 
 	void Start()
     {
@@ -37,22 +46,29 @@ public class FleetCreator : MonoBehaviour
 		panelSlots = new List<FleetPanelSlot>();
 		spacecraftCardList = new List<SelectionPanelCard>();
 		spacecraftViewer = GetComponent<SpacecraftViewer>();
-		player = FindObjectOfType<Player>();
-		if (player == null)
-		{
-			GameObject backupPlayerObject = Instantiate(backupPlayerPrefab, null);
-			player = backupPlayerObject.GetComponent<Player>();
-		}
-		chevronValueText.text = player.GetChevrons().ToString();
-		InitFleetPanel();
+
+		game.LoadGame();
 		InitSelectionPanel();
+		loadGraceCoroutine = LoadWait(0.05f);
+		StartCoroutine(loadGraceCoroutine);
 	}
 
-	// also shares 1st time Player fleet
+	private IEnumerator LoadWait(float waitTime)
+	{
+		yield return new WaitForSeconds(waitTime);
+		InitFleetPanel();
+		UpdateChevronBalance();
+		playerNameText.text = player.playerName;
+		placeholderNameText.text = player.playerName;
+	}
+
 	void InitFleetPanel()
 	{
 		for (int i = 0; i < 8; i++)
 			CreateFleetPanelSlot();
+
+		List<Card> playerSelectedCards = new List<Card>(game.GetSelectedCards());
+		Debug.Log("init fleet panel from " + playerSelectedCards.Count + " selected cards");
 
 		FleetPanelSlot[] fleetPanelSlots = fleetPanel.GetComponentsInChildren<FleetPanelSlot>();
 		int numSlots = fleetPanelSlots.Length;
@@ -60,8 +76,8 @@ public class FleetCreator : MonoBehaviour
 		{
 			FleetPanelSlot panelSlot = fleetPanelSlots[i];
 			Card spacecraftCard = null;
-			if (i < player.spacecraftCards.Length)
-				spacecraftCard = player.spacecraftCards[i];
+			if ((i < playerSelectedCards.Count) && (i < maxSlotsAvailable))
+				spacecraftCard = playerSelectedCards[i];
 
 			panelSlot.SetSlot(spacecraftCard);
 
@@ -71,14 +87,12 @@ public class FleetCreator : MonoBehaviour
 			else
 				panelImage.color = lockedSlotColor;
 		}
-
-		UpdateChevronBalance();
 	}
 
 	void InitSelectionPanel()
 	{
-		Card[] playerSpacecraftCards = player.spacecraftCards;
-		int numCards = playerSpacecraftCards.Length;
+		List<Card> playerSpacecraftCards = game.initialSpacecraftCards;
+		int numCards = playerSpacecraftCards.Count;
 		for(int i = 0; i < numCards; i++)
 		{
 			Card playerCard = playerSpacecraftCards[i];
@@ -94,6 +108,7 @@ public class FleetCreator : MonoBehaviour
 	SelectionPanelCard CreateSelectionCard()
 	{
 		GameObject cardObj = Instantiate(selectionPanelCardPrefab, selectionPanel.transform);
+		cardObj.transform.SetParent(selectionPanel.transform);
 		SelectionPanelCard card = cardObj.GetComponent<SelectionPanelCard>();
 		spacecraftCardList.Add(card);
 		return card;
@@ -112,12 +127,15 @@ public class FleetCreator : MonoBehaviour
 		int total = 0;
 		for(int i = 0; i < maxSlotsAvailable; i++)
 		{
-			int thisCost = panelSlots[i].GetCost();
-			total += thisCost;
+			if (i < panelSlots.Count)
+			{
+				int thisCost = panelSlots[i].GetCost();
+				total += thisCost;
+			}
 		}
 
 		chevronBalanceText.text = total.ToString();
-		if (total > player.GetChevrons())
+		if (total > game.GetChevrons())
 		{
 			startGameButton.interactable = false;
 			chevronBalanceText.color = bankruptColor;
@@ -129,6 +147,8 @@ public class FleetCreator : MonoBehaviour
 			chevronBalanceText.color = moneyColor;
 			chevronDividerImage.color = moneyColor;
 		}
+
+		chevronValueText.text = game.GetChevrons().ToString();
 	}
 
 	private IEnumerator DeselectAfterTime(float waitTime)
@@ -141,7 +161,11 @@ public class FleetCreator : MonoBehaviour
 	public void SelectSlot(int buttonIndex)
 	{
 		selectedPanelSlot = panelSlots[buttonIndex];
-		spacecraftViewer.DisplaySpacecraft(buttonIndex);
+		if (selectedPanelSlot.GetCard() != null)
+		{
+			int displayID = selectedPanelSlot.GetCard().numericID;
+			spacecraftViewer.DisplaySpacecraft(displayID);
+		}
 	}
 
 	public void DeselectSlot()
@@ -175,10 +199,19 @@ public class FleetCreator : MonoBehaviour
 			Card spacecraftCard = spacecraftCardList[buttonIndex].GetCard();
 			selectedPanelSlot.SetSlot(spacecraftCard);
 
+			game.SetSelectedCard(selectedPanelSlot.transform.GetSiblingIndex(), spacecraftCard);
 			UpdateChevronBalance();
+
+			game.SaveGame();
 		}
 	}
-	
+
+	public void SetName(string value)
+	{
+		Debug.Log("Set player name " + value);
+		player.SetName(value);
+	}
+
 	public void StartGame()
 	{
 		loadingPanel.SetActive(true);

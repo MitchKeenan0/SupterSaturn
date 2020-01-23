@@ -86,11 +86,11 @@ public class Autopilot : MonoBehaviour
 	{
 		bExecutingMoveCommand = value;
 
-		if (bExecutingMoveCommand)
+		if (bExecutingMoveCommand && (routeVisualizer != null))
 		{
 			routeVisualizer.SetRouteColor(Color.green);
 		}
-		else
+		else if (spacecraft != null)
 		{
 			routeVisualizer.SetRouteColor(Color.clear);
 			holdPosition = spacecraft.transform.position;

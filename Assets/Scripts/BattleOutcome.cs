@@ -15,6 +15,7 @@ public class BattleOutcome : MonoBehaviour
 	public Text totalText;
 	public float slowMoUpdateInterval = 0.02f;
 
+	private Game game;
 	private Player player;
 	private int playerScore = 0;
 	private int playerLost = 0;
@@ -24,11 +25,11 @@ public class BattleOutcome : MonoBehaviour
 
     void Start()
     {
+		game = FindObjectOfType<Game>();
 		player = FindObjectOfType<Player>();
 		conclusionPanel.SetActive(false);
 		scorePanel.SetActive(false);
 		optionPanel.SetActive(false);
-
 	}
 
 	private IEnumerator UpdateTimescale(float updateInterval)
@@ -67,17 +68,18 @@ public class BattleOutcome : MonoBehaviour
 		optionPanel.SetActive(true);
 
 		// player score vs lost
-		player = FindObjectOfType<Player>();
-		if (player != null)
+		if (game != null)
 		{
 			int totalNewChevrons = playerScore + playerLost;
-			player.UpdateChevronAccount(totalNewChevrons);
-			totalText.text = player.GetChevrons().ToString();
+			game.UpdateChevronAccount(totalNewChevrons);
+			totalText.text = game.GetChevrons().ToString();
 		}
 		else
 		{
 			totalText.text = "00000";
 		}
+
+		game.SaveGame();
 
 		targetTimescale = 0.01f;
 		slowMoCoroutine = UpdateTimescale(slowMoUpdateInterval);
@@ -95,11 +97,13 @@ public class BattleOutcome : MonoBehaviour
 
 	public void Continue()
 	{
+		Reset();
 		SceneManager.LoadScene("CampaignScene");
 	}
 
 	public void Return()
 	{
+		Reset();
 		SceneManager.LoadScene("FleetScene");
 	}
 

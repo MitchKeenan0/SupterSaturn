@@ -4,31 +4,29 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-	public Card[] spacecraftCards;
-	public int initialChevrons = 1000;
+	public string playerName = "No Name";
 
-	private List<Spacecraft> spacecraftList;
+	private Game game;
+	private Player player;
 
-	private int chevrons = 0;
-	public int GetChevrons() { return chevrons; }
-	public void UpdateChevronAccount(int value) { chevrons += value; }
-
-	void Awake()
+	private void Awake()
 	{
-		DontDestroyOnLoad(gameObject);
-		UpdateChevronAccount(initialChevrons);
-		spacecraftList = new List<Spacecraft>();
+		if (player == null)
+		{
+			DontDestroyOnLoad(gameObject);
+			player = this;
+		}
+		else if (game != this)
+		{
+			Destroy(gameObject);
+		}
+
+		game = FindObjectOfType<Game>();
 	}
 
-	public void AddSpacecraft(Spacecraft sp)
+	public void SetName(string name)
 	{
-		if (!spacecraftList.Contains(sp))
-			spacecraftList.Add(sp);
-	}
-
-	public void RemoveSpacecraft(Spacecraft sp)
-	{
-		if (spacecraftList.Contains(sp))
-			spacecraftList.Add(sp);
+		playerName = name;
+		game.SaveGame();
 	}
 }

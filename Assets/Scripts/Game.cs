@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -7,11 +8,46 @@ using UnityEngine.SceneManagement;
 
 public class Game : MonoBehaviour
 {
+	public static Game game;
+
+	public Card[] cardLibrary;
+	public List<Card> initialSpacecraftCards;
+	public int initialChevrons = 1000;
+
+	public List<Card> GetCards() { return availableCardList; }
+	public List<Card> GetSelectedCards() { return selectedCardList; }
+	public List<Spacecraft> GetSpacecraftList() { return spacecraftList; }
+	public void AddCard(Card value) { if (!availableCardList.Contains(value)) { availableCardList.Add(value); } }
+	public int GetChevrons() { return chevrons; }
+	public void UpdateChevronAccount(int value) { chevrons += value; }
+
+	private Player player;
 	private Fleet playerFleet;
 	private Fleet enemyFleet;
+	private List<Card> availableCardList;
+	private List<Card> selectedCardList;
+	private List<Spacecraft> spacecraftList;
+	private int currentMission = 0;
+	private int chevrons = 0;
 
-	private void Awake()
+	void Awake()
 	{
+		if (game == null)
+		{
+			DontDestroyOnLoad(gameObject);
+			game = this;
+		}
+		else if (game != this)
+		{
+			Destroy(gameObject);
+		}
+
+		availableCardList = new List<Card>();
+		selectedCardList = new List<Card>();
+		spacecraftList = new List<Spacecraft>();
+
+		player = FindObjectOfType<Player>();
+
 		DontDestroyOnLoad(gameObject);
 	}
 
@@ -20,109 +56,164 @@ public class Game : MonoBehaviour
 		Screen.sleepTimeout = SleepTimeout.NeverSleep;
 	}
 
-	public void FleetCreator()
+	public void SetSelectedCard(int index, Card card)
 	{
-		SceneManager.LoadScene("FleetScene");
+		if (index < selectedCardList.Count)
+		{
+			selectedCardList[index] = card;
+			//Debug.Log("setting " + index + " with selected card " + card.cardName + " of " + selectedCardList.Count + " selected cards");
+		}
+		else
+		{
+			selectedCardList.Add(card);
+			//Debug.Log("Adding new index " + index + " with selected card " + card.cardName + " of " + selectedCardList.Count + " selected cards");
+		}
 	}
 
-	public void StartGame()
+	public void AddSpacecraft(Spacecraft sp)
 	{
-		SceneManager.LoadScene("CampaignScene");
-	}
-
-	public void SetPlayerFleet(Fleet fleet)
-	{
-		playerFleet = fleet;
-	}
-
-	public void SetEnemyFleet(Fleet fleet)
-	{
-		enemyFleet = fleet;
-	}
-
-	public void SaveGame()
-	{
-		// 1
-		Save save = CreateSaveGameObject();
-
-		// 2
-		BinaryFormatter bf = new BinaryFormatter();
-		FileStream file = File.Create(Application.persistentDataPath + "/gamesave.save");
-		bf.Serialize(file, save);
-		file.Close();
-
-		// 3
-		//currentMission = -1;
-		//shotsText.text = "Shots: " + shots;
-		//hitsText.text = "Hits: " + hits;
-
-		//ClearRobots();
-		//ClearBullets();
-		Debug.Log("Game Saved");
+		spacecraftList.Add(sp);
 	}
 
 	public void LoadGame()
 	{
-		// 1
 		if (File.Exists(Application.persistentDataPath + "/gamesave.save"))
 		{
-			//ClearBullets();
-			//ClearRobots();
-			//RefreshRobots();
-
-			// 2
 			BinaryFormatter bf = new BinaryFormatter();
 			FileStream file = File.Open(Application.persistentDataPath + "/gamesave.save", FileMode.Open);
 			Save save = (Save)bf.Deserialize(file);
 			file.Close();
 
-			// 3
-			//for (int i = 0; i < save.livingTargetPositions.Count; i++)
-			//{
-			//	int position = save.livingTargetPositions[i];
-			//	Target target = targets[position].GetComponent<Target>();
-			//	target.ActivateRobot((RobotTypes)save.livingTargetsTypes[i]);
-			//	target.GetComponent<Target>().ResetDeathTimer();
-			//}
+			// player name
+			if (save.playerName != null)
+			{
+				player.SetName(save.playerName);
+			}
 
-			// 4
-			//shotsText.text = "Shots: " + save.shots;
-			//hitsText.text = "Hits: " + save.hits;
-			//shots = save.shots;
-			//hits = save.hits;
+			// player cards
+			if (save.cardIDList != null)
+			{
+				int savedCardCount = save.cardIDList.Count;
+				for (int i = 0; i < savedCardCount; i++)
+				{
+					SetSelectedCard(i, cardLibrary[save.cardIDList[i]]);
+				}
 
-			Debug.Log("Game Loaded");
+				Debug.Log("Game Loaded");
+			}
+			else
+			{
+				Debug.Log("save cards uninitialized");
+			}
 
-			//Unpause();
+			// health
+			// ...
+
+			// chevrons
+			chevrons = save.chevrons;
+			if (chevrons == 0)
+				chevrons = initialChevrons;
+		}
+	}
+
+	public void SaveGame()
+	{
+		Save save = CreateSaveGameObject();
+		BinaryFormatter bf = new BinaryFormatter();
+		FileStream file = File.Create(Application.persistentDataPath + "/gamesave.save");
+
+		// player name
+		save.playerName = player.playerName;
+
+		// spacecraft cards
+		if (GetSelectedCards().Count > 0)
+		{
+			int numCards = GetSelectedCards().Count;
+			for (int i = 0; i < numCards; i++)
+			{
+				int cardIndex = GetSelectedCards()[i].numericID;
+				if (i < save.cardIDList.Count)
+					save.cardIDList[i] = cardLibrary[cardIndex].numericID;
+				else
+					save.cardIDList.Add(cardLibrary[cardIndex].numericID);
+			}
 		}
 		else
 		{
-			Debug.Log("No game saved!");
+			int numCards = initialSpacecraftCards.Count;
+			for (int i = 0; i < numCards; i++)
+			{
+				save.cardIDList.Add(cardLibrary[i].numericID);
+			}
 		}
+
+		// spacecraft health
+		int numSpacecraft = spacecraftList.Count;
+		for (int i = 0; i < numSpacecraft; i++)
+			save.spacecraftHealthList.Add(spacecraftList[i].GetHealth());
+
+		// chevrons
+		save.chevrons = game.GetChevrons();
+
+		bf.Serialize(file, save);
+		file.Close();
+
+		Debug.Log("Game Saved");
 	}
 
 	private Save CreateSaveGameObject()
 	{
 		Save save = new Save();
 
-		//foreach (GameObject targetGameObject in targets)
-		//{
-		//	Target target = targetGameObject.GetComponent<Target>();
-		//	if (target.activeRobot != null)
-		//	{
-		//		save.livingTargetPositions.Add(target.position);
-		//		save.livingTargetsTypes.Add((int)target.activeRobot.GetComponent<Robot>().type);
-		//	}
-		//}
+		save.cardIDList = new List<int>();
+		save.spacecraftHealthList = new List<int>();
 
-		//save.hits = hits;
-		//save.shots = shots;
+		// player name
+		save.playerName = player.playerName;
+
+		// spacecraft cards
+		if (GetSelectedCards().Count > 0)
+		{
+			int numCards = GetSelectedCards().Count;
+			for (int i = 0; i < numCards; i++)
+				save.cardIDList.Add(cardLibrary[GetSelectedCards()[i].numericID].numericID);
+		}
+		else
+		{
+			int numCards = initialSpacecraftCards.Count;
+			for (int i = 0; i < numCards; i++)
+			{
+				int initialCardID = initialSpacecraftCards[i].numericID;
+				save.cardIDList.Add(initialCardID);
+			}
+		}
+
+		// spacecraft health
+		int numSpacecraft = spacecraftList.Count;
+		for(int i = 0; i < numSpacecraft; i++)
+			save.spacecraftHealthList.Add(spacecraftList[i].GetHealth());
+
+		// chevrons
+		save.chevrons = game.GetChevrons();
 
 		return save;
 	}
 
-	public void RestartLevel()
+	private string GetSaveFilePath
 	{
-		SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
+		get { return Application.persistentDataPath + "/gamesave.save"; }
+	}
+
+	public void DeleteSave()
+	{
+		try
+		{
+			File.Delete(GetSaveFilePath);
+			Debug.Log("save deleted");
+		}
+		catch (Exception ex)
+		{
+			Debug.LogException(ex);
+		}
 	}
 }

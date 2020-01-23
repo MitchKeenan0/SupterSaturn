@@ -20,6 +20,8 @@ public class FleetHUD : MonoBehaviour
 
 	public List<Fleet> GetFleetList() { return fleetList; }
 
+	private IEnumerator loadWaitCoroutine;
+
 	void Awake()
 	{
 		fleetList = new List<Fleet>();
@@ -43,7 +45,8 @@ public class FleetHUD : MonoBehaviour
 			}
 		}
 
-		InitPanels();
+		loadWaitCoroutine = LoadWait(0.1f);
+		StartCoroutine(loadWaitCoroutine);
 	}
 
 	void Update()
@@ -61,10 +64,6 @@ public class FleetHUD : MonoBehaviour
 		{
 			Vector3 fleetScreenPosition = cameraMain.WorldToScreenPoint(panel.GetFleet().transform.position);
 			panel.transform.position = fleetScreenPosition + panelOffset;
-		}
-		else
-		{
-			Debug.Log("no fleet to update screen position");
 		}
 	}
 
@@ -101,5 +100,11 @@ public class FleetHUD : MonoBehaviour
 		FleetPanel panel = panelObject.GetComponent<FleetPanel>();
 		panelList.Add(panel);
 		return panel;
+	}
+
+	private IEnumerator LoadWait(float waitTime)
+	{
+		yield return new WaitForSeconds(waitTime);
+		InitPanels();
 	}
 }

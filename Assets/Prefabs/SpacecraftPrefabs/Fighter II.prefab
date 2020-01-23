@@ -228,6 +228,7 @@ MonoBehaviour:
   craftIcon: {fileID: 21300000, guid: 7606e305b2c934f4099c294aaae99948, type: 3}
   craftDiagram: {fileID: 21300000, guid: 7c280c71bce91a4448becdb221d9ff76, type: 3}
   iconScale: 25
+  numericID: 2
 --- !u!114 &2482138470350234215
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -58,11 +58,8 @@ public class FleetController : MonoBehaviour
 	public void SetTargetLocation(CampaignLocation location)
 	{
 		targetLocation = location;
-		if (targetLocation == null)
-		{
+		if (location == null)
 			moveLocation = null;
-			Debug.Log("Set move location null");
-		}
 	}
 
 	public void StandbyMove(CampaignLocation location)
@@ -104,7 +101,6 @@ public class FleetController : MonoBehaviour
 		scout.Undo();
 		scoutLocation = null;
 		ClearLines();
-		Debug.Log("Undo");
 	}
 	
 	private IEnumerator FleetMove(float updateInterval)

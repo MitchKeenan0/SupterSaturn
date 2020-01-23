@@ -9,7 +9,7 @@ public class FleetAgent : MonoBehaviour
 	private LocationManager locationManager;
 	private NameLibrary nameLibrary;
 
-    void Start()
+    void Awake()
     {
 		fleet = GetComponentInParent<Fleet>();
 		locationManager = FindObjectOfType<LocationManager>();

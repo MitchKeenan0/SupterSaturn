@@ -5,8 +5,8 @@ using UnityEngine;
 [System.Serializable]
 public class Save
 {
-	public Fleet playerFleet = null;
-	public Fleet enemyFleet = null;
-
-	public int currentMission = 0;
+	public string playerName;
+	public List<int> cardIDList;
+	public List<int> spacecraftHealthList;
+	public int chevrons = 0;
 }

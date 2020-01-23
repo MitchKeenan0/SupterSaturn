@@ -51,6 +51,8 @@ public class LocationHUD : MonoBehaviour
 		string nameString = highlightedLocation.locationName.ToString();
 		locationNameText.text = nameString;
 		int numCharacters = nameString.Length;
+		if ((numCharacters == 4) || (numCharacters == 5))
+			nameString += " ";
 		float textWidth = (numCharacters + 1) * 10;
 		namePanel.sizeDelta = new Vector2(textWidth, 30f);
 

@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 
 public class FleetPanelSlot : MonoBehaviour, IDeselectHandler
 {
+	public Card slotCard;
 	public Image slotImage;
 	public Text slotNameText;
 	public Text costText;
@@ -19,6 +20,7 @@ public class FleetPanelSlot : MonoBehaviour, IDeselectHandler
 	private string originalSlotName = "";
 	private int originalSlotCost = 0;
 
+	public Card GetCard() { return slotCard; }
 	public int GetCost() { return originalSlotCost; }
 
 	void Start()
@@ -62,6 +64,7 @@ public class FleetPanelSlot : MonoBehaviour, IDeselectHandler
 
 	public void SetSlot(Card card)
 	{
+		slotCard = card;
 		if (card != null)
 		{
 			slotImage.sprite = card.cardSprite;

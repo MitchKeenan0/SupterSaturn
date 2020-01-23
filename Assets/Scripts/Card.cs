@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class Card : MonoBehaviour
 {
+	public int numericID = 0;
 	public GameObject cardObjectPrefab;
 	public Sprite cardSprite;
 	public string cardName = "";
