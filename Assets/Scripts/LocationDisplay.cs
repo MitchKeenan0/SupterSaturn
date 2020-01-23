@@ -44,9 +44,10 @@ public class LocationDisplay : MonoBehaviour
 
 	public void Scout()
 	{
-		if ((displayLocation != null) && (playerFleetController != null) 
-			&& (!turnManager.TurnActionTaken() || SameAction(0)))
+		if ((displayLocation != null) && (playerFleetController != null))
 		{
+			if (turnManager.TurnActionTaken())
+				Undo();
 			playerFleetController.StandbyScout(displayLocation);
 			if ((Time.time - timeAtLastClick) < 1f)
 				turnManager.EndTurn();
@@ -58,9 +59,10 @@ public class LocationDisplay : MonoBehaviour
 
 	public void MoveTo()
 	{
-		if ((displayLocation != null) && (playerFleetController != null) 
-			&& (!turnManager.TurnActionTaken() || SameAction(1)))
+		if ((displayLocation != null) && (playerFleetController != null))
 		{
+			if (turnManager.TurnActionTaken())
+				Undo();
 			playerFleetController.StandbyMove(displayLocation);
 			if ((Time.time - timeAtLastClick) < 1f)
 				turnManager.EndTurn();
@@ -73,6 +75,7 @@ public class LocationDisplay : MonoBehaviour
 	public void Undo()
 	{
 		lastActionTaken = -1;
+		playerFleetController.Undo();
 	}
 
 	bool SameAction(int actionID)

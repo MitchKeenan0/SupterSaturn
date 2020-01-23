@@ -10,19 +10,32 @@ public class ObjectManager : MonoBehaviour
 	public List<Gravity> GetGravityList() { return gravityList; }
 	private List<Gravity> gravityList;
 
+	private Game game;
 	private CraftIconHUD hud;
 	private BattleOutcome battleOutcome;
 
+	private IEnumerator loadWaitCoroutine;
+
 	void Awake()
-    {
-		InitSpacecraftList();
-		InitGravityList();
-    }
+	{
+		game = FindObjectOfType<Game>();
+	}
 
 	void Start()
 	{
+		game.LoadGame();
 		hud = FindObjectOfType<CraftIconHUD>();
 		battleOutcome = FindObjectOfType<BattleOutcome>();
+
+		loadWaitCoroutine = LoadWait(0.15f);
+		StartCoroutine(loadWaitCoroutine);
+	}
+
+	private IEnumerator LoadWait(float waitTime)
+	{
+		yield return new WaitForSeconds(waitTime);
+		InitSpacecraftList();
+		InitGravityList();
 	}
 
 	void InitSpacecraftList()
@@ -50,7 +63,8 @@ public class ObjectManager : MonoBehaviour
 		int numSpacecraft = spacecraftList.Count;
 		int numTeam = 0;
 		int numEnemy = 0;
-		for(int i = 0; i < numSpacecraft; i++)
+
+		for (int i = 0; i < numSpacecraft; i++)
 		{
 			Spacecraft sp = spacecraftList[i];
 			if (sp.GetAgent().teamID == 0)

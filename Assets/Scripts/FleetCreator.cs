@@ -49,15 +49,18 @@ public class FleetCreator : MonoBehaviour
 
 		game.LoadGame();
 		InitSelectionPanel();
-		loadGraceCoroutine = LoadWait(0.05f);
+		loadGraceCoroutine = LoadWait(0.2f);
 		StartCoroutine(loadGraceCoroutine);
 	}
 
 	private IEnumerator LoadWait(float waitTime)
 	{
 		yield return new WaitForSeconds(waitTime);
+
 		InitFleetPanel();
+
 		UpdateChevronBalance();
+
 		playerNameText.text = player.playerName;
 		placeholderNameText.text = player.playerName;
 	}
@@ -68,11 +71,11 @@ public class FleetCreator : MonoBehaviour
 			CreateFleetPanelSlot();
 
 		List<Card> playerSelectedCards = new List<Card>(game.GetSelectedCards());
-		Debug.Log("init fleet panel from " + playerSelectedCards.Count + " selected cards");
-		// hold up for a minute
-		foreach (Card c in playerSelectedCards)
-			Debug.Log("-- " + c.cardName);
-		//
+		//Debug.Log("init fleet panel from " + playerSelectedCards.Count + " selected cards");
+		//foreach (Card c in playerSelectedCards)
+		//Debug.Log("-- " + c.cardName);
+		if (playerSelectedCards.Count == 0)
+			playerSelectedCards = game.initialSpacecraftCards;
 
 		FleetPanelSlot[] fleetPanelSlots = fleetPanel.GetComponentsInChildren<FleetPanelSlot>();
 		int numSlots = fleetPanelSlots.Length;
@@ -90,6 +93,11 @@ public class FleetCreator : MonoBehaviour
 				panelImage.color = availableSlotColor;
 			else
 				panelImage.color = lockedSlotColor;
+
+			if ((i == 0) && (spacecraftCard != null))
+			{
+				spacecraftViewer.DisplaySpacecraft(spacecraftCard.numericID);
+			}
 		}
 	}
 
@@ -220,11 +228,13 @@ public class FleetCreator : MonoBehaviour
 	public void StartGame()
 	{
 		loadingPanel.SetActive(true);
+		game.SaveGame();
 		SceneManager.LoadScene("CampaignScene");
 	}
 
 	public void BackToMenu()
 	{
+		game.SaveGame();
 		SceneManager.LoadScene("BaseScene");
 	}
 }

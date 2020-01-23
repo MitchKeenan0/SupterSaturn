@@ -148,12 +148,6 @@ public class Spacecraft : MonoBehaviour
 			battleOutcome.AddLost(health.maxHealth);
 		}
 
-		if (agent != null)
-		{
-			agent.AgentSpacecraftDestroyed();
-			agent.SetEnabled(false);
-		}
-
 		GridVisualizer grid = GetComponentInChildren<GridVisualizer>();
 		if (grid != null)
 		{
@@ -175,7 +169,13 @@ public class Spacecraft : MonoBehaviour
 		TargetPredictionHUD predictionHud = FindObjectOfType<TargetPredictionHUD>();
 		predictionHud.SetPrediction(this, Vector3.zero, Vector3.zero, 0f);
 
-		Destroy(gameObject, 0.15f);
+		if (agent != null)
+		{
+			agent.AgentSpacecraftDestroyed();
+			agent.SetEnabled(false);
+		}
+
+		Destroy(gameObject, 0.2f);
 	}
 
 	public void AddMarkValue(int value)

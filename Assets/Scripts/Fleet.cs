@@ -38,6 +38,8 @@ public class Fleet : MonoBehaviour
 	void InitSavedFleet()
 	{
 		fleetName = player.playerName;
+		if (fleetName == "")
+			fleetName = "No Name";
 
 		List<Card> cards = new List<Card>(game.GetSelectedCards());
 		int numCards = cards.Count;

@@ -22,13 +22,17 @@ public class Scout : MonoBehaviour
 	private IEnumerator movementCoroutine;
 	private IEnumerator screenUpdateCoroutine;
 
-    void Start()
-    {
+	void Awake()
+	{
 		turnManager = FindObjectOfType<TurnManager>();
 		fleetController = GetComponent<FleetController>();
 		lineRenderer = GetComponent<LineRenderer>();
 		lineRenderer.enabled = false;
 		cameraMain = Camera.main;
+	}
+
+	void Start()
+    {
 		scoutPanel.SetActive(false);
 		scoutObject.SetActive(false);
 		objectPanel.SetActive(false);
@@ -68,13 +72,10 @@ public class Scout : MonoBehaviour
 
 	public void Undo()
 	{
-		if (scoutObject.activeInHierarchy)
-		{
-			scoutPanel.SetActive(false);
-			StopCoroutine(screenUpdateCoroutine);
-			scoutObject.SetActive(false);
-		}
-		
+		scoutPanel.SetActive(false);
+		StopAllCoroutines();
+		scoutObject.SetActive(false);
+
 		lineRenderer.enabled = false;
 		originLocation = null;
 		scoutLocation = null;

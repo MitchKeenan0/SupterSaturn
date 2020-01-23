@@ -18,10 +18,10 @@ public class Campaign : MonoBehaviour
 		locationList = new List<CampaignLocation>();
 		fleetList = new List<Fleet>();
 		cameraMain = Camera.main;
+		game = FindObjectOfType<Game>();
 		fleetHud = FindObjectOfType<FleetHUD>();
 		campaignBattle = FindObjectOfType<CampaignBattle>();
 		locationManager = FindObjectOfType<LocationManager>();
-		game = FindObjectOfType<Game>();
     }
 
 	void Start()

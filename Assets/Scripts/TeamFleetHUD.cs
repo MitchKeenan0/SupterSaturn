@@ -35,7 +35,7 @@ public class TeamFleetHUD : MonoBehaviour
 		objectManager = FindObjectOfType<ObjectManager>();
 		mouseSelection = FindObjectOfType<MouseSelection>();
 
-		loadWaitCoroutine = LoadWait(0.1f);
+		loadWaitCoroutine = LoadWait(0.25f);
 		StartCoroutine(loadWaitCoroutine);
     }
 
@@ -53,8 +53,10 @@ public class TeamFleetHUD : MonoBehaviour
 
 		// team
 		spacecraftList = objectManager.GetSpacecraftList();
-		foreach (Spacecraft sp in spacecraftList)
+		int numSpacecraft = spacecraftList.Count;
+		for(int i = 0; i < numSpacecraft; i++)
 		{
+			Spacecraft sp = spacecraftList[i];
 			if ((sp != null) && (sp.GetAgent() != null) && !sp.CompareTag("Orbiter"))
 			{
 				if (sp.GetAgent().teamID == 0)

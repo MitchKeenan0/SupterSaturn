@@ -170,7 +170,7 @@ PrefabInstance:
     - target: {fileID: 8940093166553308637, guid: 63e6342632b5d2949af6e854e7a14da2,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8940093166553308637, guid: 63e6342632b5d2949af6e854e7a14da2,
         type: 3}
@@ -378,7 +378,7 @@ MonoBehaviour:
   xForceDirection: 0
   yForceDirection: -0.3
   zForceDirection: 0
-  speedMultiplier: 0.01
+  speedMultiplier: 1
   worldPivot: 0
 --- !u!1001 &1334032808
 PrefabInstance:
@@ -565,7 +565,7 @@ PrefabInstance:
     - target: {fileID: 1850120577657389075, guid: fe77c58983fd1a945870458e0cb7e1d1,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1850120577657389075, guid: fe77c58983fd1a945870458e0cb7e1d1,
         type: 3}

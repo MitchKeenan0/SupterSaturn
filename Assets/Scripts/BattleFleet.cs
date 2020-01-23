@@ -20,8 +20,7 @@ public class BattleFleet : MonoBehaviour
 
     void Start()
     {
-		game.LoadGame();
-		loadWaitCoroutine = LoadWait(0.2f);
+		loadWaitCoroutine = LoadWait(0.05f);
 		StartCoroutine(loadWaitCoroutine);
 	}
 

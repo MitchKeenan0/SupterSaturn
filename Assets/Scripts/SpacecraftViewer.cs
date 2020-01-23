@@ -7,16 +7,17 @@ public class SpacecraftViewer : MonoBehaviour
 	public GameObject[] displayPrefabs;
 	public Transform spawnWidget;
 
+	private Game game;
 	private List<GameObject> displayList;
 	private GameObject currentObject;
 
     void Start()
     {
 		displayList = new List<GameObject>();
+		game = FindObjectOfType<Game>();
 		if (spawnWidget == null)
 			spawnWidget = FindObjectOfType<SpawnPositioner>().transform;
 		InitModels();
-		DisplaySpacecraft(0);
     }
 
 	void InitModels()

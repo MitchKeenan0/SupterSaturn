@@ -47,8 +47,10 @@ public class Game : MonoBehaviour
 		spacecraftList = new List<Spacecraft>();
 
 		player = FindObjectOfType<Player>();
+		chevrons = initialChevrons;
 
 		DontDestroyOnLoad(gameObject);
+		Application.targetFrameRate = 70;
 	}
 
 	void Start()
@@ -91,15 +93,13 @@ public class Game : MonoBehaviour
 			}
 
 			// player cards
-			if (save.cardIDList != null)
+			if (save.cardIDList.Count > 0)
 			{
 				int savedCardCount = save.cardIDList.Count;
 				for (int i = 0; i < savedCardCount; i++)
 				{
 					SetSelectedCard(i, cardLibrary[save.cardIDList[i]]);
 				}
-
-				Debug.Log("Game Loaded");
 			}
 			else
 			{
@@ -113,6 +113,8 @@ public class Game : MonoBehaviour
 			chevrons = save.chevrons;
 			if (chevrons == 0)
 				chevrons = initialChevrons;
+
+			Debug.Log("Game Loaded");
 		}
 	}
 

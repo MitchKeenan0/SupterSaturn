@@ -13,6 +13,7 @@ public class BattleOutcome : MonoBehaviour
 	public Text scoreText;
 	public Text lostText;
 	public Text totalText;
+	public Text playerNameText;
 	public float slowMoUpdateInterval = 0.02f;
 
 	private Game game;
@@ -21,8 +22,6 @@ public class BattleOutcome : MonoBehaviour
 	private int playerLost = 0;
 	private float targetTimescale = 1;
 
-	private IEnumerator slowMoCoroutine;
-
     void Start()
     {
 		game = FindObjectOfType<Game>();
@@ -30,17 +29,6 @@ public class BattleOutcome : MonoBehaviour
 		conclusionPanel.SetActive(false);
 		scorePanel.SetActive(false);
 		optionPanel.SetActive(false);
-	}
-
-	private IEnumerator UpdateTimescale(float updateInterval)
-	{
-		while (true)
-		{
-			yield return new WaitForSeconds(updateInterval);
-			float current = Time.timeScale;
-			float lerped = Mathf.Lerp(current, targetTimescale, updateInterval);
-			Time.timeScale = lerped;
-		}
 	}
 
 	public void AddScore(int value)
@@ -63,11 +51,14 @@ public class BattleOutcome : MonoBehaviour
 			conclusionText.text = "DEFEAT";
 		scoreText.text = playerScore.ToString();
 		lostText.text = playerLost.ToString();
+		playerNameText.text = player.playerName;
 		conclusionPanel.SetActive(true);
 		scorePanel.SetActive(true);
 		optionPanel.SetActive(true);
 
-		// player score vs lost
+		if (!game)
+			game = FindObjectOfType<Game>();
+
 		if (game != null)
 		{
 			int totalNewChevrons = playerScore + playerLost;
@@ -80,10 +71,6 @@ public class BattleOutcome : MonoBehaviour
 		}
 		
 		game.SaveGame();
-
-		targetTimescale = 0.01f;
-		slowMoCoroutine = UpdateTimescale(slowMoUpdateInterval);
-		StartCoroutine(slowMoCoroutine);
 	}
 
 	public void Reset()
@@ -91,8 +78,6 @@ public class BattleOutcome : MonoBehaviour
 		playerScore = playerLost = 0;
 		conclusionPanel.SetActive(false);
 		scorePanel.SetActive(false);
-		Time.timeScale = 1;
-		StopAllCoroutines();
 	}
 
 	public void Continue()
@@ -109,7 +94,6 @@ public class BattleOutcome : MonoBehaviour
 
 	public void ExitGame()
 	{
-		// save
 		Application.Quit();
 	}
 }

@@ -118,8 +118,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dabfe2d774b1f84b8ae8fe69d162b0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fleetMoveSpeed: 5
-  movementUpdateInterval: 0.02
+  fleetMoveSpeed: 10
+  movementUpdateInterval: 0.01
   scoutingLine: {fileID: 6057634213681515992}
   movementLine: {fileID: 822760151329876191}
 --- !u!114 &3896850225172133879
@@ -134,8 +134,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38cbbd32764d1454fb000093dfea4f89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoutMoveSpeed: 5
-  updateInterval: 0.02
+  scoutMoveSpeed: 15
+  updateInterval: 0.01
   scoutPanel: {fileID: 3258561388806702788}
   scoutObject: {fileID: 8303938685219236346}
   objectPanel: {fileID: 6545458922932986323}

@@ -23,9 +23,10 @@ public class Rotator : MonoBehaviour
 
 	void Update()
 	{
-		transform.Rotate(xForceDirection * speedMultiplier
-							, yForceDirection * speedMultiplier
-							, zForceDirection * speedMultiplier
+		float deltaSpeed = Time.deltaTime * speedMultiplier;
+		transform.Rotate(xForceDirection * deltaSpeed
+							, yForceDirection * deltaSpeed
+							, zForceDirection * deltaSpeed
 							, spacePivot);
 	}
 
