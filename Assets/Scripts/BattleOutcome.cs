@@ -78,7 +78,7 @@ public class BattleOutcome : MonoBehaviour
 		{
 			totalText.text = "00000";
 		}
-
+		
 		game.SaveGame();
 
 		targetTimescale = 0.01f;

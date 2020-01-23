@@ -43,12 +43,15 @@ public class TargetPredictionHUD : MonoBehaviour
 	void InitPredictionPool()
 	{
 		predictionList = new List<Prediction>();
-		enemyList = teamFleetHud.GetEnemyList();
-		int numTargets = enemyList.Count;
-		for (int i = 0; i < numTargets; i++)
+		if ((teamFleetHud != null) && (teamFleetHud.GetEnemyList().Count > 0))
 		{
-			Prediction pre = CreateNewPrediction();
-			pre.SetPrediction(enemyList[i], Vector3.zero, Vector3.zero, 0f);
+			enemyList = teamFleetHud.GetEnemyList();
+			int numTargets = enemyList.Count;
+			for (int i = 0; i < numTargets; i++)
+			{
+				Prediction pre = CreateNewPrediction();
+				pre.SetPrediction(enemyList[i], Vector3.zero, Vector3.zero, 0f);
+			}
 		}
 	}
 

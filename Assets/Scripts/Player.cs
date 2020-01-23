@@ -27,6 +27,5 @@ public class Player : MonoBehaviour
 	public void SetName(string name)
 	{
 		playerName = name;
-		game.SaveGame();
 	}
 }

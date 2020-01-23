@@ -69,6 +69,10 @@ public class FleetCreator : MonoBehaviour
 
 		List<Card> playerSelectedCards = new List<Card>(game.GetSelectedCards());
 		Debug.Log("init fleet panel from " + playerSelectedCards.Count + " selected cards");
+		// hold up for a minute
+		foreach (Card c in playerSelectedCards)
+			Debug.Log("-- " + c.cardName);
+		//
 
 		FleetPanelSlot[] fleetPanelSlots = fleetPanel.GetComponentsInChildren<FleetPanelSlot>();
 		int numSlots = fleetPanelSlots.Length;
@@ -202,6 +206,7 @@ public class FleetCreator : MonoBehaviour
 			game.SetSelectedCard(selectedPanelSlot.transform.GetSiblingIndex(), spacecraftCard);
 			UpdateChevronBalance();
 
+			Debug.Log("Fleet creator's select spacecraft calling save");
 			game.SaveGame();
 		}
 	}

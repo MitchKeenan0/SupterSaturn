@@ -20,25 +20,39 @@ public class TeamFleetHUD : MonoBehaviour
 	private List<Button> teamButtonList;
 	private float timeOfLastButtonPress = 0f;
 
+	private IEnumerator loadWaitCoroutine;
+
+	void Awake()
+	{
+		spacecraftList = new List<Spacecraft>();
+		teamList = new List<Spacecraft>();
+		enemyList = new List<Spacecraft>();
+	}
+
 	void Start()
     {
-		spacecraftList = new List<Spacecraft>();
 		cameraController = FindObjectOfType<CameraController>();
 		objectManager = FindObjectOfType<ObjectManager>();
 		mouseSelection = FindObjectOfType<MouseSelection>();
-		InitTeamFleet();
+
+		loadWaitCoroutine = LoadWait(0.1f);
+		StartCoroutine(loadWaitCoroutine);
     }
+
+	private IEnumerator LoadWait(float waitTime)
+	{
+		yield return new WaitForSeconds(waitTime);
+		InitTeamFleet();
+	}
 
 	// Internal functions
 	void InitTeamFleet()
 	{
-		teamList = new List<Spacecraft>();
 		teamImageList = new List<Image>();
 		teamButtonList = new List<Button>();
 
 		// team
 		spacecraftList = objectManager.GetSpacecraftList();
-		enemyList = new List<Spacecraft>();
 		foreach (Spacecraft sp in spacecraftList)
 		{
 			if ((sp != null) && (sp.GetAgent() != null) && !sp.CompareTag("Orbiter"))

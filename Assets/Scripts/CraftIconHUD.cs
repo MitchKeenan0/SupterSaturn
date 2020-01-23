@@ -15,11 +15,14 @@ public class CraftIconHUD : MonoBehaviour
 	private List<Image> iconImageList;
 	private List<Image> healthBarList;
 
+	private IEnumerator loadWaitCoroutine;
+
 	void Start()
     {
 		cameraMain = Camera.main;
 		objectManager = FindObjectOfType<ObjectManager>();
-		InitIconFleet();
+		loadWaitCoroutine = LoadWait(0.1f);
+		StartCoroutine(loadWaitCoroutine);
     }
 
 	void OnGUI()
@@ -87,6 +90,12 @@ public class CraftIconHUD : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	private IEnumerator LoadWait(float waitTime)
+	{
+		yield return new WaitForSeconds(waitTime);
+		InitIconFleet();
 	}
 
 	void InitIconFleet()
