@@ -13,6 +13,7 @@ public class Scout : MonoBehaviour
 	public Vector3 scoutPanelOffset = new Vector3(50f, 0f, 0f);
 
 	private TurnManager turnManager;
+	private LocationManager locationManager;
 	private FleetController fleetController;
 	private CampaignLocation originLocation;
 	private CampaignLocation scoutLocation;
@@ -25,6 +26,7 @@ public class Scout : MonoBehaviour
 	void Awake()
 	{
 		turnManager = FindObjectOfType<TurnManager>();
+		locationManager = FindObjectOfType<LocationManager>();
 		fleetController = GetComponent<FleetController>();
 		lineRenderer = GetComponent<LineRenderer>();
 		lineRenderer.enabled = false;
@@ -52,6 +54,11 @@ public class Scout : MonoBehaviour
 
 		screenUpdateCoroutine = ScreenPosition(updateInterval);
 		StartCoroutine(screenUpdateCoroutine);
+	}
+
+	public void GetScoutSuccessProbablity()
+	{
+
 	}
 
 	public void ScoutLocation(CampaignLocation origin, CampaignLocation scout)

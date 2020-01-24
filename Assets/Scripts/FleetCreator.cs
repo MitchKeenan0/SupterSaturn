@@ -21,12 +21,14 @@ public class FleetCreator : MonoBehaviour
 	public Color moneyColor;
 	public Color bankruptColor;
 	public Button startGameButton;
+	public Button emptyButton;
+	public Button emptyAllButton;
 
 	private Game game;
 	private Player player;
 	private SpacecraftViewer spacecraftViewer;
 	private FleetPanelSlot selectedPanelSlot; // :'D
-	private int maxSlotsAvailable = 3;
+	private int maxSlotsAvailable = 5;
 
 	private List<FleetPanelSlot> panelSlots;
 	private List<SelectionPanelCard> spacecraftCardList;
@@ -42,13 +44,14 @@ public class FleetCreator : MonoBehaviour
 
 	void Start()
     {
-		loadingPanel.SetActive(false);
 		panelSlots = new List<FleetPanelSlot>();
 		spacecraftCardList = new List<SelectionPanelCard>();
 		spacecraftViewer = GetComponent<SpacecraftViewer>();
 
 		game.LoadGame();
-		InitSelectionPanel();
+		emptyButton.interactable = false;
+		loadingPanel.SetActive(true);
+		
 		loadGraceCoroutine = LoadWait(0.2f);
 		StartCoroutine(loadGraceCoroutine);
 	}
@@ -57,12 +60,13 @@ public class FleetCreator : MonoBehaviour
 	{
 		yield return new WaitForSeconds(waitTime);
 
+		InitSelectionPanel();
 		InitFleetPanel();
-
 		UpdateChevronBalance();
 
-		playerNameText.text = player.playerName;
 		placeholderNameText.text = player.playerName;
+
+		loadingPanel.SetActive(false);
 	}
 
 	void InitFleetPanel()
@@ -167,6 +171,7 @@ public class FleetCreator : MonoBehaviour
 	{
 		yield return new WaitForSeconds(waitTime);
 		selectedPanelSlot = null;
+		emptyButton.interactable = false;
 	}
 
 	// UI Button functions
@@ -177,6 +182,7 @@ public class FleetCreator : MonoBehaviour
 		{
 			int displayID = selectedPanelSlot.GetCard().numericID;
 			spacecraftViewer.DisplaySpacecraft(displayID);
+			emptyButton.interactable = true;
 		}
 	}
 
@@ -210,13 +216,36 @@ public class FleetCreator : MonoBehaviour
 		{
 			Card spacecraftCard = spacecraftCardList[buttonIndex].GetCard();
 			selectedPanelSlot.SetSlot(spacecraftCard);
-
 			game.SetSelectedCard(selectedPanelSlot.transform.GetSiblingIndex(), spacecraftCard);
 			UpdateChevronBalance();
-
-			Debug.Log("Fleet creator's select spacecraft calling save");
 			game.SaveGame();
 		}
+	}
+
+	public void EmptySlot()
+	{
+		if (selectedPanelSlot != null)
+		{
+			selectedPanelSlot.SetSlot(null);
+			int slotIndex = selectedPanelSlot.transform.GetSiblingIndex();
+			game.RemoveSelectedCard(slotIndex);
+			UpdateChevronBalance();
+			game.SaveGame();
+		}
+	}
+
+	public void EmptyAll()
+	{
+		selectedPanelSlot.SetSlot(null);
+		int numSlots = game.GetSelectedCards().Count;
+		for (int i = 0; i < numSlots; i++)
+		{
+			int slotIndex = selectedPanelSlot.transform.GetSiblingIndex();
+			game.RemoveSelectedCard(slotIndex);
+		}
+		
+		UpdateChevronBalance();
+		game.SaveGame();
 	}
 
 	public void SetName(string value)

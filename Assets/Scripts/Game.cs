@@ -47,7 +47,6 @@ public class Game : MonoBehaviour
 		spacecraftList = new List<Spacecraft>();
 
 		player = FindObjectOfType<Player>();
-		chevrons = initialChevrons;
 
 		DontDestroyOnLoad(gameObject);
 		Application.targetFrameRate = 70;
@@ -72,6 +71,11 @@ public class Game : MonoBehaviour
 		}
 	}
 
+	public void RemoveSelectedCard(int index)
+	{
+		selectedCardList.RemoveAt(index);
+	}
+
 	public void AddSpacecraft(Spacecraft sp)
 	{
 		spacecraftList.Add(sp);
@@ -87,23 +91,29 @@ public class Game : MonoBehaviour
 			file.Close();
 
 			// player name
-			if (save.playerName != null)
-			{
-				player.SetName(save.playerName);
-			}
+			string playerName = save.playerName;
+			if (playerName == "")
+				playerName = "No Name";
+			player.SetName(playerName);
 
 			// player cards
-			if (save.cardIDList.Count > 0)
+			int savedCardCount = save.cardIDList.Count;
+			if (savedCardCount > 0)
 			{
-				int savedCardCount = save.cardIDList.Count;
 				for (int i = 0; i < savedCardCount; i++)
 				{
-					SetSelectedCard(i, cardLibrary[save.cardIDList[i]]);
+					int selectedCardID = save.cardIDList[i];
+					SetSelectedCard(i, cardLibrary[selectedCardID]);
 				}
 			}
 			else
 			{
-				Debug.Log("save cards uninitialized");
+				Debug.Log("Initializing cards");
+				for(int i = 0; i < initialSpacecraftCards.Count; i++)
+				{
+					int initialCardID = initialSpacecraftCards[i].numericID;
+					SetSelectedCard(i, cardLibrary[initialCardID]);
+				}
 			}
 
 			// health
@@ -113,8 +123,10 @@ public class Game : MonoBehaviour
 			chevrons = save.chevrons;
 			if (chevrons == 0)
 				chevrons = initialChevrons;
-
-			Debug.Log("Game Loaded");
+		}
+		else
+		{
+			SaveGame();
 		}
 	}
 
@@ -123,6 +135,9 @@ public class Game : MonoBehaviour
 		Save save = CreateSaveGameObject();
 		BinaryFormatter bf = new BinaryFormatter();
 		FileStream file = File.Create(Application.persistentDataPath + "/gamesave.save");
+
+		save.cardIDList = new List<int>();
+		save.spacecraftHealthList = new List<int>();
 
 		// player name
 		save.playerName = player.playerName;
@@ -155,12 +170,12 @@ public class Game : MonoBehaviour
 			save.spacecraftHealthList.Add(spacecraftList[i].GetHealth());
 
 		// chevrons
+		if (chevrons == 0)
+			chevrons = initialChevrons;
 		save.chevrons = game.GetChevrons();
 
 		bf.Serialize(file, save);
 		file.Close();
-
-		Debug.Log("Game Saved");
 	}
 
 	private Save CreateSaveGameObject()
@@ -190,12 +205,16 @@ public class Game : MonoBehaviour
 			}
 		}
 
+		Debug.Log("Created save with " + save.cardIDList.Count + " elements");
+
 		// spacecraft health
 		int numSpacecraft = spacecraftList.Count;
 		for(int i = 0; i < numSpacecraft; i++)
 			save.spacecraftHealthList.Add(spacecraftList[i].GetHealth());
 
 		// chevrons
+		if (chevrons == 0)
+			chevrons = initialChevrons;
 		save.chevrons = game.GetChevrons();
 
 		return save;

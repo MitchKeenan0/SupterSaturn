@@ -215,7 +215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   battlePanel: {fileID: 4736824667123304423}
-  battlePanelOffset: {x: 50, y: 0, z: 0}
+  battlePanelOffset: {x: 100, y: 0, z: 0}
 --- !u!1 &4736824668231916322
 GameObject:
   m_ObjectHideFlags: 0
@@ -282,7 +282,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 3b7e6ab18c4fb7441805e5abd9032a8c, type: 3}
+    m_Font: {fileID: 12800000, guid: 9b98530611665924fb9a4e9235f2edce, type: 3}
     m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0

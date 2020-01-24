@@ -20,7 +20,7 @@ public class BattleFleet : MonoBehaviour
 
     void Start()
     {
-		loadWaitCoroutine = LoadWait(0.05f);
+		loadWaitCoroutine = LoadWait(0.1f);
 		StartCoroutine(loadWaitCoroutine);
 	}
 
@@ -37,13 +37,13 @@ public class BattleFleet : MonoBehaviour
 		int numCards = cards.Count;
 		for (int i = 0; i < numCards; i++)
 		{
-			if (i < 3)
-			{
-				GameObject cardObject = Instantiate(cards[i].cardObjectPrefab, null);
-				cardObject.transform.position = transform.position + groupPositions[i];
-				cardObject.transform.SetParent(transform);
-				game.AddSpacecraft(cardObject.GetComponent<Spacecraft>());
-			}
+			GameObject cardObject = Instantiate(cards[i].cardObjectPrefab, null);
+			Vector3 amidstPosition = Vector3.forward * -i;
+			if (groupPositions.Length > i)
+				amidstPosition = groupPositions[i];
+			cardObject.transform.position = transform.position + amidstPosition;
+			cardObject.transform.SetParent(transform);
+			game.AddSpacecraft(cardObject.GetComponent<Spacecraft>());
 		}
 	}
 }

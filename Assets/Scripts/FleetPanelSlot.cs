@@ -21,7 +21,7 @@ public class FleetPanelSlot : MonoBehaviour, IDeselectHandler
 	private int originalSlotCost = 0;
 
 	public Card GetCard() { return slotCard; }
-	public int GetCost() { return originalSlotCost; }
+	public int GetCost() { return (slotCard != null) ? slotCard.cardCost : 0; }
 
 	void Start()
 	{
@@ -84,6 +84,7 @@ public class FleetPanelSlot : MonoBehaviour, IDeselectHandler
 			slotImage.enabled = false;
 			slotNameText.text = "";
 			slotNameText.text = "";
+			costText.text = "";
 		}
 	}
 }

@@ -15,6 +15,7 @@ public class MainMenu : MonoBehaviour
 		gameLoadingPanel.SetActive(false);
 		fleetLoadingPanel.SetActive(false);
 		game = FindObjectOfType<Game>();
+		game.LoadGame();
 	}
 
 	public void GameLoading()

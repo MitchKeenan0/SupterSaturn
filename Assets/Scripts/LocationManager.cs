@@ -84,6 +84,33 @@ public class LocationManager : MonoBehaviour
 		return route;
 	}
 
+	public bool IsConnectedByRoute(CampaignLocation start, CampaignLocation destination)
+	{
+		CampaignLocation current = start;
+		if (start == destination)
+			return false;
+		int safeIndex = 0;
+		while (current != destination)
+		{
+			CampaignLocation nextStep = GetNextNeighbor(current, destination);
+			if (nextStep != null)
+			{
+				route.Add(nextStep);
+				current = nextStep;
+			}
+			else
+			{
+				return false;
+			}
+
+			safeIndex++;
+			if (safeIndex >= (current.GetNeighbors().Count))
+				return false;
+		}
+
+		return true;
+	}
+
 	CampaignLocation GetNextNeighbor(CampaignLocation start, CampaignLocation destination)
 	{
 		CampaignLocation closestLocation = null;

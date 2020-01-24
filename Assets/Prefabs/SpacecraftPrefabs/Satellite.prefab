@@ -20,7 +20,7 @@ GameObject:
   - component: {fileID: 3172205958561284657}
   - component: {fileID: 3172205958561284663}
   m_Layer: 0
-  m_Name: RadioSatellite
+  m_Name: Satellite
   m_TagString: Orbiter
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,8 +74,8 @@ MonoBehaviour:
   thrustParticles: {fileID: 0}
   destroyedParticlesPrefab: {fileID: 2766248710761914840, guid: 05469ee24ae991f41b944cbcf9f43ad0,
     type: 3}
-  craftIcon: {fileID: 0}
-  craftDiagram: {fileID: 0}
+  craftIcon: {fileID: 21300000, guid: 84cad4e54bf58f04a835df643351cda3, type: 3}
+  craftDiagram: {fileID: 21300000, guid: 84cad4e54bf58f04a835df643351cda3, type: 3}
   iconScale: 1
   numericID: 3
 --- !u!114 &6156221018427815328

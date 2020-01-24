@@ -6,7 +6,7 @@ public class Fleet : MonoBehaviour
 {
 	public int teamID = 0;
 	public string fleetName = "My Fleet";
-	public int fleetCapacity = 3;
+	public int fleetCapacity = 10;
 
 	private Game game;
 	private Player player;
@@ -30,9 +30,16 @@ public class Fleet : MonoBehaviour
 	{
 		if (teamID == 0)
 		{
-			loadWaitCoroutine = LoadWait(0.05f);
+			loadWaitCoroutine = LoadWait(0.125f);
 			StartCoroutine(loadWaitCoroutine);
 		}
+	}
+
+	private IEnumerator LoadWait(float waitTime)
+	{
+		yield return new WaitForSeconds(waitTime);
+		InitSavedFleet();
+		campaign.InitFleetLocations();
 	}
 
 	void InitSavedFleet()
@@ -43,7 +50,7 @@ public class Fleet : MonoBehaviour
 
 		List<Card> cards = new List<Card>(game.GetSelectedCards());
 		int numCards = cards.Count;
-		for(int i = 0; i < numCards; i++)
+		for (int i = 0; i < numCards; i++)
 		{
 			if (i < fleetCapacity)
 			{
@@ -53,13 +60,6 @@ public class Fleet : MonoBehaviour
 				game.AddSpacecraft(cardObject.GetComponent<Spacecraft>());
 			}
 		}
-	}
-
-	private IEnumerator LoadWait(float waitTime)
-	{
-		yield return new WaitForSeconds(waitTime);
-		InitSavedFleet();
-		campaign.InitFleetLocations();
 	}
 
 	public void SetName(string value)

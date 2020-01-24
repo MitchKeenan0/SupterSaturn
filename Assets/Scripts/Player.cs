@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-	public string playerName = "No Name";
+	public string playerName = "";
 
 	private Game game;
 	private Player player;

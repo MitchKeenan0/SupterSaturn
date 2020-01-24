@@ -32,9 +32,12 @@ public class FleetHUD : MonoBehaviour
     {
 		cameraMain = Camera.main;
 		locationDisplay = FindObjectOfType<LocationDisplay>();
-		
+
+		loadWaitCoroutine = LoadWait(0.15f);
+		StartCoroutine(loadWaitCoroutine);
+
 		Fleet[] allFleets = FindObjectsOfType<Fleet>();
-		foreach(Fleet f in allFleets)
+		foreach (Fleet f in allFleets)
 		{
 			fleetList.Add(f);
 			if (f.teamID == 0)
@@ -44,9 +47,6 @@ public class FleetHUD : MonoBehaviour
 				locationDisplay.SetPlayerFleetController(fc);
 			}
 		}
-
-		loadWaitCoroutine = LoadWait(0.1f);
-		StartCoroutine(loadWaitCoroutine);
 	}
 
 	void Update()
@@ -82,6 +82,13 @@ public class FleetHUD : MonoBehaviour
 		return bClickedObject;
 	}
 
+	private IEnumerator LoadWait(float waitTime)
+	{
+		yield return new WaitForSeconds(waitTime);
+
+		InitPanels();
+	}
+
 	void InitPanels()
 	{
 		int numFleets = fleetList.Count;
@@ -100,11 +107,5 @@ public class FleetHUD : MonoBehaviour
 		FleetPanel panel = panelObject.GetComponent<FleetPanel>();
 		panelList.Add(panel);
 		return panel;
-	}
-
-	private IEnumerator LoadWait(float waitTime)
-	{
-		yield return new WaitForSeconds(waitTime);
-		InitPanels();
 	}
 }

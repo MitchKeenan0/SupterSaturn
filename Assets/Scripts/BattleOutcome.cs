@@ -82,13 +82,11 @@ public class BattleOutcome : MonoBehaviour
 
 	public void Continue()
 	{
-		Reset();
 		SceneManager.LoadScene("CampaignScene");
 	}
 
 	public void Return()
 	{
-		Reset();
 		SceneManager.LoadScene("FleetScene");
 	}
 

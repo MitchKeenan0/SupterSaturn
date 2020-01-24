@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -402,7 +402,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 70}
-  m_Pivot: {x: 0, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1358001831779024926
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -480,11 +480,11 @@ RectTransform:
   m_Father: {fileID: 1358001832518738955}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 15}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -499.99997, y: 15}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0.5}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1358001831990532306
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -510,7 +510,7 @@ MonoBehaviour:
     m_Right: 12
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 4
   m_Spacing: 15
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
@@ -626,11 +626,11 @@ RectTransform:
   m_Father: {fileID: 1358001833102996776}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 179.55383}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -220}
   m_SizeDelta: {x: 1000, y: 150}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &1358001832518739445
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1026,7 +1026,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 240, y: 70}
-  m_Pivot: {x: 0, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1358001832889430222
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1101,7 +1101,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 70}
-  m_Pivot: {x: 0, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1358001832965225573
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1277,7 +1277,7 @@ GameObject:
   - component: {fileID: 1358001833102996780}
   m_Layer: 5
   m_Name: BattleOutcomeHUD
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1833,7 +1833,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -2040,7 +2040,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}

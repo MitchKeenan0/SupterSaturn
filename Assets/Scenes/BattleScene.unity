@@ -1142,6 +1142,8 @@ MonoBehaviour:
   - {x: 0, y: 1, z: 1}
   - {x: -1, y: 0, z: 0}
   - {x: 1, y: 0, z: 0}
+  - {x: 0, y: -1, z: -1}
+  - {x: 1, y: 2, z: 0}
 --- !u!224 &1332106904 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4693447173991366896, guid: 8fced3c6ac291304db7908ca75e861f0,

@@ -6,18 +6,22 @@ using UnityEngine.UI;
 public class LocationDisplay : MonoBehaviour
 {
 	public GameObject displayPanel;
+	public Button scoutButton;
+	public Button moveToButton;
 	public Text nameText;
 	public Text valueText;
 
 	private CampaignLocation displayLocation;
 	private FleetController playerFleetController;
 	private TurnManager turnManager;
+	private LocationManager locationManager;
 	private float timeAtLastClick = 0f;
 	private int lastActionTaken = -1;
 
 	void Start()
     {
 		turnManager = FindObjectOfType<TurnManager>();
+		locationManager = FindObjectOfType<LocationManager>();
 		displayPanel.SetActive(false);
 	}
 
@@ -35,6 +39,11 @@ public class LocationDisplay : MonoBehaviour
 
 			nameText.text = location.locationName;
 			valueText.text = location.locationValue.ToString();
+
+			if (locationManager.IsConnectedByRoute(playerFleetController.GetLocation(), displayLocation))
+				moveToButton.interactable = true;
+			else
+				moveToButton.interactable = false;
 		}
 		else
 		{

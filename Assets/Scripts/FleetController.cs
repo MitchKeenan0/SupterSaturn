@@ -27,6 +27,8 @@ public class FleetController : MonoBehaviour
 
 	public int GetTeamID() { return (fleet != null) ? fleet.teamID : 0; }
 
+	public CampaignLocation GetLocation() { return fleet.GetLocation(); }
+
 	private IEnumerator fleetMoveCoroutine;
 
 	void Awake()
