@@ -34,6 +34,7 @@ public class ObjectManager : MonoBehaviour
 	private IEnumerator LoadWait(float waitTime)
 	{
 		yield return new WaitForSeconds(waitTime);
+
 		InitSpacecraftList();
 		InitGravityList();
 	}

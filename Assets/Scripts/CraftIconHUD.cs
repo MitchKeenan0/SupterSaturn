@@ -28,7 +28,7 @@ public class CraftIconHUD : MonoBehaviour
 		cameraMain = Camera.main;
 		objectManager = FindObjectOfType<ObjectManager>();
 
-		loadWaitCoroutine = LoadWait(0.2f);
+		loadWaitCoroutine = LoadWait(0.25f);
 		StartCoroutine(loadWaitCoroutine);
     }
 
@@ -41,6 +41,7 @@ public class CraftIconHUD : MonoBehaviour
 	private IEnumerator LoadWait(float waitTime)
 	{
 		yield return new WaitForSeconds(waitTime);
+
 		InitIconFleet();
 	}
 

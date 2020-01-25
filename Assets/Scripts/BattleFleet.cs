@@ -20,7 +20,7 @@ public class BattleFleet : MonoBehaviour
 
     void Start()
     {
-		loadWaitCoroutine = LoadWait(0.1f);
+		loadWaitCoroutine = LoadWait(0.05f);
 		StartCoroutine(loadWaitCoroutine);
 	}
 

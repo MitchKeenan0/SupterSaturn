@@ -64,7 +64,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bAgentStartsEnabled: 1
-  mainEnginePower: 0.9
+  mainEnginePower: 0.6
   turningPower: 2
   maneuverPower: 0.5
   spacecraftName: Corvette

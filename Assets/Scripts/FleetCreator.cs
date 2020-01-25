@@ -52,7 +52,7 @@ public class FleetCreator : MonoBehaviour
 		emptyButton.interactable = false;
 		loadingPanel.SetActive(true);
 		
-		loadGraceCoroutine = LoadWait(0.2f);
+		loadGraceCoroutine = LoadWait(0.3f);
 		StartCoroutine(loadGraceCoroutine);
 	}
 
@@ -64,7 +64,12 @@ public class FleetCreator : MonoBehaviour
 		InitFleetPanel();
 		UpdateChevronBalance();
 
+		string playerName = player.playerName;
+		if (playerName == "")
+			playerName = "No Name";
+		playerNameText.text = player.playerName;
 		placeholderNameText.text = player.playerName;
+		///Debug.Log("FleetCreator set player name " + player.playerName);
 
 		loadingPanel.SetActive(false);
 	}
@@ -74,12 +79,9 @@ public class FleetCreator : MonoBehaviour
 		for (int i = 0; i < 8; i++)
 			CreateFleetPanelSlot();
 
-		List<Card> playerSelectedCards = new List<Card>(game.GetSelectedCards());
-		//Debug.Log("init fleet panel from " + playerSelectedCards.Count + " selected cards");
-		//foreach (Card c in playerSelectedCards)
-		//Debug.Log("-- " + c.cardName);
-		if (playerSelectedCards.Count == 0)
-			playerSelectedCards = game.initialSpacecraftCards;
+		List<Card> selectedCards = new List<Card>(game.GetSelectedCards());
+		if (selectedCards.Count == 0)
+			selectedCards = game.initialSpacecraftCards;
 
 		FleetPanelSlot[] fleetPanelSlots = fleetPanel.GetComponentsInChildren<FleetPanelSlot>();
 		int numSlots = fleetPanelSlots.Length;
@@ -87,8 +89,8 @@ public class FleetCreator : MonoBehaviour
 		{
 			FleetPanelSlot panelSlot = fleetPanelSlots[i];
 			Card spacecraftCard = null;
-			if ((i < playerSelectedCards.Count) && (i < maxSlotsAvailable))
-				spacecraftCard = playerSelectedCards[i];
+			if ((i < selectedCards.Count) && (i < maxSlotsAvailable))
+				spacecraftCard = selectedCards[i];
 
 			panelSlot.SetSlot(spacecraftCard);
 
@@ -107,7 +109,7 @@ public class FleetCreator : MonoBehaviour
 
 	void InitSelectionPanel()
 	{
-		List<Card> playerSpacecraftCards = game.initialSpacecraftCards;
+		List<Card> playerSpacecraftCards = new List<Card>(game.cardLibrary);
 		int numCards = playerSpacecraftCards.Count;
 		for(int i = 0; i < numCards; i++)
 		{

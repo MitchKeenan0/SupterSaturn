@@ -26,7 +26,6 @@ public class FleetPanel : MonoBehaviour
 	public void SetFleet(Fleet f)
 	{
 		fleet = f;
-		Debug.Log("Panel' fleet set has " + fleet.GetSpacecraftList().Count);
 		fleetNameText.text = fleet.fleetName;
 		spacecraftList = fleet.GetSpacecraftList();
 		for (int i = 0; i < spacecraftList.Count; i++)

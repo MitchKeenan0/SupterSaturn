@@ -60,20 +60,15 @@ public class Game : MonoBehaviour
 	public void SetSelectedCard(int index, Card card)
 	{
 		if (index < selectedCardList.Count)
-		{
 			selectedCardList[index] = card;
-			//Debug.Log("setting " + index + " with selected card " + card.cardName + " of " + selectedCardList.Count + " selected cards");
-		}
 		else
-		{
 			selectedCardList.Add(card);
-			//Debug.Log("Adding new index " + index + " with selected card " + card.cardName + " of " + selectedCardList.Count + " selected cards");
-		}
 	}
 
 	public void RemoveSelectedCard(int index)
 	{
-		selectedCardList.RemoveAt(index);
+		if (selectedCardList.Count > index)
+			selectedCardList.RemoveAt(index);
 	}
 
 	public void AddSpacecraft(Spacecraft sp)
@@ -90,6 +85,8 @@ public class Game : MonoBehaviour
 			Save save = (Save)bf.Deserialize(file);
 			file.Close();
 
+			selectedCardList.Clear();
+
 			// player name
 			string playerName = save.playerName;
 			if (playerName == "")
@@ -100,19 +97,11 @@ public class Game : MonoBehaviour
 			int savedCardCount = save.cardIDList.Count;
 			if (savedCardCount > 0)
 			{
+				///Debug.Log("Loading " + savedCardCount + " cards");
 				for (int i = 0; i < savedCardCount; i++)
 				{
 					int selectedCardID = save.cardIDList[i];
 					SetSelectedCard(i, cardLibrary[selectedCardID]);
-				}
-			}
-			else
-			{
-				Debug.Log("Initializing cards");
-				for(int i = 0; i < initialSpacecraftCards.Count; i++)
-				{
-					int initialCardID = initialSpacecraftCards[i].numericID;
-					SetSelectedCard(i, cardLibrary[initialCardID]);
 				}
 			}
 
@@ -123,10 +112,8 @@ public class Game : MonoBehaviour
 			chevrons = save.chevrons;
 			if (chevrons == 0)
 				chevrons = initialChevrons;
-		}
-		else
-		{
-			SaveGame();
+
+			Debug.Log("Game Loaded");
 		}
 	}
 
@@ -136,43 +123,7 @@ public class Game : MonoBehaviour
 		BinaryFormatter bf = new BinaryFormatter();
 		FileStream file = File.Create(Application.persistentDataPath + "/gamesave.save");
 
-		save.cardIDList = new List<int>();
-		save.spacecraftHealthList = new List<int>();
-
-		// player name
-		save.playerName = player.playerName;
-
-		// spacecraft cards
-		if (GetSelectedCards().Count > 0)
-		{
-			int numCards = GetSelectedCards().Count;
-			for (int i = 0; i < numCards; i++)
-			{
-				int cardIndex = GetSelectedCards()[i].numericID;
-				if (i < save.cardIDList.Count)
-					save.cardIDList[i] = cardLibrary[cardIndex].numericID;
-				else
-					save.cardIDList.Add(cardLibrary[cardIndex].numericID);
-			}
-		}
-		else
-		{
-			int numCards = initialSpacecraftCards.Count;
-			for (int i = 0; i < numCards; i++)
-			{
-				save.cardIDList.Add(cardLibrary[i].numericID);
-			}
-		}
-
-		// spacecraft health
-		int numSpacecraft = spacecraftList.Count;
-		for (int i = 0; i < numSpacecraft; i++)
-			save.spacecraftHealthList.Add(spacecraftList[i].GetHealth());
-
-		// chevrons
-		if (chevrons == 0)
-			chevrons = initialChevrons;
-		save.chevrons = game.GetChevrons();
+		Debug.Log("Game Saved");
 
 		bf.Serialize(file, save);
 		file.Close();
@@ -182,30 +133,28 @@ public class Game : MonoBehaviour
 	{
 		Save save = new Save();
 
-		save.cardIDList = new List<int>();
-		save.spacecraftHealthList = new List<int>();
-
 		// player name
+		string playerName = player.playerName;
+		if (playerName == "")
+			playerName = "No Name";
 		save.playerName = player.playerName;
-
+		
 		// spacecraft cards
-		if (GetSelectedCards().Count > 0)
+		int numCards = selectedCardList.Count;
+		for (int i = 0; i < numCards; i++)
 		{
-			int numCards = GetSelectedCards().Count;
-			for (int i = 0; i < numCards; i++)
-				save.cardIDList.Add(cardLibrary[GetSelectedCards()[i].numericID].numericID);
+			int cardIndex = selectedCardList[i].numericID;
+			save.cardIDList.Add(cardLibrary[cardIndex].numericID);
 		}
-		else
+
+		if (save.cardIDList.Count == 0)
 		{
-			int numCards = initialSpacecraftCards.Count;
+			numCards = initialSpacecraftCards.Count;
 			for (int i = 0; i < numCards; i++)
 			{
-				int initialCardID = initialSpacecraftCards[i].numericID;
-				save.cardIDList.Add(initialCardID);
+				save.cardIDList.Add(initialSpacecraftCards[i].numericID);
 			}
 		}
-
-		Debug.Log("Created save with " + save.cardIDList.Count + " elements");
 
 		// spacecraft health
 		int numSpacecraft = spacecraftList.Count;
@@ -213,16 +162,9 @@ public class Game : MonoBehaviour
 			save.spacecraftHealthList.Add(spacecraftList[i].GetHealth());
 
 		// chevrons
-		if (chevrons == 0)
-			chevrons = initialChevrons;
-		save.chevrons = game.GetChevrons();
+		save.chevrons = chevrons;
 
 		return save;
-	}
-
-	private string GetSaveFilePath
-	{
-		get { return Application.persistentDataPath + "/gamesave.save"; }
 	}
 
 	public void DeleteSave()
@@ -231,10 +173,16 @@ public class Game : MonoBehaviour
 		{
 			File.Delete(GetSaveFilePath);
 			Debug.Log("save deleted");
+			game.SaveGame();
 		}
 		catch (Exception ex)
 		{
 			Debug.LogException(ex);
 		}
+	}
+
+	private string GetSaveFilePath
+	{
+		get { return Application.persistentDataPath + "/gamesave.save"; }
 	}
 }

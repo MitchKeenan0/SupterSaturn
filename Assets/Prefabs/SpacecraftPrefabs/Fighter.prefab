@@ -231,9 +231,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bAgentStartsEnabled: 1
-  mainEnginePower: 0.2
-  turningPower: 3
-  maneuverPower: 1
+  mainEnginePower: 0.15
+  turningPower: 1.5
+  maneuverPower: 0.5
   spacecraftName: Fighter
   thrustParticles: {fileID: 2104020796097920098}
   destroyedParticlesPrefab: {fileID: 2766248710761914840, guid: 05469ee24ae991f41b944cbcf9f43ad0,

@@ -22,10 +22,11 @@ public class BattleOutcome : MonoBehaviour
 	private int playerLost = 0;
 	private float targetTimescale = 1;
 
-    void Start()
+    void Awake()
     {
 		game = FindObjectOfType<Game>();
 		player = FindObjectOfType<Player>();
+
 		conclusionPanel.SetActive(false);
 		scorePanel.SetActive(false);
 		optionPanel.SetActive(false);

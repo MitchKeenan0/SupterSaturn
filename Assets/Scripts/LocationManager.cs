@@ -77,7 +77,7 @@ public class LocationManager : MonoBehaviour
 			}
 
 			safeIndex++;
-			if (safeIndex >= (current.GetNeighbors().Count))
+			if (safeIndex >= 100)
 				break;
 		}
 
@@ -104,7 +104,7 @@ public class LocationManager : MonoBehaviour
 			}
 
 			safeIndex++;
-			if (safeIndex >= (current.GetNeighbors().Count))
+			if (safeIndex >= 100)
 				return false;
 		}
 

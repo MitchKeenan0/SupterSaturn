@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+	public static Player player;
+
 	public string playerName = "";
 
 	private Game game;
-	private Player player;
 
 	private void Awake()
 	{
@@ -27,5 +28,6 @@ public class Player : MonoBehaviour
 	public void SetName(string name)
 	{
 		playerName = name;
+		//game.SaveGame();
 	}
 }
