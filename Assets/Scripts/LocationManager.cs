@@ -52,7 +52,7 @@ public class LocationManager : MonoBehaviour
 	Vector3 RandomPositionOnDisk()
 	{
 		Vector3 pos = Random.insideUnitSphere * spread;
-		pos.y *= 0.16f;
+		pos.y *= 0.6f;
 		return pos;
 	}
 

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8705487829911034071}
   - component: {fileID: 6690337772456755234}
   - component: {fileID: 1327140190271649243}
+  - component: {fileID: 2004494300029445090}
   m_Layer: 0
   m_Name: BlueStar
   m_TagString: Untagged
@@ -46,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e285e6741bd3a147bb55120930e8c56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reach: 12
+  reach: 6
   connections: 3
   locationName: Name
   locationValue: 1
@@ -78,6 +79,20 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2004494300029445090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1327140190271649242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23de27c1c1f40b34f97aefaadef96ff7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minSize: 0.2
+  maxSize: 1
 --- !u!1 &6558441966256525324
 GameObject:
   m_ObjectHideFlags: 0
@@ -106,7 +121,7 @@ Transform:
   m_GameObject: {fileID: 6558441966256525324}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_Children: []
   m_Father: {fileID: 1327140190271649246}
   m_RootOrder: 0
@@ -136,7 +151,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 75f3bf48f401400408919b6c0dd55fd5, type: 2}
+  - {fileID: 2100000, guid: ebb9484f80f91aa4491d4f7fb4ef87b3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

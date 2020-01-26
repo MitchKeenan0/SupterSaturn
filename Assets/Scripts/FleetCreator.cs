@@ -36,6 +36,8 @@ public class FleetCreator : MonoBehaviour
 	private IEnumerator deselectGraceCoroutine;
 	private IEnumerator loadGraceCoroutine;
 
+	public List<FleetPanelSlot> GetPanelSlots() { return panelSlots; }
+
 	void Awake()
 	{
 		player = FindObjectOfType<Player>();
@@ -60,8 +62,8 @@ public class FleetCreator : MonoBehaviour
 	{
 		yield return new WaitForSeconds(waitTime);
 
-		InitSelectionPanel();
 		InitFleetPanel();
+		InitSelectionPanel();
 		UpdateChevronBalance();
 
 		string playerName = player.playerName;
@@ -92,7 +94,7 @@ public class FleetCreator : MonoBehaviour
 			if ((i < selectedCards.Count) && (i < maxSlotsAvailable))
 				spacecraftCard = selectedCards[i];
 
-			panelSlot.SetSlot(spacecraftCard);
+			panelSlot.SetSlot(spacecraftCard, i);
 
 			Image panelImage = panelSlot.GetComponent<Image>();
 			if (i < maxSlotsAvailable)
@@ -217,7 +219,7 @@ public class FleetCreator : MonoBehaviour
 		if (selectedPanelSlot != null)
 		{
 			Card spacecraftCard = spacecraftCardList[buttonIndex].GetCard();
-			selectedPanelSlot.SetSlot(spacecraftCard);
+			selectedPanelSlot.SetSlot(spacecraftCard, buttonIndex);
 			game.SetSelectedCard(selectedPanelSlot.transform.GetSiblingIndex(), spacecraftCard);
 			UpdateChevronBalance();
 			game.SaveGame();
@@ -226,26 +228,36 @@ public class FleetCreator : MonoBehaviour
 
 	public void EmptySlot()
 	{
+		int slotIndex = -1;
 		if (selectedPanelSlot != null)
 		{
-			selectedPanelSlot.SetSlot(null);
-			int slotIndex = selectedPanelSlot.transform.GetSiblingIndex();
+			selectedPanelSlot.SetSlot(null, -1);
+			slotIndex = selectedPanelSlot.transform.GetSiblingIndex();
 			game.RemoveSelectedCard(slotIndex);
 			UpdateChevronBalance();
 			game.SaveGame();
 		}
+
+		selectedPanelSlot = null;
+
+		InitFleetPanel();
 	}
 
 	public void EmptyAll()
 	{
-		selectedPanelSlot.SetSlot(null);
+		selectedPanelSlot = null;
 		int numSlots = game.GetSelectedCards().Count;
 		for (int i = 0; i < numSlots; i++)
 		{
-			int slotIndex = selectedPanelSlot.transform.GetSiblingIndex();
-			game.RemoveSelectedCard(slotIndex);
+			FleetPanelSlot ps = panelSlots[i];
+			if (ps != null)
+			{
+				int slotIndex = ps.transform.GetSiblingIndex();
+				panelSlots[i].SetSlot(null, -1);
+				game.RemoveSelectedCard(slotIndex);
+			}
 		}
-		
+
 		UpdateChevronBalance();
 		game.SaveGame();
 	}

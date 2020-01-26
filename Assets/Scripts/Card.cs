@@ -11,6 +11,12 @@ public class Card : MonoBehaviour
 	public string cardName = "";
 	public int cardLevel = 1;
 	public int cardCost = 100;
+	public int cardHealth = -1;
+
+	public void SetHealth(int value)
+	{
+		cardHealth = value;
+	}
 
 	public GameObject CashIn()
 	{

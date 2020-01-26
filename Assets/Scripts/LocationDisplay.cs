@@ -96,4 +96,12 @@ public class LocationDisplay : MonoBehaviour
 	{
 		SetDisplayLocation(null);
 	}
+
+	public void RefreshControlInteractivity()
+	{
+		if (locationManager.IsConnectedByRoute(playerFleetController.GetLocation(), displayLocation))
+			moveToButton.interactable = true;
+		else
+			moveToButton.interactable = false;
+	}
 }

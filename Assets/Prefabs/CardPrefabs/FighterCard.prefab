@@ -50,3 +50,4 @@ MonoBehaviour:
   cardName: Fighter
   cardLevel: 1
   cardCost: 200
+  cardHealth: 6

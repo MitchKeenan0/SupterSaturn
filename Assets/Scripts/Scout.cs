@@ -15,6 +15,7 @@ public class Scout : MonoBehaviour
 	private TurnManager turnManager;
 	private LocationManager locationManager;
 	private FleetController fleetController;
+	private LocationDisplay locationDisplay;
 	private CampaignLocation originLocation;
 	private CampaignLocation scoutLocation;
 	private LineRenderer lineRenderer;
@@ -28,6 +29,7 @@ public class Scout : MonoBehaviour
 		turnManager = FindObjectOfType<TurnManager>();
 		locationManager = FindObjectOfType<LocationManager>();
 		fleetController = GetComponent<FleetController>();
+		locationDisplay = FindObjectOfType<LocationDisplay>();
 		lineRenderer = GetComponent<LineRenderer>();
 		lineRenderer.enabled = false;
 		cameraMain = Camera.main;
@@ -54,11 +56,6 @@ public class Scout : MonoBehaviour
 
 		screenUpdateCoroutine = ScreenPosition(updateInterval);
 		StartCoroutine(screenUpdateCoroutine);
-	}
-
-	public void GetScoutSuccessProbablity()
-	{
-
 	}
 
 	public void ScoutLocation(CampaignLocation origin, CampaignLocation scout)
@@ -148,6 +145,7 @@ public class Scout : MonoBehaviour
 		scoutObject.transform.localScale = Vector3.one;
 		StopCoroutine(movementCoroutine);
 		StopCoroutine(screenUpdateCoroutine);
+		locationDisplay.RefreshControlInteractivity();
 		turnManager.BeginTurn(false);
 	}
 }

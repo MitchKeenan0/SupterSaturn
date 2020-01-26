@@ -50,3 +50,4 @@ MonoBehaviour:
   cardName: Satellite
   cardLevel: 1
   cardCost: 100
+  cardHealth: 2

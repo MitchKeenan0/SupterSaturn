@@ -16,6 +16,7 @@ public class Game : MonoBehaviour
 
 	public List<Card> GetCards() { return availableCardList; }
 	public List<Card> GetSelectedCards() { return selectedCardList; }
+	public int GetSavedHealth(int index) { return (savedHealthList.Count > index) ? savedHealthList[index] : -1; }
 	public List<Spacecraft> GetSpacecraftList() { return spacecraftList; }
 	public void AddCard(Card value) { if (!availableCardList.Contains(value)) { availableCardList.Add(value); } }
 	public int GetChevrons() { return chevrons; }
@@ -27,6 +28,7 @@ public class Game : MonoBehaviour
 	private List<Card> availableCardList;
 	private List<Card> selectedCardList;
 	private List<Spacecraft> spacecraftList;
+	private List<int> savedHealthList;
 	private int currentMission = 0;
 	private int chevrons = 0;
 
@@ -45,6 +47,7 @@ public class Game : MonoBehaviour
 		availableCardList = new List<Card>();
 		selectedCardList = new List<Card>();
 		spacecraftList = new List<Spacecraft>();
+		savedHealthList = new List<int>();
 
 		player = FindObjectOfType<Player>();
 
@@ -86,6 +89,7 @@ public class Game : MonoBehaviour
 			file.Close();
 
 			selectedCardList.Clear();
+			savedHealthList.Clear();
 
 			// player name
 			string playerName = save.playerName;
@@ -97,7 +101,6 @@ public class Game : MonoBehaviour
 			int savedCardCount = save.cardIDList.Count;
 			if (savedCardCount > 0)
 			{
-				///Debug.Log("Loading " + savedCardCount + " cards");
 				for (int i = 0; i < savedCardCount; i++)
 				{
 					int selectedCardID = save.cardIDList[i];
@@ -106,7 +109,18 @@ public class Game : MonoBehaviour
 			}
 
 			// health
-			// ...
+			int numHealth = save.spacecraftHealthList.Count;
+			for (int i = 0; i < numHealth; i++)
+			{
+				if (i < selectedCardList.Count)
+				{
+					Card spacecraftCard = selectedCardList[i];
+					int savedHealth = save.spacecraftHealthList[i];
+					spacecraftCard.SetHealth(savedHealth);
+					savedHealthList.Add(savedHealth);
+					Debug.Log("Loading health " + savedHealth);
+				}
+			}
 
 			// chevrons
 			chevrons = save.chevrons;
@@ -158,8 +172,18 @@ public class Game : MonoBehaviour
 
 		// spacecraft health
 		int numSpacecraft = spacecraftList.Count;
-		for(int i = 0; i < numSpacecraft; i++)
-			save.spacecraftHealthList.Add(spacecraftList[i].GetHealth());
+		for (int i = 0; i < numSpacecraft; i++)
+		{
+			if (spacecraftList[i] != null)
+			{
+				int spacecraftHealth = spacecraftList[i].GetHealth();
+				//if (spacecraftHealth < 0)
+				//	spacecraftHealth = spacecraftList[i].GetComponent<Health>().maxHealth;
+				save.spacecraftHealthList.Add(spacecraftHealth);
+
+				Debug.Log("Saved health " + spacecraftHealth);
+			}
+		}
 
 		// chevrons
 		save.chevrons = chevrons;

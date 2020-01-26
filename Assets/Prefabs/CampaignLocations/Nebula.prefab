@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3564294553951500531}
   - component: {fileID: 959120985579494869}
   - component: {fileID: 5677072650876115443}
+  - component: {fileID: 4072635339844063463}
   m_Layer: 0
   m_Name: Nebula
   m_TagString: Untagged
@@ -46,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e285e6741bd3a147bb55120930e8c56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reach: 8
+  reach: 3
   connections: 2
   locationName: Name
   locationValue: 2
@@ -78,6 +79,20 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4072635339844063463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8910081187324853507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df3c0729f2f29b64fb88d5d00632ae92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minSize: 0.3
+  maxSize: 1
 --- !u!1001 &2772367772185391108
 PrefabInstance:
   m_ObjectHideFlags: 0

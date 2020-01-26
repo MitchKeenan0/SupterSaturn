@@ -6,14 +6,16 @@ using UnityEngine.EventSystems;
 
 public class FleetPanelSlot : MonoBehaviour, IDeselectHandler
 {
-	public Card slotCard;
 	public Image slotImage;
 	public Text slotNameText;
 	public Text costText;
 
 	private FleetCreator fleetCreator;
+	private Game game;
 	private Button button;
 	private Sprite originalSprite;
+	private HealthBar healthBar;
+	private Card slotCard;
 	private Color originalImageColor;
 	private Color originalCostColor;
 	private Color originalNameColor;
@@ -22,6 +24,14 @@ public class FleetPanelSlot : MonoBehaviour, IDeselectHandler
 
 	public Card GetCard() { return slotCard; }
 	public int GetCost() { return (slotCard != null) ? slotCard.cardCost : 0; }
+
+	void Awake()
+	{
+		game = FindObjectOfType<Game>();
+		healthBar = GetComponentInChildren<HealthBar>(true);
+		originalNameColor = slotNameText.color;
+		originalCostColor = costText.color;
+	}
 
 	void Start()
 	{
@@ -46,6 +56,7 @@ public class FleetPanelSlot : MonoBehaviour, IDeselectHandler
 	{
 		if (sprite != null)
 		{
+			slotImage.enabled = true;
 			slotImage.sprite = sprite;
 			slotNameText.text = name;
 			costText.text = cost.ToString();
@@ -62,22 +73,32 @@ public class FleetPanelSlot : MonoBehaviour, IDeselectHandler
 		}
 	}
 
-	public void SetSlot(Card card)
+	public void SetSlot(Card card, int slotIndex)
 	{
 		slotCard = card;
-		if (card != null)
+		if (slotCard != null)
 		{
-			slotImage.sprite = card.cardSprite;
+			slotImage.sprite = slotCard.cardSprite;
 			originalImageColor = slotImage.color;
-			originalSprite = card.cardSprite;
+			originalSprite = slotCard.cardSprite;
 
-			slotNameText.text = card.cardName;
-			originalSlotName = card.cardName;
-			originalNameColor = slotNameText.color;
+			slotNameText.enabled = true;
+			slotNameText.text = slotCard.cardName;
+			slotNameText.color = originalNameColor;
+			originalSlotName = slotCard.cardName;
 
-			costText.text = card.cardCost.ToString();
-			originalCostColor = costText.color;
-			originalSlotCost = card.cardCost;
+			costText.text = slotCard.cardCost.ToString();
+			costText.color = originalCostColor;
+			originalSlotCost = slotCard.cardCost;
+
+			if (slotIndex != -1)
+			{
+				int maxHealth = slotCard.cardObjectPrefab.GetComponent<Health>().maxHealth;
+				int currentHealth = game.GetSavedHealth(slotIndex);
+
+				Debug.Log("card health: " + currentHealth);
+				healthBar.InitHeath(maxHealth, currentHealth);
+			}
 		}
 		else
 		{
@@ -85,6 +106,8 @@ public class FleetPanelSlot : MonoBehaviour, IDeselectHandler
 			slotNameText.text = "";
 			slotNameText.text = "";
 			costText.text = "";
+			slotNameText.color = Color.clear;
+			healthBar.InitHeath(-1, -1);
 		}
 	}
 }
