@@ -62,8 +62,6 @@ public class Game : MonoBehaviour
 			selectedCardList[index] = card;
 		else
 			selectedCardList.Add(card);
-
-		CreateSpacecraft(card);
 	}
 
 	public void SetSavedHealth(int index, int value)
@@ -78,16 +76,27 @@ public class Game : MonoBehaviour
 
 	public void RemoveSelectedCard(int index)
 	{
-		if (selectedCardList.Count > index)
+		if ((index >= 0) && (index < selectedCardList.Count) && (selectedCardList.Count > 0))
 			selectedCardList.RemoveAt(index);
+		RemoveSpacecraft(index);
 	}
 
-	public void AddSpacecraft(Spacecraft sp)
+	public void AddSpacecraft(Spacecraft sp, Card card)
 	{
-		if (!spacecraftList.Contains(sp))
+		Spacecraft spacecraft = sp;
+		if (!spacecraft)
+			spacecraft = CreateSpacecraft(card);
+		if (spacecraft != null)
 		{
-			spacecraftList.Add(sp);
-			///Debug.Log("adding " + sp.spacecraftName + " to spacecraft list to make " + spacecraftList.Count);
+			if (!spacecraftList.Contains(spacecraft))
+			{
+				spacecraftList.Add(spacecraft);
+				Debug.Log("Game added " + spacecraft.spacecraftName + " to spacecraft list to make " + spacecraftList.Count);
+			}
+		}
+		else
+		{
+			Debug.Log("Game AddSpacecraft was null");
 		}
 	}
 
@@ -97,6 +106,7 @@ public class Game : MonoBehaviour
 		{
 			spacecraftList[index] = null;
 			spacecraftList.RemoveAt(index);
+			Debug.Log("Game removed spacecraft index " + index);
 		}
 	}
 
@@ -128,6 +138,7 @@ public class Game : MonoBehaviour
 					int selectedCardID = save.cardList[i];
 					Card selectedCard = cardLibrary[selectedCardID];
 					SetSelectedCard(i, selectedCard);
+					AddSpacecraft(null, selectedCard);
 				}
 			}
 
@@ -138,9 +149,9 @@ public class Game : MonoBehaviour
 				if (i < selectedCardList.Count)
 				{
 					int savedHealth = save.healthList[i];
-					///Debug.Log("Load  saved health " + savedHealth);
+					Debug.Log("Load  saved health " + savedHealth);
 					SetSavedHealth(i, savedHealth);
-					if (spacecraftList[i] != null)
+					if (i < spacecraftList.Count)
 					{
 						int maxHealth = spacecraftList[i].GetComponent<Health>().maxHealth;
 						int spawnDamage = savedHealth - maxHealth;
@@ -159,12 +170,14 @@ public class Game : MonoBehaviour
 		}
 	}
 
-	void CreateSpacecraft(Card card)
+	Spacecraft CreateSpacecraft(Card card)
 	{
+		Spacecraft sp = null;
 		GameObject spacecraftObject = Instantiate(card.cardObjectPrefab, null);
 		spacecraftObject.SetActive(false);
-		Spacecraft sp = spacecraftObject.GetComponent<Spacecraft>();
-		AddSpacecraft(sp);
+		sp = spacecraftObject.GetComponent<Spacecraft>();
+		Debug.Log("Game createspacecraft adding spacecraft " + card.cardName);
+		return sp;
 	}
 
 	public void SaveGame()
@@ -203,12 +216,17 @@ public class Game : MonoBehaviour
 
 		// spacecraft health
 		int numSpacecraft = spacecraftList.Count;
-		//Debug.Log("Saving " + numSpacecraft + " spacecraft healths");
-		for (int i = 0; i < numSpacecraft; i++)
+		Debug.Log("Saving " + numSpacecraft + " spacecraft healths");
+		if (numSpacecraft > 0)
 		{
-			int spacecraftHealth = spacecraftList[i].GetHealth();
-			save.healthList.Add(spacecraftHealth);
-			Debug.Log("Saving spacecraft health " + spacecraftHealth);
+			for (int i = 0; i < numSpacecraft; i++)
+			{
+				if (spacecraftList[i] != null)
+				{
+					int spacecraftHealth = spacecraftList[i].GetHealth();
+					save.healthList.Add(spacecraftHealth);
+				}
+			}
 		}
 
 		// chevrons
@@ -225,10 +243,11 @@ public class Game : MonoBehaviour
 	{
 		try
 		{
-			File.Delete(GetSaveFilePath);
 			selectedCardList.Clear();
 			savedHealthList.Clear();
 			spacecraftList.Clear();
+
+			File.Delete(GetSaveFilePath);
 
 			SaveGame();
 

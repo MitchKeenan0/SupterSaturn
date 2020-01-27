@@ -91,15 +91,17 @@ public class FleetPanelSlot : MonoBehaviour, IDeselectHandler
 			costText.color = originalCostColor;
 			originalSlotCost = slotCard.cardCost;
 
-			if (slotIndex != -1)
-			{
-				int maxHealth = slotCard.cardObjectPrefab.GetComponent<Health>().maxHealth;
-				int currentHealth = game.GetSavedHealth(slotIndex);
-				if (currentHealth < 0)
-					currentHealth = maxHealth;
-				///Debug.Log("card health: " + currentHealth);
-				healthBar.InitHeath(maxHealth, currentHealth);
-			}
+			game.RemoveSpacecraft(slotIndex);
+			game.SetSelectedCard(slotIndex, card);
+			game.AddSpacecraft(null, card);
+
+			int maxHealth = slotCard.cardObjectPrefab.GetComponent<Health>().maxHealth;
+			int currentHealth = game.GetSavedHealth(slotIndex);
+			if (currentHealth < 0)
+				currentHealth = maxHealth;
+			///Debug.Log("card health: " + currentHealth);
+			healthBar.InitHeath(maxHealth, currentHealth);
+			healthBar.enabled = true;
 		}
 		else
 		{
@@ -108,7 +110,11 @@ public class FleetPanelSlot : MonoBehaviour, IDeselectHandler
 			slotNameText.text = "";
 			costText.text = "";
 			slotNameText.color = Color.clear;
+
 			healthBar.InitHeath(-1, -1);
+			healthBar.enabled = false;
+
+			game.RemoveSelectedCard(slotIndex);
 		}
 	}
 }

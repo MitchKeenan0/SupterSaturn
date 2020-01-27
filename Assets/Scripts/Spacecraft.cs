@@ -40,7 +40,7 @@ public class Spacecraft : MonoBehaviour
 
 	public bool IsAlive() { return (health != null) && (health.GetHealth() >= 1); }
 
-	public int GetHealth() { return health.GetHealth(); }
+	public int GetHealth() { return (health != null) ? health.GetHealth() : 0; }
 	public float GetHealthPercent() { return Mathf.Floor(health.GetHealth()) / Mathf.Floor(health.maxHealth); }
 
 	public int GetMarks() { return numMarked; }

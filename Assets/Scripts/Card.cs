@@ -11,6 +11,7 @@ public class Card : MonoBehaviour
 	public string cardName = "";
 	public int cardLevel = 1;
 	public int cardCost = 100;
+	public string cardDescription = "";
 
 	public GameObject CashIn()
 	{

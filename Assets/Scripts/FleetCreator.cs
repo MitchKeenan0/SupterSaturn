@@ -78,8 +78,12 @@ public class FleetCreator : MonoBehaviour
 
 	void InitFleetPanel()
 	{
-		for (int i = 0; i < 8; i++)
-			CreateFleetPanelSlot();
+		int slots = panelSlots.Count;
+		if (slots < maxSlotsAvailable)
+		{
+			for (int i = 0; i < maxSlotsAvailable; i++)
+				CreateFleetPanelSlot();
+		}
 
 		List<Card> selectedCards = new List<Card>(game.GetSelectedCards());
 		if (selectedCards.Count == 0)
@@ -222,8 +226,13 @@ public class FleetCreator : MonoBehaviour
 			selectedPanelSlot.SetSlot(spacecraftCard, buttonIndex);
 
 			int selectionIndex = selectedPanelSlot.transform.GetSiblingIndex();
-			game.SetSelectedCard(selectionIndex, spacecraftCard);
-			game.SetSavedHealth(selectionIndex, game.GetSpacecraftList()[selectionIndex].GetComponent<Health>().maxHealth);
+			Debug.Log("FleetCreator selectspacecraft adding spacecraft " + spacecraftCard.cardName);
+
+			int savingHealth = spacecraftCard.cardObjectPrefab.GetComponent<Health>().maxHealth;
+			game.SetSavedHealth(selectionIndex, savingHealth);
+			Health health = spacecraftCard.cardObjectPrefab.GetComponent<Health>();
+			int maxHealth = health.maxHealth;
+			panelSlots[selectionIndex].GetComponentInChildren<HealthBar>().InitHeath(maxHealth, savingHealth);
 
 			UpdateChevronBalance();
 			game.SaveGame();
@@ -235,16 +244,15 @@ public class FleetCreator : MonoBehaviour
 		int slotIndex = -1;
 		if (selectedPanelSlot != null)
 		{
-			selectedPanelSlot.SetSlot(null, -1);
 			slotIndex = selectedPanelSlot.transform.GetSiblingIndex();
-			game.RemoveSelectedCard(slotIndex);
-			game.RemoveSpacecraft(slotIndex);
+			selectedPanelSlot.SetSlot(null, slotIndex);
+
 			UpdateChevronBalance();
 			game.SaveGame();
 		}
 
 		selectedPanelSlot = null;
-
+		game.SaveGame();
 		InitFleetPanel();
 	}
 
@@ -258,13 +266,13 @@ public class FleetCreator : MonoBehaviour
 			if (ps != null)
 			{
 				int slotIndex = ps.transform.GetSiblingIndex();
-				panelSlots[i].SetSlot(null, -1);
-				game.RemoveSelectedCard(slotIndex);
+				panelSlots[i].SetSlot(null, i);
 			}
 		}
 
 		UpdateChevronBalance();
 		game.SaveGame();
+		InitFleetPanel();
 	}
 
 	public void SetName(string value)

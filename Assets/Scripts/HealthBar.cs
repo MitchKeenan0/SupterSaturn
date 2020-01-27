@@ -40,7 +40,7 @@ public class HealthBar : MonoBehaviour
 			healthBar.SetActive(true);
 			maxHealthText.text = maxHp.ToString();
 
-			int spacedBarSize = barSize - (2 * maxHp);
+			int spacedBarSize = barSize - (2 * maxHp) + 4; /// the 4 is unit spacing x2 for the sides
 			unitSize = Mathf.Clamp(spacedBarSize / maxHp, 1, maxUnitSize);
 
 			for (int i = 0; i < currentHp; i++)

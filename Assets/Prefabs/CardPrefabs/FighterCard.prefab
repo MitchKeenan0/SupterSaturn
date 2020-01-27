@@ -50,4 +50,4 @@ MonoBehaviour:
   cardName: Fighter
   cardLevel: 1
   cardCost: 200
-  cardHealth: 6
+  cardDescription: Nimble scout with mid-size laser

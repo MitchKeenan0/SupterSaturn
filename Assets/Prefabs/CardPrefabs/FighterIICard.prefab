@@ -50,4 +50,4 @@ MonoBehaviour:
   cardName: Fighter II
   cardLevel: 2
   cardCost: 250
-  cardHealth: 6
+  cardDescription: Dogfighter variant for CQC
