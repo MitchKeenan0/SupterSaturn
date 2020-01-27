@@ -8,6 +8,7 @@ public class CampaignBattle : MonoBehaviour
 	public GameObject battlePanel;
 	public Vector3 battlePanelOffset = new Vector3(0f, 0f, 0f);
 
+	private Game game;
 	private Camera cameraMain;
 	private CampaignLocation battleLocation;
 	private List<Fleet> fleetList;
@@ -16,6 +17,7 @@ public class CampaignBattle : MonoBehaviour
     void Start()
     {
 		fleetList = new List<Fleet>();
+		game = FindObjectOfType<Game>();
 		battlePanel.SetActive(false);
 		cameraMain = Camera.main;
     }
@@ -38,6 +40,7 @@ public class CampaignBattle : MonoBehaviour
 
 	public void BeginBattle()
 	{
+		game.SaveGame();
 		bOnScreen = false;
 		battlePanel.SetActive(false);
 		SceneManager.LoadSceneAsync("BattleScene");

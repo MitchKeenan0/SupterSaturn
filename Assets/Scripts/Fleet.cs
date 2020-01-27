@@ -11,6 +11,7 @@ public class Fleet : MonoBehaviour
 	private Game game;
 	private Player player;
 	private Campaign campaign;
+	private FleetAgent fleetAgent;
 	private List<Spacecraft> spacecraftList;
 	private CampaignLocation campaignLocation;
 	private FleetController fleetController;
@@ -23,33 +24,37 @@ public class Fleet : MonoBehaviour
 		game = FindObjectOfType<Game>();
 		player = FindObjectOfType<Player>();
 		campaign = FindObjectOfType<Campaign>();
+		fleetAgent = GetComponentInChildren<FleetAgent>();
 		fleetController = GetComponentInChildren<FleetController>();
 	}
 
 	void Start()
 	{
-		if (teamID == 0)
-		{
-			loadWaitCoroutine = LoadWait(0.1f);
-			StartCoroutine(loadWaitCoroutine);
-		}
+		loadWaitCoroutine = LoadWait(0.15f);
+		StartCoroutine(loadWaitCoroutine);
 	}
 
 	private IEnumerator LoadWait(float waitTime)
 	{
 		yield return new WaitForSeconds(waitTime);
-
 		InitSavedFleet();
 		campaign.InitFleetLocations();
 	}
 
 	void InitSavedFleet()
 	{
-		fleetName = player.playerName;
-		if (fleetName == "")
-			fleetName = "No Name";
+		if (teamID == 0)
+		{
+			fleetName = player.playerName;
+			if (fleetName == "")
+				fleetName = "No Name";
 
-		spacecraftList = game.GetSpacecraftList();
+			spacecraftList = game.GetSpacecraftList();
+		}
+		else
+		{
+			spacecraftList = fleetAgent.GetAgentSpacecraftList();
+		}
 	}
 
 	public void SetName(string value)

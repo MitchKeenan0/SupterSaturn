@@ -27,23 +27,33 @@ public class BattleFleet : MonoBehaviour
 	private IEnumerator LoadWait(float waitTime)
 	{
 		yield return new WaitForSeconds(waitTime);
-		if (teamID == 0)
-			InitSavedFleet();
+		InitSavedFleet();
 	}
 
 	void InitSavedFleet()
 	{
 		List<Spacecraft> spacecraftList = new List<Spacecraft>(game.GetSpacecraftList());
+		if (teamID != 0)
+			spacecraftList = game.GetEnemySpacecraftList();
+
 		int numCards = spacecraftList.Count;
 		for (int i = 0; i < numCards; i++)
 		{
 			Spacecraft sp = spacecraftList[i];
-			Vector3 amidstPosition = Vector3.forward * -i;
-			if (groupPositions.Length > i)
-				amidstPosition = groupPositions[i];
-			sp.transform.position = transform.position + amidstPosition;
-			sp.transform.SetParent(transform);
-			sp.gameObject.SetActive(true);
+			if (sp != null)
+			{
+				Vector3 amidstPosition = Vector3.forward * -i;
+				if (groupPositions.Length > i)
+					amidstPosition = groupPositions[i];
+				sp.transform.position = transform.position + amidstPosition;
+				sp.transform.SetParent(transform);
+				sp.gameObject.SetActive(true);
+
+				if (sp.GetAgent() != null)
+				{
+					sp.GetAgent().teamID = teamID;
+				}
+			}
 		}
 	}
 }

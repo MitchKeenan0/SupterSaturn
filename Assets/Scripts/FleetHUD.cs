@@ -85,7 +85,6 @@ public class FleetHUD : MonoBehaviour
 	private IEnumerator LoadWait(float waitTime)
 	{
 		yield return new WaitForSeconds(waitTime);
-
 		InitPanels();
 	}
 
