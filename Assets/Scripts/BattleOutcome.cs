@@ -50,25 +50,22 @@ public class BattleOutcome : MonoBehaviour
 			conclusionText.text = "SUCCESS";
 		else
 			conclusionText.text = "DEFEAT";
-		scoreText.text = playerScore.ToString();
+
+		scoreText.text = "+" + playerScore.ToString();
 		lostText.text = playerLost.ToString();
 		playerNameText.text = player.playerName;
 		conclusionPanel.SetActive(true);
 		scorePanel.SetActive(true);
 		optionPanel.SetActive(true);
 
-		if (!game)
-			game = FindObjectOfType<Game>();
-
 		if (game != null)
 		{
 			int totalNewChevrons = playerScore + playerLost;
+			if (playerLost < playerScore)
+				totalNewChevrons *= (playerScore - Mathf.Abs(playerLost));
+
 			game.UpdateChevronAccount(totalNewChevrons);
-			totalText.text = game.GetChevrons().ToString();
-		}
-		else
-		{
-			totalText.text = "00000";
+			totalText.text = "+" + totalNewChevrons.ToString() + "    " + game.GetChevrons().ToString();
 		}
 		
 		game.SaveGame();

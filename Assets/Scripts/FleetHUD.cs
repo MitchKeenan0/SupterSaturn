@@ -33,7 +33,7 @@ public class FleetHUD : MonoBehaviour
 		cameraMain = Camera.main;
 		locationDisplay = FindObjectOfType<LocationDisplay>();
 
-		loadWaitCoroutine = LoadWait(0.15f);
+		loadWaitCoroutine = LoadWait(0.2f);
 		StartCoroutine(loadWaitCoroutine);
 
 		Fleet[] allFleets = FindObjectsOfType<Fleet>();

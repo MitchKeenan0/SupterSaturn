@@ -11,16 +11,20 @@ public class CraftIconHUD : MonoBehaviour
 
 	private Camera cameraMain;
 	private ObjectManager objectManager;
+	private Game game;
 	private List<Spacecraft> spacecraftList;
 	private List<Image> iconImageList;
 	private List<Image> healthBarList;
 
 	private IEnumerator loadWaitCoroutine;
+	private IEnumerator updateCoroutine;
 	private bool bInit = false;
 
 	void Awake()
 	{
 		spacecraftList = new List<Spacecraft>();
+		iconImageList = new List<Image>();
+		game = FindObjectOfType<Game>();
 	}
 
 	void Start()
@@ -28,37 +32,35 @@ public class CraftIconHUD : MonoBehaviour
 		cameraMain = Camera.main;
 		objectManager = FindObjectOfType<ObjectManager>();
 
-		loadWaitCoroutine = LoadWait(0.25f);
+		loadWaitCoroutine = LoadWait(0.3f);
 		StartCoroutine(loadWaitCoroutine);
     }
-
-	void Update()
-	{
-		if (bInit)
-			UpdateCraftIcons();
-	}
 
 	private IEnumerator LoadWait(float waitTime)
 	{
 		yield return new WaitForSeconds(waitTime);
 
 		InitIconFleet();
+
+		updateCoroutine = UpdateIconHud(0.015f);
+		StartCoroutine(updateCoroutine);
+	}
+
+	private IEnumerator UpdateIconHud(float intervalTime)
+	{
+		while(true)
+		{
+			yield return new WaitForSeconds(intervalTime);
+			UpdateCraftIcons();
+		}
 	}
 
 	void InitIconFleet()
 	{
 		spacecraftList = objectManager.GetSpacecraftList();
-		iconImageList = new List<Image>();
-		Image[] images = GetComponentsInChildren<Image>();
-		foreach (Image img in images)
-		{
-			if (!img.CompareTag("Health"))
-			{
-				iconImageList.Add(img);
-				img.gameObject.SetActive(false);
-			}
-		}
 		int numCrafts = spacecraftList.Count;
+		Debug.Log("craft icon hud reading list " + numCrafts);
+
 		for (int i = 0; i < numCrafts; i++)
 		{
 			if (spacecraftList[i] != null)
@@ -69,6 +71,10 @@ public class CraftIconHUD : MonoBehaviour
 					img = iconImageList[i];
 				else
 					img = CreateSpacecraftIcon().GetComponent<Image>();
+
+				HealthBar healthBar = img.gameObject.GetComponentInChildren<HealthBar>();
+				Health spacecraftHealth = sp.GetComponent<Health>();
+				healthBar.InitHeath(spacecraftHealth.maxHealth, spacecraftHealth.GetHealth());
 
 				Color iconColor = img.color;
 				if (sp.GetAgent() != null)
@@ -97,7 +103,6 @@ public class CraftIconHUD : MonoBehaviour
 				}
 
 				img.color = iconColor;
-
 				sp.SetHUDIcon(img.gameObject);
 				img.gameObject.SetActive(true);
 			}
@@ -125,14 +130,12 @@ public class CraftIconHUD : MonoBehaviour
 		{
 			for (int i = 0; i < spacecraftList.Count; i++)
 			{
-				if (i < spacecraftList.Count && (spacecraftList[i] != null))
+				if (spacecraftList[i] != null)
 				{
 					Spacecraft sp = spacecraftList[i];
-					Image img;
-					if (sp != null && sp.GetHUDIcon() != null)
+					if (sp.GetHUDIcon() != null)
 					{
-						img = sp.GetHUDIcon().GetComponent<Image>();
-
+						Image img = sp.GetHUDIcon().GetComponent<Image>();
 						if ((sp.GetMarks() > 0) || (sp.GetAgent() && (sp.GetAgent().teamID == 0)))
 						{
 							img.enabled = true;
@@ -155,14 +158,6 @@ public class CraftIconHUD : MonoBehaviour
 								img.gameObject.SetActive(false);
 							}
 
-							var healthBar = img.transform.Find("HealthBar");
-							if ((healthBar != null) && healthBar.CompareTag("Health"))
-							{
-								Vector2 healthBarr = healthBarScale;
-								healthBarr.x *= sp.GetHealthPercent();
-								healthBar.GetComponent<Image>().rectTransform.sizeDelta = healthBarr;
-							}
-
 							Vector3 toCamera = cameraMain.transform.position - sp.transform.position;
 							Color iconColor = img.color;
 							iconColor.a = Mathf.Clamp(toCamera.magnitude * 0.1f, 0.1f, 1f);
@@ -177,6 +172,16 @@ public class CraftIconHUD : MonoBehaviour
 					}
 				}
 			}
+		}
+	}
+
+	public void UpdateSpacecraftHealth(Spacecraft sp)
+	{
+		if (sp.GetHUDIcon() != null)
+		{
+			HealthBar healthBar = sp.GetHUDIcon().GetComponentInChildren<HealthBar>();
+			Health spacecraftHealth = sp.GetComponent<Health>();
+			healthBar.InitHeath(spacecraftHealth.maxHealth, spacecraftHealth.GetHealth());
 		}
 	}
 

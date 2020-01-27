@@ -58,9 +58,16 @@ public class LocationManager : MonoBehaviour
 
 	public List<CampaignLocation> GetRouteTo(CampaignLocation start, CampaignLocation destination)
 	{
+		CampaignLocation current = start;
+		if (current == destination)
+			return null;
+
 		route.Clear();
 		route.Add(start);
-		CampaignLocation current = start;
+
+		foreach (CampaignLocation cl in allLocations)
+			cl.bRouteHit = false;
+
 		int safeIndex = 0;
 		while (current != destination)
 		{
@@ -89,6 +96,10 @@ public class LocationManager : MonoBehaviour
 		CampaignLocation current = start;
 		if (start == destination)
 			return false;
+
+		foreach (CampaignLocation cl in allLocations)
+			cl.bRouteHit = false;
+
 		int safeIndex = 0;
 		while (current != destination)
 		{
@@ -105,7 +116,10 @@ public class LocationManager : MonoBehaviour
 
 			safeIndex++;
 			if (safeIndex >= 100)
+			{
+				Debug.Log("route search hit limit");
 				return false;
+			}
 		}
 
 		return true;
@@ -113,17 +127,19 @@ public class LocationManager : MonoBehaviour
 
 	CampaignLocation GetNextNeighbor(CampaignLocation start, CampaignLocation destination)
 	{
-		CampaignLocation closestLocation = null;
-		List<CampaignLocation> neighbors = new List<CampaignLocation>(start.GetNeighbors());
 		float closestDistance = Mathf.Infinity;
+		List<CampaignLocation> neighbors = new List<CampaignLocation>(start.GetNeighbors());
 		int numNeighbors = neighbors.Count;
+		CampaignLocation closestLocation = null;
+		start.bRouteHit = true;
+
 		for (int i = 0; i < numNeighbors; i++)
 		{
 			CampaignLocation cl = neighbors[i];
 			if (cl == destination)
 				return cl;
 
-			if (cl != start)
+			if (cl != start && !cl.bRouteHit)
 			{
 				float distanceToDestination = Vector3.Distance(cl.transform.position, destination.transform.position);
 				if (distanceToDestination < closestDistance)
@@ -134,22 +150,14 @@ public class LocationManager : MonoBehaviour
 			}
 		}
 
-		// backup case to explore all remaining neighbors
-		if (closestLocation == null)
+		if (closestLocation != null)
 		{
-			for (int i = 0; i < numNeighbors; i++)
-			{
-				CampaignLocation thisNeighbor = neighbors[i];
-				CampaignLocation stepForward = GetNextNeighbor(thisNeighbor, destination);
-				if ((stepForward != null) && (stepForward != start))
-				{
-					if (stepForward == destination)
-						return start;
-
-					closestLocation = stepForward;
-					break;
-				}
-			}
+			closestLocation.bRouteHit = true;
+			//Debug.Log("closest location " + closestLocation.locationName);
+		}
+		else
+		{
+			//Debug.Log("closest location null");
 		}
 
 		return closestLocation;

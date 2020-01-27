@@ -88,7 +88,7 @@ public class FleetController : MonoBehaviour
 			scout.ScoutLocation(fleet.GetLocation(), scoutLocation);
 		}
 
-		if (route.Count > 1)
+		if ((route != null) && (route.Count > 1))
 		{
 			moveLocation = route[1];
 			fleetMoveCoroutine = FleetMove(movementUpdateInterval);
@@ -99,7 +99,8 @@ public class FleetController : MonoBehaviour
 	public void Undo()
 	{
 		SetTargetLocation(null);
-		route.Clear();
+		if (route != null)
+			route.Clear();
 		scout.Undo();
 		scoutLocation = null;
 		ClearLines();
@@ -119,17 +120,19 @@ public class FleetController : MonoBehaviour
 		if (!locationManager)
 			locationManager = FindObjectOfType<LocationManager>();
 		route = locationManager.GetRouteTo(fleet.GetLocation(), targetLocation);
-
-		movementLine.positionCount = 0;
-		movementLine.positionCount = route.Count;
-		int routeSteps = route.Count;
-		for (int i = 0; i < routeSteps; i++)
+		if (route != null)
 		{
-			if (route[i] != null)
-				movementLine.SetPosition(i, route[i].transform.position);
-		}
+			movementLine.positionCount = 0;
+			movementLine.positionCount = route.Count;
+			int routeSteps = route.Count;
+			for (int i = 0; i < routeSteps; i++)
+			{
+				if (route[i] != null)
+					movementLine.SetPosition(i, route[i].transform.position);
+			}
 
-		movementLine.enabled = true;
+			movementLine.enabled = true;
+		}
 	}
 
 	void UpdateMove(float delta)

@@ -95,8 +95,9 @@ public class FleetPanelSlot : MonoBehaviour, IDeselectHandler
 			{
 				int maxHealth = slotCard.cardObjectPrefab.GetComponent<Health>().maxHealth;
 				int currentHealth = game.GetSavedHealth(slotIndex);
-
-				Debug.Log("card health: " + currentHealth);
+				if (currentHealth < 0)
+					currentHealth = maxHealth;
+				///Debug.Log("card health: " + currentHealth);
 				healthBar.InitHeath(maxHealth, currentHealth);
 			}
 		}

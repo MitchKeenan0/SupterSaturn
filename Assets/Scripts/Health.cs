@@ -8,16 +8,18 @@ public class Health : MonoBehaviour
 
 	private Spacecraft spacecraft;
 	private Agent agent;
-	private TeamFleetHUD teamHud;
+	private CraftIconHUD craftIconHud;
+	private TeamFleetHUD teamFleetHud;
 	private BattleOutcome battleOutcome;
 	private int currentHealth = -1;
 
-    void Start()
+    void Awake()
     {
 		currentHealth = maxHealth;
 		spacecraft = GetComponent<Spacecraft>();
 		agent = GetComponent<Agent>();
-		teamHud = FindObjectOfType<TeamFleetHUD>();
+		craftIconHud = FindObjectOfType<CraftIconHUD>();
+		teamFleetHud = FindObjectOfType<TeamFleetHUD>();
 		battleOutcome = FindObjectOfType<BattleOutcome>();
 	}
 
@@ -26,23 +28,37 @@ public class Health : MonoBehaviour
 		int damage = Mathf.Clamp(value, -(maxHealth + 1), maxHealth + 1);
 		currentHealth += damage;
 
-		if (teamHud != null)
-			teamHud.SetHealthBarValue(spacecraft, Mathf.Floor(currentHealth) / Mathf.Floor(maxHealth));
-
 		if (currentHealth <= 0)
 		{
 			currentHealth = 0;
-			spacecraft.SpacecraftDestroyed(responsibleTransform);
+			if (responsibleTransform != null)
+				spacecraft.SpacecraftDestroyed(responsibleTransform);
 		}
 		
-		if (spacecraft.GetAgent().teamID == 0)
+		if (!battleOutcome)
+			battleOutcome = FindObjectOfType<BattleOutcome>();
+
+		if ((battleOutcome != null) && (responsibleTransform != null))
 		{
-			battleOutcome.AddLost(damage);
+			if ((spacecraft.GetAgent() != null) && (spacecraft.GetAgent().teamID == 0))
+			{
+				battleOutcome.AddLost(damage);
+			}
+			else if ((spacecraft.GetAgent() != null) && (spacecraft.GetAgent().teamID == 1))
+			{
+				battleOutcome.AddScore(damage);
+			}
 		}
-		else if (spacecraft.GetAgent().teamID == 1)
-		{
-			battleOutcome.AddScore(damage);
-		}
+
+		if (!craftIconHud)
+			craftIconHud = FindObjectOfType<CraftIconHUD>();
+		if (craftIconHud != null)
+			craftIconHud.UpdateSpacecraftHealth(spacecraft);
+
+		if (!teamFleetHud)
+			teamFleetHud = FindObjectOfType<TeamFleetHUD>();
+		if (teamFleetHud != null)
+			teamFleetHud.SetHealthBarValue(spacecraft);
 	}
 
 	public int GetHealth() { return currentHealth; }

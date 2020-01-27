@@ -16,6 +16,7 @@ public class HealthBar : MonoBehaviour
 	private int barSize;
 	private int maxHealth;
 	private int unitSize;
+	private int currentHealth;
 
     void Awake()
     {
@@ -24,34 +25,16 @@ public class HealthBar : MonoBehaviour
 		healthUnitList = new List<GameObject>();
     }
 
-	public void ModifyHealth(int value)
-	{
-		Debug.Log("modifying health " + value);
-		int currentUnits = healthUnitList.Count;
-		int newHealth = Mathf.Clamp(currentUnits + value, 0, maxHealth);
-		for(int i = 0; i < currentUnits; i++)
-		{
-			if (i < healthUnitList.Count)
-			{
-				GameObject spareHealthUnit = healthUnitList[i];
-				if (i > newHealth)
-				{
-
-					healthUnitList.Remove(spareHealthUnit);
-					Destroy(spareHealthUnit);
-				}
-				else
-				{
-					CreateHealthUnit(unitSize);
-				}
-			}
-		}
-	}
-
 	public void InitHeath(int maxHp, int currentHp)
 	{
 		Clear();
 		maxHealth = maxHp;
+		currentHealth = currentHp;
+		if (currentHealth == 0)
+		{
+			currentHealth = maxHealth;
+		}
+
 		if (maxHealth != -1)
 		{
 			healthBar.SetActive(true);

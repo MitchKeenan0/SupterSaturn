@@ -65,7 +65,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bAgentStartsEnabled: 1
   mainEnginePower: 0.6
-  turningPower: 2
+  turningPower: 0.5
   maneuverPower: 0.5
   spacecraftName: Corvette
   thrustParticles: {fileID: 2379070149716345965}

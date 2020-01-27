@@ -10,6 +10,7 @@ public class CampaignLocation : MonoBehaviour
 	public int locationValue = 1;
 	public int rarity = 0;
 	public GameObject linePrefab;
+	public bool bRouteHit = false;
 
 	private NameLibrary nameLibrary;
 	private List<LineRenderer> lineList;

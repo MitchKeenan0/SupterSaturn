@@ -6,7 +6,7 @@ using UnityEngine;
 public class Save
 {
 	public string playerName = "";
-	public List<int> cardIDList = new List<int>();
-	public List<int> spacecraftHealthList = new List<int>();
+	public List<int> cardList = new List<int>();
+	public List<int> healthList = new List<int>();
 	public int chevrons = 0;
 }

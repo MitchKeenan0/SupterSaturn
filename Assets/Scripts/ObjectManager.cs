@@ -18,6 +18,7 @@ public class ObjectManager : MonoBehaviour
 
 	void Awake()
 	{
+		spacecraftList = new List<Spacecraft>();
 		game = FindObjectOfType<Game>();
 	}
 
@@ -27,7 +28,7 @@ public class ObjectManager : MonoBehaviour
 		hud = FindObjectOfType<CraftIconHUD>();
 		battleOutcome = FindObjectOfType<BattleOutcome>();
 
-		loadWaitCoroutine = LoadWait(0.15f);
+		loadWaitCoroutine = LoadWait(0.2f);
 		StartCoroutine(loadWaitCoroutine);
 	}
 
@@ -41,12 +42,10 @@ public class ObjectManager : MonoBehaviour
 
 	void InitSpacecraftList()
 	{
-		spacecraftList = new List<Spacecraft>();
-		Spacecraft[] sp = FindObjectsOfType<Spacecraft>();
-		foreach (Spacecraft s in sp)
-		{
-			spacecraftList.Add(s);
-		}
+		Spacecraft[] allSpacecraft = FindObjectsOfType<Spacecraft>();
+		foreach (Spacecraft sp in allSpacecraft)
+			spacecraftList.Add(sp);
+		Debug.Log("object manager reading list " + allSpacecraft.Length);
 	}
 
 	void InitGravityList()

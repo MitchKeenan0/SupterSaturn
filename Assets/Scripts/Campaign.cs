@@ -19,15 +19,11 @@ public class Campaign : MonoBehaviour
 		fleetList = new List<Fleet>();
 		cameraMain = Camera.main;
 		game = FindObjectOfType<Game>();
+		game.LoadGame();
 		fleetHud = FindObjectOfType<FleetHUD>();
 		campaignBattle = FindObjectOfType<CampaignBattle>();
 		locationManager = FindObjectOfType<LocationManager>();
     }
-
-	void Start()
-	{
-		game.LoadGame();
-	}
 
 	public void InitFleetLocations()
 	{
@@ -41,16 +37,19 @@ public class Campaign : MonoBehaviour
 			CampaignLocation enemyStartLocation = null;
 			foreach (CampaignLocation cl in locationList)
 			{
-				float distanceToLocation = Vector3.Distance(cl.transform.position, cameraMain.transform.position);
-				if (distanceToLocation < closestDistance)
+				if (cl.GetNeighbors().Count > 0)
 				{
-					closestDistance = distanceToLocation;
-					myStartLocation = cl;
-				}
-				if (distanceToLocation > furthestDistance)
-				{
-					furthestDistance = distanceToLocation;
-					enemyStartLocation = cl;
+					float distanceToLocation = Vector3.Distance(cl.transform.position, cameraMain.transform.position);
+					if (distanceToLocation < closestDistance)
+					{
+						closestDistance = distanceToLocation;
+						myStartLocation = cl;
+					}
+					if (distanceToLocation > furthestDistance)
+					{
+						furthestDistance = distanceToLocation;
+						enemyStartLocation = cl;
+					}
 				}
 			}
 

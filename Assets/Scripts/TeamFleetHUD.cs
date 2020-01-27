@@ -16,7 +16,7 @@ public class TeamFleetHUD : MonoBehaviour
 	private List<Spacecraft> spacecraftList;
 	private List<Spacecraft> teamList;
 	private List<Spacecraft> enemyList;
-	private List<Image> teamImageList;
+	private List<GameObject> teamDiagramList;
 	private List<Button> teamButtonList;
 	private float timeOfLastButtonPress = 0f;
 
@@ -27,6 +27,8 @@ public class TeamFleetHUD : MonoBehaviour
 		spacecraftList = new List<Spacecraft>();
 		teamList = new List<Spacecraft>();
 		enemyList = new List<Spacecraft>();
+		teamDiagramList = new List<GameObject>();
+		teamButtonList = new List<Button>();
 	}
 
 	void Start()
@@ -35,7 +37,7 @@ public class TeamFleetHUD : MonoBehaviour
 		objectManager = FindObjectOfType<ObjectManager>();
 		mouseSelection = FindObjectOfType<MouseSelection>();
 
-		loadWaitCoroutine = LoadWait(0.25f);
+		loadWaitCoroutine = LoadWait(0.4f);
 		StartCoroutine(loadWaitCoroutine);
     }
 
@@ -46,44 +48,42 @@ public class TeamFleetHUD : MonoBehaviour
 	}
 
 	// Internal functions
+	void AddTeam(Spacecraft sp)
+	{
+		if (!teamList.Contains(sp))
+			teamList.Add(sp);
+	}
+
+	void AddEnemy(Spacecraft sp)
+	{
+		if (!enemyList.Contains(sp))
+			enemyList.Add(sp);
+	}
+
 	void InitTeamFleet()
 	{
-		teamImageList = new List<Image>();
-		teamButtonList = new List<Button>();
-
 		// team
-		spacecraftList = objectManager.GetSpacecraftList();
+		spacecraftList = new List<Spacecraft>(objectManager.GetSpacecraftList());
 		int numSpacecraft = spacecraftList.Count;
-		for(int i = 0; i < numSpacecraft; i++)
+		Debug.Log("team fleet reading list " + numSpacecraft);
+
+		for (int i = 0; i < numSpacecraft; i++)
 		{
 			Spacecraft sp = spacecraftList[i];
-			if ((sp != null) && (sp.GetAgent() != null) && !sp.CompareTag("Orbiter"))
+			if (sp != null)
 			{
 				if (sp.GetAgent().teamID == 0)
-					teamList.Add(sp);
+					AddTeam(sp);
 				else
-					enemyList.Add(sp);
+					AddEnemy(sp);
 			}
 		}
 
 		// diagrams
-		Image[] images = GetComponentsInChildren<Image>();
-		foreach (Image img in images)
+		int numToCreate = teamList.Count;
+		for (int i = 0; i < numToCreate; i++)
 		{
-			if (!img.gameObject.CompareTag("Selection")
-				&& !img.gameObject.CompareTag("Health"))
-			{
-				teamImageList.Add(img);
-				img.gameObject.SetActive(false);
-			}
-		}
-		if (teamImageList.Count < teamList.Count)
-		{
-			int numToCreate = teamList.Count - teamImageList.Count;
-			for (int i = 0; i < numToCreate; i++)
-			{
-				CreateSpacecraftDiagram();
-			}
+			CreateSpacecraftDiagram();
 		}
 
 		// bond diagrams to team
@@ -91,11 +91,16 @@ public class TeamFleetHUD : MonoBehaviour
 		for (int i = 0; i < numTeam; i++)
 		{
 			Spacecraft sp = teamList[i];
-			if (i < teamImageList.Count)
+			if (i < teamDiagramList.Count)
 			{
-				Image img = teamImageList[i];
-				img.sprite = sp.craftDiagram;
-				img.gameObject.SetActive(true);
+				Image img = teamDiagramList[i].GetComponentInChildren<Image>();
+				if ((img != null) && (sp.craftDiagram != null))
+				{
+					img.sprite = sp.craftDiagram;
+					img.gameObject.SetActive(true);
+				}
+
+				SetHealthBarValue(sp);
 			}
 		}
 
@@ -106,9 +111,9 @@ public class TeamFleetHUD : MonoBehaviour
 			teamButtonList.Add(b);
 		}
 
-		GameObject panelObject = diagramPanel.GetComponent<HorizontalLayoutGroup>().gameObject;
-		RectTransform rt = panelObject.GetComponent<RectTransform>();
-		rt.sizeDelta = new Vector2((teamButtonList.Count * 100f), rt.sizeDelta.y);
+		// scale panel
+		RectTransform rt = diagramPanel.GetComponent<RectTransform>();
+		rt.sizeDelta = new Vector2((teamButtonList.Count * 150f), rt.sizeDelta.y);
 	}
 
 	GameObject CreateSpacecraftDiagram()
@@ -117,11 +122,12 @@ public class TeamFleetHUD : MonoBehaviour
 		if (diagramPrefab != null)
 		{
 			product = Instantiate(diagramPrefab, diagramPanel.transform);
-			teamImageList.Add(product.GetComponent<Image>());
+			product.transform.SetParent(diagramPanel.transform);
+			teamDiagramList.Add(product);
 			Button b = product.GetComponent<Button>();
 			if ((b != null) && !teamButtonList.Contains(b))
 				teamButtonList.Add(b);
-			product.SetActive(false);
+			Debug.Log("Spawned diagram");
 		}
 		return product;
 	}
@@ -144,21 +150,32 @@ public class TeamFleetHUD : MonoBehaviour
 		return enemyList;
 	}
 
-	public void SetHealthBarValue(Spacecraft sp, float value)
+	public void SetHealthBarValue(Spacecraft sp)
 	{
+		if (teamList == null)
+			teamList = new List<Spacecraft>();
+		AddTeam(sp);
 		if (teamList.Contains(sp))
 		{
-			if (teamImageList[teamList.IndexOf(sp)] != null)
+			int teamIndex = teamList.IndexOf(sp);
+			if (teamIndex < teamDiagramList.Count)
 			{
-				Image spDiagram = teamImageList[teamList.IndexOf(sp)];
-				var healthBar = spDiagram.transform.Find("HealthBar");
-				if ((healthBar != null) && healthBar.CompareTag("Health"))
+				HealthBar healthBar = teamDiagramList[teamIndex].gameObject.GetComponentInChildren<HealthBar>();
+				if (healthBar != null)
 				{
-					Vector2 healthBarr = healthBarScale;
-					healthBarr.x *= sp.GetHealthPercent();
-					healthBar.GetComponent<Image>().rectTransform.sizeDelta = healthBarr;
+					Health health = sp.GetComponent<Health>();
+					healthBar.InitHeath(health.maxHealth, health.GetHealth());
+					Debug.Log("fleet hud set health bar");
+				}
+				else
+				{
+					Debug.Log("No health bar");
 				}
 			}
+		}
+		else
+		{
+			Debug.Log("fleet hud teamlist does not contain sp");
 		}
 	}
 
@@ -166,10 +183,13 @@ public class TeamFleetHUD : MonoBehaviour
 	{
 		if (teamList.Contains(sp))
 		{
-			Image img = sp.GetHUDIcon().GetComponent<Image>();
-			if (img != null)
+			if (sp.GetHUDIcon() != null)
 			{
-				img.color = Color.green;
+				Image img = sp.GetHUDIcon().GetComponent<Image>();
+				if (img != null)
+				{
+					img.color = Color.green;
+				}
 			}
 		}
 	}
@@ -178,17 +198,20 @@ public class TeamFleetHUD : MonoBehaviour
 	{
 		if (teamList.Contains(sp))
 		{
-			Image img = sp.GetHUDIcon().GetComponent<Image>();
-			if (img != null)
+			if (sp.GetHUDIcon() != null)
 			{
-				img.color = Color.white;
+				Image img = sp.GetHUDIcon().GetComponent<Image>();
+				if (img != null)
+				{
+					img.color = Color.white;
+				}
 			}
 		}
 	}
 
 	public void ButtonHovered(bool value, int index)
 	{
-		if (teamList[index] != null)
+		if (index < teamList.Count)
 		{
 			cameraController.SetMouseContext(value, teamList[index]);
 		}
@@ -208,11 +231,14 @@ public class TeamFleetHUD : MonoBehaviour
 		if (teamList.Contains(sp))
 		{
 			int index = teamList.IndexOf(sp);
-			Image img = teamImageList[index].gameObject.GetComponent<Image>();
-			if (img != null)
+			if (index < teamDiagramList.Count)
 			{
-				Color newColor = Color.red;
-				img.color = newColor;
+				Image img = teamDiagramList[index].gameObject.GetComponent<Image>();
+				if (img != null)
+				{
+					Color newColor = Color.red;
+					img.color = newColor;
+				}
 			}
 		}
 	}

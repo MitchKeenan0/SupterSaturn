@@ -294,7 +294,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: START BATTLE
+  m_Text: Engage
 --- !u!1 &4736824668339565513
 GameObject:
   m_ObjectHideFlags: 0

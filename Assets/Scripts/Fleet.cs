@@ -30,7 +30,7 @@ public class Fleet : MonoBehaviour
 	{
 		if (teamID == 0)
 		{
-			loadWaitCoroutine = LoadWait(0.125f);
+			loadWaitCoroutine = LoadWait(0.1f);
 			StartCoroutine(loadWaitCoroutine);
 		}
 	}
@@ -38,6 +38,7 @@ public class Fleet : MonoBehaviour
 	private IEnumerator LoadWait(float waitTime)
 	{
 		yield return new WaitForSeconds(waitTime);
+
 		InitSavedFleet();
 		campaign.InitFleetLocations();
 	}
@@ -48,18 +49,7 @@ public class Fleet : MonoBehaviour
 		if (fleetName == "")
 			fleetName = "No Name";
 
-		List<Card> cards = new List<Card>(game.GetSelectedCards());
-		int numCards = cards.Count;
-		for (int i = 0; i < numCards; i++)
-		{
-			if (i < fleetCapacity)
-			{
-				GameObject cardObject = Instantiate(cards[i].cardObjectPrefab, null);
-				cardObject.SetActive(false);
-				spacecraftList.Add(cardObject.GetComponent<Spacecraft>());
-				game.AddSpacecraft(cardObject.GetComponent<Spacecraft>());
-			}
-		}
+		spacecraftList = game.GetSpacecraftList();
 	}
 
 	public void SetName(string value)
@@ -84,17 +74,5 @@ public class Fleet : MonoBehaviour
 	public List<Spacecraft> GetSpacecraftList()
 	{
 		return spacecraftList;
-	}
-
-	public void AddSpacecraft(Spacecraft sp)
-	{
-		if (!spacecraftList.Contains(sp))
-			spacecraftList.Add(sp);
-	}
-
-	public void RemoveSpacecraft(Spacecraft sp)
-	{
-		if (spacecraftList.Contains(sp))
-			spacecraftList.Remove(sp);
 	}
 }

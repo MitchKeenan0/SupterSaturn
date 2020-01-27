@@ -28,7 +28,7 @@ public class FleetCreator : MonoBehaviour
 	private Player player;
 	private SpacecraftViewer spacecraftViewer;
 	private FleetPanelSlot selectedPanelSlot; // :'D
-	private int maxSlotsAvailable = 5;
+	private int maxSlotsAvailable = 8;
 
 	private List<FleetPanelSlot> panelSlots;
 	private List<SelectionPanelCard> spacecraftCardList;
@@ -220,7 +220,11 @@ public class FleetCreator : MonoBehaviour
 		{
 			Card spacecraftCard = spacecraftCardList[buttonIndex].GetCard();
 			selectedPanelSlot.SetSlot(spacecraftCard, buttonIndex);
-			game.SetSelectedCard(selectedPanelSlot.transform.GetSiblingIndex(), spacecraftCard);
+
+			int selectionIndex = selectedPanelSlot.transform.GetSiblingIndex();
+			game.SetSelectedCard(selectionIndex, spacecraftCard);
+			game.SetSavedHealth(selectionIndex, game.GetSpacecraftList()[selectionIndex].GetComponent<Health>().maxHealth);
+
 			UpdateChevronBalance();
 			game.SaveGame();
 		}
@@ -234,6 +238,7 @@ public class FleetCreator : MonoBehaviour
 			selectedPanelSlot.SetSlot(null, -1);
 			slotIndex = selectedPanelSlot.transform.GetSiblingIndex();
 			game.RemoveSelectedCard(slotIndex);
+			game.RemoveSpacecraft(slotIndex);
 			UpdateChevronBalance();
 			game.SaveGame();
 		}
@@ -264,20 +269,33 @@ public class FleetCreator : MonoBehaviour
 
 	public void SetName(string value)
 	{
-		Debug.Log("Set player name " + value);
+		///Debug.Log("Set player name " + value);
 		player.SetName(value);
 	}
 
 	public void StartGame()
 	{
-		loadingPanel.SetActive(true);
-		game.SaveGame();
-		SceneManager.LoadScene("CampaignScene");
+		sceneLoadCoroutine = LoadScene(0.3f, "CampaignScene");
+		StartCoroutine(sceneLoadCoroutine);
 	}
 
 	public void BackToMenu()
 	{
+		sceneLoadCoroutine = LoadScene(0.3f, "BaseScene");
+		StartCoroutine(sceneLoadCoroutine);
+	}
+
+	private IEnumerator sceneLoadCoroutine;
+	private IEnumerator LoadScene(float waitTime, string sceneName)
+	{
+		loadingPanel.SetActive(true);
+		SaveGame();
+		yield return new WaitForSeconds(waitTime);
+		SceneManager.LoadScene(sceneName);
+	}
+
+	public void SaveGame()
+	{
 		game.SaveGame();
-		SceneManager.LoadScene("BaseScene");
 	}
 }

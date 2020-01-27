@@ -208,7 +208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdaad8505f6428c44aa36c8ca0e960bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 3
+  damage: 5
   impactForce: 10
   impactPrefab: {fileID: 4929095700065580019, guid: dfe7e3f07f908e2459bacc26332f0526,
     type: 3}
