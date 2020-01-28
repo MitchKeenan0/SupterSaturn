@@ -154,28 +154,23 @@ public class TeamFleetHUD : MonoBehaviour
 	{
 		if (teamList == null)
 			teamList = new List<Spacecraft>();
-		AddTeam(sp);
-		if (teamList.Contains(sp))
+		if (sp != null)
 		{
-			int teamIndex = teamList.IndexOf(sp);
-			if (teamIndex < teamDiagramList.Count)
+			AddTeam(sp);
+			if (teamList.Contains(sp))
 			{
-				HealthBar healthBar = teamDiagramList[teamIndex].gameObject.GetComponentInChildren<HealthBar>();
-				if (healthBar != null)
+				int teamIndex = teamList.IndexOf(sp);
+				if (teamIndex < teamDiagramList.Count)
 				{
-					Health health = sp.GetComponent<Health>();
-					healthBar.InitHeath(health.maxHealth, health.GetHealth());
-					Debug.Log("fleet hud set health bar");
-				}
-				else
-				{
-					Debug.Log("No health bar");
+					HealthBar healthBar = teamDiagramList[teamIndex].gameObject.GetComponentInChildren<HealthBar>();
+					if (healthBar != null)
+					{
+						Health health = sp.GetComponent<Health>();
+						healthBar.InitHeath(health.maxHealth, health.GetHealth());
+						Debug.Log("fleet hud set health bar");
+					}
 				}
 			}
-		}
-		else
-		{
-			Debug.Log("fleet hud teamlist does not contain sp");
 		}
 	}
 

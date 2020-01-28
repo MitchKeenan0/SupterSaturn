@@ -44,10 +44,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numericID: 2
+  cardName: Fighter II
+  cardDescription: Dogfighter variant for CQC
   cardObjectPrefab: {fileID: 1906621234774554819, guid: b8b87167795a4fb4ab22dee047b4ed1c,
     type: 3}
   cardSprite: {fileID: 21300000, guid: 6c234c9dc9203534b93f4e615e24d416, type: 3}
-  cardName: Fighter II
-  cardLevel: 2
-  cardCost: 250
-  cardDescription: Dogfighter variant for CQC
+  iconSprite: {fileID: 0}
+  level: 1
+  cost: 150
+  health: 1
+  damage: 1

@@ -6,16 +6,13 @@ using UnityEngine.UI;
 public class Card : MonoBehaviour
 {
 	public int numericID = 0;
+	public string cardName = "";
+	public string cardDescription = "";
 	public GameObject cardObjectPrefab;
 	public Sprite cardSprite;
-	public string cardName = "";
-	public int cardLevel = 1;
-	public int cardCost = 100;
-	public string cardDescription = "";
-
-	public GameObject CashIn()
-	{
-		GameObject cardObject = Instantiate(cardObjectPrefab, null);
-		return cardObject;
-	}
+	public Sprite iconSprite;
+	public int level = 1;
+	public int cost = 10;
+	public int health = 1;
+	public int damage = 1;
 }

@@ -32,12 +32,12 @@ public class SelectionPanelCard : MonoBehaviour, IPointerEnterHandler, IPointerE
 
 		cardImage.sprite = c.cardSprite;
 		cardImage.preserveAspect = true;
-		cardCost = c.cardCost;
+		cardCost = c.cost;
 
 		if (c != null)
 		{
 			cardName = c.cardName;
-			cardLevelText.text = GetRomanNumeral(c.cardLevel);
+			cardLevelText.text = GetRomanNumeral(c.level);
 		}
 		else
 		{

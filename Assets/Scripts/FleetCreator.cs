@@ -42,6 +42,10 @@ public class FleetCreator : MonoBehaviour
 	{
 		player = FindObjectOfType<Player>();
 		game = FindObjectOfType<Game>();
+		game.LoadGame();
+
+		emptyButton.interactable = false;
+		loadingPanel.SetActive(true);
 	}
 
 	void Start()
@@ -49,10 +53,6 @@ public class FleetCreator : MonoBehaviour
 		panelSlots = new List<FleetPanelSlot>();
 		spacecraftCardList = new List<SelectionPanelCard>();
 		spacecraftViewer = GetComponent<SpacecraftViewer>();
-
-		game.LoadGame();
-		emptyButton.interactable = false;
-		loadingPanel.SetActive(true);
 		
 		loadGraceCoroutine = LoadWait(0.3f);
 		StartCoroutine(loadGraceCoroutine);
@@ -97,7 +97,6 @@ public class FleetCreator : MonoBehaviour
 			Card spacecraftCard = null;
 			if ((i < selectedCards.Count) && (i < maxSlotsAvailable))
 				spacecraftCard = selectedCards[i];
-
 			panelSlot.SetSlot(spacecraftCard, i);
 
 			Image panelImage = panelSlot.GetComponent<Image>();
@@ -149,30 +148,33 @@ public class FleetCreator : MonoBehaviour
 	void UpdateChevronBalance()
 	{
 		int total = 0;
-		for(int i = 0; i < maxSlotsAvailable; i++)
+		List<Card> selectedCards = new List<Card>(game.GetSelectedCards());
+		int numSelected = selectedCards.Count;
+		for (int i = 0; i < numSelected; i++)
 		{
-			if (i < panelSlots.Count)
+			if (game.GetSelectedCards()[i] != null)
 			{
-				int thisCost = panelSlots[i].GetCost();
+				int thisCost = game.GetSelectedCards()[i].cost;
 				total += thisCost;
 			}
 		}
-
 		chevronBalanceText.text = total.ToString();
-		if (total > game.GetChevrons())
-		{
-			startGameButton.interactable = false;
-			chevronBalanceText.color = bankruptColor;
-			chevronDividerImage.color = bankruptColor;
-		}
-		else
+
+		if (total <= game.GetChevrons())
 		{
 			startGameButton.interactable = true;
 			chevronBalanceText.color = moneyColor;
 			chevronDividerImage.color = moneyColor;
 		}
+		else
+		{
+			startGameButton.interactable = false;
+			chevronBalanceText.color = bankruptColor;
+			chevronDividerImage.color = bankruptColor;
+		}
 
 		chevronValueText.text = game.GetChevrons().ToString();
+		Debug.Log("game chevrons " + game.GetChevrons());
 	}
 
 	private IEnumerator DeselectAfterTime(float waitTime)
@@ -219,46 +221,34 @@ public class FleetCreator : MonoBehaviour
 	public void SelectSpacecraft(int buttonIndex)
 	{
 		spacecraftViewer.DisplaySpacecraft(buttonIndex);
-
 		if (selectedPanelSlot != null)
 		{
-			Card spacecraftCard = spacecraftCardList[buttonIndex].GetCard();
-			selectedPanelSlot.SetSlot(spacecraftCard, buttonIndex);
-
 			int selectionIndex = selectedPanelSlot.transform.GetSiblingIndex();
-			Debug.Log("FleetCreator selectspacecraft adding spacecraft " + spacecraftCard.cardName);
-
-			int savingHealth = spacecraftCard.cardObjectPrefab.GetComponent<Health>().maxHealth;
-			game.SetSavedHealth(selectionIndex, savingHealth);
-			Health health = spacecraftCard.cardObjectPrefab.GetComponent<Health>();
-			int maxHealth = health.maxHealth;
-			panelSlots[selectionIndex].GetComponentInChildren<HealthBar>().InitHeath(maxHealth, savingHealth);
-
-			UpdateChevronBalance();
-			game.SaveGame();
+			Card spacecraftCard = spacecraftCardList[buttonIndex].GetCard();
+			if ((selectedPanelSlot.GetCard() == null) || (spacecraftCard.numericID != selectedPanelSlot.GetCard().numericID))
+			{
+				selectedPanelSlot.SetSlot(spacecraftCard, selectionIndex);
+				UpdateChevronBalance();
+				game.SaveGame();
+			}
 		}
 	}
 
 	public void EmptySlot()
 	{
-		int slotIndex = -1;
 		if (selectedPanelSlot != null)
 		{
-			slotIndex = selectedPanelSlot.transform.GetSiblingIndex();
+			int slotIndex = selectedPanelSlot.transform.GetSiblingIndex();
 			selectedPanelSlot.SetSlot(null, slotIndex);
-
 			UpdateChevronBalance();
+			selectedPanelSlot = null;
 			game.SaveGame();
+			///InitFleetPanel();
 		}
-
-		selectedPanelSlot = null;
-		game.SaveGame();
-		InitFleetPanel();
 	}
 
 	public void EmptyAll()
 	{
-		selectedPanelSlot = null;
 		int numSlots = game.GetSelectedCards().Count;
 		for (int i = 0; i < numSlots; i++)
 		{
@@ -270,9 +260,10 @@ public class FleetCreator : MonoBehaviour
 			}
 		}
 
+		selectedPanelSlot = null;
 		UpdateChevronBalance();
 		game.SaveGame();
-		InitFleetPanel();
+		///InitFleetPanel();
 	}
 
 	public void SetName(string value)

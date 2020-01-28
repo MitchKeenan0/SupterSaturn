@@ -23,7 +23,7 @@ public class FleetPanelSlot : MonoBehaviour, IDeselectHandler
 	private int originalSlotCost = 0;
 
 	public Card GetCard() { return slotCard; }
-	public int GetCost() { return (slotCard != null) ? slotCard.cardCost : 0; }
+	public int GetCost() { return (slotCard != null) ? slotCard.cost : 0; }
 
 	void Awake()
 	{
@@ -58,23 +58,32 @@ public class FleetPanelSlot : MonoBehaviour, IDeselectHandler
 		{
 			slotImage.enabled = true;
 			slotImage.sprite = sprite;
+			slotNameText.enabled = true;
 			slotNameText.text = name;
 			costText.text = cost.ToString();
+			costText.enabled = true;
 			Color previewColor = new Color(1f, 1f, 1f, 0.5f);
 			slotNameText.color = costText.color = previewColor;
 		}
 		else
 		{
 			slotImage.sprite = originalSprite;
+			if (originalSprite == null)
+				slotImage.enabled = false;
 			slotNameText.text = originalSlotName;
 			costText.text = originalSlotCost.ToString();
 			slotNameText.color = originalNameColor;
 			costText.color = originalCostColor;
+			costText.enabled = false;
 		}
 	}
 
-	public void SetSlot(Card card, int slotIndex)
+	public void SetSlot(Card card, int index)
 	{
+		game.SetSelectedCard(index, null);
+		game.SetSpacecraft(index, null);
+		game.SetSavedHealth(index, -1);
+
 		slotCard = card;
 		if (slotCard != null)
 		{
@@ -87,34 +96,42 @@ public class FleetPanelSlot : MonoBehaviour, IDeselectHandler
 			slotNameText.color = originalNameColor;
 			originalSlotName = slotCard.cardName;
 
-			costText.text = slotCard.cardCost.ToString();
+			costText.text = slotCard.cost.ToString();
 			costText.color = originalCostColor;
-			originalSlotCost = slotCard.cardCost;
-
-			game.RemoveSpacecraft(slotIndex);
-			game.SetSelectedCard(slotIndex, card);
-			game.AddSpacecraft(null, card);
+			costText.enabled = true;
+			originalSlotCost = slotCard.cost;
 
 			int maxHealth = slotCard.cardObjectPrefab.GetComponent<Health>().maxHealth;
-			int currentHealth = game.GetSavedHealth(slotIndex);
+			int currentHealth = game.GetSavedHealth(index);
 			if (currentHealth < 0)
 				currentHealth = maxHealth;
-			///Debug.Log("card health: " + currentHealth);
 			healthBar.InitHeath(maxHealth, currentHealth);
 			healthBar.enabled = true;
+			Debug.Log("set slot");
 		}
 		else
 		{
 			slotImage.enabled = false;
 			slotNameText.text = "";
+			slotNameText.enabled = false;
 			slotNameText.text = "";
 			costText.text = "";
 			slotNameText.color = Color.clear;
 
 			healthBar.InitHeath(-1, -1);
 			healthBar.enabled = false;
-
-			game.RemoveSelectedCard(slotIndex);
 		}
+
+		game.SetSelectedCard(index, card);
+
+		Spacecraft sp = null;
+		if (card != null)
+			sp = card.cardObjectPrefab.GetComponent<Spacecraft>();
+		game.SetSpacecraft(index, sp);
+
+		int health = -1;
+		if (card != null)
+			health = card.health;
+		game.SetSavedHealth(index, health);
 	}
 }
