@@ -10,8 +10,10 @@ public class FleetAgent : MonoBehaviour
 	private Campaign campaign;
 	private ObjectManager objectManager;
 	private Fleet fleet;
+	private FleetController myFleetController;
 	private FleetController playerFleetController;
 	private LocationManager locationManager;
+	private TurnManager turnManager;
 	private NameLibrary nameLibrary;
 	private List<Spacecraft> spacecraftList;
 
@@ -27,10 +29,12 @@ public class FleetAgent : MonoBehaviour
 		objectManager = FindObjectOfType<ObjectManager>();
 		fleet = GetComponentInParent<Fleet>();
 		locationManager = FindObjectOfType<LocationManager>();
+		turnManager = FindObjectOfType<TurnManager>();
+		myFleetController = GetComponent<FleetController>();
 		playerFleetController = GetComponent<FleetController>();
 		nameLibrary = FindObjectOfType<NameLibrary>();
 
-		loadWaitCoroutine = LoadWait(0.1f);
+		loadWaitCoroutine = LoadWait(0.2f);
 		StartCoroutine(loadWaitCoroutine);
     }
 
@@ -38,6 +42,22 @@ public class FleetAgent : MonoBehaviour
 	{
 		yield return new WaitForSeconds(waitTime);
 		InitAgent();
+		TakeTurnActions();
+	}
+
+	public void TakeTurnActions()
+	{
+		if (playerFleetController != null)
+		{
+			myFleetController.StandbyMove(playerFleetController.GetLocation());
+			if (myFleetController.GetRoute() == null)
+			{
+				int neighborIndex = Random.Range(0, fleet.GetLocation().GetNeighbors().Count);
+				CampaignLocation neighbor = fleet.GetLocation().GetNeighbors()[neighborIndex];
+				myFleetController.StandbyMove(neighbor);
+				Debug.Log("agent set route to neighbor");
+			}
+		}
 	}
 
 	void InitAgent()
@@ -50,7 +70,7 @@ public class FleetAgent : MonoBehaviour
 			int numCards = game.cardLibrary.Length;
 			int rando = Random.Range(0, numCards);
 			int index = Mathf.FloorToInt(Mathf.Sqrt(rando));
-			Debug.Log("FleetAgent index " + index);
+			///Debug.Log("FleetAgent index " + index);
 			if (index < numCards)
 			{
 				GameObject spacecraftObj = Instantiate(game.cardLibrary[index].cardObjectPrefab, transform);

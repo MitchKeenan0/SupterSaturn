@@ -137,13 +137,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e285e6741bd3a147bb55120930e8c56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reach: 3
+  reach: 5
   connections: 1
   locationName: Name
   locationValue: 3
   rarity: 2
   linePrefab: {fileID: 6188276859891317614, guid: 73b3201796e390e4ea2d08bb466d286e,
     type: 3}
+  bRouteHit: 0
 --- !u!114 &5196186560128175200
 MonoBehaviour:
   m_ObjectHideFlags: 0

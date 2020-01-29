@@ -10,6 +10,7 @@ public class TurnManager : MonoBehaviour
 	public GameObject undoPanel;
 
 	private List<FleetController> fleetControllerList;
+	private List<FleetAgent> fleetAgentList;
 	private FleetController playerFleetController;
 	private LocationDisplay locationDisplay;
 	private bool bTurnAction = false;
@@ -20,6 +21,7 @@ public class TurnManager : MonoBehaviour
 
     void Start()
     {
+		fleetAgentList = new List<FleetAgent>();
 		locationDisplay = FindObjectOfType<LocationDisplay>();
 		InitFleetControllers();
 		BeginTurn(false);
@@ -37,12 +39,26 @@ public class TurnManager : MonoBehaviour
 		}
 	}
 
+	void InitFleetAgents()
+	{
+		fleetAgentList = new List<FleetAgent>();
+		FleetAgent[] fleetAgents = FindObjectsOfType<FleetAgent>();
+		foreach (FleetAgent fa in fleetAgents)
+			fleetAgentList.Add(fa);
+	}
+
 	public void BeginTurn(bool turnActionExplicit)
 	{
 		bTurnAction = turnActionExplicit;
 		endTurnPanel.SetActive(true);
 		undoPanel.SetActive(false);
 		warningPanel.SetActive(false);
+
+		int numAgents = fleetAgentList.Count;
+		for(int i = 0; i < numAgents; i++)
+		{
+			fleetAgentList[i].TakeTurnActions();
+		}
 	}
 
 	public void SetTurnAction()

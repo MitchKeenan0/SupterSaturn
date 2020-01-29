@@ -43,7 +43,7 @@ public class Game : MonoBehaviour
 	}
 	void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
 	{
-		Debug.Log("scene loaded");
+		///Debug.Log("scene loaded");
 	}
 
 	void Awake()
@@ -65,7 +65,6 @@ public class Game : MonoBehaviour
 		savedHealthList = new List<int>();
 		player = FindObjectOfType<Player>();
 		Application.targetFrameRate = 70;
-		Debug.Log("awake");
 	}
 
 	void Start()
@@ -161,7 +160,6 @@ public class Game : MonoBehaviour
 				{
 					int selectedCardID = save.cardList[i];
 					Card selectedCard = cardLibrary[selectedCardID];
-					Debug.Log("loading card " + selectedCard.cardName);
 					SetSelectedCard(i, selectedCard);
 					Spacecraft sp = CreateSpacecraft(selectedCard);
 					SetSpacecraft(i, sp);
@@ -173,7 +171,6 @@ public class Game : MonoBehaviour
 			for (int i = 0; i < savedHealthCount; i++)
 			{
 				int savedHealth = save.healthList[i];
-				Debug.Log("Loading health " + savedHealth);
 				SetSavedHealth(i, savedHealth);
 
 				if (i < spacecraftList.Count)
@@ -222,7 +219,6 @@ public class Game : MonoBehaviour
 			GameObject spacecraftObject = Instantiate(card.cardObjectPrefab, null);
 			spacecraftObject.SetActive(false);
 			sp = spacecraftObject.GetComponent<Spacecraft>();
-			Debug.Log("Game CreateSpacecraft " + card.cardName);
 		}
 		return sp;
 	}
@@ -323,9 +319,11 @@ public class Game : MonoBehaviour
 		{
 			File.Delete(GetSaveFilePath);
 
-			selectedCardList.Clear();
-			savedHealthList.Clear();
-			spacecraftList.Clear();
+			selectedCardList = new List<Card>();
+			savedHealthList = new List<int>();
+			spacecraftList = new List<Spacecraft>();
+			enemyCardList = new List<Card>();
+			enemySpacecraftList = new List<Spacecraft>();
 
 			SaveGame();
 

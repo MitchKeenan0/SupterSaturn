@@ -22,6 +22,7 @@ public class LocationManager : MonoBehaviour
 		route = new List<CampaignLocation>();
 		campaign = GetComponent<Campaign>();
 		InitLocations();
+		Debug.Log("Finished location manager start");
     }
 
 	void InitLocations()
@@ -51,8 +52,23 @@ public class LocationManager : MonoBehaviour
 
 	Vector3 RandomPositionOnDisk()
 	{
-		Vector3 pos = Random.insideUnitSphere * spread;
-		pos.y *= 0.6f;
+		Vector3 pos = Vector3.zero;
+		bool messy = true;
+		while (messy)
+		{
+			pos = Random.insideUnitSphere * spread * 2;
+			pos.y *= 0.6f;
+			int numLocations = allLocations.Count;
+			bool hitAny = false;
+			for (int i = 0; locationCount < numLocations; i++)
+			{
+				Vector3 toPos = allLocations[i].transform.position - pos;
+				if (toPos.magnitude < spread)
+					hitAny = true;
+			}
+			messy = hitAny;
+		}
+		
 		return pos;
 	}
 

@@ -61,11 +61,14 @@ public class BattleOutcome : MonoBehaviour
 		if (game != null)
 		{
 			int totalNewChevrons = playerScore + playerLost;
-			if (playerLost < playerScore)
+			if (playerScore >= Mathf.Abs(playerLost))
 				totalNewChevrons *= (playerScore - Mathf.Abs(playerLost));
 
 			game.UpdateChevronAccount(totalNewChevrons);
-			totalText.text = "+" + totalNewChevrons.ToString() + "    " + game.GetChevrons().ToString();
+			string conference = "+";
+			if (totalNewChevrons < 0)
+				conference = "";
+			totalText.text = conference + totalNewChevrons.ToString() + "    " + "<size=50>" + game.GetChevrons().ToString() + "</size>";
 		}
 		
 		game.SaveGame();

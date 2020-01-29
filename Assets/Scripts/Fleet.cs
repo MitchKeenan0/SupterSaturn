@@ -50,7 +50,7 @@ public class Fleet : MonoBehaviour
 				fleetName = "No Name";
 
 			spacecraftList = game.GetSpacecraftList();
-			Debug.Log("fleet got " + spacecraftList.Count);
+			///Debug.Log("fleet got " + spacecraftList.Count);
 		}
 		else
 		{

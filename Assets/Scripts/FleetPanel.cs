@@ -27,6 +27,8 @@ public class FleetPanel : MonoBehaviour
 	{
 		fleet = f;
 		fleetNameText.text = fleet.fleetName;
+		if (fleet.teamID == 1)
+			fleetNameText.color = Color.red;
 		spacecraftList = fleet.GetSpacecraftList();
 		for (int i = 0; i < spacecraftList.Count; i++)
 		{

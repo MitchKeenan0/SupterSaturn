@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e285e6741bd3a147bb55120930e8c56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reach: 9
+  reach: 15
   connections: 2
   locationName: Name
   locationValue: 1

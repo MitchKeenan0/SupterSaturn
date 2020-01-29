@@ -152,6 +152,10 @@ public class Spacecraft : MonoBehaviour
 		{
 			battleOutcome.AddLost(health.maxHealth);
 		}
+		else
+		{
+			battleOutcome.AddScore(health.maxHealth);
+		}
 
 		GridVisualizer grid = GetComponentInChildren<GridVisualizer>();
 		if (grid != null)

@@ -88,6 +88,7 @@ public class FleetPanelSlot : MonoBehaviour, IDeselectHandler
 		if (slotCard != null)
 		{
 			slotImage.sprite = slotCard.cardSprite;
+			slotImage.enabled = true;
 			originalImageColor = slotImage.color;
 			originalSprite = slotCard.cardSprite;
 
@@ -116,6 +117,7 @@ public class FleetPanelSlot : MonoBehaviour, IDeselectHandler
 			slotNameText.enabled = false;
 			slotNameText.text = "";
 			costText.text = "";
+			costText.enabled = false;
 			slotNameText.color = Color.clear;
 
 			healthBar.InitHeath(-1, -1);

@@ -8,6 +8,8 @@ public class Tooltip : MonoBehaviour
 	public GameObject tooltipPanel;
 	public Text spacecraftNameText;
 	public Text descriptionText;
+	public Text costText;
+	public Weapon[] weaponArray;
 
 	private Camera cameraMain;
 
@@ -21,6 +23,8 @@ public class Tooltip : MonoBehaviour
 	{
 		spacecraftNameText.text = card.cardName;
 		descriptionText.text = card.cardDescription;
+		costText.text = card.cost.ToString();
+		//weaponArray =
 	}
 
 	public void ShowTooltip(bool value)

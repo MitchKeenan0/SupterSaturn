@@ -28,6 +28,7 @@ public class FleetCreator : MonoBehaviour
 	private Player player;
 	private SpacecraftViewer spacecraftViewer;
 	private FleetPanelSlot selectedPanelSlot; // :'D
+	private SelectionPanelCard selectedPanelCard;
 	private int maxSlotsAvailable = 8;
 
 	private List<FleetPanelSlot> panelSlots;
@@ -188,7 +189,13 @@ public class FleetCreator : MonoBehaviour
 	public void SelectSlot(int buttonIndex)
 	{
 		selectedPanelSlot = panelSlots[buttonIndex];
-		if (selectedPanelSlot.GetCard() != null)
+		if (selectedPanelCard != null)
+		{
+			SelectSpacecraft(buttonIndex);
+			emptyButton.interactable = true;
+			selectedPanelCard = null;
+		}
+		else if (selectedPanelSlot.GetCard() != null)
 		{
 			int displayID = selectedPanelSlot.GetCard().numericID;
 			spacecraftViewer.DisplaySpacecraft(displayID);
@@ -221,7 +228,19 @@ public class FleetCreator : MonoBehaviour
 	public void SelectSpacecraft(int buttonIndex)
 	{
 		spacecraftViewer.DisplaySpacecraft(buttonIndex);
-		if (selectedPanelSlot != null)
+
+		if (selectedPanelSlot == null)
+		{
+			int numSelected = game.GetSelectedCards().Count;
+			int offerSlotIndex = (numSelected);
+			if (offerSlotIndex < panelSlots.Count)
+			{
+				selectedPanelSlot = panelSlots[offerSlotIndex];
+				selectedPanelSlot.GetComponent<Button>().Select();
+				Debug.Log("Opening slot " + offerSlotIndex);
+			}
+		}
+		else if (selectedPanelSlot != null)
 		{
 			int selectionIndex = selectedPanelSlot.transform.GetSiblingIndex();
 			Card spacecraftCard = spacecraftCardList[buttonIndex].GetCard();
@@ -232,6 +251,8 @@ public class FleetCreator : MonoBehaviour
 				game.SaveGame();
 			}
 		}
+
+		selectedPanelCard = spacecraftCardList[buttonIndex];
 	}
 
 	public void EmptySlot()

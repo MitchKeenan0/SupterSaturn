@@ -28,6 +28,7 @@ public class FleetController : MonoBehaviour
 	public int GetTeamID() { return (fleet != null) ? fleet.teamID : 0; }
 
 	public CampaignLocation GetLocation() { return fleet.GetLocation(); }
+	public List<CampaignLocation> GetRoute() { return route; }
 
 	private IEnumerator fleetMoveCoroutine;
 
@@ -64,10 +65,15 @@ public class FleetController : MonoBehaviour
 			moveLocation = null;
 	}
 
-	public void StandbyMove(CampaignLocation location)
+	public bool StandbyMove(CampaignLocation location)
 	{
+		bool reachable = false;
+		route = new List<CampaignLocation>();
 		SetTargetLocation(location);
 		CreateRouteTo(location);
+		if ((route != null) && (route.Count > 0))
+			reachable = true;
+		return reachable;
 	}
 
 	public void StandbyScout(CampaignLocation location)

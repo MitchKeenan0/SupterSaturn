@@ -272,8 +272,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 275, y: 0}
-  m_SizeDelta: {x: 175, y: 30}
+  m_AnchoredPosition: {x: 150, y: 0}
+  m_SizeDelta: {x: 150, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4667512492142783899
 CanvasRenderer:
@@ -296,7 +296,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.3254717, g: 0.7854678, b: 1, a: 0.392}
+  m_Color: {r: 0.01027944, g: 0.24896702, b: 0.7264151, a: 0.8627451}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -538,8 +538,8 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.05882353, g: 0.5882353, b: 0.05882353, a: 0.78431374}
-      key1: {r: 0.058823533, g: 0.5882353, b: 0.058823533, a: 0.39215687}
+      key0: {r: 0.05882353, g: 0.5882353, b: 0.05882353, a: 1}
+      key1: {r: 0.058823533, g: 0.5882353, b: 0.058823533, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -722,10 +722,10 @@ MonoBehaviour:
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Scouting target
+  m_Text: scout target
 --- !u!1 &8303938685219236346
 GameObject:
   m_ObjectHideFlags: 0

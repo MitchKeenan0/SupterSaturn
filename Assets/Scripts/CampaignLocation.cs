@@ -35,37 +35,50 @@ public class CampaignLocation : MonoBehaviour
 		connectionLine.SetPosition(1, origin.transform.position);
 	}
 
+	private IEnumerator loadWaitCoroutine;
+
 	void Awake()
     {
-		connectedLocations = new List<CampaignLocation>();
-		lineList = new List<LineRenderer>();
+		lineList = new List<LineRenderer>(connections);
+		connectedLocations = new List<CampaignLocation>(connections);
+    }
+
+	void Start()
+	{
+		loadWaitCoroutine = LoadWait(0.1f);
+		StartCoroutine(loadWaitCoroutine);
+	}
+
+	private IEnumerator LoadWait(float waitTime)
+	{
+		yield return new WaitForSeconds(waitTime);
 		InitName();
 		InitConnections();
-    }
+	}
 
 	void InitConnections()
 	{
 		for (int i = 0; i < connections; i++)
 		{
-			if (connectedLocations.Count < connections)
+			CampaignLocation connection = ConnectToClosestLocation();
+			if (connection != null)
 			{
-				CampaignLocation connection = ConnectToClosestLocation();
-				if (connection != null)
-				{
-					AddConnection(connection, false);
-					connection.AddConnection(this, false);
-					CreateLineRenderer();
-				}
+				AddConnection(connection, false);
+				CreateLineRenderer();
 			}
 		}
+
 		int numConnections = connectedLocations.Count;
 		if (numConnections > 0)
 		{
 			for (int i = 0; i < numConnections; i++)
 			{
-				LineRenderer thisLine = lineList[i];
-				thisLine.SetPosition(0, transform.position);
-				thisLine.SetPosition(1, connectedLocations[i].transform.position);
+				if (i < lineList.Count)
+				{
+					LineRenderer thisLine = lineList[i];
+					thisLine.SetPosition(0, transform.position);
+					thisLine.SetPosition(1, connectedLocations[i].transform.position);
+				}
 			}
 		}
 	}
@@ -74,19 +87,19 @@ public class CampaignLocation : MonoBehaviour
 	{
 		CampaignLocation connection = null;
 		Collider[] cols = Physics.OverlapSphere(transform.position, reach);
-		float closestDistance = reach;
+
+		float closestDistance = Mathf.Infinity;
 		CampaignLocation closestLocation = null;
 		foreach (Collider c in cols)
 		{
-			GameObject colGameObject = c.gameObject;
-			float distanceToObject = Vector3.Distance(colGameObject.transform.position, transform.position);
-			if (distanceToObject <= closestDistance)
+			if (c.transform != this.transform)
 			{
-				CampaignLocation location = colGameObject.GetComponent<CampaignLocation>();
-				if (location != null)
+				GameObject colGameObject = c.gameObject;
+				float distanceToObject = Vector3.Distance(colGameObject.transform.position, transform.position);
+				if (distanceToObject <= closestDistance)
 				{
-					if (!connectedLocations.Contains(location) && (location != this)
-						&& (location.GetNeighbors().Count < location.connections))
+					CampaignLocation location = colGameObject.GetComponent<CampaignLocation>();
+					if ((location != null) && (!connectedLocations.Contains(location)))
 					{
 						closestDistance = distanceToObject;
 						closestLocation = location;
