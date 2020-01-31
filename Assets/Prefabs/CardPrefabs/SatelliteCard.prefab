@@ -45,12 +45,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numericID: 3
   cardName: Satellite
-  cardDescription: Ultralight orbiter scanner
+  cardDescription: Ultralight orbital scanner
   cardObjectPrefab: {fileID: 3172205958561284648, guid: f4496bfb5fac0614e8748e0b2c75ad15,
     type: 3}
   cardSprite: {fileID: 21300000, guid: 3e41fbc66b54709439bf9501f71038e2, type: 3}
   iconSprite: {fileID: 0}
   level: 1
   cost: 50
-  health: 1
-  damage: 1
+  health: 2
+  damage: 0

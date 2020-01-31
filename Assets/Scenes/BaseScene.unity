@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 811704456}
   - component: {fileID: 811704455}
   m_Layer: 0
-  m_Name: New Text
+  m_Name: HiddenFighter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

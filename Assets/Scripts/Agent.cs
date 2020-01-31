@@ -172,7 +172,8 @@ public class Agent : MonoBehaviour
 
 	public void SetMoveOrder(Vector3 position, Transform follow)
 	{
-		autopilot.SetMoveCommand(position);
+		if (autopilot != null)
+			autopilot.SetMoveCommand(position);
 		followTransform = follow;
 		if (follow != null)
 		{
@@ -186,9 +187,6 @@ public class Agent : MonoBehaviour
 
 		if (targetTransform != null)
 			headline = "Targeting " + targetTransform.name;
-
-		else if (spacecraft.GetHealthPercent() > 1f)
-			headline = "Damaged";
 
 		return headline;
 	}

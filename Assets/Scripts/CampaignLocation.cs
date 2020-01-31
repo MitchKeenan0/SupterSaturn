@@ -17,11 +17,19 @@ public class CampaignLocation : MonoBehaviour
 
 	private List<CampaignLocation> connectedLocations;
 	public List<CampaignLocation> GetNeighbors() { return connectedLocations; }
-	public void AddConnection(CampaignLocation c, bool executive)
+	public bool AddConnection(CampaignLocation c, bool executive)
 	{
+		bool bConnected = false;
 		if (((c != this) && !connectedLocations.Contains(c) && (connectedLocations.Count < connections))
 			|| executive)
+		{
 			connectedLocations.Add(c);
+			c.AddConnection(this, false);
+			bConnected = true;
+		}
+		if (bConnected)
+			CreateLineRenderer();
+		return bConnected;
 	}
 
 	public void GetScouted(CampaignLocation origin, GameObject connectionPrefab)
@@ -31,6 +39,7 @@ public class CampaignLocation : MonoBehaviour
 
 		GameObject scoutConnectionLine = Instantiate(connectionPrefab, transform.position, Quaternion.identity);
 		LineRenderer connectionLine = scoutConnectionLine.GetComponent<LineRenderer>();
+		lineList.Add(connectionLine);
 		connectionLine.SetPosition(0, transform.position);
 		connectionLine.SetPosition(1, origin.transform.position);
 	}
@@ -63,24 +72,27 @@ public class CampaignLocation : MonoBehaviour
 			CampaignLocation connection = ConnectToClosestLocation();
 			if (connection != null)
 			{
-				AddConnection(connection, false);
-				CreateLineRenderer();
+				connection.AddConnection(this, false);
 			}
 		}
 
-		int numConnections = connectedLocations.Count;
-		if (numConnections > 0)
+		int numLines = lineList.Count;
+		if (numLines > 0)
 		{
-			for (int i = 0; i < numConnections; i++)
+			for (int i = 0; i < numLines; i++)
 			{
-				if (i < lineList.Count)
+				LineRenderer thisLine = lineList[i];
+				if ((i < connectedLocations.Count) && (connectedLocations[i].transform.position != Vector3.zero))
 				{
-					LineRenderer thisLine = lineList[i];
 					thisLine.SetPosition(0, transform.position);
 					thisLine.SetPosition(1, connectedLocations[i].transform.position);
+					thisLine.gameObject.SetActive(true);
+					Debug.Log("init line");
 				}
 			}
 		}
+
+		Debug.Log("init campaign location");
 	}
 
 	CampaignLocation ConnectToClosestLocation()
@@ -123,6 +135,9 @@ public class CampaignLocation : MonoBehaviour
 	{
 		GameObject lineObject = Instantiate(linePrefab, transform.position, Quaternion.identity);
 		LineRenderer liner = lineObject.GetComponent<LineRenderer>();
+		lineObject.transform.SetParent(transform);
 		lineList.Add(liner);
+		lineObject.SetActive(false);
+		Debug.Log("Created line");
 	}
 }

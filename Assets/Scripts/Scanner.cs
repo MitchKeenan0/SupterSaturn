@@ -88,7 +88,7 @@ public class Scanner : MonoBehaviour
 			}
 		}
 
-		currentRadius = Mathf.Lerp(currentRadius, maxRadius, (scanSpeed * Time.deltaTime));
+		currentRadius += (scanSpeed * Time.deltaTime);
 		bool bScanFinished = (Time.time - timeAtScan) >= scanInterval;
 		if (bScanFinished)
 		{

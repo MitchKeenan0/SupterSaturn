@@ -76,10 +76,10 @@ public class ObjectManager : MonoBehaviour
 				numEnemy++;
 		}
 
-		if (numEnemy == 0)
-			battleOutcome.BattleOver(true);
-		else if (numTeam == 0)
+		if (numTeam == 0)
 			battleOutcome.BattleOver(false);
+		else if (numEnemy == 0)
+			battleOutcome.BattleOver(true);
 	}
 
 	public void SpacecraftDestroyed(Spacecraft value)

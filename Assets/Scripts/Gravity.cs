@@ -7,20 +7,26 @@ public class Gravity : MonoBehaviour
 	public float radius = 3f;
 	public float strength = 0.1f;
 	public float updateInterval = 0.1f;
-	private Rigidbody[] rbs;
 
+	private List<Rigidbody> rbList;
+	private GravityTelemetryHUD telemetry;
 	private IEnumerator surroundingCheckCoroutine;
+
+	public List<Rigidbody> GetRBList() { return rbList; }
 
     void Start()
     {
-		rbs = FindObjectsOfType<Rigidbody>();
+		rbList = new List<Rigidbody>();
+		telemetry = FindObjectOfType<GravityTelemetryHUD>();
 		surroundingCheckCoroutine = SurroundingCheck(updateInterval);
+		StartCoroutine(surroundingCheckCoroutine);
     }
 
     void FixedUpdate()
     {
-		if (rbs.Length > 0){
-			foreach (Rigidbody r in rbs){
+		if (rbList.Count > 0){
+			foreach (Rigidbody r in rbList)
+			{
 				if (r != null && !r.isKinematic)
 				{
 					Vector3 g = GetGravity(r);
@@ -51,21 +57,43 @@ public class Gravity : MonoBehaviour
 	{
 		while (true)
 		{
+			yield return new WaitForSeconds(intervalTime);
+
 			Collider[] nears = Physics.OverlapSphere(transform.position, radius);
 			int numNears = nears.Length;
-			for (int i = 0; i < numNears; i++)
-			{
-				if (nears[i] != null)
-				{
+			int numListed = rbList.Count;
+			for (int i = 0; i < numNears; i++){
+				if (nears[i] != null){
 					Rigidbody r = nears[i].GetComponent<Rigidbody>();
-					if (r != null)
-					{
-						rbs[i] = r;
+					if (r != null){
+						if (rbList.Contains(r))
+						{
+							continue;
+						}
+						else
+						{
+							rbList.Add(r);
+							numListed++;
+						}
 					}
 				}
 			}
 
-			yield return new WaitForSeconds(intervalTime);
+			// check over for objects beyond reach
+			int numRbs = rbList.Count;
+			if (numRbs > 0)
+			{
+				Vector3 myPos = transform.position;
+				for(int i = 0; i < numRbs; i++)
+				{
+					if ((i < rbList.Count) && (rbList[i] != null))
+					{
+						float distance = Vector3.Distance(rbList[i].transform.position, myPos);
+						if (distance >= radius)
+							rbList.RemoveAt(i);
+					}
+				}
+			}
 		}
 	}
 }

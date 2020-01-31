@@ -44,6 +44,7 @@ public class BattleAgent : MonoBehaviour
 
 	void UpdateMoveCommands()
 	{
-		
+		int randomAgentIndex = Random.Range(0, agentList.Count - 1);
+		agentList[randomAgentIndex].SetMoveOrder(Random.insideUnitSphere, null);
 	}
 }

@@ -31,6 +31,8 @@ public class FleetController : MonoBehaviour
 	public List<CampaignLocation> GetRoute() { return route; }
 
 	private IEnumerator fleetMoveCoroutine;
+	private bool bMoving = false;
+	public bool IsMoving() { return bMoving; }
 
 	void Awake()
 	{
@@ -73,6 +75,7 @@ public class FleetController : MonoBehaviour
 		CreateRouteTo(location);
 		if ((route != null) && (route.Count > 0))
 			reachable = true;
+		Debug.Log(transform.name + " standby move to " + location.locationName);
 		return reachable;
 	}
 
@@ -85,6 +88,7 @@ public class FleetController : MonoBehaviour
 	public void ScoutComplete()
 	{
 		scoutLocation = null;
+		bMoving = false;
 	}
 
 	public void ExecuteTurn()
@@ -92,6 +96,7 @@ public class FleetController : MonoBehaviour
 		if (scoutLocation != null)
 		{
 			scout.ScoutLocation(fleet.GetLocation(), scoutLocation);
+			bMoving = true;
 		}
 
 		if ((route != null) && (route.Count > 1))
@@ -99,6 +104,7 @@ public class FleetController : MonoBehaviour
 			moveLocation = route[1];
 			fleetMoveCoroutine = FleetMove(movementUpdateInterval);
 			StartCoroutine(fleetMoveCoroutine);
+			bMoving = true;
 		}
 	}
 
@@ -144,7 +150,7 @@ public class FleetController : MonoBehaviour
 	void UpdateMove(float delta)
 	{
 		Vector3 toMoveLocation = moveLocation.transform.position - fleet.transform.position;
-		if (toMoveLocation.magnitude > 0.1f)
+		if (toMoveLocation.magnitude > 0.05f)
 		{
 			Vector3 move = fleet.transform.position + (toMoveLocation.normalized * fleetMoveSpeed * delta);
 			fleet.SetPosition(move);
@@ -157,6 +163,7 @@ public class FleetController : MonoBehaviour
 
 	void FinishMove()
 	{
+		bMoving = false;
 		fleet.SetLocation(moveLocation, true);
 		if (targetLocation != null)
 			SetTargetLocation(targetLocation);
@@ -172,9 +179,12 @@ public class FleetController : MonoBehaviour
 			}
 		}
 
+		ClearLines();
+
 		// reset turn manager
-		turnManager.BeginTurn(route.Count > 2);
-		StandbyMove(targetLocation);
+		if (GetTeamID() == 0)
+			turnManager.BeginTurn(route.Count > 2);
+		//StandbyMove(targetLocation);
 	}
 
 	void ClearLines()

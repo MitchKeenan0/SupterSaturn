@@ -160,7 +160,7 @@ public class CraftIconHUD : MonoBehaviour
 
 							Vector3 toCamera = cameraMain.transform.position - sp.transform.position;
 							Color iconColor = img.color;
-							iconColor.a = Mathf.Clamp(toCamera.magnitude * 0.1f, 0.1f, 1f);
+							iconColor.a = Mathf.Clamp(toCamera.magnitude * 0.01f, 0.01f, 0.9f);
 							img.color = iconColor;
 						}
 						else

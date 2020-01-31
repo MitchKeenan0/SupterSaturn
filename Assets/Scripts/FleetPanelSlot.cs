@@ -78,11 +78,11 @@ public class FleetPanelSlot : MonoBehaviour, IDeselectHandler
 		}
 	}
 
-	public void SetSlot(Card card, int index)
+	public void SetSlot(Card card, int index, bool newCard)
 	{
 		game.SetSelectedCard(index, null);
 		game.SetSpacecraft(index, null);
-		game.SetSavedHealth(index, -1);
+		//game.SetSavedHealth(index, -1);
 
 		slotCard = card;
 		if (slotCard != null)
@@ -104,11 +104,16 @@ public class FleetPanelSlot : MonoBehaviour, IDeselectHandler
 
 			int maxHealth = slotCard.cardObjectPrefab.GetComponent<Health>().maxHealth;
 			int currentHealth = game.GetSavedHealth(index);
+			if (newCard)
+			{
+				currentHealth = card.health;
+				game.SetSavedHealth(index, card.health);
+			}
+			Debug.Log("Slot health " + currentHealth);
 			if (currentHealth < 0)
 				currentHealth = maxHealth;
 			healthBar.InitHeath(maxHealth, currentHealth);
 			healthBar.enabled = true;
-			Debug.Log("set slot");
 		}
 		else
 		{
@@ -130,10 +135,5 @@ public class FleetPanelSlot : MonoBehaviour, IDeselectHandler
 		if (card != null)
 			sp = card.cardObjectPrefab.GetComponent<Spacecraft>();
 		game.SetSpacecraft(index, sp);
-
-		int health = -1;
-		if (card != null)
-			health = card.health;
-		game.SetSavedHealth(index, health);
 	}
 }

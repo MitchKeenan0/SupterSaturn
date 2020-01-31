@@ -153,7 +153,7 @@ public class MouseCommandHUD : MonoBehaviour
 		int numPos = linePositions.Length;
 		for (int i = 0; i < numPos; i++){
 			float dotToLine = Vector3.Dot(cameraMain.transform.forward, (linePositions[i] - cameraMain.transform.position).normalized);
-			if (dotToLine > 0.1f)
+			if (dotToLine > 0.8f)
 			{
 				Vector3 lineToCamera = cameraMain.transform.position - linePositions[i];
 				var mouseRay = cameraMain.ScreenPointToRay(Input.mousePosition);

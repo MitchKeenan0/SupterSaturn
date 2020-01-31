@@ -17,9 +17,11 @@ public class FleetAgent : MonoBehaviour
 	private NameLibrary nameLibrary;
 	private List<Spacecraft> spacecraftList;
 
+	public void SetPlayerFleetController(FleetController value) { playerFleetController = value; }
 	public List<Spacecraft> GetAgentSpacecraftList() { return spacecraftList; }
 
 	private IEnumerator loadWaitCoroutine;
+	private IEnumerator turnWaitCoroutine;
 
     void Awake()
     {
@@ -30,8 +32,7 @@ public class FleetAgent : MonoBehaviour
 		fleet = GetComponentInParent<Fleet>();
 		locationManager = FindObjectOfType<LocationManager>();
 		turnManager = FindObjectOfType<TurnManager>();
-		myFleetController = GetComponent<FleetController>();
-		playerFleetController = GetComponent<FleetController>();
+		myFleetController = GetComponentInParent<FleetController>();
 		nameLibrary = FindObjectOfType<NameLibrary>();
 
 		loadWaitCoroutine = LoadWait(0.2f);
@@ -42,42 +43,57 @@ public class FleetAgent : MonoBehaviour
 	{
 		yield return new WaitForSeconds(waitTime);
 		InitAgent();
+		turnWaitCoroutine = TurnWait(0.5f);
+		StartCoroutine(turnWaitCoroutine);
+	}
+
+	private IEnumerator TurnWait(float waitTime)
+	{
+		yield return new WaitForSeconds(waitTime);
 		TakeTurnActions();
 	}
 
 	public void TakeTurnActions()
 	{
+		Debug.Log("agent turn action");
 		if (playerFleetController != null)
 		{
+			if (myFleetController == null)
+				myFleetController = transform.parent.GetComponentInChildren<FleetController>();
 			myFleetController.StandbyMove(playerFleetController.GetLocation());
-			if (myFleetController.GetRoute() == null)
+			if (fleet.GetLocation() != null)
+				Debug.Log("fleet agent location " + fleet.GetLocation().locationName);
+			if ((myFleetController.GetRoute() == null)
+				|| myFleetController.GetRoute().Count <= 1)
 			{
 				int neighborIndex = Random.Range(0, fleet.GetLocation().GetNeighbors().Count);
 				CampaignLocation neighbor = fleet.GetLocation().GetNeighbors()[neighborIndex];
 				myFleetController.StandbyMove(neighbor);
-				Debug.Log("agent set route to neighbor");
+				Debug.Log("agent taking route to neighbor " + neighbor.locationName);
 			}
+		}
+		else
+		{
+			Debug.Log("no player fc");
 		}
 	}
 
 	void InitAgent()
 	{
 		fleet.fleetName = nameLibrary.GetFleetName();
-
-		int fleetSpacecraftCount = Random.Range(1, maxCapacity);
+		int max = game.GetSpacecraftList().Count;
+		int fleetSpacecraftCount = Random.Range(1, max);
 		for (int i = 0; i < fleetSpacecraftCount; i++)
 		{
-			int numCards = game.cardLibrary.Length;
-			int rando = Random.Range(0, numCards);
-			int index = Mathf.FloorToInt(Mathf.Sqrt(rando));
-			///Debug.Log("FleetAgent index " + index);
-			if (index < numCards)
+			int numCards = game.npcCardLibrary.Length;
+			int randomIndex = Random.Range(0, numCards);
+			if (randomIndex < numCards)
 			{
-				GameObject spacecraftObj = Instantiate(game.cardLibrary[index].cardObjectPrefab, transform);
+				GameObject spacecraftObj = Instantiate(game.cardLibrary[randomIndex].cardObjectPrefab, transform);
 				spacecraftObj.SetActive(false);
 				Spacecraft sp = spacecraftObj.GetComponent<Spacecraft>();
 				spacecraftList.Add(sp);
-				game.SetEnemyCard(i, game.cardLibrary[index]);
+				game.SetEnemyCard(i, game.cardLibrary[randomIndex]);
 				game.AddEnemy(sp);
 			}
 		}

@@ -6,6 +6,7 @@ using UnityEngine;
 public class LocationManager : MonoBehaviour
 {
 	public float spread = 30f;
+	public float minDistanceBetweenLocations = 5f;
 	public int locationCount = 12;
 	public GameObject[] commonLocations;
 	public GameObject[] uniqueLocations; 
@@ -56,14 +57,14 @@ public class LocationManager : MonoBehaviour
 		bool messy = true;
 		while (messy)
 		{
-			pos = Random.insideUnitSphere * spread * 2;
+			pos = Random.insideUnitSphere * spread * 3;
 			pos.y *= 0.6f;
 			int numLocations = allLocations.Count;
 			bool hitAny = false;
 			for (int i = 0; locationCount < numLocations; i++)
 			{
 				Vector3 toPos = allLocations[i].transform.position - pos;
-				if (toPos.magnitude < spread)
+				if (toPos.magnitude < minDistanceBetweenLocations)
 					hitAny = true;
 			}
 			messy = hitAny;
@@ -107,40 +108,6 @@ public class LocationManager : MonoBehaviour
 		return route;
 	}
 
-	public bool IsConnectedByRoute(CampaignLocation start, CampaignLocation destination)
-	{
-		CampaignLocation current = start;
-		if (start == destination)
-			return false;
-
-		foreach (CampaignLocation cl in allLocations)
-			cl.bRouteHit = false;
-
-		int safeIndex = 0;
-		while (current != destination)
-		{
-			CampaignLocation nextStep = GetNextNeighbor(current, destination);
-			if (nextStep != null)
-			{
-				route.Add(nextStep);
-				current = nextStep;
-			}
-			else
-			{
-				return false;
-			}
-
-			safeIndex++;
-			if (safeIndex >= 100)
-			{
-				Debug.Log("route search hit limit");
-				return false;
-			}
-		}
-
-		return true;
-	}
-
 	CampaignLocation GetNextNeighbor(CampaignLocation start, CampaignLocation destination)
 	{
 		float closestDistance = Mathf.Infinity;
@@ -177,5 +144,39 @@ public class LocationManager : MonoBehaviour
 		}
 
 		return closestLocation;
+	}
+
+	public bool IsConnectedByRoute(CampaignLocation start, CampaignLocation destination)
+	{
+		CampaignLocation current = start;
+		if (start == destination)
+			return false;
+
+		foreach (CampaignLocation cl in allLocations)
+			cl.bRouteHit = false;
+
+		int safeIndex = 0;
+		while (current != destination)
+		{
+			CampaignLocation nextStep = GetNextNeighbor(current, destination);
+			if (nextStep != null)
+			{
+				route.Add(nextStep);
+				current = nextStep;
+			}
+			else
+			{
+				return false;
+			}
+
+			safeIndex++;
+			if (safeIndex >= 100)
+			{
+				Debug.Log("route search hit limit");
+				return false;
+			}
+		}
+
+		return true;
 	}
 }

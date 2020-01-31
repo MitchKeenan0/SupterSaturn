@@ -56,6 +56,9 @@ public class FleetHUD : MonoBehaviour
 
 		foreach (FleetPanel panel in panelList)
 			UpdateScreenPosition(panel);
+
+		if (locationDisplay.GetLocation() != null)
+			locationDisplay.UpdateCircleRender();
 	}
 
 	void UpdateScreenPosition(FleetPanel panel)

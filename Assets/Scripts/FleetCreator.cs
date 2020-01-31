@@ -98,7 +98,7 @@ public class FleetCreator : MonoBehaviour
 			Card spacecraftCard = null;
 			if ((i < selectedCards.Count) && (i < maxSlotsAvailable))
 				spacecraftCard = selectedCards[i];
-			panelSlot.SetSlot(spacecraftCard, i);
+			panelSlot.SetSlot(spacecraftCard, i, false);
 
 			Image panelImage = panelSlot.GetComponent<Image>();
 			if (i < maxSlotsAvailable)
@@ -189,11 +189,10 @@ public class FleetCreator : MonoBehaviour
 	public void SelectSlot(int buttonIndex)
 	{
 		selectedPanelSlot = panelSlots[buttonIndex];
-		if (selectedPanelCard != null)
+		if ((selectedPanelCard != null) && (selectedPanelSlot.GetCard() == null))
 		{
 			SelectSpacecraft(buttonIndex);
 			emptyButton.interactable = true;
-			selectedPanelCard = null;
 		}
 		else if (selectedPanelSlot.GetCard() != null)
 		{
@@ -201,6 +200,8 @@ public class FleetCreator : MonoBehaviour
 			spacecraftViewer.DisplaySpacecraft(displayID);
 			emptyButton.interactable = true;
 		}
+
+		selectedPanelCard = null;
 	}
 
 	public void DeselectSlot()
@@ -246,7 +247,7 @@ public class FleetCreator : MonoBehaviour
 			Card spacecraftCard = spacecraftCardList[buttonIndex].GetCard();
 			if ((selectedPanelSlot.GetCard() == null) || (spacecraftCard.numericID != selectedPanelSlot.GetCard().numericID))
 			{
-				selectedPanelSlot.SetSlot(spacecraftCard, selectionIndex);
+				selectedPanelSlot.SetSlot(spacecraftCard, selectionIndex, true);
 				UpdateChevronBalance();
 				game.SaveGame();
 			}
@@ -260,7 +261,7 @@ public class FleetCreator : MonoBehaviour
 		if (selectedPanelSlot != null)
 		{
 			int slotIndex = selectedPanelSlot.transform.GetSiblingIndex();
-			selectedPanelSlot.SetSlot(null, slotIndex);
+			selectedPanelSlot.SetSlot(null, slotIndex, false);
 			UpdateChevronBalance();
 			selectedPanelSlot = null;
 			game.SaveGame();
@@ -277,7 +278,7 @@ public class FleetCreator : MonoBehaviour
 			if (ps != null)
 			{
 				int slotIndex = ps.transform.GetSiblingIndex();
-				panelSlots[i].SetSlot(null, i);
+				panelSlots[i].SetSlot(null, i,false);
 			}
 		}
 

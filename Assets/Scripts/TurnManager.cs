@@ -24,8 +24,10 @@ public class TurnManager : MonoBehaviour
 		fleetAgentList = new List<FleetAgent>();
 		locationDisplay = FindObjectOfType<LocationDisplay>();
 		InitFleetControllers();
-		BeginTurn(false);
-    }
+		InitFleetAgents();
+		turnPassCoroutine = PassTurn(turnPassWaitTime);
+		StartCoroutine(turnPassCoroutine);
+	}
 
 	void InitFleetControllers()
 	{
@@ -44,7 +46,10 @@ public class TurnManager : MonoBehaviour
 		fleetAgentList = new List<FleetAgent>();
 		FleetAgent[] fleetAgents = FindObjectsOfType<FleetAgent>();
 		foreach (FleetAgent fa in fleetAgents)
+		{
 			fleetAgentList.Add(fa);
+			fa.SetPlayerFleetController(playerFleetController);
+		}
 	}
 
 	public void BeginTurn(bool turnActionExplicit)
@@ -55,6 +60,12 @@ public class TurnManager : MonoBehaviour
 		warningPanel.SetActive(false);
 
 		int numAgents = fleetAgentList.Count;
+		if (numAgents == 0)
+		{
+			fleetAgentList = new List<FleetAgent>(FindObjectsOfType<FleetAgent>());
+			numAgents = fleetAgentList.Count;
+		}
+		Debug.Log("Num agents " + numAgents);
 		for(int i = 0; i < numAgents; i++)
 		{
 			fleetAgentList[i].TakeTurnActions();
@@ -104,6 +115,26 @@ public class TurnManager : MonoBehaviour
 	private IEnumerator PassTurn(float waitTime)
 	{
 		yield return new WaitForSeconds(waitTime);
-		BeginTurn(false);
+
+		bool bMoving = false;
+		foreach(FleetController fc in fleetControllerList)
+		{
+			if (fc.IsMoving())
+			{
+				bMoving = true;
+				Debug.Log(fc.name + " is moving");
+				break;
+			}
+		}
+
+		if (!bMoving)
+		{
+			BeginTurn(false);
+		}
+		else
+		{
+			turnPassCoroutine = PassTurn(0.5f);
+			StartCoroutine(turnPassCoroutine);
+		}
 	}
 }

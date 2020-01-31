@@ -52,5 +52,5 @@ MonoBehaviour:
   iconSprite: {fileID: 0}
   level: 1
   cost: 300
-  health: 1
-  damage: 1
+  health: 18
+  damage: 5
