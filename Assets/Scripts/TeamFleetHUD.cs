@@ -16,18 +16,19 @@ public class TeamFleetHUD : MonoBehaviour
 	private List<Spacecraft> spacecraftList;
 	private List<Spacecraft> teamList;
 	private List<Spacecraft> enemyList;
-	private List<GameObject> teamDiagramList;
+	private List<TeamFleetDiagram> teamDiagramList;
 	private List<Button> teamButtonList;
 	private float timeOfLastButtonPress = 0f;
 
 	private IEnumerator loadWaitCoroutine;
+	private IEnumerator updateCoroutine;
 
 	void Awake()
 	{
 		spacecraftList = new List<Spacecraft>();
 		teamList = new List<Spacecraft>();
 		enemyList = new List<Spacecraft>();
-		teamDiagramList = new List<GameObject>();
+		teamDiagramList = new List<TeamFleetDiagram>();
 		teamButtonList = new List<Button>();
 	}
 
@@ -45,6 +46,45 @@ public class TeamFleetHUD : MonoBehaviour
 	{
 		yield return new WaitForSeconds(waitTime);
 		InitTeamFleet();
+		updateCoroutine = UpdateTimer(0.1f);
+		StartCoroutine(updateCoroutine);
+	}
+
+	private IEnumerator UpdateTimer(float intervalTime)
+	{
+		while(true)
+		{
+			yield return new WaitForSeconds(intervalTime);
+			UpdateTeamFleetHud();
+		}
+	}
+
+	void UpdateTeamFleetHud()
+	{
+		int numDiagrams = teamDiagramList.Count;
+		if (numDiagrams > 0)
+		{
+			for(int i = 0; i < numDiagrams; i++)
+			{
+				if (i < teamList.Count)
+				{
+					Spacecraft sp = teamList[i];
+					TeamFleetDiagram tfd = teamDiagramList[i];
+					tfd.SetClass(sp.spacecraftName);
+					tfd.SetName("");
+					float speed = 100 * sp.GetComponent<Rigidbody>().velocity.magnitude;
+					string speedText = speed.ToString("F1") + " Km/sec";
+					tfd.SetSpeed(speedText);
+					/*
+						public Text classText;
+						public Text nameText;
+						public Text speedText;
+						public Image gravityIcon;
+						public Image violenceIcon; 
+					 */
+				}
+			}
+		}
 	}
 
 	// Internal functions
@@ -123,7 +163,8 @@ public class TeamFleetHUD : MonoBehaviour
 		{
 			product = Instantiate(diagramPrefab, diagramPanel.transform);
 			product.transform.SetParent(diagramPanel.transform);
-			teamDiagramList.Add(product);
+			TeamFleetDiagram diagram = product.GetComponent<TeamFleetDiagram>();
+			teamDiagramList.Add(diagram);
 			Button b = product.GetComponent<Button>();
 			if ((b != null) && !teamButtonList.Contains(b))
 				teamButtonList.Add(b);

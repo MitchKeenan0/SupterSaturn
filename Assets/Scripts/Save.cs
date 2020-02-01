@@ -10,4 +10,6 @@ public class Save
 	public List<int> enemyCardList = new List<int>();
 	public List<int> healthList = new List<int>();
 	public int chevrons = 0;
+	public bool fleetTutorialClosed = false;
+	public bool battleTutorialClosed = false;
 }

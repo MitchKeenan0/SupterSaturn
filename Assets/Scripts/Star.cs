@@ -12,6 +12,7 @@ public class Star : MonoBehaviour
     void Awake()
     {
 		meshRenderer = GetComponentInChildren<MeshRenderer>();
+
 		Color newColor = new Color(
 			Random.Range(0.5f, 1f),
 			Random.Range(0.5f, 1f),

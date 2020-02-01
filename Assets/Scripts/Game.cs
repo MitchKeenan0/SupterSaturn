@@ -18,6 +18,7 @@ public class Game : MonoBehaviour
 	private Player player;
 	private Fleet playerFleet;
 	private Fleet enemyFleet;
+	private GameHUD gameHud;
 	private List<Card> selectedCardList;
 	private List<Card> enemyCardList;
 	private List<Spacecraft> spacecraftList;
@@ -25,6 +26,8 @@ public class Game : MonoBehaviour
 	private List<int> savedHealthList;
 	private int currentMission = 0;
 	private int chevrons = 0;
+	private bool bFleetTutorialClosed = false;
+	private bool bBattleTutorialClosed = false;
 
 	public List<Card> GetSelectedCards() { return selectedCardList; }
 	public List<Card> GetEnemyCards() { return enemyCardList; }
@@ -65,6 +68,7 @@ public class Game : MonoBehaviour
 		enemySpacecraftList = new List<Spacecraft>();
 		savedHealthList = new List<int>();
 		player = FindObjectOfType<Player>();
+		gameHud = FindObjectOfType<GameHUD>();
 		Application.targetFrameRate = 70;
 	}
 
@@ -211,14 +215,54 @@ public class Game : MonoBehaviour
 			if (chevrons <= initialChevrons)
 				chevrons = initialChevrons;
 
+			// tutorial
+			gameHud = FindObjectOfType<GameHUD>();
+			if (gameHud != null)
+			{
+				bFleetTutorialClosed = save.fleetTutorialClosed;
+				bBattleTutorialClosed = save.battleTutorialClosed;
+				bool bTut = bFleetTutorialClosed || bBattleTutorialClosed;
+
+				string sceneName = SceneManager.GetActiveScene().name;
+				if (sceneName == "FleetScene")
+				{
+					if (bFleetTutorialClosed)
+					{
+						gameHud.SetTutorialActive(false);
+					}
+					else
+					{
+						gameHud.SetTutorialActive(true);
+					}
+				}
+				else if (sceneName == "BattleScene")
+				{
+					if (bBattleTutorialClosed)
+					{
+						gameHud.SetTutorialActive(false);
+					}
+					else
+					{
+						gameHud.SetTutorialActive(true);
+					}
+				}
+				else
+				{
+					gameHud.SetTutorialActive(false);
+				}
+			}
+
 			///Debug.Log("Game Loaded");
 		}
 	}
 
-	void ClearAll()
+	public void CloseTutorial()
 	{
-		//foreach(Spacecraft sp in spacecraftList)
-
+		string sceneName = SceneManager.GetActiveScene().name;
+		if (sceneName == "FleetScene")
+			bFleetTutorialClosed = true;
+		else if (sceneName == "BattleScene")
+			bBattleTutorialClosed = true;
 	}
 
 	Spacecraft CreateSpacecraft(Card card)
@@ -328,6 +372,10 @@ public class Game : MonoBehaviour
 		if (chevrons <= 0)
 			chevrons = initialChevrons;
 		save.chevrons = chevrons;
+
+		// tutorial
+		save.fleetTutorialClosed = bFleetTutorialClosed;
+		save.battleTutorialClosed = bBattleTutorialClosed;
 
 		///Debug.Log("Game Saved");
 
