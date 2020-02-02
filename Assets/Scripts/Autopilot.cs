@@ -85,7 +85,6 @@ public class Autopilot : MonoBehaviour
 	public void EnableMoveCommand(bool value)
 	{
 		bExecutingMoveCommand = value;
-
 		if (bExecutingMoveCommand && (routeVisualizer != null))
 		{
 			routeVisualizer.SetRouteColor(Color.green);
@@ -145,42 +144,39 @@ public class Autopilot : MonoBehaviour
 
 	void FlyTo(Vector3 destination)
 	{
-		// steering
-		spacecraft.Maneuver(destination);
-
-		Vector3 toDestination = destination - transform.position;
-		
 		// calibrate for current velocity
+		Vector3 dynamicDestination = destination;
 		if (Mathf.Abs(rb.velocity.magnitude) > 0f)
-			toDestination = (destination - (rb.velocity)) - transform.position;
+			dynamicDestination += (-rb.velocity);
+		Vector3 toDestination = dynamicDestination - transform.position;
+
+		// steering
+		if (toDestination.magnitude > 0.5f)
+			spacecraft.Maneuver(dynamicDestination);
 
 		// counteracting unwanted velocity
-		if (toDestination.magnitude > 0.15f)
-		{
-			Vector3 unwantedVelocity = Vector3.ProjectOnPlane(rb.velocity, toDestination.normalized);
-			Vector3 counterVector = (toDestination - unwantedVelocity).normalized;
-			float velocityDotToTarget = Vector3.Dot(rb.velocity.normalized, toDestination.normalized);
-			maneuverVector = counterVector * spacecraft.maneuverPower;// * (1f - velocityDotToTarget);
-			spacecraft.ManeuverEngines(maneuverVector);
-		}
+		//if (toDestination.magnitude > 0.01f)
+		//{
+		//	Vector3 unwantedVelocity = Vector3.ProjectOnPlane(rb.velocity, toDestination.normalized);
+		//	Vector3 counterVector = (destination - unwantedVelocity).normalized;
+		//	float velocityDotToTarget = Vector3.Dot(rb.velocity.normalized, toDestination.normalized);
+		//	maneuverVector = counterVector * spacecraft.maneuverPower;
+		//	spacecraft.ManeuverEngines(maneuverVector);
+		//}
 
 		// thrust
-		Vector3 direction = destination - transform.position;
-		if (direction.magnitude > 0.005f)
+		Vector3 direction = (destination - rb.velocity) - transform.position;
+		Debug.DrawRay(transform.position, direction, Color.green);
+		if (direction.magnitude > 0.05f)
 		{
 			float dotToTarget = Vector3.Dot(transform.forward, toDestination.normalized);
 			if (Mathf.Abs(dotToTarget) > 0.97f)
 			{
-				float distance = Vector3.Distance(destination, transform.position);
-				float velocityDist = rb.velocity.magnitude * 1.6f;
-				float throttle = Mathf.Clamp((distance - velocityDist), -1f, 1f);
-				float dotToVelocity = Vector3.Dot(rb.velocity.normalized, direction.normalized);
-				if (dotToVelocity < 0.0f)
-					throttle = throttle * (1f + Mathf.Abs(dotToVelocity) + spacecraft.mainEnginePower);
-
-				float thrustPower = Mathf.Pow(dotToTarget, 2f) * throttle;
-				thrustPower = Mathf.Clamp(thrustPower, -1, 1f);
-				spacecraft.MainEngines(thrustPower);
+				float distanceToDestination = direction.magnitude;
+				float currentSpeed = rb.velocity.magnitude;
+				float throttle = (distanceToDestination - currentSpeed) * spacecraft.mainEnginePower;
+				throttle = Mathf.Clamp(throttle, -1f, 1f);
+				spacecraft.MainEngines(throttle);
 			}
 		}
 	}

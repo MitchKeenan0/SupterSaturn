@@ -70,18 +70,14 @@ public class TeamFleetHUD : MonoBehaviour
 				{
 					Spacecraft sp = teamList[i];
 					TeamFleetDiagram tfd = teamDiagramList[i];
-					tfd.SetClass(sp.spacecraftName);
-					tfd.SetName("");
-					float speed = 100 * sp.GetComponent<Rigidbody>().velocity.magnitude;
-					string speedText = speed.ToString("F1") + " Km/sec";
-					tfd.SetSpeed(speedText);
-					/*
-						public Text classText;
-						public Text nameText;
-						public Text speedText;
-						public Image gravityIcon;
-						public Image violenceIcon; 
-					 */
+					if (sp != null)
+					{
+						tfd.SetClass(sp.spacecraftName);
+						tfd.SetName("");
+						float speed = 100 * sp.GetComponent<Rigidbody>().velocity.magnitude;
+						string speedText = speed.ToString("F1") + " Km/sec";
+						tfd.SetSpeed(speedText);
+					}
 				}
 			}
 		}

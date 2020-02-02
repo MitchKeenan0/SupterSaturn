@@ -35,7 +35,7 @@ public class GravityTelemetryHUD : MonoBehaviour
 	{
 		List<Rigidbody> gravityRbs = new List<Rigidbody>(gravity.GetRBList());
 		int numInteractions = gravityRbs.Count;
-		ClearLines();
+		List<LineRenderer> usedLines = new List<LineRenderer>();
 		for(int i = 0; i < numInteractions; i++)
 		{
 			if (gravityRbs[i] != null)
@@ -45,13 +45,34 @@ public class GravityTelemetryHUD : MonoBehaviour
 					line = lineList[i];
 				else
 					line = CreateTelemetryLine();
+				usedLines.Add(line);
+
 				Spacecraft sp = gravityRbs[i].gameObject.GetComponent<Spacecraft>();
 				if (sp != null)
 				{
 					if (!line.gameObject.activeInHierarchy)
+					{
 						line.gameObject.SetActive(true);
+						if (lineList[i].gameObject.GetComponent<ConstantSizer>())
+							lineList[i].gameObject.GetComponent<ConstantSizer>().StartUpdate();
+					}
 					line.SetPosition(0, sp.transform.position);
 					line.SetPosition(1, gravity.transform.position);
+				}
+			}
+		}
+
+		int numLines = lineList.Count;
+		if (numInteractions < numLines)
+		{
+			for(int i = 0; i < numLines; i++)
+			{
+				LineRenderer line = lineList[i];
+				if (!usedLines.Contains(line))
+				{
+					if (line.gameObject.GetComponent<ConstantSizer>())
+						line.gameObject.GetComponent<ConstantSizer>().StopUpdate();
+					line.gameObject.SetActive(false);
 				}
 			}
 		}
@@ -80,7 +101,11 @@ public class GravityTelemetryHUD : MonoBehaviour
 	void ClearLines()
 	{
 		for (int i = 0; i < lineList.Count; i++)
+		{
+			if (lineList[i].gameObject.GetComponent<ConstantSizer>())
+				lineList[i].gameObject.GetComponent<ConstantSizer>().StopUpdate();
 			lineList[i].gameObject.SetActive(false);
+		}
 	}
 
 	LineRenderer CreateTelemetryLine()

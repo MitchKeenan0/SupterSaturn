@@ -263,6 +263,7 @@ public class Game : MonoBehaviour
 			bFleetTutorialClosed = true;
 		else if (sceneName == "BattleScene")
 			bBattleTutorialClosed = true;
+		SaveGame();
 	}
 
 	Spacecraft CreateSpacecraft(Card card)
