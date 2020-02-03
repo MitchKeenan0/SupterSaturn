@@ -22,6 +22,5 @@ public class GameHUD : MonoBehaviour
 
 		if (game != null)
 			game.CloseTutorial();
-		Debug.Log("set tutorial " + value);
 	}
 }

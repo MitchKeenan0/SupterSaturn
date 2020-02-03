@@ -144,41 +144,39 @@ public class Autopilot : MonoBehaviour
 
 	void FlyTo(Vector3 destination)
 	{
-		// calibrate for current velocity
-		Vector3 dynamicDestination = destination;
-		if (Mathf.Abs(rb.velocity.magnitude) > 0f)
-			dynamicDestination += (-rb.velocity);
-		Vector3 toDestination = dynamicDestination - transform.position;
+		Vector3 toDestination = destination - transform.position;
 
 		// steering
-		if (toDestination.magnitude > 0.5f)
-			spacecraft.Maneuver(dynamicDestination);
+		if (toDestination.magnitude > 0.15f)
+		{
+			Vector3 maneuverVector = destination - rb.velocity;
+			spacecraft.Maneuver(maneuverVector);
+		}
 
-		// counteracting unwanted velocity
-		//if (toDestination.magnitude > 0.01f)
-		//{
-		//	Vector3 unwantedVelocity = Vector3.ProjectOnPlane(rb.velocity, toDestination.normalized);
-		//	Vector3 counterVector = (destination - unwantedVelocity).normalized;
-		//	float velocityDotToTarget = Vector3.Dot(rb.velocity.normalized, toDestination.normalized);
-		//	maneuverVector = counterVector * spacecraft.maneuverPower;
-		//	spacecraft.ManeuverEngines(maneuverVector);
-		//}
+		// side jets
+		Vector3 velocityNormal = rb.velocity.normalized;
+		Vector3 destinationNormal = toDestination.normalized;
+		if (Vector3.Dot(destinationNormal, velocityNormal) < 0.16f)
+		{
+			Vector3 driveVector = Vector3.ClampMagnitude(rb.velocity * -1, 1);
+			spacecraft.ManeuverEngines(driveVector);
+		}
 
 		// thrust
-		Vector3 direction = (destination - rb.velocity) - transform.position;
-		Debug.DrawRay(transform.position, direction, Color.green);
-		if (direction.magnitude > 0.05f)
+		float distanceToDestination = toDestination.magnitude;
+		if (distanceToDestination > 1f)
 		{
-			float dotToTarget = Vector3.Dot(transform.forward, toDestination.normalized);
-			if (Mathf.Abs(dotToTarget) > 0.97f)
+			float dotScalar = Mathf.Pow(Vector3.Dot(transform.forward, toDestination.normalized), 2f);
+			float throttle = Mathf.Clamp((distanceToDestination * spacecraft.mainEnginePower * dotScalar), -1, 1);
+			if (rb.velocity.magnitude > toDestination.magnitude)
 			{
-				float distanceToDestination = direction.magnitude;
-				float currentSpeed = rb.velocity.magnitude;
-				float throttle = (distanceToDestination - currentSpeed) * spacecraft.mainEnginePower;
-				throttle = Mathf.Clamp(throttle, -1f, 1f);
-				spacecraft.MainEngines(throttle);
+				if (throttle > 0)
+					throttle = 0 - throttle;
 			}
+			spacecraft.MainEngines(throttle);
 		}
+
+		Debug.Log("distance: " + toDestination.magnitude + "  velocity: " + rb.velocity.magnitude);
 	}
 
 	Vector3 GetGravityEscapeFrom(Vector3 position)
@@ -193,7 +191,7 @@ public class Autopilot : MonoBehaviour
 				if ((hit.collider == g.GetComponent<Collider>()) && (hit.distance < g.radius))
 				{
 					gravityEscape = (-gravityVector * spacecraft.mainEnginePower * g.radius);
-					Debug.DrawRay(hit.point, gravityEscape, Color.green);
+					//Debug.DrawRay(hit.point, gravityEscape, Color.green);
 				}
 			}
 		}

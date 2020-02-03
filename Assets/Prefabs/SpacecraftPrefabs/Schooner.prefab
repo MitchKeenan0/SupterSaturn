@@ -232,8 +232,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bAgentStartsEnabled: 1
-  mainEnginePower: 0.25
-  turningPower: 1
+  mainEnginePower: 0.5
+  turningPower: 0.5
   maneuverPower: 0.5
   spacecraftName: Schooner
   thrustParticles: {fileID: 2104020796097920098}
@@ -281,7 +281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 739771861e5c898468b6db50f07dae77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  routeVectorPoints: 3
+  routeVectorPoints: 1
   updateInterval: 1
   autopilotSkill: 3
   autopilotAreaRange: 10
@@ -351,7 +351,7 @@ Rigidbody:
   m_GameObject: {fileID: 1906621234774554819}
   serializedVersion: 2
   m_Mass: 2
-  m_Drag: 0.1
+  m_Drag: 0.2
   m_AngularDrag: 0.1
   m_UseGravity: 0
   m_IsKinematic: 0

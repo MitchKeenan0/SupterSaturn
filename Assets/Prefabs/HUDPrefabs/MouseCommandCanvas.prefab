@@ -8,7 +8,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8835523382525939949}
+  - component: {fileID: 600149928984625179}
   - component: {fileID: 8835523382525939946}
   m_Layer: 5
   m_Name: CircleRender
@@ -17,8 +17,8 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &8835523382525939949
-RectTransform:
+--- !u!4 &600149928984625179
+Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -31,11 +31,6 @@ RectTransform:
   m_Father: {fileID: 8835523382652838961}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!120 &8835523382525939946
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -162,8 +157,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
-  - {fileID: 8835523382525939949}
-  - {fileID: 8835523383564895608}
+  - {fileID: 600149928984625179}
+  - {fileID: 1164437077343578626}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -257,7 +252,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8835523383564895608}
+  - component: {fileID: 1164437077343578626}
   - component: {fileID: 8835523383564895609}
   m_Layer: 5
   m_Name: ElevationRender
@@ -266,8 +261,8 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &8835523383564895608
-RectTransform:
+--- !u!4 &1164437077343578626
+Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -280,11 +275,6 @@ RectTransform:
   m_Father: {fileID: 8835523382652838961}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!120 &8835523383564895609
 LineRenderer:
   m_ObjectHideFlags: 0

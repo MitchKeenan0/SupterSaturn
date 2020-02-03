@@ -45,12 +45,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numericID: 2
   cardName: Fighter
-  cardDescription: Dogfighter variant for CQC
+  cardDescription: Armoured combatant with physical artillery
   cardObjectPrefab: {fileID: 1906621234774554819, guid: b8b87167795a4fb4ab22dee047b4ed1c,
     type: 3}
   cardSprite: {fileID: 21300000, guid: 6c234c9dc9203534b93f4e615e24d416, type: 3}
   iconSprite: {fileID: 0}
   level: 1
   cost: 150
-  health: 7
+  health: 6
   damage: 1
