@@ -9,17 +9,17 @@ public class Planet : MonoBehaviour
 	public float maxSize = 3f;
 	public float minSize = 0.3f;
 
-    void Start()
+    void Awake()
     {
-		InitPlanet();
+		//InitPlanet();
     }
 
-	void InitPlanet()
-	{
-		Vector3 newSize = Vector3.one * Random.Range(minSize, maxSize);
-		if (planetMesh != null)
-			planetMesh.transform.localScale = newSize;
-		if (atmosphereMesh != null)
-			atmosphereMesh.transform.localScale = newSize;
-	}
+	//void InitPlanet()
+	//{
+	//	Vector3 newSize = Vector3.one * Random.Range(minSize, maxSize);
+	//	if (planetMesh != null)
+	//		planetMesh.transform.localScale = newSize;
+	//	if (atmosphereMesh != null)
+	//		atmosphereMesh.transform.localScale = newSize;
+	//}
 }

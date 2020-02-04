@@ -81,7 +81,7 @@ public class FleetAgent : MonoBehaviour
 	void InitAgent()
 	{
 		fleet.fleetName = nameLibrary.GetFleetName();
-		int max = game.GetSpacecraftList().Count;
+		int max = game.GetSpacecraftList().Count * 3;
 		int fleetSpacecraftCount = Random.Range(1, max);
 		for (int i = 0; i < fleetSpacecraftCount; i++)
 		{

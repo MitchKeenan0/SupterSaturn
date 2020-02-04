@@ -4,12 +4,9 @@ using UnityEngine;
 
 public class BattleSceneSetter : MonoBehaviour
 {
-	public GameObject[] celestialBodyLibrary;
-	public GameObject[] nebulaLibrary;
-	public GameObject[] spaceStructureLibrary;
-	public GameObject directionalLightPrefab;
-	public int minObjectCount = 0;
-	public int maxObjectCount = 25;
+	public GameObject solarSystemPrefab;
+	public GameObject nebulaPrefab;
+	public GameObject templePrefab;
 
 	private Game game;
 	private IEnumerator loadWaitCoroutine;
@@ -29,39 +26,21 @@ public class BattleSceneSetter : MonoBehaviour
 
 	void LoadSceneSetting()
 	{
-		GameObject[] library = new GameObject[0];
+		GameObject objectToLoad = null;
 		int sceneType = game.GetSceneSetting();
 		if (sceneType == 0)
-			library = celestialBodyLibrary;
+			objectToLoad = solarSystemPrefab;
 		else if (sceneType == 1)
-			library = nebulaLibrary;
+			objectToLoad = nebulaPrefab;
 		else if (sceneType == 2)
-			library = spaceStructureLibrary;
+			objectToLoad = templePrefab;
 
-		Debug.Log("Scene type: " + sceneType);
-
-		if (library.Length >= 1)
+		if (objectToLoad != null)
 		{
-			int randomCount = Random.Range(minObjectCount, maxObjectCount);
-			for (int i = 0; i < randomCount; i++)
-			{
-				int randomLibraryIndex = Random.Range(0, library.Length - 1);
-				GameObject spawnedObject = Instantiate(library[randomLibraryIndex], transform);
-				Vector3 spawnPosition = Random.onUnitSphere * Random.Range(2f, 25f);
-				if (sceneType == 0)
-					spawnPosition.y *= 0.1f;
-				if (spawnedObject.GetComponent<PlanetArm>())
-					spawnedObject.GetComponent<PlanetArm>().SetLength(i + 1);
-				else if (!spawnedObject.GetComponent<Sun>())
-					spawnedObject.transform.position = spawnPosition;
-			}
-		}
-
-		Sun sun = FindObjectOfType<Sun>();
-		if (!sun)
-		{
-			GameObject dirLight = Instantiate(directionalLightPrefab, transform);
-			dirLight.transform.rotation = Random.rotation;
+			GameObject spawnObj = Instantiate(objectToLoad, transform);
+			BattleScene bs = spawnObj.GetComponent<BattleScene>();
+			if (bs != null)
+				bs.InitScene();
 		}
 	}
 }

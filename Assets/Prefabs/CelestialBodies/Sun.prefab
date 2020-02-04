@@ -437,12 +437,12 @@ PrefabInstance:
     - target: {fileID: 2262925762897097918, guid: d4d511709294c7b4193921eb4db902a5,
         type: 3}
       propertyPath: updateInterval
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2262925762897097918, guid: d4d511709294c7b4193921eb4db902a5,
         type: 3}
       propertyPath: bUpdating
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2262925761331553153, guid: d4d511709294c7b4193921eb4db902a5,
         type: 3}

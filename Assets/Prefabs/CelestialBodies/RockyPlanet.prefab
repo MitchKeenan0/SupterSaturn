@@ -1,35 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3870545967297439268
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2151890432841236850}
-  m_Layer: 0
-  m_Name: RadiusMarker
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2151890432841236850
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3870545967297439268}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 6143951963767822069}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4766638517062956649
 GameObject:
   m_ObjectHideFlags: 0
@@ -60,7 +30,9 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1972876330934583819}
+  - {fileID: 403465362739086372}
   m_Father: {fileID: 6143951963767822069}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -160,6 +132,7 @@ GameObject:
   - component: {fileID: 8303981145886502231}
   - component: {fileID: 6469468458821320962}
   - component: {fileID: 9115644990372860287}
+  - component: {fileID: 3401129090991631764}
   - component: {fileID: 2195280497328947487}
   m_Layer: 0
   m_Name: RockyPlanet
@@ -180,9 +153,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5273469545884070276}
-  - {fileID: 1972876330934583819}
-  - {fileID: 2151890432841236850}
-  - {fileID: 403465362739086372}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -246,6 +216,20 @@ MonoBehaviour:
   atmosphereMesh: {fileID: 6213774146651943447}
   maxSize: 1
   minSize: 0.1
+--- !u!114 &3401129090991631764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6143951963767822065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5712115b8c039dc4da688e77a7a2302b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  armLength: 1.6
+  planetTransform: {fileID: 5273469545884070276}
 --- !u!114 &2195280497328947487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,9 +243,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   xForceDirection: 0
-  yForceDirection: 0
+  yForceDirection: 1
   zForceDirection: 0
-  speedMultiplier: 2
+  speedMultiplier: 0.1
   bRandomRotationStart: 1
   bRandomSpeed: 1
   worldPivot: 0
@@ -291,12 +275,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6213774146651943447}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.1, y: 1.1, z: 1.1}
   m_Children: []
-  m_Father: {fileID: 6143951963767822069}
-  m_RootOrder: 1
+  m_Father: {fileID: 5273469545884070276}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8324729466420724858
 MeshFilter:
@@ -367,7 +351,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 6143951963767822069}
+    m_TransformParent: {fileID: 5273469545884070276}
     m_Modifications:
     - target: {fileID: 2262925762897097916, guid: d4d511709294c7b4193921eb4db902a5,
         type: 3}
@@ -392,17 +376,17 @@ PrefabInstance:
     - target: {fileID: 2262925762897097919, guid: d4d511709294c7b4193921eb4db902a5,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2262925762897097919, guid: d4d511709294c7b4193921eb4db902a5,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2262925762897097919, guid: d4d511709294c7b4193921eb4db902a5,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2262925762897097919, guid: d4d511709294c7b4193921eb4db902a5,
         type: 3}
@@ -412,7 +396,7 @@ PrefabInstance:
     - target: {fileID: 2262925762897097919, guid: d4d511709294c7b4193921eb4db902a5,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2262925762897097919, guid: d4d511709294c7b4193921eb4db902a5,
         type: 3}

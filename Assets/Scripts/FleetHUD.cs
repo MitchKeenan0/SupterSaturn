@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class FleetHUD : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class FleetHUD : MonoBehaviour
 	private LocationDisplay locationDisplay;
 	private Camera cameraMain;
 	private Fleet playerFleet;
+	private Game game;
 
 	private bool bMouseOnUI = false;
 	public void MouseOnUI(bool value) { bMouseOnUI = value; }
@@ -26,6 +28,7 @@ public class FleetHUD : MonoBehaviour
 	{
 		fleetList = new List<Fleet>();
 		panelList = new List<FleetPanel>();
+		game = FindObjectOfType<Game>();
 	}
 
 	void Start()
@@ -93,6 +96,23 @@ public class FleetHUD : MonoBehaviour
 
 	void InitPanels()
 	{
+		int numPlayerSpacecraft = playerFleet.GetSpacecraftList().Count;
+		if (numPlayerSpacecraft > 0)
+		{
+			bool anyLivingShips = false;
+			for (int i = 0; i < numPlayerSpacecraft; i++)
+			{
+				int savedHealth = game.GetSavedHealth(i);
+				if (savedHealth > 0)
+				{
+					anyLivingShips = true;
+				}
+			}
+
+			if (!anyLivingShips)
+				SceneManager.LoadScene("FleetScene");
+		}
+
 		int numFleets = fleetList.Count;
 		for (int i = 0; i < numFleets; i++)
 		{

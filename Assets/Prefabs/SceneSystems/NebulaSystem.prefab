@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &842977545353850488
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 842977545353850487}
+  - component: {fileID: 842977545353850486}
+  m_Layer: 0
+  m_Name: NebulaSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &842977545353850487
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 842977545353850488}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &842977545353850486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 842977545353850488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 433689c9adc84e347aaa87c903b6a8a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cloudLibrary:
+  - {fileID: 1100071255907899038, guid: c065a58221b44104fa0fa63f3fb83b80, type: 3}
+  - {fileID: 1100071255907899038, guid: 5b5f3df4a48bd614b96e2febad8a9349, type: 3}
+  starLibrary:
+  - {fileID: 7747302546721590218, guid: 11c8c83884a610f49802d2a6021255e8, type: 3}
+  minimumObjectCount: 10
+  maximumObjectCount: 30
+  distanceScale: 0.5
+  cloudMinSize: 1
+  cloudMaxSize: 10
+  starMinSize: 0.1
+  starMaxSize: 1

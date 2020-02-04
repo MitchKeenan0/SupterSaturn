@@ -12,8 +12,8 @@ public class PlanetArm : MonoBehaviour
 		transform.position = Vector3.zero;
     }
 
-	public void SetLength(int i)
+	public void SetLength(float value)
 	{
-		planetTransform.localPosition = Vector3.forward * i * armLength;
+		planetTransform.localPosition = Vector3.forward * value * armLength;
 	}
 }

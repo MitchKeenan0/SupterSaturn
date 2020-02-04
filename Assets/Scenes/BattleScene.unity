@@ -23,7 +23,7 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 1
+  m_AmbientIntensity: 3
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: e2fc26b277513834981751d4ab7061ee, type: 2}
@@ -1189,6 +1189,83 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 559689335}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &571580922
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 571580923}
+  - component: {fileID: 571580925}
+  - component: {fileID: 571580924}
+  m_Layer: 0
+  m_Name: WorldCentre
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &571580923
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 571580922}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1012125270}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &571580924
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 571580922}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 5a2d5059d14914b4eb032c177748eaad, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &571580925
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 571580922}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &913109094
 GameObject:
   m_ObjectHideFlags: 0
@@ -1329,7 +1406,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 571580923}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1345,19 +1423,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8de6aecb3c475e48a6dd326d74b20c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  celestialBodyLibrary:
-  - {fileID: 6143951963767822065, guid: 201de21e95c46dc4592455929e971dff, type: 3}
-  - {fileID: 6143951963767822065, guid: 1ae4cf93a875f9f44a8899d6602416f4, type: 3}
-  - {fileID: 6143951963767822065, guid: 0e67b66183fa3c649972cce192036fba, type: 3}
-  nebulaLibrary:
-  - {fileID: 1100071255907899038, guid: 5b5f3df4a48bd614b96e2febad8a9349, type: 3}
-  - {fileID: 1100071255907899038, guid: c065a58221b44104fa0fa63f3fb83b80, type: 3}
-  spaceStructureLibrary:
-  - {fileID: 6143951963767822065, guid: 201de21e95c46dc4592455929e971dff, type: 3}
-  directionalLightPrefab: {fileID: 836720829900123336, guid: 59225c11db89c094798431ce65b004de,
+  solarSystemPrefab: {fileID: 1914708942725945632, guid: be98053053ab6374db049bd344a7820d,
     type: 3}
-  minObjectCount: 1
-  maxObjectCount: 25
+  nebulaPrefab: {fileID: 842977545353850488, guid: a774a934f95d00d4fb0c639157800754,
+    type: 3}
+  templePrefab: {fileID: 1633016718835110382, guid: ab864838c5c379244b57bf8f566f3628,
+    type: 3}
 --- !u!1001 &1203779924
 PrefabInstance:
   m_ObjectHideFlags: 0
