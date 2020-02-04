@@ -154,20 +154,20 @@ public class Autopilot : MonoBehaviour
 		}
 
 		// side jets
-		Vector3 velocityNormal = rb.velocity.normalized;
-		Vector3 destinationNormal = toDestination.normalized;
-		if (Vector3.Dot(destinationNormal, velocityNormal) < 0.16f)
-		{
-			Vector3 driveVector = Vector3.ClampMagnitude(rb.velocity * -1, 1);
-			spacecraft.ManeuverEngines(driveVector);
-		}
+		//Vector3 velocityNormal = rb.velocity.normalized;
+		//Vector3 destinationNormal = toDestination.normalized;
+		//if (Vector3.Dot(destinationNormal, velocityNormal) < 0.16f)
+		//{
+		//	Vector3 driveVector = Vector3.ClampMagnitude(rb.velocity * -1, 1);
+		//	spacecraft.ManeuverEngines(driveVector);
+		//}
 
 		// thrust
 		float distanceToDestination = toDestination.magnitude;
 		if (distanceToDestination > 1f)
 		{
-			float dotScalar = Mathf.Pow(Vector3.Dot(transform.forward, toDestination.normalized), 2f);
-			float throttle = Mathf.Clamp((distanceToDestination * spacecraft.mainEnginePower * dotScalar), -1, 1);
+			float dotToDestination = Vector3.Dot(transform.forward, toDestination.normalized);
+			float throttle = Mathf.Clamp((distanceToDestination * spacecraft.mainEnginePower * dotToDestination), -1, 1);
 			if (rb.velocity.magnitude > toDestination.magnitude)
 			{
 				if (throttle > 0)
@@ -175,8 +175,6 @@ public class Autopilot : MonoBehaviour
 			}
 			spacecraft.MainEngines(throttle);
 		}
-
-		Debug.Log("distance: " + toDestination.magnitude + "  velocity: " + rb.velocity.magnitude);
 	}
 
 	Vector3 GetGravityEscapeFrom(Vector3 position)

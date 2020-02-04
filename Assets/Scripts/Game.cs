@@ -24,7 +24,7 @@ public class Game : MonoBehaviour
 	private List<Spacecraft> spacecraftList;
 	private List<Spacecraft> enemySpacecraftList;
 	private List<int> savedHealthList;
-	private int currentMission = 0;
+	private int sceneSetting = 0;
 	private int chevrons = 0;
 	private bool bFleetTutorialClosed = false;
 	private bool bBattleTutorialClosed = false;
@@ -35,6 +35,7 @@ public class Game : MonoBehaviour
 	public List<Spacecraft> GetEnemySpacecraftList() { return enemySpacecraftList; }
 	public int GetSavedHealth(int index) { return (savedHealthList.Count > index) ? savedHealthList[index] : -1; }
 	public int GetChevrons() { return chevrons; }
+	public int GetSceneSetting() { return sceneSetting; }
 	public void UpdateChevronAccount(int value) { chevrons += value; }
 
 	void OnEnable()
@@ -141,6 +142,11 @@ public class Game : MonoBehaviour
 	{
 		if (enemySpacecraftList.Contains(sp))
 			enemySpacecraftList.Remove(sp);
+	}
+
+	public void SetSceneSetting(int sceneTypeID)
+	{
+		sceneSetting = sceneTypeID;
 	}
 
 	public void LoadGame()

@@ -36,6 +36,14 @@ public class CampaignBattle : MonoBehaviour
 		fleetList.Clear();
 		foreach (Fleet f in fleets)
 			fleetList.Add(f);
+		int sceneTypeID = -1;
+		if (location.GetComponent<Star>())
+			sceneTypeID = 0;
+		else if (location.GetComponent<Nebula>())
+			sceneTypeID = 1;
+		else
+			sceneTypeID = 2;
+		game.SetSceneSetting(sceneTypeID);
 	}
 
 	public void BeginBattle()

@@ -11,6 +11,9 @@ public class Rotator : MonoBehaviour
 
 	public float speedMultiplier = 1;
 
+	public bool bRandomRotationStart = false;
+	public bool bRandomSpeed = false;
+
 	public bool worldPivot = false;
 
 	private Space spacePivot = Space.Self;
@@ -19,6 +22,19 @@ public class Rotator : MonoBehaviour
 	void Start()
 	{
 		if (worldPivot) spacePivot = Space.World;
+		if (bRandomRotationStart)
+		{
+			float rand1 = Random.Range(0, 360);
+			float rand2 = Random.Range(0, 360);
+			float rand3 = Random.Range(0, 360);
+			transform.Rotate(xForceDirection * rand1
+								, yForceDirection * rand2
+								, zForceDirection * rand3
+								, spacePivot);
+		}
+
+		if (bRandomSpeed)
+			speedMultiplier = Random.Range(speedMultiplier * 0.1f, speedMultiplier);
 	}
 
 	void Update()

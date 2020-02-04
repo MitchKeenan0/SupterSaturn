@@ -124,12 +124,6 @@ public class GridVisualizer : MonoBehaviour
 
 	void UpdateGrid()
 	{
-		if (updateTransform != null)
-		{
-			transform.position = updateTransform.position;
-			transform.rotation = Quaternion.identity;
-		}
-
 		float distToCamera = Vector3.Distance(transform.position, cameraTransform.position) / 1000;
 		foreach (LineRenderer line in upDownList)
 			line.widthMultiplier = naturalWidth * distToCamera;
@@ -138,8 +132,11 @@ public class GridVisualizer : MonoBehaviour
 		foreach (LineRenderer line in leftRightList)
 			line.widthMultiplier = naturalWidth * distToCamera;
 
-		Transform nameTransform = transform;
-		if (transform.parent != null)
-			nameTransform = transform.parent;
+		if (updateTransform != null)
+		{
+			transform.position = updateTransform.position;
+			Quaternion quat = new Quaternion(0, 0, 0, 0);
+			transform.rotation = quat;
+		}
 	}
 }
