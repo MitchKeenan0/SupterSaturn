@@ -75,7 +75,7 @@ public class FleetController : MonoBehaviour
 		CreateRouteTo(location);
 		if ((route != null) && (route.Count > 0))
 			reachable = true;
-		Debug.Log(transform.name + " standby move to " + location.locationName);
+		///Debug.Log(transform.name + " standby move to " + location.locationName);
 		return reachable;
 	}
 

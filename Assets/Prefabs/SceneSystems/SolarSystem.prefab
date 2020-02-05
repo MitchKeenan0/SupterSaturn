@@ -43,14 +43,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fde62e7b58e5cc04cb9d522057b38a91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minimumObjectCount: 1
-  maximumObjectCount: 25
-  planetMinSize: 0.3
-  planetMaxSize: 3
+  minimumObjectCount: 3
+  maximumObjectCount: 30
+  distanceScale: 3
+  planetMinSize: 1
+  planetMaxSize: 7
   sunPrefab: {fileID: 6143951963767822065, guid: 0e67b66183fa3c649972cce192036fba,
     type: 3}
-  celestialBodyPrefabs:
+  planetPrefabs:
   - {fileID: 6143951963767822065, guid: 1ae4cf93a875f9f44a8899d6602416f4, type: 3}
   - {fileID: 6143951963767822065, guid: 201de21e95c46dc4592455929e971dff, type: 3}
+  moonPrefabs:
+  - {fileID: 6143951963767822065, guid: 201de21e95c46dc4592455929e971dff, type: 3}
+  - {fileID: 6143951963767822065, guid: 1ae4cf93a875f9f44a8899d6602416f4, type: 3}
   directionalLightPrefab: {fileID: 836720829900123336, guid: 59225c11db89c094798431ce65b004de,
     type: 3}

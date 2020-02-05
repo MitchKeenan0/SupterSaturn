@@ -87,12 +87,12 @@ public class CampaignLocation : MonoBehaviour
 					thisLine.SetPosition(0, transform.position);
 					thisLine.SetPosition(1, connectedLocations[i].transform.position);
 					thisLine.gameObject.SetActive(true);
-					Debug.Log("init line");
+					///Debug.Log("init line");
 				}
 			}
 		}
 
-		Debug.Log("init campaign location");
+		///Debug.Log("init campaign location");
 	}
 
 	CampaignLocation ConnectToClosestLocation()
@@ -138,6 +138,6 @@ public class CampaignLocation : MonoBehaviour
 		lineObject.transform.SetParent(transform);
 		lineList.Add(liner);
 		lineObject.SetActive(false);
-		Debug.Log("Created line");
+		///Debug.Log("Created line");
 	}
 }

@@ -59,6 +59,7 @@ public class MouseCommandHUD : MonoBehaviour
 			SetEnabled(true);
 			SetCircleLocation();
 			UpdateCircleRender();
+			moveCommandPosition = circleLineRenderer.transform.position;
 		}
 
 		if (Input.GetButton("Fire2"))
@@ -88,10 +89,8 @@ public class MouseCommandHUD : MonoBehaviour
 		// command circle width control
 		Vector3 flatMousePosition = Input.mousePosition;
 		Vector3 squadScreenPosition = cameraMain.WorldToScreenPoint(selectedSquad.GetCenterPoint());
-		flatMousePosition.y = squadScreenPosition.y;
-		flatMousePosition.z = squadScreenPosition.z;
-		float distToCenter = (flatMousePosition - squadScreenPosition).x / 50;
-		circleRadius = distToCenter;
+		float distToCenter = Mathf.Abs((flatMousePosition - squadScreenPosition).x / 10);
+		circleRadius = Mathf.Lerp(circleRadius, distToCenter, Time.deltaTime);
 		UpdateCircleRender();
 
 		// command line elevation
@@ -110,7 +109,7 @@ public class MouseCommandHUD : MonoBehaviour
 			Vector3 elevationLine = lineOrigin + (Vector3.up * lineElevation);
 			elevationLineRenderer.SetPosition(0, lineOrigin);
 			elevationLineRenderer.SetPosition(1, elevationLine);
-			moveCommandPosition = elevationLine;
+			moveCommandPosition = Vector3.Lerp(moveCommandPosition, elevationLine, Time.deltaTime * 10f);
 		}
 	}
 
@@ -153,27 +152,32 @@ public class MouseCommandHUD : MonoBehaviour
 		Vector3 closestLinePosition = Vector3.zero;
 
 		Vector3[] linePositions = new Vector3[circleLineRenderer.positionCount];
-		circleLineRenderer.GetPositions(linePositions);
-
+		int numPos = circleLineRenderer.GetPositions(linePositions);
 		float closestDistance = Mathf.Infinity;
-		int numPos = linePositions.Length;
-		for (int i = 0; i < numPos; i++){
+		for (int i = 0; i < numPos; i++)
+		{
 			Vector3 linePosition = linePositions[i];
 			Vector3 lineToCamera = cameraMain.transform.position - linePosition;
-			if (IsOnScreen(linePosition))
+			var mouseRay = cameraMain.ScreenPointToRay(Input.mousePosition);
+			mousePos = mouseRay.GetPoint(Mathf.Abs(lineToCamera.magnitude));
+
+			Vector3 circlePosition = circleLineRenderer.transform.position;
+			Vector3 screenLinePosition = cameraMain.WorldToScreenPoint(circlePosition + linePosition);
+			Vector3 compVector = screenLinePosition - Input.mousePosition;
+
+			float distanceToLine = compVector.magnitude;
+			if (distanceToLine < closestDistance)
 			{
-				var mouseRay = cameraMain.ScreenPointToRay(Input.mousePosition);
-				mousePos = mouseRay.GetPoint(Mathf.Abs(lineToCamera.magnitude));
-				float lateralDistance = (linePosition - mousePos).magnitude;
-				if (lateralDistance < closestDistance)
+				Vector3 position = (circleLineRenderer.transform.position + linePosition);
+				if (IsOnScreen(position))
 				{
-					closestLinePosition = linePosition;
-					closestDistance = lateralDistance;
+					closestLinePosition = position;
+					closestDistance = distanceToLine;
 				}
 			}
 		}
 
-		Debug.DrawLine(mousePos, closestLinePosition, Color.blue);
+		///Debug.DrawLine(mousePos, closestLinePosition, Color.blue);
 
 		return closestLinePosition;
 	}
@@ -182,10 +186,9 @@ public class MouseCommandHUD : MonoBehaviour
 	{
 		bool result = false;
 		Vector3 positionScreenPosition = cameraMain.WorldToScreenPoint(position);
-		if ((positionScreenPosition.x < Screen.width) || (positionScreenPosition.x > 0)
+		if ((positionScreenPosition.x < Screen.width) && (positionScreenPosition.x > 0)
 			&& (positionScreenPosition.y < Screen.height) && (positionScreenPosition.y > 0)
-			&& (Vector3.Dot(cameraMain.transform.forward, (position - cameraMain.transform.position).normalized) > 0.3f)
-			)
+			&& (Vector3.Dot(cameraMain.transform.forward, (position - cameraMain.transform.position).normalized) > 0.3f))
 			result = true;
 		return result;
 	}

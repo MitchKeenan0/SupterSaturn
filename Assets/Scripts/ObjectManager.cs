@@ -48,7 +48,7 @@ public class ObjectManager : MonoBehaviour
 		Spacecraft[] allSpacecraft = FindObjectsOfType<Spacecraft>();
 		foreach (Spacecraft sp in allSpacecraft)
 			spacecraftList.Add(sp);
-		Debug.Log("object manager reading list " + allSpacecraft.Length);
+		///Debug.Log("object manager reading list " + allSpacecraft.Length);
 	}
 
 	void InitGravityList()

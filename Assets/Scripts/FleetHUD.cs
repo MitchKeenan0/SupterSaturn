@@ -96,23 +96,6 @@ public class FleetHUD : MonoBehaviour
 
 	void InitPanels()
 	{
-		int numPlayerSpacecraft = playerFleet.GetSpacecraftList().Count;
-		if (numPlayerSpacecraft > 0)
-		{
-			bool anyLivingShips = false;
-			for (int i = 0; i < numPlayerSpacecraft; i++)
-			{
-				int savedHealth = game.GetSavedHealth(i);
-				if (savedHealth > 0)
-				{
-					anyLivingShips = true;
-				}
-			}
-
-			if (!anyLivingShips)
-				SceneManager.LoadScene("FleetScene");
-		}
-
 		int numFleets = fleetList.Count;
 		for (int i = 0; i < numFleets; i++)
 		{

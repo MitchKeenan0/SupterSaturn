@@ -23,7 +23,7 @@ public class LocationManager : MonoBehaviour
 		route = new List<CampaignLocation>();
 		campaign = GetComponent<Campaign>();
 		InitLocations();
-		Debug.Log("Finished location manager start");
+		///Debug.Log("Finished location manager start");
     }
 
 	void InitLocations()
@@ -58,7 +58,7 @@ public class LocationManager : MonoBehaviour
 		while (messy)
 		{
 			pos = Random.insideUnitSphere * spread * 3;
-			pos.y *= 0.6f;
+			pos.y *= 0.1f;
 			int numLocations = allLocations.Count;
 			bool hitAny = false;
 			for (int i = 0; locationCount < numLocations; i++)

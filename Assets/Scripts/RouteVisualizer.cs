@@ -28,20 +28,22 @@ public class RouteVisualizer : MonoBehaviour
 		{
 			GameObject newLine = Instantiate(linePrefab, transform.position, Quaternion.identity);
 			newLine.transform.SetParent(transform);
-			lineRenderList.Add(newLine.GetComponent<LineRenderer>());
-			newLine.GetComponent<LineRenderer>().enabled = false;
+			LineRenderer line = newLine.GetComponent<LineRenderer>();
+			lineRenderList.Add(line);
+			line.enabled = false;
+			newLine.SetActive(false);
 		}
 	}
 
 	public void SetLine(int lineIndex, Vector3 lineStart, Vector3 lineEnd)
 	{
-		if (lineRenderList != null && (lineRenderList.Count > 0))
+		if ((lineRenderList != null) && (lineRenderList.Count > 0))
 		{
 			LineRenderer line = lineRenderList[lineIndex];
 			line.SetPosition(0, lineStart);
 			line.SetPosition(1, lineEnd);
-			line.enabled = true;
 			line.gameObject.SetActive(true);
+			line.enabled = true;
 		}
 	}
 
@@ -53,7 +55,10 @@ public class RouteVisualizer : MonoBehaviour
 			if ((lineRenderList != null) && (lineRenderList.Count > 0))
 			{
 				foreach (LineRenderer line in lineRenderList)
+				{
 					line.enabled = false;
+					line.gameObject.SetActive(false);
+				}
 			}
 		}
 		else

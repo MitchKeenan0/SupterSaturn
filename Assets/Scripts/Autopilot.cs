@@ -85,13 +85,13 @@ public class Autopilot : MonoBehaviour
 	public void EnableMoveCommand(bool value)
 	{
 		bExecutingMoveCommand = value;
-		if (bExecutingMoveCommand && (routeVisualizer != null))
+		if (bExecutingMoveCommand)
 		{
 			routeVisualizer.SetRouteColor(Color.green);
 		}
 		else if (spacecraft != null)
 		{
-			routeVisualizer.SetRouteColor(Color.clear);
+			routeVisualizer.ClearLine(-1);
 			holdPosition = spacecraft.transform.position;
 		}
 	}
@@ -154,6 +154,21 @@ public class Autopilot : MonoBehaviour
 		}
 
 		// side jets
+		Vector3 frameVelocity = rb.velocity.normalized;
+		Vector3 frameDestination = toDestination.normalized;
+		Vector3 driveVector = Vector3.zero;
+		if (frameVelocity.x != frameDestination.x)
+			driveVector.x = frameDestination.x - frameVelocity.x;
+		if (frameVelocity.y != frameDestination.y)
+			driveVector.y = frameDestination.y - frameVelocity.y;
+		if (frameVelocity.z != frameDestination.z)
+			driveVector.z = frameDestination.z - frameVelocity.z;
+		if (driveVector != Vector3.zero)
+		{
+			driveVector = Vector3.ClampMagnitude(rb.velocity * -1, 1);
+			spacecraft.ManeuverEngines(driveVector);
+		}
+
 		//Vector3 velocityNormal = rb.velocity.normalized;
 		//Vector3 destinationNormal = toDestination.normalized;
 		//if (Vector3.Dot(destinationNormal, velocityNormal) < 0.16f)
@@ -167,12 +182,7 @@ public class Autopilot : MonoBehaviour
 		if (distanceToDestination > 1f)
 		{
 			float dotToDestination = Vector3.Dot(transform.forward, toDestination.normalized);
-			float throttle = Mathf.Clamp((distanceToDestination * spacecraft.mainEnginePower * dotToDestination), -1, 1);
-			if (rb.velocity.magnitude > toDestination.magnitude)
-			{
-				if (throttle > 0)
-					throttle = 0 - throttle;
-			}
+			float throttle = Mathf.Clamp(((distanceToDestination * 0.1f) * spacecraft.mainEnginePower * dotToDestination), -1, 1);
 			spacecraft.MainEngines(throttle);
 		}
 	}

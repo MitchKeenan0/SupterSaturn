@@ -101,7 +101,7 @@ public class TeamFleetHUD : MonoBehaviour
 		// team
 		spacecraftList = new List<Spacecraft>(objectManager.GetSpacecraftList());
 		int numSpacecraft = spacecraftList.Count;
-		Debug.Log("team fleet reading list " + numSpacecraft);
+		///Debug.Log("team fleet reading list " + numSpacecraft);
 
 		for (int i = 0; i < numSpacecraft; i++)
 		{
@@ -164,7 +164,7 @@ public class TeamFleetHUD : MonoBehaviour
 			Button b = product.GetComponent<Button>();
 			if ((b != null) && !teamButtonList.Contains(b))
 				teamButtonList.Add(b);
-			Debug.Log("Spawned diagram");
+			///Debug.Log("Spawned diagram");
 		}
 		return product;
 	}
@@ -204,7 +204,7 @@ public class TeamFleetHUD : MonoBehaviour
 					{
 						Health health = sp.GetComponent<Health>();
 						healthBar.InitHeath(health.maxHealth, health.GetHealth());
-						Debug.Log("fleet hud set health bar");
+						///Debug.Log("fleet hud set health bar");
 					}
 				}
 			}

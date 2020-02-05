@@ -44,14 +44,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardLibrary:
-  - {fileID: 2348000969105340941, guid: 46dbaead56586184dae9780563da1ee2, type: 3}
   - {fileID: 5883829961090761148, guid: f87ade3d4e2a75641a02aced5dc863f5, type: 3}
-  - {fileID: 6284497026650748161, guid: c4d1d9ea973859949819b99569733775, type: 3}
   - {fileID: 6284497026650748161, guid: 7be4f58aaf7d2c841b4e086d40740b08, type: 3}
+  - {fileID: 6284497026650748161, guid: c4d1d9ea973859949819b99569733775, type: 3}
+  - {fileID: 2348000969105340941, guid: 46dbaead56586184dae9780563da1ee2, type: 3}
   npcCardLibrary:
   - {fileID: 2348000969105340941, guid: 648682c61d8847e428112a8b4b84571a, type: 3}
   - {fileID: 6284497026650748161, guid: 4f4fa0f27bcb0e2468e4df825de754ac, type: 3}
   - {fileID: 5883829961090761148, guid: 443a67a179ba94e449e8a27f398aeb84, type: 3}
+  - {fileID: 6284497026650748161, guid: 7be4f58aaf7d2c841b4e086d40740b08, type: 3}
   initialSpacecraftCards:
   - {fileID: 5883829961090761148, guid: f87ade3d4e2a75641a02aced5dc863f5, type: 3}
   initialChevrons: 100

@@ -269,9 +269,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 733c2f3cd36d3b34695e030c1fd32a04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 20
-  strength: 0.1
-  updateInterval: 0.1
+  radius: 15
+  strength: 0.01
+  updateInterval: 0.3
 --- !u!135 &8303981145886502231
 SphereCollider:
   m_ObjectHideFlags: 0

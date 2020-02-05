@@ -232,7 +232,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bAgentStartsEnabled: 1
-  mainEnginePower: 0.5
+  mainEnginePower: 1
   turningPower: 0.5
   maneuverPower: 0.5
   spacecraftName: Schooner
@@ -350,8 +350,8 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1906621234774554819}
   serializedVersion: 2
-  m_Mass: 2
-  m_Drag: 0.2
+  m_Mass: 0.5
+  m_Drag: 0.1
   m_AngularDrag: 0.1
   m_UseGravity: 0
   m_IsKinematic: 0
@@ -369,8 +369,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.035, y: 0.005, z: 0.06}
-  m_Center: {x: 0, y: 0, z: 0.005}
+  m_Size: {x: 0.01, y: 0.005, z: 0.02}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!135 &8961006568567198332
 SphereCollider:
   m_ObjectHideFlags: 0

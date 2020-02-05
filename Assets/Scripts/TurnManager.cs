@@ -65,7 +65,7 @@ public class TurnManager : MonoBehaviour
 			fleetAgentList = new List<FleetAgent>(FindObjectsOfType<FleetAgent>());
 			numAgents = fleetAgentList.Count;
 		}
-		Debug.Log("Num agents " + numAgents);
+		///Debug.Log("Num agents " + numAgents);
 		for(int i = 0; i < numAgents; i++)
 		{
 			fleetAgentList[i].TakeTurnActions();

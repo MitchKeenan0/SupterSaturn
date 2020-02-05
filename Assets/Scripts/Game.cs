@@ -116,7 +116,7 @@ public class Game : MonoBehaviour
 				savedHealthList[index] = value;
 			else
 				savedHealthList.Add(value);
-			Debug.Log("Setting saved health " + index + " of " + savedHealthList.Count + " to " + value);
+			///Debug.Log("Setting saved health " + index + " of " + savedHealthList.Count + " to " + value);
 		}
 		else if (index < savedHealthList.Count)
 		{
@@ -243,6 +243,7 @@ public class Game : MonoBehaviour
 				}
 				else if (sceneName == "BattleScene")
 				{
+					gameHud = FindObjectOfType<GameHUD>();
 					if (bBattleTutorialClosed)
 					{
 						gameHud.SetTutorialActive(false);
@@ -321,7 +322,6 @@ public class Game : MonoBehaviour
 			save.cardList.Add(initialSpacecraftCards[0].numericID);
 		}
 
-		// enemy cards
 		int numEnemies = enemySpacecraftList.Count;
 		if (numEnemies > 0)
 		{
@@ -330,14 +330,13 @@ public class Game : MonoBehaviour
 				if (i < enemyCardList.Count)
 				{
 					save.enemyCardList.Add(enemyCardList[i].numericID);
-					Debug.Log("Saved enemy");
+					///Debug.Log("Saved enemy card");
 				}
 			}
 		}
 
-		// spacecraft health
 		int numSpacecraft = selectedCardList.Count;
-		Debug.Log("Saving " + numSpacecraft + " spacecraft healths");
+		///Debug.Log("Saving " + numSpacecraft + " spacecraft healths");
 		if (numSpacecraft > 0)
 		{
 			for (int i = 0; i < numSpacecraft; i++)
@@ -354,7 +353,7 @@ public class Game : MonoBehaviour
 						if (spacecraftHealth == -1)
 							spacecraftHealth = spacecraftList[i].GetComponent<Health>().maxHealth;
 						save.healthList.Add(spacecraftHealth);
-						Debug.Log(spacecraftList[i].spacecraftName + " " + spacecraftHealth);
+						///Debug.Log(spacecraftList[i].spacecraftName + " " + spacecraftHealth);
 					}
 					else if ((i < game.savedHealthList.Count)
 						&& ((fleetCreator != null) || (campaign != null)))
@@ -364,13 +363,13 @@ public class Game : MonoBehaviour
 							hp = game.savedHealthList[i];
 
 						save.healthList.Add(hp);
-						Debug.Log(spacecraftList[i].spacecraftName + " " + hp);
+						///Debug.Log(spacecraftList[i].spacecraftName + " " + hp);
 					}
 				}
 				else
 				{
 					save.healthList.Add(0);
-					Debug.Log(spacecraftList[i].spacecraftName + " " + 0);
+					///Debug.Log(spacecraftList[i].spacecraftName + " " + 0);
 				}
 			}
 		}

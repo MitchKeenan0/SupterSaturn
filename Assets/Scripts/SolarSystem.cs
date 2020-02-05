@@ -10,7 +10,8 @@ public class SolarSystem : BattleScene
 	public float planetMinSize = 0.1f;
 	public float planetMaxSize = 1;
 	public GameObject sunPrefab;
-	public GameObject[] celestialBodyPrefabs;
+	public GameObject[] planetPrefabs;
+	public GameObject[] moonPrefabs;
 	public GameObject directionalLightPrefab;
 
 	void Start()
@@ -22,36 +23,40 @@ public class SolarSystem : BattleScene
 	{
 		base.InitScene();
 
-		bool spawnedSun = false;
-		if (Random.Range(0f,1f) > 0.3f)
+		bool solarCenter = false;
+		if (Random.Range(0f, 1f) > 0.3f)
 		{
 			GameObject sunObj = Instantiate(sunPrefab, transform);
-			spawnedSun = true;
+			solarCenter = true;
 		}
 
-		float largestSize = 0;
 		GameObject backupCenter = null;
 		int celestialBodyCount = Random.Range(minimumObjectCount, maximumObjectCount);
 		for (int i = 0; i < celestialBodyCount; i++)
 		{
-			int randomLibraryIndex = Random.Range(0, celestialBodyPrefabs.Length - 1);
-			GameObject spawnedObject = Instantiate(celestialBodyPrefabs[randomLibraryIndex], transform);
-			Vector3 spawnPosition = Random.onUnitSphere * Random.Range(2f, 25f);
-			spawnPosition.y *= 0.1f;
+			int randomLibraryIndex = Random.Range(0, planetPrefabs.Length - 1);
+			GameObject spawnedPlanet = Instantiate(planetPrefabs[randomLibraryIndex], transform);
+			if (spawnedPlanet.GetComponent<PlanetArm>())
+				spawnedPlanet.GetComponent<PlanetArm>().SetLength((i + 1) * distanceScale);
 
-			if (spawnedObject.GetComponent<PlanetArm>())
-				spawnedObject.GetComponent<PlanetArm>().SetLength(i * distanceScale);
-
-			Vector3 planetSize = Vector3.one * Random.Range(planetMinSize, planetMaxSize);
-			spawnedObject.transform.localScale = planetSize;
-			if (planetSize.magnitude > largestSize)
+			int numMoons = Random.Range(0, 10);
+			if (numMoons > 0)
 			{
-				largestSize = planetSize.magnitude;
-				backupCenter = spawnedObject;
+				for (int j = 0; j < numMoons; j++)
+				{
+					int randomMoonIndex = Random.Range(0, moonPrefabs.Length - 1);
+					GameObject spawnedMoon = Instantiate(moonPrefabs[randomMoonIndex], spawnedPlanet.transform);
+					if (spawnedMoon.GetComponent<PlanetArm>())
+						spawnedMoon.GetComponent<PlanetArm>().SetLength((j + 1) * distanceScale);
+					i++;
+				}
 			}
+
+			if (i == 0)
+				backupCenter = spawnedPlanet;
 		}
 
-		if (!spawnedSun)
+		if (!solarCenter)
 		{
 			GameObject dirLight = Instantiate(directionalLightPrefab, transform);
 			dirLight.transform.rotation = Random.rotation;

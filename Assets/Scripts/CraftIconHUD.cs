@@ -59,7 +59,7 @@ public class CraftIconHUD : MonoBehaviour
 	{
 		spacecraftList = objectManager.GetSpacecraftList();
 		int numCrafts = spacecraftList.Count;
-		Debug.Log("craft icon hud reading list " + numCrafts);
+		///Debug.Log("craft icon hud reading list " + numCrafts);
 
 		for (int i = 0; i < numCrafts; i++)
 		{
