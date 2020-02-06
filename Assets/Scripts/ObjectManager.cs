@@ -70,10 +70,13 @@ public class ObjectManager : MonoBehaviour
 		for (int i = 0; i < numSpacecraft; i++)
 		{
 			Spacecraft sp = spacecraftList[i];
-			if (sp.GetAgent().teamID == 0)
-				numTeam++;
-			else if (sp.GetAgent().teamID == 1)
-				numEnemy++;
+			if ((sp != null) && (sp.IsAlive()))
+			{
+				if (sp.GetAgent().teamID == 0)
+					numTeam++;
+				else if (sp.GetAgent().teamID == 1)
+					numEnemy++;
+			}
 		}
 
 		if (numTeam == 0)

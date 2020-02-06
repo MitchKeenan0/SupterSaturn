@@ -11,17 +11,21 @@ public class NameLibrary : MonoBehaviour
 	public string[] uniqueLocationNames = { "Reccez", "Aqua Nebula", "Karaoke Nebula", "Randal's Cloud", "The Maelstrom", "Teh Garden", "Hydrogean", "Helix Nebula", "Sauna", "Guedes Giant", "Harrow" };
 	public string[] rareLocationNames = { "Family Fortress", "Edne", "Reasearch Base", "Nike", "HG-413", "Lost Temple", "Super Saturn", "Seed of the Stars", "Matrices of Or", "Father Star", "Never", "Empress" };
 
+	public string[] identityNames = { "Bauer", "CultureViper", "Carrera", "Voltez", "Kara", "Abriette", "Tangerine", "Minerva", "Chandra", "Ali", "Mahdi" };
 	public string[] fleetNames = { "Rogue Navy", "Scerzaron", "Thief Cartel", "Herald Fleet", "Bodysnatchers" };
 
 	public List<int> usedCommonLocations;
 	public List<int> usedUniqueLocations;
 	public List<int> usedRareLocations;
+	public List<int> usedIdentityNames;
 
-	void Start()
+	void Awake()
 	{
 		usedCommonLocations = new List<int>();
 		usedUniqueLocations = new List<int>();
 		usedRareLocations = new List<int>();
+		usedIdentityNames = new List<int>();
+		DontDestroyOnLoad(gameObject);
 	}
 
 	public string GetLocationName(int rarity)
@@ -46,9 +50,32 @@ public class NameLibrary : MonoBehaviour
 				break;
 		}
 
-		int randomIndex = Random.Range(0, nameArray.Length);
-		string result = nameArray[randomIndex];
-		usedList.Add(randomIndex);
+		bool foundName = false;
+		string result = "";
+		while (!foundName)
+		{
+			int randomIndex = Random.Range(0, nameArray.Length);
+			if (!usedList.Contains(randomIndex))
+			{
+				result = nameArray[randomIndex];
+				switch(rarity)
+				{
+					case 0:
+						usedCommonLocations.Add(randomIndex);
+						break;
+					case 1:
+						usedUniqueLocations.Add(randomIndex);
+						break;
+					case 2:
+						usedRareLocations.Add(randomIndex);
+						break;
+					default:
+						break;
+				}
+				foundName = true;
+			}
+		}
+
 		return result;
 	}
 
@@ -58,5 +85,22 @@ public class NameLibrary : MonoBehaviour
 		int randomIndex = Random.Range(0, fleetNames.Length);
 		fleetName = fleetNames[randomIndex];
 		return fleetName;
+	}
+
+	public string GetIdentityName()
+	{
+		string idName = "";
+		bool nameFound = false;
+		while (!nameFound)
+		{
+			int rando = Random.Range(0, identityNames.Length - 1);
+			if (!usedIdentityNames.Contains(rando))
+			{
+				idName = identityNames[rando];
+				usedIdentityNames.Add(rando);
+				nameFound = true;
+			}
+		}
+		return idName;
 	}
 }

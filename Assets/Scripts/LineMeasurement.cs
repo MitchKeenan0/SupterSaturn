@@ -9,6 +9,6 @@ public class LineMeasurement : MonoBehaviour
 
     public void SetDistance(float value)
 	{
-		distanceText.text = value.ToString("F1");
+		distanceText.text = value.ToString("F0");
 	}
 }

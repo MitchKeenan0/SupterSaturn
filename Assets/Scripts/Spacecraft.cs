@@ -89,7 +89,8 @@ public class Spacecraft : MonoBehaviour
 			if ((turningRotation.normalized != Quaternion.identity)
 				&& (turningRotation.normalized != null))
 			{
-				rb.MoveRotation(turningRotation);
+				Quaternion lerpRotation = Quaternion.Lerp(transform.rotation, turningRotation, Time.fixedDeltaTime * turningPower * 100f);
+				rb.MoveRotation(lerpRotation);
 				transform.rotation = rb.rotation;
 			}
 
@@ -146,7 +147,7 @@ public class Spacecraft : MonoBehaviour
 		}
 	}
 
-	public void SpacecraftDestroyed(Transform responsibleTransform)
+	public void SpacecraftKnockedOut(Transform responsibleTransform)
 	{
 		if (agent.teamID == 0)
 		{
@@ -162,9 +163,6 @@ public class Spacecraft : MonoBehaviour
 		{
 			Destroy(grid.gameObject);
 		}
-
-		Transform destroyedTransform = Instantiate(destroyedParticlesPrefab, transform.position, Quaternion.Euler(rb.velocity));
-		Destroy(destroyedTransform.gameObject, 10f);
 
 		if (responsibleTransform != null)
 		{
@@ -183,8 +181,6 @@ public class Spacecraft : MonoBehaviour
 			agent.AgentSpacecraftDestroyed();
 			agent.SetEnabled(false);
 		}
-
-		Destroy(gameObject, 0.2f);
 	}
 
 	public void AddMarkValue(int value)

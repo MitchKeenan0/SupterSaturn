@@ -32,7 +32,7 @@ public class Health : MonoBehaviour
 		{
 			currentHealth = 0;
 			if (responsibleTransform != null)
-				spacecraft.SpacecraftDestroyed(responsibleTransform);
+				spacecraft.SpacecraftKnockedOut(responsibleTransform);
 		}
 		
 		if (!battleOutcome)

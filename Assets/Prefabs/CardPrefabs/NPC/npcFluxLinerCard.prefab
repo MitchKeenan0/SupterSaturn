@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6284497026650748162}
   - component: {fileID: 6284497026650748161}
   m_Layer: 0
-  m_Name: FighterCard
+  m_Name: npcFluxLinerCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,13 +44,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numericID: 2
-  cardName: Fighter
-  cardDescription: Armoured combatant with physical artillery
-  cardObjectPrefab: {fileID: 1906621234774554819, guid: b8b87167795a4fb4ab22dee047b4ed1c,
+  cardName: Flux Liner
+  cardDescription: Dogfighter variant for CQC
+  cardObjectPrefab: {fileID: 1906621234774554819, guid: 3c912d352b210464c8c03056cdea8f14,
     type: 3}
   cardSprite: {fileID: 21300000, guid: 6c234c9dc9203534b93f4e615e24d416, type: 3}
   iconSprite: {fileID: 0}
-  level: 2
+  level: 1
   cost: 150
-  health: 6
+  health: 7
   damage: 1

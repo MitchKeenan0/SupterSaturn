@@ -9,11 +9,11 @@ public class PlanetArm : MonoBehaviour
 
     void Start()
     {
-		transform.position = Vector3.zero;
+		//transform.position = Vector3.zero;
     }
 
 	public void SetLength(float value)
 	{
-		planetTransform.localPosition = Vector3.forward * value * armLength;
+		planetTransform.position = transform.position + (transform.forward * value * armLength);
 	}
 }

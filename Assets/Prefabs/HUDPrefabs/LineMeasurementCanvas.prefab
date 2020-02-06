@@ -113,4 +113,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   measurementPanelPrefab: {fileID: 6780891602729384229, guid: f32b0d76a51278d418874105a506e396,
     type: 3}
-  marks: 10
+  marks: 3

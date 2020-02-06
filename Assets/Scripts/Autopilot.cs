@@ -47,7 +47,7 @@ public class Autopilot : MonoBehaviour
 
 	public void SpacecraftNavigationCommands()
 	{
-		if (bExecutingMoveCommand)
+		if (bExecutingMoveCommand && (routeVectors.Count > 0))
 		{
 			Vector3 currentRouteVector = routeVectors.ElementAt(0);
 			FlyTo(currentRouteVector);
@@ -153,10 +153,10 @@ public class Autopilot : MonoBehaviour
 
 	void FlyTo(Vector3 destination)
 	{
-		Vector3 toDestination = destination - transform.position;
+		Vector3 toDestination = (destination - rb.velocity) - transform.position;
 
 		// steering
-		if (toDestination.magnitude > 0.15f)
+		if (toDestination.magnitude > 0.05f)
 		{
 			Vector3 maneuverVector = destination - rb.velocity;
 			spacecraft.Maneuver(maneuverVector);
@@ -172,18 +172,22 @@ public class Autopilot : MonoBehaviour
 			driveVector.y = frameDestination.y - frameVelocity.y;
 		if (frameVelocity.z != frameDestination.z)
 			driveVector.z = frameDestination.z - frameVelocity.z;
+		driveVector.z = Mathf.Clamp(driveVector.z, -1f, 0f);
 		if (driveVector != Vector3.zero)
 		{
-			driveVector = Vector3.ClampMagnitude(rb.velocity * -1, 1);
+			driveVector = Vector3.ClampMagnitude(driveVector, 1);
 			spacecraft.ManeuverEngines(driveVector);
 		}
 
 		// thrust
 		float distanceToDestination = toDestination.magnitude;
-		if (distanceToDestination > 1f)
+		if (distanceToDestination > 0.1f)
 		{
 			float dotToDestination = Vector3.Dot(transform.forward, toDestination.normalized);
 			float throttle = Mathf.Clamp(((distanceToDestination * 0.1f) * spacecraft.mainEnginePower * dotToDestination), -1, 1);
+			float dotToVelocity = Vector3.Dot(transform.forward, rb.velocity.normalized);
+			if ((dotToVelocity > 0) && (distanceToDestination < rb.velocity.magnitude))
+				throttle *= 0.0f;
 			spacecraft.MainEngines(throttle);
 		}
 	}

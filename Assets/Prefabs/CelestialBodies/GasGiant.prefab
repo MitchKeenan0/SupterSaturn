@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b8de103a5d048ee46817b460947aafc8, type: 2}
+  - {fileID: 2100000, guid: 8c4b5aeda36ff074b9c4132c7f832864, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -245,7 +245,7 @@ MonoBehaviour:
   xForceDirection: 0
   yForceDirection: 1
   zForceDirection: 0
-  speedMultiplier: 0.3
+  speedMultiplier: 1
   bRandomRotationStart: 1
   bRandomSpeed: 1
   worldPivot: 0
@@ -307,7 +307,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 673522835ab4482479de9390c3ef0bc1, type: 2}
+  - {fileID: 2100000, guid: ebb9484f80f91aa4491d4f7fb4ef87b3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

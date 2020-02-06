@@ -87,9 +87,9 @@ public class MouseCommandHUD : MonoBehaviour
 		lastMousePosition = Input.mousePosition;
 		
 		// command circle width control
-		Vector3 flatMousePosition = Input.mousePosition;
+		Vector3 mousePosition = Input.mousePosition;
 		Vector3 squadScreenPosition = cameraMain.WorldToScreenPoint(selectedSquad.GetCenterPoint());
-		float distToCenter = Mathf.Abs((flatMousePosition - squadScreenPosition).x / 10);
+		float distToCenter = Mathf.Abs((mousePosition - squadScreenPosition).magnitude / 10);
 		circleRadius = Mathf.Lerp(circleRadius, distToCenter, Time.deltaTime);
 		UpdateCircleRender();
 
@@ -98,13 +98,9 @@ public class MouseCommandHUD : MonoBehaviour
 		if (lineOrigin != Vector3.zero)
 		{
 			Vector3 originScreenPosition = cameraMain.WorldToScreenPoint(lineOrigin);
-
 			Vector3 verticalMousePosition = Input.mousePosition;
-			verticalMousePosition.x = originScreenPosition.x;
-			verticalMousePosition.z = originScreenPosition.z;
-			float distToMiddle = (verticalMousePosition.y - originScreenPosition.y) / 50;
-			lineElevation = distToMiddle;
-			//Debug.Log("line elevation: " + lineElevation + " " + Time.time);
+			float distToMouse = (mousePosition - originScreenPosition).y / 10;
+			lineElevation = distToMouse;
 
 			Vector3 elevationLine = lineOrigin + (Vector3.up * lineElevation);
 			elevationLineRenderer.SetPosition(0, lineOrigin);

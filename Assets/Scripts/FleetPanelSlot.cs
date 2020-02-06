@@ -109,7 +109,7 @@ public class FleetPanelSlot : MonoBehaviour, IDeselectHandler
 				currentHealth = card.health;
 				game.SetSavedHealth(index, card.health);
 			}
-			Debug.Log("Slot health " + currentHealth);
+			///Debug.Log("Slot health " + currentHealth);
 			if (currentHealth < 0)
 				currentHealth = maxHealth;
 			healthBar.InitHeath(maxHealth, currentHealth);

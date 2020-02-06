@@ -46,7 +46,7 @@ MonoBehaviour:
   numericID: 1
   cardName: Schooner
   cardDescription: Nimble scout with mid-size laser
-  cardObjectPrefab: {fileID: 1906621234774554819, guid: 410fe99c8dfee3d4daa7aa3786f1cf8e,
+  cardObjectPrefab: {fileID: 1906621234774554819, guid: 69aa633252bf9a941890648d0935f536,
     type: 3}
   cardSprite: {fileID: 21300000, guid: 6c234c9dc9203534b93f4e615e24d416, type: 3}
   iconSprite: {fileID: 0}

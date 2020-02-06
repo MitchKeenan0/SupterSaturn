@@ -5,8 +5,9 @@ using UnityEngine.UI;
 
 public class FleetPanel : MonoBehaviour
 {
-	public GameObject iconPrefab;
 	public Transform gridLayout;
+	public GameObject iconPrefab;
+	public Sprite unknownSprite;
 
 	private Fleet fleet;
 	private List<Spacecraft> spacecraftList;
@@ -26,15 +27,27 @@ public class FleetPanel : MonoBehaviour
 	public void SetFleet(Fleet f)
 	{
 		fleet = f;
-		fleetNameText.text = fleet.fleetName;
-		if (fleet.teamID == 1)
-			fleetNameText.color = Color.red;
+
+		Identity identity = fleet.gameObject.GetComponent<Identity>();
+		if (identity != null)
+		{
+			fleetNameText.text = identity.identityName;
+			fleetNameText.color = identity.identityColor;
+		}
+		else
+		{
+			fleetNameText.text = fleet.fleetName;
+		}
+		
 		spacecraftList = fleet.GetSpacecraftList();
 		for (int i = 0; i < spacecraftList.Count; i++)
 		{
 			Spacecraft sp = spacecraftList[i];
 			FleetPanelIcon icon = CreateIcon();
-			icon.SetSpacecraft(sp);
+			if (fleet.teamID == 0)
+				icon.SetSpacecraft(sp);
+			else
+				icon.SetImage(unknownSprite);
 		}
 	}
 

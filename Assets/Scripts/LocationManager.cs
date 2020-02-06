@@ -96,7 +96,7 @@ public class LocationManager : MonoBehaviour
 			}
 			else
 			{
-				Debug.Log("Destination is unreachable");
+				///Debug.Log("Destination is unreachable");
 				break;
 			}
 
@@ -110,25 +110,29 @@ public class LocationManager : MonoBehaviour
 
 	CampaignLocation GetNextNeighbor(CampaignLocation start, CampaignLocation destination)
 	{
-		float closestDistance = Mathf.Infinity;
-		List<CampaignLocation> neighbors = new List<CampaignLocation>(start.GetNeighbors());
-		int numNeighbors = neighbors.Count;
 		CampaignLocation closestLocation = null;
-		start.bRouteHit = true;
 
-		for (int i = 0; i < numNeighbors; i++)
+		if ((start != null) && (start.GetNeighbors() != null) && (start.GetNeighbors().Count > 0))
 		{
-			CampaignLocation cl = neighbors[i];
-			if (cl == destination)
-				return cl;
+			float closestDistance = Mathf.Infinity;
+			List<CampaignLocation> neighbors = new List<CampaignLocation>(start.GetNeighbors());
+			int numNeighbors = neighbors.Count;
+			start.bRouteHit = true;
 
-			if (cl != start && !cl.bRouteHit)
+			for (int i = 0; i < numNeighbors; i++)
 			{
-				float distanceToDestination = Vector3.Distance(cl.transform.position, destination.transform.position);
-				if (distanceToDestination < closestDistance)
+				CampaignLocation cl = neighbors[i];
+				if (cl == destination)
+					return cl;
+
+				if (cl != start && !cl.bRouteHit)
 				{
-					closestDistance = distanceToDestination;
-					closestLocation = cl;
+					float distanceToDestination = Vector3.Distance(cl.transform.position, destination.transform.position);
+					if (distanceToDestination < closestDistance)
+					{
+						closestDistance = distanceToDestination;
+						closestLocation = cl;
+					}
 				}
 			}
 		}

@@ -175,7 +175,7 @@ public class FleetCreator : MonoBehaviour
 		}
 
 		chevronValueText.text = game.GetChevrons().ToString();
-		Debug.Log("game chevrons " + game.GetChevrons());
+		///Debug.Log("game chevrons " + game.GetChevrons());
 	}
 
 	private IEnumerator DeselectAfterTime(float waitTime)

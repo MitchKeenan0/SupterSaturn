@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2348000969105340942}
   - component: {fileID: 2348000969105340941}
   m_Layer: 0
-  m_Name: npcCorvetteCard
+  m_Name: npcSuperlinerCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,7 +46,7 @@ MonoBehaviour:
   numericID: 0
   cardName: Corvette
   cardDescription: Fast for its size, packing huge laser
-  cardObjectPrefab: {fileID: 1906621234774554819, guid: 1895f894ad3b1b044b9c1b0d29a0303c,
+  cardObjectPrefab: {fileID: 1906621234774554819, guid: 174e4ded21566e8478effd639fe56e65,
     type: 3}
   cardSprite: {fileID: 21300000, guid: 41ff8e5c182c0b74a966d1645779afe9, type: 3}
   iconSprite: {fileID: 0}

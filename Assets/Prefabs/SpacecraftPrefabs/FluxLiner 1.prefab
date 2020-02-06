@@ -175,7 +175,7 @@ GameObject:
   - component: {fileID: 2275826126715844726}
   - component: {fileID: 8961006568567198332}
   m_Layer: 0
-  m_Name: Fighter
+  m_Name: FluxLiner 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -219,10 +219,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bAgentStartsEnabled: 1
-  mainEnginePower: 2
+  mainEnginePower: 1
   turningPower: 1
   maneuverPower: 1
-  spacecraftName: Fighter
+  spacecraftName: Flux Liner
   thrustParticles: {fileID: 2104020796097920098}
   destroyedParticlesPrefab: {fileID: 2766248710761914840, guid: 05469ee24ae991f41b944cbcf9f43ad0,
     type: 3}
@@ -284,14 +284,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e13fa68e42e8b8440943f266f3c67048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponSpeed: 300
-  weaponAccuracy: 10
+  weaponSpeed: 250
+  weaponAccuracy: 1
   munitionPrefab: {fileID: 4860601835048803221, guid: e562247ffe5ed3a48b3b9dd75686d074,
     type: 3}
   armingParticles: {fileID: 2259053088472580658, guid: c70e3152077d3d445907612dae5b1704,
     type: 3}
   prefireTime: 0.05
-  fireRate: 1
+  fireRate: 0.1
   rateDeviation: 0.1
 --- !u!114 &4889395795704047185
 MonoBehaviour:
@@ -339,7 +339,7 @@ Rigidbody:
   m_GameObject: {fileID: 1906621234774554819}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0.2
+  m_Drag: 0.3
   m_AngularDrag: 0.1
   m_UseGravity: 0
   m_IsKinematic: 0
@@ -357,7 +357,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.02, y: 0.01, z: 0.06}
+  m_Size: {x: 0.02, y: 0.01, z: 0.02}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!135 &8961006568567198332
 SphereCollider:
@@ -463,7 +463,7 @@ GameObject:
   - component: {fileID: 5935958730324587490}
   m_Layer: 0
   m_Name: TextCharacter
-  m_TagString: Untagged
+  m_TagString: Selection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -476,7 +476,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9145987054733203025}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.0007}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_Children: []
   m_Father: {fileID: 1906621234774554818}

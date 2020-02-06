@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5915447a6783d8d46873752d81b95395, type: 2}
+  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -115,7 +115,7 @@ MonoBehaviour:
   xForceDirection: 0
   yForceDirection: 1
   zForceDirection: 0
-  speedMultiplier: 1
+  speedMultiplier: 10
   bRandomRotationStart: 0
   bRandomSpeed: 0
   worldPivot: 0
@@ -245,7 +245,7 @@ MonoBehaviour:
   xForceDirection: 0
   yForceDirection: 1
   zForceDirection: 0
-  speedMultiplier: 0.1
+  speedMultiplier: 1
   bRandomRotationStart: 1
   bRandomSpeed: 1
   worldPivot: 0

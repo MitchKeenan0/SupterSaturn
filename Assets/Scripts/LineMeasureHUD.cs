@@ -77,20 +77,23 @@ public class LineMeasureHUD : MonoBehaviour
 						GameObject markObj = markList[i];
 						Vector3 indexVector = markList[i].transform.position;
 						if (transform.parent != null)
-							indexVector = originPos + ((lineVector / marks) * i);
+							indexVector = originPos + ((lineVector / marks) * (i + 1));
 
-						Vector3 screenPosition = cameraMain.WorldToScreenPoint(indexVector) 
-							+ (cameraMain.transform.forward * 10);
-						markObj.transform.position = screenPosition;
-
-						markObj.transform.localScale = Vector3.one * (10f / Vector3.Distance(indexVector, cameraMain.transform.position));
+						float distFromOrigin = ((lineVector / marks) * (i + 1)).magnitude;
 
 						LineMeasurement lm = markObj.GetComponent<LineMeasurement>();
 						if (lm != null)
 						{
-							float distFromOrigin = ((lineVector / marks) * i).magnitude;
 							lm.SetDistance(distFromOrigin);
 						}
+
+						Vector3 screenPosition = cameraMain.WorldToScreenPoint(indexVector)
+							+ (cameraMain.transform.forward * 10);
+						markObj.transform.position = screenPosition;
+
+						float scaleFactor = (0.1f / Vector3.Distance(indexVector, cameraMain.transform.position));
+						scaleFactor = Mathf.Clamp(scaleFactor, 1f, 0.001f);
+						markObj.transform.localScale = Vector3.one * scaleFactor;
 
 						if (!markObj.activeInHierarchy)
 							markObj.SetActive(true);

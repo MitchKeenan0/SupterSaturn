@@ -27,11 +27,11 @@ public class Gravity : MonoBehaviour
 		if (rbList.Count > 0){
 			foreach (Rigidbody r in rbList)
 			{
-				if (r != null && !r.isKinematic)
+				if ((r != null) && (!r.isKinematic))
 				{
 					Vector3 g = GetGravity(r);
 					if (g != Vector3.zero)
-						r.AddForce(g);
+						r.AddForce(g * Time.fixedDeltaTime);
 				}
 			}
 		}
@@ -45,8 +45,8 @@ public class Gravity : MonoBehaviour
 			Vector3 toCenter = transform.position - r.position;
 			if (toCenter.magnitude <= radius)
 			{
-				float G = (1f / toCenter.magnitude) * r.mass;
-				gravity = toCenter.normalized * G * strength;
+				float G = (1f / toCenter.magnitude) * r.mass * strength;
+				gravity = toCenter.normalized * G;
 				r.AddForce(gravity);
 			}
 		}

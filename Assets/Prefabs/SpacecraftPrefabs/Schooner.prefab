@@ -232,9 +232,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bAgentStartsEnabled: 1
-  mainEnginePower: 1
-  turningPower: 0.5
-  maneuverPower: 0.5
+  mainEnginePower: 0.5
+  turningPower: 0.3
+  maneuverPower: 0.2
   spacecraftName: Schooner
   thrustParticles: {fileID: 2104020796097920098}
   destroyedParticlesPrefab: {fileID: 2766248710761914840, guid: 05469ee24ae991f41b944cbcf9f43ad0,
@@ -350,8 +350,8 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1906621234774554819}
   serializedVersion: 2
-  m_Mass: 0.5
-  m_Drag: 0.1
+  m_Mass: 0.8
+  m_Drag: 0.3
   m_AngularDrag: 0.1
   m_UseGravity: 0
   m_IsKinematic: 0
@@ -369,7 +369,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.01, y: 0.005, z: 0.02}
+  m_Size: {x: 0.025, y: 0.003, z: 0.06}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!135 &8961006568567198332
 SphereCollider:
@@ -398,7 +398,7 @@ GameObject:
   - component: {fileID: 8235648834170050641}
   m_Layer: 0
   m_Name: TextCharacter
-  m_TagString: Untagged
+  m_TagString: Selection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -411,8 +411,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5006418502701060149}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: -0.0051}
-  m_LocalScale: {x: 0.01, y: 0.02, z: 0.01}
+  m_LocalPosition: {x: 0, y: 1.8e-14, z: -0.0051}
+  m_LocalScale: {x: 0.01, y: 0.02, z: 0.1}
   m_Children: []
   m_Father: {fileID: 1906621234774554818}
   m_RootOrder: 0
@@ -468,7 +468,7 @@ TextMesh:
   m_LineSpacing: 1
   m_Anchor: 4
   m_Alignment: 1
-  m_TabSize: 4
+  m_TabSize: 0
   m_FontSize: 18
   m_FontStyle: 0
   m_RichText: 1

@@ -18,4 +18,9 @@ public class FleetPanelIcon : MonoBehaviour
 		spacecraft = sp;
 		iconImage.sprite = sp.craftIcon;
 	}
+
+	public void SetImage(Sprite sprite)
+	{
+		iconImage.sprite = sprite;
+	}
 }

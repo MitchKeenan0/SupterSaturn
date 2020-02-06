@@ -11,11 +11,13 @@ public class Campaign : MonoBehaviour
 	private LocationManager locationManager;
 	private List<CampaignLocation> locationList;
 	private List<Fleet> fleetList;
+	private List<CampaignLocation> originLocations = new List<CampaignLocation>();
 	private bool bLocationsInit = false;
 
 	void Awake()
     {
 		locationList = new List<CampaignLocation>();
+		originLocations = new List<CampaignLocation>();
 		fleetList = new List<Fleet>();
 		cameraMain = Camera.main;
 		game = FindObjectOfType<Game>();
@@ -25,46 +27,33 @@ public class Campaign : MonoBehaviour
 		locationManager = FindObjectOfType<LocationManager>();
     }
 
-	public void InitFleetLocations()
+	public void InitFleetLocation(Fleet fleet)
 	{
-		if (!bLocationsInit)
+		locationList = locationManager.GetAllLocations();
+		fleetList = fleetHud.GetFleetList();
+		int numFleets = fleetList.Count;
+		for (int i = 0; i < numFleets; i++)
 		{
-			bLocationsInit = true;
-			locationList = locationManager.GetAllLocations();
-			float closestDistance = 999;
-			float furthestDistance = 0;
-			CampaignLocation myStartLocation = null;
-			CampaignLocation enemyStartLocation = null;
+			CampaignLocation furthestLocation = null;
+			float furthestDistance = 0f;
 			foreach (CampaignLocation cl in locationList)
 			{
-				if (cl.GetNeighbors().Count > 0)
+				if ((cl.GetNeighbors().Count > 0) && (!originLocations.Contains(cl)))
 				{
-					float distanceToLocation = Vector3.Distance(cl.transform.position, cameraMain.transform.position);
-					if (distanceToLocation < closestDistance)
-					{
-						closestDistance = distanceToLocation;
-						myStartLocation = cl;
-					}
+					float distanceToLocation = Vector3.Distance(cl.transform.position, Vector3.zero);
 					if (distanceToLocation > furthestDistance)
 					{
+						Debug.Log("Candidate!");
+						furthestLocation = cl;
 						furthestDistance = distanceToLocation;
-						enemyStartLocation = cl;
 					}
 				}
 			}
-
-			fleetList = new List<Fleet>(fleetHud.GetFleetList());
-			int numFleets = fleetList.Count;
-			if (numFleets > 0)
+			if (furthestLocation != null)
 			{
-				for (int i = 0; i < numFleets; i++)
-				{
-					Fleet f = fleetList[i];
-					if ((f.teamID == 0) && (myStartLocation != null))
-						f.SetLocation(myStartLocation, true);
-					if ((f.teamID != 0) && (enemyStartLocation != null))
-						f.SetLocation(enemyStartLocation, true);
-				}
+				Debug.Log("Meep");
+				fleetList[i].SetLocation(furthestLocation, true);
+				originLocations.Add(furthestLocation);
 			}
 		}
 	}

@@ -11,15 +11,22 @@ public class Planet : MonoBehaviour
 
     void Awake()
     {
-		//InitPlanet();
+		InitPlanet();
     }
 
-	//void InitPlanet()
-	//{
-	//	Vector3 newSize = Vector3.one * Random.Range(minSize, maxSize);
-	//	if (planetMesh != null)
-	//		planetMesh.transform.localScale = newSize;
-	//	if (atmosphereMesh != null)
-	//		atmosphereMesh.transform.localScale = newSize;
-	//}
+	public void SetScale(float sizeMagnitude)
+	{
+		planetMesh.transform.localScale = Vector3.one * sizeMagnitude;
+		GetComponent<SphereCollider>().radius = sizeMagnitude / 2;
+	}
+
+	void InitPlanet()
+	{
+		Color planetColor = new Color();
+		planetColor.a = 1;
+		planetColor.r = Random.Range(0.05f, 0.5f);
+		planetColor.g = Random.Range(0.05f, 0.5f);
+		planetColor.b = Random.Range(0.05f, 0.5f);
+		planetMesh.GetComponent<Renderer>().material.color = planetColor;
+	}
 }

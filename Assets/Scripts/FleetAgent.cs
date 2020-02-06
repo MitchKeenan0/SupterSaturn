@@ -55,27 +55,19 @@ public class FleetAgent : MonoBehaviour
 
 	public void TakeTurnActions()
 	{
-		///Debug.Log("agent turn action");
 		if (playerFleetController != null)
 		{
 			if (myFleetController == null)
 				myFleetController = transform.parent.GetComponentInChildren<FleetController>();
 			myFleetController.StandbyMove(playerFleetController.GetLocation());
-			//if (fleet.GetLocation() != null)
-			//	Debug.Log("fleet agent location " + fleet.GetLocation().locationName);
 			if ((myFleetController.GetRoute() == null)
 				|| myFleetController.GetRoute().Count <= 1)
 			{
 				int neighborIndex = Random.Range(0, fleet.GetLocation().GetNeighbors().Count);
 				CampaignLocation neighbor = fleet.GetLocation().GetNeighbors()[neighborIndex];
 				myFleetController.StandbyMove(neighbor);
-				///Debug.Log("agent taking route to neighbor " + neighbor.locationName);
 			}
 		}
-		//else
-		//{
-		//	Debug.Log("no player fc");
-		//}
 	}
 
 	void InitAgent()
