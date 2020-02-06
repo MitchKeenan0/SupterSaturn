@@ -117,9 +117,13 @@ public class MouseSelection : MonoBehaviour
 				foreach (Selectable selectable in selectables)
 				{
 					//If the screenPosition of the worldobject is within our selection bounds, we can add it to our selection
-					Vector3 screenPos = Camera.main.WorldToScreenPoint(selectable.transform.position);
-					screenPos.z = 0;
-					UpdateSelection(selectable, (b.Contains(screenPos)));
+					Spacecraft sp = selectable.gameObject.GetComponent<Spacecraft>();
+					if ((sp == null) || ((sp.GetAgent() != null) && (sp.GetAgent().teamID == 0)))
+					{
+						Vector3 screenPos = Camera.main.WorldToScreenPoint(selectable.transform.position);
+						screenPos.z = 0;
+						UpdateSelection(selectable, (b.Contains(screenPos)));
+					}
 				}
 			}
 		}

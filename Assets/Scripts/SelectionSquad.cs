@@ -5,7 +5,6 @@ using UnityEngine;
 public class SelectionSquad : MonoBehaviour
 {
 	private List<Spacecraft> spacecraftList;
-	private Vector3 destinationVector = Vector3.zero;
 	private Vector3 centerPoint = Vector3.zero;
 
 	public Vector3 GetCenterPoint() { return centerPoint; }
@@ -39,6 +38,7 @@ public class SelectionSquad : MonoBehaviour
 			}
 			centerPosition = combinedPositions / Mathf.Round(countedSpacecrafts);
 		}
+
 		return centerPosition;
 	}
 
@@ -51,9 +51,8 @@ public class SelectionSquad : MonoBehaviour
 		centerPoint = DeriveCenterPoint();
 	}
 
-	public void SetDestination(Vector3 destination)
+	public void BeginCommandMove()
 	{
-		destinationVector = destination;
 		int numSelected = spacecraftList.Count;
 		if (numSelected > 0)
 		{
@@ -61,8 +60,6 @@ public class SelectionSquad : MonoBehaviour
 			{
 				if (spacecraftList[i] != null)
 				{
-					Vector3 spPosition = spacecraftList[i].transform.position;
-					Vector3 centerOffset = spPosition - centerPoint;
 					if (spacecraftList[i].GetAgent().teamID == 0)
 						spacecraftList[i].GetAgent().EnableMoveCommand(true);
 				}

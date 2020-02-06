@@ -25,4 +25,18 @@ public class SkillPanel : MonoBehaviour
 		foreach (Spacecraft sp in spacecraftList)
 			sp.GetAgent().EnableMoveCommand(false);
 	}
+
+	public void SetAggressionStance(bool bHostile)
+	{
+
+	}
+
+	public void Regroup()
+	{
+		foreach (Spacecraft sp in spacecraftList)
+		{
+			if ((sp.GetAgent() != null) && (sp.GetAgent().teamID == 0))
+				sp.GetAgent().Regroup();
+		}
+	}
 }

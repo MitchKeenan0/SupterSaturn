@@ -11,6 +11,7 @@ public class LineMeasureHUD : MonoBehaviour
 	private Camera cameraMain;
 	private List<GameObject> markList;
 	private IEnumerator loadWaitCoroutine;
+	private Transform originalParent = null;
 	private bool bLoaded = false;
 	private bool bCleared = true;
 
@@ -38,10 +39,12 @@ public class LineMeasureHUD : MonoBehaviour
 	void AquireLine()
 	{
 		line = GetComponent<LineRenderer>();
-		if (!line)
+		if (!line && (transform.parent != null))
 			line = transform.parent.GetComponentInChildren<LineRenderer>();
 		if (line != null)
 		{
+			if (line.transform.parent != null)
+				originalParent = line.transform.parent;
 			line.enabled = false;
 			if (markList.Count < marks)
 			{
@@ -61,6 +64,9 @@ public class LineMeasureHUD : MonoBehaviour
 		{
 			if (line.gameObject.activeInHierarchy && line.enabled)
 			{
+				if (line.transform.parent != null)
+					line.transform.SetParent(null);
+
 				Vector3 originPos = line.transform.position;
 				Vector3 lineVector = (line.GetPosition(1) - line.GetPosition(0));
 
@@ -69,11 +75,15 @@ public class LineMeasureHUD : MonoBehaviour
 					if ((markList != null) && (markList.Count > 0) && (markList[i] != null))
 					{
 						GameObject markObj = markList[i];
-						Vector3 measureIndexVector = originPos + ((lineVector / marks) * i);
-						Vector3 screenPosition = cameraMain.WorldToScreenPoint(measureIndexVector) + (cameraMain.transform.forward * 10);
+						Vector3 indexVector = markList[i].transform.position;
+						if (transform.parent != null)
+							indexVector = originPos + ((lineVector / marks) * i);
+
+						Vector3 screenPosition = cameraMain.WorldToScreenPoint(indexVector) 
+							+ (cameraMain.transform.forward * 10);
 						markObj.transform.position = screenPosition;
 
-						markObj.transform.localScale = Vector3.one * (10f / Vector3.Distance(measureIndexVector, cameraMain.transform.position));
+						markObj.transform.localScale = Vector3.one * (10f / Vector3.Distance(indexVector, cameraMain.transform.position));
 
 						LineMeasurement lm = markObj.GetComponent<LineMeasurement>();
 						if (lm != null)
@@ -96,6 +106,13 @@ public class LineMeasureHUD : MonoBehaviour
 		}
 	}
 
+	public void SetPosition(Vector3 value)
+	{
+		if (!line)
+			AquireLine();
+		line.transform.position = value;
+	}
+
 	public void ClearMarks()
 	{
 		int numMarks = markList.Count;
@@ -108,11 +125,21 @@ public class LineMeasureHUD : MonoBehaviour
 			}
 		}
 
+		if (line.transform.parent == null)
+		{
+			line.transform.position = Vector3.zero;
+			line.transform.SetParent(originalParent);
+			line.transform.localPosition = Vector3.zero;
+		}
+
 		bCleared = true;
 	}
 
 	GameObject CreateMark()
 	{
+		if (!line)
+			AquireLine();
+		
 		GameObject product = Instantiate(measurementPanelPrefab, transform);
 		markList.Add(product);
 		product.SetActive(false);

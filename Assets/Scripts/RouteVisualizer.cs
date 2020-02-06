@@ -44,6 +44,10 @@ public class RouteVisualizer : MonoBehaviour
 			line.SetPosition(1, lineEnd);
 			line.gameObject.SetActive(true);
 			line.enabled = true;
+
+			LineMeasureHUD lineMeasure = transform.parent.GetComponentInChildren<LineMeasureHUD>();
+			if (lineMeasure != null)
+				lineMeasure.SetPosition(transform.parent.position);
 		}
 	}
 

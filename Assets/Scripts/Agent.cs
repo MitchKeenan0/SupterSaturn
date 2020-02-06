@@ -15,6 +15,7 @@ public class Agent : MonoBehaviour
 	private ObjectManager objectManager;
 	private RaycastManager raycastManager;
 	private TeamFleetHUD teamFleetHUD;
+	private SelectionSquad selectedSquad;
 	private Transform targetTransform = null;
 	private Transform followTransform = null;
 	private List<Spacecraft> spacecraftList;
@@ -37,11 +38,7 @@ public class Agent : MonoBehaviour
 		objectManager = FindObjectOfType<ObjectManager>();
 		raycastManager = FindObjectOfType<RaycastManager>();
 		teamFleetHUD = FindObjectOfType<TeamFleetHUD>();
-	}
-
-	void Start()
-	{
-		
+		selectedSquad = FindObjectOfType<SelectionSquad>();
 	}
 
 	void Update()
@@ -170,15 +167,25 @@ public class Agent : MonoBehaviour
 		autopilot.EnableMoveCommand(value);
 	}
 
-	public void SetMoveOrder(Vector3 position, Transform follow)
+	public void SetMoveOrder(Vector3 position, bool squadOffset, Transform follow)
 	{
+		if (!autopilot && (this != null))
+			autopilot = GetComponent<Autopilot>();
 		if (autopilot != null)
-			autopilot.SetMoveCommand(position);
-		followTransform = follow;
-		if (follow != null)
 		{
+			autopilot.SetMoveCommand(position, squadOffset);
 			autopilot.SetFollowTransform(followTransform);
 		}
+		followTransform = follow;
+	}
+
+	public void Regroup()
+	{
+		if (!selectedSquad)
+			selectedSquad = GetComponent<SelectionSquad>();
+		Vector3 centerPoint = selectedSquad.GetCenterPoint();
+		SetMoveOrder(centerPoint, false, null);
+		EnableMoveCommand(true);
 	}
 
 	public string GetHeadline()

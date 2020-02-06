@@ -200,7 +200,7 @@ public class MouseCommandHUD : MonoBehaviour
 		{
 			if (sp.GetAgent().teamID == 0)
 			{
-				sp.GetAgent().SetMoveOrder(position, null);
+				sp.GetAgent().SetMoveOrder(position, true, null);
 			}
 		}
 	}
@@ -209,17 +209,17 @@ public class MouseCommandHUD : MonoBehaviour
 	{
 		if (selectedSquad != null)
 		{
-			selectedSquad.SetDestination(position);
+			selectedSquad.BeginCommandMove();
 		}
 	}
 
 	void SetFollowOrder(Transform value)
 	{
-		selectedSpacecraftList = mouseSelection.GetSelectedSpacecraft();
-		foreach (Spacecraft sp in selectedSpacecraftList)
-		{
-			sp.GetAgent().SetMoveOrder(value.position, value);
-		}
+		//selectedSpacecraftList = mouseSelection.GetSelectedSpacecraft();
+		//foreach (Spacecraft sp in selectedSpacecraftList)
+		//{
+		//	sp.GetAgent().SetMoveOrder(value.position, value);
+		//}
 	}
 
 	public void SetEnabled(bool value)

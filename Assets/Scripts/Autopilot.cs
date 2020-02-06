@@ -26,6 +26,7 @@ public class Autopilot : MonoBehaviour
 	private Vector3 maneuverVector = Vector3.zero;
 	private Vector3 previousRouteVector = Vector3.zero;
 	private bool bExecutingMoveCommand = false;
+	private float timeAtLastMoveCommand = 0;
 	private List<Vector3> routeVectors;
 
 	void Start()
@@ -46,25 +47,25 @@ public class Autopilot : MonoBehaviour
 
 	public void SpacecraftNavigationCommands()
 	{
-		if (bExecutingMoveCommand && (routeVectors.Count > 0))
+		if (bExecutingMoveCommand)
 		{
 			Vector3 currentRouteVector = routeVectors.ElementAt(0);
 			FlyTo(currentRouteVector);
 
-			if ((routeVectors.Count >= 1)
-				&& (Vector3.Distance(transform.position, currentRouteVector) < 1f))
+			float distance = Vector3.Distance(transform.position, currentRouteVector);
+			if ((distance < 0.5f) && ((Time.time - timeAtLastMoveCommand) > 1f))
 			{
 				holdPosition = currentRouteVector;
 				routeVectors.Remove(currentRouteVector);
 				routeVisualizer.ClearLine(0);
+
+				if (routeVectors.Count == 0)
+					EnableMoveCommand(false);
 			}
 		}
-		else if (holdPosition != Vector3.zero)
+		else
 		{
-			if (Vector3.Distance(transform.position, holdPosition) > 0.1f)
-			{
-				FlyTo(holdPosition);
-			}
+			FlyTo(holdPosition);
 		}
 	}
 
@@ -73,27 +74,35 @@ public class Autopilot : MonoBehaviour
 		targetTransform = value;
 	}
 
-	public void SetMoveCommand(Vector3 value)
+	public void SetMoveCommand(Vector3 value, bool squadOffset)
 	{
 		commandMoveVector = value;
-		if (Vector3.Distance(commandMoveVector, transform.position) >= 1f)
-		{
-			GenerateRoute();
-		}
+		if (Vector3.Distance(commandMoveVector, transform.position) > 0.1f)
+			GenerateRoute(squadOffset);
 	}
 
 	public void EnableMoveCommand(bool value)
 	{
 		bExecutingMoveCommand = value;
+		if (!routeVisualizer)
+			routeVisualizer = GetComponentInChildren<RouteVisualizer>();
+		if (routeVisualizer != null)
+		{
+			LineMeasureHUD lineMeasure = routeVisualizer.gameObject.GetComponentInChildren<LineMeasureHUD>();
+			if (bExecutingMoveCommand)
+			{
+				routeVisualizer.SetRouteColor(Color.green);
+			}
+			else if (spacecraft != null)
+			{
+				routeVisualizer.ClearLine(-1);
+				holdPosition = spacecraft.transform.position;
+			}
+		}
 		if (bExecutingMoveCommand)
-		{
-			routeVisualizer.SetRouteColor(Color.green);
-		}
-		else if (spacecraft != null)
-		{
-			routeVisualizer.ClearLine(-1);
-			holdPosition = spacecraft.transform.position;
-		}
+			timeAtLastMoveCommand = Time.time;
+		else
+			ClearRoute();
 	}
 
 	public void SetFollowTransform(Transform value)
@@ -101,22 +110,22 @@ public class Autopilot : MonoBehaviour
 		followTransform = value;
 	}
 
-	void GenerateRoute()
+	void GenerateRoute(bool squadOffset)
 	{
 		ClearRoute();
+		if (!routeVisualizer)
+			routeVisualizer = GetComponentInChildren<RouteVisualizer>();
 		for (int i = 0; i < routeVectorPoints; i++)
 		{
-			Vector3 routeStep = GenerateRouteVector();
+			Vector3 routeStep = GenerateRouteVector(squadOffset);
 			routeVectors.Add(routeStep);
-
 			if ((spacecraft.GetMarks() > 0) || (spacecraft.GetAgent().teamID == 0))
 				routeVisualizer.SetLine(i, transform.position, routeStep);
-
 			previousRouteVector = routeStep;
 		}
 	}
 
-	Vector3 GenerateRouteVector()
+	Vector3 GenerateRouteVector(bool squadOffset)
 	{
 		Vector3 velocity = previousRouteVector;
 
@@ -125,7 +134,7 @@ public class Autopilot : MonoBehaviour
 			velocity += (commandMoveVector - transform.position) / routeVectorPoints;
 
 		// squad position
-		if (selectionSquad != null)
+		if (squadOffset && (selectionSquad != null))
 			velocity += selectionSquad.GetOffsetOf(spacecraft) / routeVectorPoints;
 
 		// gravity negotiation
@@ -168,14 +177,6 @@ public class Autopilot : MonoBehaviour
 			driveVector = Vector3.ClampMagnitude(rb.velocity * -1, 1);
 			spacecraft.ManeuverEngines(driveVector);
 		}
-
-		//Vector3 velocityNormal = rb.velocity.normalized;
-		//Vector3 destinationNormal = toDestination.normalized;
-		//if (Vector3.Dot(destinationNormal, velocityNormal) < 0.16f)
-		//{
-		//	Vector3 driveVector = Vector3.ClampMagnitude(rb.velocity * -1, 1);
-		//	spacecraft.ManeuverEngines(driveVector);
-		//}
 
 		// thrust
 		float distanceToDestination = toDestination.magnitude;
