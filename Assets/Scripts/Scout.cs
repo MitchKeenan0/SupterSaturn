@@ -30,8 +30,6 @@ public class Scout : MonoBehaviour
 		locationManager = FindObjectOfType<LocationManager>();
 		fleetController = GetComponent<FleetController>();
 		locationDisplay = FindObjectOfType<LocationDisplay>();
-		lineRenderer = GetComponent<LineRenderer>();
-		lineRenderer.enabled = false;
 		cameraMain = Camera.main;
 	}
 
@@ -40,6 +38,8 @@ public class Scout : MonoBehaviour
 		scoutPanel.SetActive(false);
 		scoutObject.SetActive(false);
 		objectPanel.SetActive(false);
+		lineRenderer = fleetController.scoutingLine;
+		lineRenderer.enabled = false;
 	}
 
 	public void Standby(CampaignLocation origin, CampaignLocation location)

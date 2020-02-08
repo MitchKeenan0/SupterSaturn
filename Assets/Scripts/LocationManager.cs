@@ -6,6 +6,7 @@ using UnityEngine;
 public class LocationManager : MonoBehaviour
 {
 	public float spread = 30f;
+	public float verticalScale = 0.618f;
 	public float minDistanceBetweenLocations = 5f;
 	public int locationCount = 12;
 	public GameObject[] commonLocations;
@@ -58,7 +59,7 @@ public class LocationManager : MonoBehaviour
 		while (messy)
 		{
 			pos = Random.insideUnitSphere * spread * 3;
-			pos.y *= 0.1f;
+			pos.y *= verticalScale;
 			int numLocations = allLocations.Count;
 			bool hitAny = false;
 			for (int i = 0; locationCount < numLocations; i++)

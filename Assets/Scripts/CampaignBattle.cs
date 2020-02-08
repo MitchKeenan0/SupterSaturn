@@ -51,7 +51,7 @@ public class CampaignBattle : MonoBehaviour
 		game.SaveGame();
 		bOnScreen = false;
 		battlePanel.SetActive(false);
-		SceneManager.LoadSceneAsync("BattleScene");
+		SceneManager.LoadSceneAsync("GameScene");
 	}
 
 	void UpdateScreenPosition()

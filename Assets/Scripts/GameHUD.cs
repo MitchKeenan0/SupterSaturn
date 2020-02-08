@@ -12,15 +12,18 @@ public class GameHUD : MonoBehaviour
 	void Awake()
 	{
 		game = FindObjectOfType<Game>();
+		tutorialPanel.SetActive(false);
 	}
 
 	public void SetTutorialActive(bool value)
 	{
 		tutorialPanel.SetActive(value);
-		if (game == null)
+		if (!game)
 			game = FindObjectOfType<Game>();
 
-		if (game != null)
+		if ((game != null) && (value == false))
+		{
 			game.CloseTutorial();
+		}
 	}
 }

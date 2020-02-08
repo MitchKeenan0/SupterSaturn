@@ -14,9 +14,13 @@ public class Gravity : MonoBehaviour
 
 	public List<Rigidbody> GetRBList() { return rbList; }
 
+	void Awake()
+	{
+		rbList = new List<Rigidbody>();
+	}
+
     void Start()
     {
-		rbList = new List<Rigidbody>();
 		telemetry = FindObjectOfType<GravityTelemetryHUD>();
 		surroundingCheckCoroutine = SurroundingCheck(updateInterval);
 		StartCoroutine(surroundingCheckCoroutine);
@@ -24,7 +28,8 @@ public class Gravity : MonoBehaviour
 
     void FixedUpdate()
     {
-		if (rbList.Count > 0){
+		if (rbList.Count > 0)
+		{
 			foreach (Rigidbody r in rbList)
 			{
 				if ((r != null) && (!r.isKinematic))
@@ -61,20 +66,13 @@ public class Gravity : MonoBehaviour
 
 			Collider[] nears = Physics.OverlapSphere(transform.position, radius);
 			int numNears = nears.Length;
-			int numListed = rbList.Count;
 			for (int i = 0; i < numNears; i++){
 				if (nears[i] != null){
 					Rigidbody r = nears[i].GetComponent<Rigidbody>();
-					if (r != null){
-						if (rbList.Contains(r))
-						{
-							continue;
-						}
-						else
-						{
+					if (r != null)
+					{
+						if (!rbList.Contains(r))
 							rbList.Add(r);
-							numListed++;
-						}
 					}
 				}
 			}
@@ -86,7 +84,7 @@ public class Gravity : MonoBehaviour
 				Vector3 myPos = transform.position;
 				for(int i = 0; i < numRbs; i++)
 				{
-					if ((i < rbList.Count) && (rbList[i] != null))
+					if (rbList[i] != null)
 					{
 						float distance = Vector3.Distance(rbList[i].transform.position, myPos);
 						if (distance >= radius)

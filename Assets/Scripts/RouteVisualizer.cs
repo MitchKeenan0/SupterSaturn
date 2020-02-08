@@ -91,8 +91,11 @@ public class RouteVisualizer : MonoBehaviour
 				if (lineRenderList[i] != null)
 				{
 					LineRenderer line = lineRenderList[i];
-					line.startColor = value;
-					line.endColor = value;
+					Color newColor = value;
+					float a = line.startColor.a;
+					newColor.a = a;
+					line.startColor = newColor;
+					line.endColor = newColor;
 				}
 			}
 		}

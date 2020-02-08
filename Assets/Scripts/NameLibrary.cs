@@ -28,6 +28,26 @@ public class NameLibrary : MonoBehaviour
 		DontDestroyOnLoad(gameObject);
 	}
 
+	string GetSerializedName()
+	{
+		string alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		string result = "";
+		int numLetters = Random.Range(1, 3);
+		for(int i = 0; i < numLetters; i++)
+		{
+			char c = alphabet[Random.Range(0, alphabet.Length - 1)];
+			result += c;
+		}
+		result += "-";
+		int numNumbers = Random.Range(1, 3);
+		for(int i = 0; i < numNumbers; i++)
+		{
+			string numString = Random.Range(0, 99).ToString();
+			result += numString;
+		}
+		return result;
+	}
+
 	public string GetLocationName(int rarity)
 	{
 		string[] nameArray = new string[0];
@@ -52,8 +72,10 @@ public class NameLibrary : MonoBehaviour
 
 		bool foundName = false;
 		string result = "";
-		while (!foundName)
+		int safeTries = nameArray.Length * nameArray.Length;
+		while (!foundName && (safeTries > 0))
 		{
+			safeTries--;
 			int randomIndex = Random.Range(0, nameArray.Length);
 			if (!usedList.Contains(randomIndex))
 			{
@@ -75,6 +97,9 @@ public class NameLibrary : MonoBehaviour
 				foundName = true;
 			}
 		}
+
+		if (!foundName)
+			result = GetSerializedName();
 
 		return result;
 	}

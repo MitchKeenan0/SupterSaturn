@@ -80,8 +80,8 @@ public class FleetPanelSlot : MonoBehaviour, IDeselectHandler
 
 	public void SetSlot(Card card, int index, bool newCard)
 	{
-		game.SetSelectedCard(index, null);
-		game.SetSpacecraft(index, null);
+		//game.SetSelectedCard(index, null);
+		//game.SetSpacecraft(index, null);
 		//game.SetSavedHealth(index, -1);
 
 		slotCard = card;

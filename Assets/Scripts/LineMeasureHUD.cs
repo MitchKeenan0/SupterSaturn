@@ -75,28 +75,35 @@ public class LineMeasureHUD : MonoBehaviour
 					if ((markList != null) && (markList.Count > 0) && (markList[i] != null))
 					{
 						GameObject markObj = markList[i];
-						Vector3 indexVector = markList[i].transform.position;
+						Vector3 markPosition = markList[i].transform.position;
+						Vector3 markVector = ((lineVector / marks) * (i + 1));
 						if (transform.parent != null)
-							indexVector = originPos + ((lineVector / marks) * (i + 1));
-
-						float distFromOrigin = ((lineVector / marks) * (i + 1)).magnitude;
+							markPosition = originPos + markVector;
 
 						LineMeasurement lm = markObj.GetComponent<LineMeasurement>();
 						if (lm != null)
 						{
+							float distFromOrigin = markVector.magnitude;
 							lm.SetDistance(distFromOrigin);
+
+							Vector3 markToCameraNormal = (markPosition - cameraMain.transform.position).normalized;
+							if (Vector3.Dot(cameraMain.transform.forward, markToCameraNormal) > 0.1f)
+							{
+								Vector3 screenPosition = cameraMain.WorldToScreenPoint(markPosition) + (cameraMain.transform.forward * 10);
+								markObj.transform.position = screenPosition;
+
+								float scaleFactor = (0.1f / Vector3.Distance(markPosition, cameraMain.transform.position));
+								scaleFactor = Mathf.Clamp(scaleFactor, 1f, 0.001f);
+								markObj.transform.localScale = Vector3.one * scaleFactor;
+
+								if (!markObj.activeInHierarchy)
+									markObj.SetActive(true);
+							}
+							else if (markObj.activeInHierarchy)
+							{
+								markObj.SetActive(false);
+							}
 						}
-
-						Vector3 screenPosition = cameraMain.WorldToScreenPoint(indexVector)
-							+ (cameraMain.transform.forward * 10);
-						markObj.transform.position = screenPosition;
-
-						float scaleFactor = (0.1f / Vector3.Distance(indexVector, cameraMain.transform.position));
-						scaleFactor = Mathf.Clamp(scaleFactor, 1f, 0.001f);
-						markObj.transform.localScale = Vector3.one * scaleFactor;
-
-						if (!markObj.activeInHierarchy)
-							markObj.SetActive(true);
 					}
 				}
 

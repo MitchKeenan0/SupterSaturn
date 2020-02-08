@@ -51,11 +51,7 @@ public class GravityTelemetryHUD : MonoBehaviour
 				if (sp != null)
 				{
 					if (!line.gameObject.activeInHierarchy)
-					{
 						line.gameObject.SetActive(true);
-						if (lineList[i].gameObject.GetComponent<ConstantSizer>())
-							lineList[i].gameObject.GetComponent<ConstantSizer>().StartUpdate();
-					}
 					line.SetPosition(0, sp.transform.position);
 					line.SetPosition(1, gravity.transform.position);
 				}
@@ -69,11 +65,7 @@ public class GravityTelemetryHUD : MonoBehaviour
 			{
 				LineRenderer line = lineList[i];
 				if (!usedLines.Contains(line))
-				{
-					if (line.gameObject.GetComponent<ConstantSizer>())
-						line.gameObject.GetComponent<ConstantSizer>().StopUpdate();
 					line.gameObject.SetActive(false);
-				}
 			}
 		}
 	}
@@ -101,11 +93,7 @@ public class GravityTelemetryHUD : MonoBehaviour
 	void ClearLines()
 	{
 		for (int i = 0; i < lineList.Count; i++)
-		{
-			if (lineList[i].gameObject.GetComponent<ConstantSizer>())
-				lineList[i].gameObject.GetComponent<ConstantSizer>().StopUpdate();
 			lineList[i].gameObject.SetActive(false);
-		}
 	}
 
 	LineRenderer CreateTelemetryLine()

@@ -23,6 +23,7 @@ public class Agent : MonoBehaviour
 	private List<Prediction> predictionList;
 	private bool bEnabled = false;
 	private bool bPredictingTarget = false;
+	private bool bAttackPredictions = false;
 	private IEnumerator targetDestroyedRestCoroutine;
 
     void Awake()
@@ -43,10 +44,13 @@ public class Agent : MonoBehaviour
 
 	void Update()
     {
-		if (scanner != null)
-			UpdateTarget();
-		if (autopilot != null)
-			autopilot.SpacecraftNavigationCommands();
+		if (isActiveAndEnabled)
+		{
+			if (scanner != null)
+				UpdateTarget();
+			if (autopilot != null)
+				autopilot.SpacecraftNavigationCommands();
+		}
 	}
 
 	void UpdateTarget()
@@ -56,9 +60,9 @@ public class Agent : MonoBehaviour
 			if (targetTransform != null)
 			{
 				Spacecraft targetSpacecraft = targetTransform.GetComponent<Spacecraft>();
-				bool validSpacecraft = (targetSpacecraft != null) && (targetSpacecraft.GetMarks() > 0);
-				bool validPrediction = (bPredictingTarget && (targetTransform.position != Vector3.zero));
-
+				bool validSpacecraft = (targetSpacecraft != null) && (targetSpacecraft.IsAlive()) && (targetSpacecraft.GetMarks() > 0);
+				bool validPrediction = bAttackPredictions && (bPredictingTarget && (targetTransform.position != Vector3.zero));
+				
 				if (validSpacecraft || validPrediction)
 				{
 					if (LineOfSight(targetTransform.position, targetTransform) || !validSpacecraft)
@@ -100,7 +104,7 @@ public class Agent : MonoBehaviour
 			}
 		}
 
-		if (targetTransform == null)
+		if ((targetTransform == null) && bAttackPredictions)
 		{
 			predictionList = predictionHud.GetPredictions();
 			if (predictionList != null)
@@ -228,8 +232,7 @@ public class Agent : MonoBehaviour
 
 	public void SetEnabled(bool value)
 	{
-		bEnabled = true;
-		spacecraft.SetRenderComponents(value);
+		bEnabled = value;
 	}
 
 	public void AgentSpacecraftDestroyed()
@@ -237,5 +240,6 @@ public class Agent : MonoBehaviour
 		predictionHud.SetPrediction(spacecraft, Vector3.zero, Vector3.zero, 0f);
 		teamFleetHUD.SpacecraftDestroyed(spacecraft);
 		objectManager.SpacecraftDestroyed(spacecraft);
+		this.enabled = false;
 	}
 }

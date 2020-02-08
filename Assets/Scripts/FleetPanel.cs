@@ -28,7 +28,7 @@ public class FleetPanel : MonoBehaviour
 	{
 		fleet = f;
 
-		Identity identity = fleet.gameObject.GetComponent<Identity>();
+		Identity identity = fleet.gameObject.GetComponentInChildren<Identity>();
 		if (identity != null)
 		{
 			fleetNameText.text = identity.identityName;

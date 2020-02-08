@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponSpeed: 3000
-  weaponAccuracy: 1
+  weaponAccuracy: 10
   munitionPrefab: {fileID: 298334711150030353, guid: 207a3b16d330e8e4db11ab61331570d3,
     type: 3}
   armingParticles: {fileID: 8015741792548370538}
@@ -185,7 +185,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 5
   m_Drag: 0.5
-  m_AngularDrag: 0.15
+  m_AngularDrag: 0.5
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 1
@@ -202,7 +202,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.04, y: 0.005, z: 0.06}
+  m_Size: {x: 0.06, y: 0.02, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0.01}
 --- !u!135 &7440623813905814346
 SphereCollider:

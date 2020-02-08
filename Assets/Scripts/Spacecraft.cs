@@ -27,7 +27,7 @@ public class Spacecraft : MonoBehaviour
 	private Vector3 mainEnginesVector = Vector3.zero;
 	private Vector3 maneuverEnginesVector = Vector3.zero;
 	private Vector3 turningVector = Vector3.zero;
-	private Quaternion turningRotation = Quaternion.identity;
+	private Vector3 lerpTorque = Vector3.zero;
 	private GameObject hudIcon;
 	private GameObject gridObject;
 	private MeshRenderer[] meshRenderComponents;
@@ -70,8 +70,6 @@ public class Spacecraft : MonoBehaviour
 		battleOutcome = FindObjectOfType<BattleOutcome>();
 
 		SetAgentEnabled(bAgentStartsEnabled);
-		turningVector = transform.position + transform.forward;
-		turningRotation = transform.rotation;
 		if (agent != null && (agent.teamID != 0))
 			SetRenderComponents(false);
 	}
@@ -86,12 +84,21 @@ public class Spacecraft : MonoBehaviour
 	{
 		if (IsAlive())
 		{
-			if ((turningRotation.normalized != Quaternion.identity)
-				&& (turningRotation.normalized != null))
+			if (turningVector != Vector3.zero)
 			{
-				Quaternion lerpRotation = Quaternion.Lerp(transform.rotation, turningRotation, Time.fixedDeltaTime * turningPower * 100f);
-				rb.MoveRotation(lerpRotation);
-				transform.rotation = rb.rotation;
+				Vector3 torqueVector = Vector3.zero;
+
+				float yaw = Vector3.Dot(transform.right, turningVector);
+				torqueVector += (transform.up * yaw * Mathf.Sqrt(Mathf.Abs(yaw))) * Time.fixedDeltaTime;
+
+				float pitch = -Vector3.Dot(transform.up, turningVector);
+				torqueVector += (transform.right * pitch * Mathf.Sqrt(Mathf.Abs(pitch))) * Time.fixedDeltaTime;
+
+				float roll = -transform.rotation.z;
+				torqueVector += (transform.forward * roll * Mathf.Sqrt(Mathf.Abs(roll))) * Time.fixedDeltaTime;
+
+				rb.AddTorque(torqueVector * turningPower * 0.1f);
+				//transform.rotation = rb.rotation;
 			}
 
 			Vector3 rbForceVector = Vector3.zero;
@@ -138,13 +145,7 @@ public class Spacecraft : MonoBehaviour
 
 	public void Maneuver(Vector3 targetPoint)
 	{
-		turningVector = (targetPoint - transform.position);
-		if (turningVector != Vector3.zero)
-		{
-			float shoulderScale = Mathf.Clamp(1f / Vector3.Angle(turningVector.normalized, transform.forward), 3f, 1f);
-			Quaternion toRotation = Quaternion.LookRotation(turningVector, Vector3.up);
-			turningRotation = Quaternion.Lerp(transform.rotation, toRotation, turningPower * Time.deltaTime * shoulderScale);
-		}
+		turningVector = Vector3.Lerp(turningVector, (targetPoint - transform.position).normalized, Time.deltaTime * turningPower);
 	}
 
 	public void SpacecraftKnockedOut(Transform responsibleTransform)
@@ -170,6 +171,13 @@ public class Spacecraft : MonoBehaviour
 			if (killerAgent != null)
 			{
 				killerAgent.NotifyTargetDestroyed(this);
+			}
+
+			if (responsibleTransform.gameObject.GetComponent<Gravity>())
+			{
+				Transform destroyedEffects = Instantiate(destroyedParticlesPrefab, transform.position, transform.rotation);
+				Destroy(destroyedEffects.gameObject, 5f);
+				Destroy(gameObject, 0.22f);
 			}
 		}
 

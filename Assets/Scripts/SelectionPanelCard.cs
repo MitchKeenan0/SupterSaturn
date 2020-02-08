@@ -64,7 +64,7 @@ public class SelectionPanelCard : MonoBehaviour, IPointerEnterHandler, IPointerE
 	void TaskOnClick()
 	{
 		int siblingIndex = transform.GetSiblingIndex();
-		fleetCreator.SelectSpacecraft(siblingIndex);
+		fleetCreator.SelectSpacecraftCard(siblingIndex);
 	}
 
 	string GetRomanNumeral(int value)

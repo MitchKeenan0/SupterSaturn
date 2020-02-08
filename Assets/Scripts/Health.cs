@@ -12,6 +12,7 @@ public class Health : MonoBehaviour
 	private TeamFleetHUD teamFleetHud;
 	private BattleOutcome battleOutcome;
 	private int currentHealth = -1;
+	private bool bAlive = true;
 
     void Awake()
     {
@@ -25,40 +26,43 @@ public class Health : MonoBehaviour
 
 	public void ModifyHealth(int value, Transform responsibleTransform)
 	{
-		int damage = Mathf.Clamp(value, -(maxHealth + 1), maxHealth + 1);
-		currentHealth += damage;
-
-		if (currentHealth <= 0)
+		if (bAlive)
 		{
-			currentHealth = 0;
-			if (responsibleTransform != null)
-				spacecraft.SpacecraftKnockedOut(responsibleTransform);
-		}
-		
-		if (!battleOutcome)
-			battleOutcome = FindObjectOfType<BattleOutcome>();
+			int damage = Mathf.Clamp(value, -(maxHealth + 1), maxHealth + 1);
+			currentHealth += damage;
 
-		if ((battleOutcome != null) && (responsibleTransform != null))
-		{
-			if ((spacecraft.GetAgent() != null) && (spacecraft.GetAgent().teamID == 0))
+			if (!battleOutcome)
+				battleOutcome = FindObjectOfType<BattleOutcome>();
+			if ((battleOutcome != null) && (responsibleTransform != null))
 			{
-				battleOutcome.AddLost(damage);
+				if ((spacecraft.GetAgent() != null) && (spacecraft.GetAgent().teamID == 0))
+				{
+					battleOutcome.AddLost(damage);
+				}
+				else if ((spacecraft.GetAgent() != null) && (spacecraft.GetAgent().teamID == 1))
+				{
+					battleOutcome.AddScore(damage);
+				}
 			}
-			else if ((spacecraft.GetAgent() != null) && (spacecraft.GetAgent().teamID == 1))
+
+			if (currentHealth <= 0)
 			{
-				battleOutcome.AddScore(damage);
+				currentHealth = 0;
+				if (responsibleTransform != null)
+					spacecraft.SpacecraftKnockedOut(responsibleTransform);
+				bAlive = false;
 			}
+
+			if (!craftIconHud)
+				craftIconHud = FindObjectOfType<CraftIconHUD>();
+			if (craftIconHud != null)
+				craftIconHud.UpdateSpacecraftHealth(spacecraft);
+
+			if (!teamFleetHud)
+				teamFleetHud = FindObjectOfType<TeamFleetHUD>();
+			if (teamFleetHud != null)
+				teamFleetHud.SetHealthBarValue(spacecraft);
 		}
-
-		if (!craftIconHud)
-			craftIconHud = FindObjectOfType<CraftIconHUD>();
-		if (craftIconHud != null)
-			craftIconHud.UpdateSpacecraftHealth(spacecraft);
-
-		if (!teamFleetHud)
-			teamFleetHud = FindObjectOfType<TeamFleetHUD>();
-		if (teamFleetHud != null)
-			teamFleetHud.SetHealthBarValue(spacecraft);
 	}
 
 	public int GetHealth() { return currentHealth; }

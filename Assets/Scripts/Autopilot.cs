@@ -57,7 +57,8 @@ public class Autopilot : MonoBehaviour
 			{
 				holdPosition = currentRouteVector;
 				routeVectors.Remove(currentRouteVector);
-				routeVisualizer.ClearLine(0);
+				if (routeVisualizer != null)
+					routeVisualizer.ClearLine(0);
 
 				if (routeVectors.Count == 0)
 					EnableMoveCommand(false);
@@ -119,7 +120,8 @@ public class Autopilot : MonoBehaviour
 		{
 			Vector3 routeStep = GenerateRouteVector(squadOffset);
 			routeVectors.Add(routeStep);
-			if ((spacecraft.GetMarks() > 0) || (spacecraft.GetAgent().teamID == 0))
+			if (((spacecraft.GetMarks() > 0) || (spacecraft.GetAgent().teamID == 0))
+				&& (routeVisualizer != null))
 				routeVisualizer.SetLine(i, transform.position, routeStep);
 			previousRouteVector = routeStep;
 		}
@@ -156,7 +158,7 @@ public class Autopilot : MonoBehaviour
 		Vector3 toDestination = (destination - rb.velocity) - transform.position;
 
 		// steering
-		if (toDestination.magnitude > 0.05f)
+		if (toDestination.magnitude >= 0.5f)
 		{
 			Vector3 maneuverVector = destination - rb.velocity;
 			spacecraft.Maneuver(maneuverVector);
@@ -263,8 +265,11 @@ public class Autopilot : MonoBehaviour
 	void ClearRoute()
 	{
 		routeVectors.Clear();
-		routeVisualizer.ClearLine(-1);
-		routeVisualizer.SetRouteColor(Color.grey);
+		if (routeVisualizer != null)
+		{
+			routeVisualizer.ClearLine(-1);
+			routeVisualizer.SetRouteColor(Color.grey);
+		}
 		previousRouteVector = transform.position;
 	}
 }

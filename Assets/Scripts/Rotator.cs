@@ -34,7 +34,7 @@ public class Rotator : MonoBehaviour
 		}
 
 		if (bRandomSpeed)
-			speedMultiplier = Random.Range(speedMultiplier * 0.1f, speedMultiplier);
+			speedMultiplier = Random.Range(speedMultiplier * 0.3f, speedMultiplier);
 	}
 
 	void Update()

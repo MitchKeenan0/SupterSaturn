@@ -161,7 +161,7 @@ public class FleetCreator : MonoBehaviour
 		}
 		chevronBalanceText.text = total.ToString();
 
-		if (total <= game.GetChevrons())
+		if ((total <= game.GetChevrons()) && (total > 0))
 		{
 			startGameButton.interactable = true;
 			chevronBalanceText.color = moneyColor;
@@ -182,6 +182,7 @@ public class FleetCreator : MonoBehaviour
 	{
 		yield return new WaitForSeconds(waitTime);
 		selectedPanelSlot = null;
+		selectedPanelCard = null;
 		emptyButton.interactable = false;
 	}
 
@@ -191,7 +192,7 @@ public class FleetCreator : MonoBehaviour
 		selectedPanelSlot = panelSlots[buttonIndex];
 		if ((selectedPanelCard != null) && (selectedPanelSlot.GetCard() == null))
 		{
-			SelectSpacecraft(buttonIndex);
+			SelectSpacecraftCard(buttonIndex);
 			emptyButton.interactable = true;
 		}
 		else if (selectedPanelSlot.GetCard() != null)
@@ -208,6 +209,7 @@ public class FleetCreator : MonoBehaviour
 	{
 		deselectGraceCoroutine = DeselectAfterTime(0.2f);
 		StartCoroutine(deselectGraceCoroutine);
+		selectedPanelCard = null;
 	}
 
 	public void DemoSlotSprite(Sprite demoSprite, int index)
@@ -226,7 +228,7 @@ public class FleetCreator : MonoBehaviour
 		}
 	}
 
-	public void SelectSpacecraft(int buttonIndex)
+	public void SelectSpacecraftCard(int buttonIndex)
 	{
 		spacecraftViewer.DisplaySpacecraft(buttonIndex);
 
@@ -238,7 +240,6 @@ public class FleetCreator : MonoBehaviour
 			{
 				selectedPanelSlot = panelSlots[offerSlotIndex];
 				selectedPanelSlot.GetComponent<Button>().Select();
-				Debug.Log("Opening slot " + offerSlotIndex);
 			}
 		}
 		else if (selectedPanelSlot != null)
@@ -262,30 +263,27 @@ public class FleetCreator : MonoBehaviour
 		{
 			int slotIndex = selectedPanelSlot.transform.GetSiblingIndex();
 			selectedPanelSlot.SetSlot(null, slotIndex, false);
-			UpdateChevronBalance();
-			selectedPanelSlot = null;
-			game.SaveGame();
-			///InitFleetPanel();
 		}
+		UpdateChevronBalance();
+		selectedPanelSlot = null;
+		game.SaveGame();
 	}
 
 	public void EmptyAll()
 	{
-		int numSlots = game.GetSelectedCards().Count;
+		int numSlots = panelSlots.Count;
 		for (int i = 0; i < numSlots; i++)
 		{
 			FleetPanelSlot ps = panelSlots[i];
 			if (ps != null)
-			{
-				int slotIndex = ps.transform.GetSiblingIndex();
-				panelSlots[i].SetSlot(null, i,false);
-			}
+				ps.SetSlot(null, i, false);
 		}
+
+		game.GetSelectedCards().Clear();
 
 		selectedPanelSlot = null;
 		UpdateChevronBalance();
 		game.SaveGame();
-		///InitFleetPanel();
 	}
 
 	public void SetName(string value)

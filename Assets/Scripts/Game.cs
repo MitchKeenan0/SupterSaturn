@@ -27,7 +27,7 @@ public class Game : MonoBehaviour
 	private int sceneSetting = 0;
 	private int chevrons = 0;
 	private bool bFleetTutorialClosed = false;
-	private bool bBattleTutorialClosed = false;
+	private bool bGameTutorialClosed = false;
 
 	public List<Card> GetSelectedCards() { return selectedCardList; }
 	public List<Card> GetEnemyCards() { return enemyCardList; }
@@ -91,6 +91,8 @@ public class Game : MonoBehaviour
 		{
 			selectedCardList.Add(card);
 		}
+
+		///Debug.Log("player has " + selectedCardList.Count + " selected cards");
 	}
 
 	public void SetSpacecraft(int index, Spacecraft sp)
@@ -106,6 +108,8 @@ public class Game : MonoBehaviour
 		{
 			spacecraftList.Add(sp);
 		}
+
+		///Debug.Log("player has " + spacecraftList.Count + " spacecraft");
 	}
 
 	public void SetSavedHealth(int index, int value)
@@ -222,40 +226,25 @@ public class Game : MonoBehaviour
 				chevrons = initialChevrons;
 
 			// tutorial
+			bFleetTutorialClosed = save.fleetTutorialClosed;
+			bGameTutorialClosed = save.gameTutorialClosed;
 			gameHud = FindObjectOfType<GameHUD>();
 			if (gameHud != null)
 			{
-				bFleetTutorialClosed = save.fleetTutorialClosed;
-				bBattleTutorialClosed = save.battleTutorialClosed;
-				bool bTut = bFleetTutorialClosed || bBattleTutorialClosed;
-
 				string sceneName = SceneManager.GetActiveScene().name;
 				if (sceneName == "FleetScene")
 				{
 					if (bFleetTutorialClosed)
-					{
 						gameHud.SetTutorialActive(false);
-					}
 					else
-					{
 						gameHud.SetTutorialActive(true);
-					}
 				}
-				else if (sceneName == "BattleScene")
+				else if (sceneName == "GameScene")
 				{
-					gameHud = FindObjectOfType<GameHUD>();
-					if (bBattleTutorialClosed)
-					{
+					if (bGameTutorialClosed)
 						gameHud.SetTutorialActive(false);
-					}
 					else
-					{
 						gameHud.SetTutorialActive(true);
-					}
-				}
-				else
-				{
-					gameHud.SetTutorialActive(false);
 				}
 			}
 
@@ -268,8 +257,8 @@ public class Game : MonoBehaviour
 		string sceneName = SceneManager.GetActiveScene().name;
 		if (sceneName == "FleetScene")
 			bFleetTutorialClosed = true;
-		else if (sceneName == "BattleScene")
-			bBattleTutorialClosed = true;
+		else if (sceneName == "GameScene")
+			bGameTutorialClosed = true;
 		SaveGame();
 	}
 
@@ -381,7 +370,7 @@ public class Game : MonoBehaviour
 
 		// tutorial
 		save.fleetTutorialClosed = bFleetTutorialClosed;
-		save.battleTutorialClosed = bBattleTutorialClosed;
+		save.gameTutorialClosed = bGameTutorialClosed;
 
 		///Debug.Log("Game Saved");
 

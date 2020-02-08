@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 10
-  strength: 0.3
+  strength: 0.01
   updateInterval: 0.1
 --- !u!135 &8303981145886502231
 SphereCollider:

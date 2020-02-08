@@ -14,9 +14,9 @@ public class Star : MonoBehaviour
 		meshRenderer = GetComponentInChildren<MeshRenderer>();
 
 		Color newColor = new Color(
-			Random.Range(0.5f, 1f),
-			Random.Range(0.5f, 1f),
-			Random.Range(0.5f, 1f));
+			Random.Range(0.5f, 1.5f),
+			Random.Range(0.5f, 1.5f),
+			Random.Range(0.5f, 1.5f));
 		meshRenderer.material.color = newColor;
 		meshRenderer.material.SetColor("_EmissionColor", newColor);
 

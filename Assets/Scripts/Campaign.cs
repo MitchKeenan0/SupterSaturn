@@ -43,7 +43,6 @@ public class Campaign : MonoBehaviour
 					float distanceToLocation = Vector3.Distance(cl.transform.position, Vector3.zero);
 					if (distanceToLocation > furthestDistance)
 					{
-						Debug.Log("Candidate!");
 						furthestLocation = cl;
 						furthestDistance = distanceToLocation;
 					}
@@ -51,7 +50,6 @@ public class Campaign : MonoBehaviour
 			}
 			if (furthestLocation != null)
 			{
-				Debug.Log("Meep");
 				fleetList[i].SetLocation(furthestLocation, true);
 				originLocations.Add(furthestLocation);
 			}

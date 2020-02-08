@@ -54,4 +54,4 @@ MonoBehaviour:
   - {fileID: 5883829961090761148, guid: 443a67a179ba94e449e8a27f398aeb84, type: 3}
   initialSpacecraftCards:
   - {fileID: 5883829961090761148, guid: f87ade3d4e2a75641a02aced5dc863f5, type: 3}
-  initialChevrons: 100
+  initialChevrons: 999

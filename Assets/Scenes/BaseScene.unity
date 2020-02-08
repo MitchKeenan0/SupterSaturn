@@ -685,6 +685,26 @@ PrefabInstance:
       propertyPath: moveWithTransform
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1100071255907899036, guid: 5b5f3df4a48bd614b96e2febad8a9349,
+        type: 3}
+      propertyPath: InitialModule.startColor.minMaxState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1100071255907899036, guid: 5b5f3df4a48bd614b96e2febad8a9349,
+        type: 3}
+      propertyPath: InitialModule.startColor.minColor.r
+      value: 0.058072276
+      objectReference: {fileID: 0}
+    - target: {fileID: 1100071255907899036, guid: 5b5f3df4a48bd614b96e2febad8a9349,
+        type: 3}
+      propertyPath: InitialModule.startColor.minColor.g
+      value: 0.14729102
+      objectReference: {fileID: 0}
+    - target: {fileID: 1100071255907899036, guid: 5b5f3df4a48bd614b96e2febad8a9349,
+        type: 3}
+      propertyPath: InitialModule.startColor.minColor.b
+      value: 0.2735849
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b5f3df4a48bd614b96e2febad8a9349, type: 3}
 --- !u!1001 &1334032808

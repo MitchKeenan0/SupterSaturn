@@ -124,7 +124,7 @@ public class GridVisualizer : MonoBehaviour
 
 	void UpdateGrid()
 	{
-		float distToCamera = Vector3.Distance(transform.position, cameraTransform.position) / 1000;
+		float distToCamera = Vector3.Distance(transform.position, cameraTransform.position) / 100;
 		foreach (LineRenderer line in upDownList)
 			line.widthMultiplier = naturalWidth * distToCamera;
 		foreach (LineRenderer line in northSouthList)

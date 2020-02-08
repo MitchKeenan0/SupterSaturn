@@ -220,7 +220,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bAgentStartsEnabled: 1
   mainEnginePower: 1
-  turningPower: 1
+  turningPower: 0.8
   maneuverPower: 1
   spacecraftName: Flux Liner
   thrustParticles: {fileID: 2104020796097920098}
@@ -340,7 +340,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0.3
-  m_AngularDrag: 0.1
+  m_AngularDrag: 0.3
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 1
@@ -357,7 +357,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.02, y: 0.01, z: 0.02}
+  m_Size: {x: 0.03, y: 0.01, z: 0.03}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!135 &8961006568567198332
 SphereCollider:
