@@ -24,6 +24,7 @@ public class MouseCommandHUD : MonoBehaviour
 	private Vector3 lastMousePosition = Vector3.zero;
 	private Vector3 screenCenter = Vector3.zero;
 	private bool bEnabled = true;
+	private bool bActionCommand = false;
 	private float originalRadius = 0f;
 	private float mouseX = 0;
 	private float mouseY = 0;
@@ -56,26 +57,41 @@ public class MouseCommandHUD : MonoBehaviour
 	{
 		if (Input.GetButtonDown("Fire2"))
 		{
-			SetEnabled(true);
-			SetCircleLocation();
-			UpdateCircleRender();
-			moveCommandPosition = circleLineRenderer.transform.position;
+			if (mouseContext.GetSpacecraftInformation() != null)
+			{
+				SpacecraftInformation si = mouseContext.GetSpacecraftInformation();
+				if ((si != null) && (si.GetTeamID() != 0))
+				{
+					SetActionOrder(si.gameObject.transform);
+					bActionCommand = true;
+				}
+			}
+
+			if (!bActionCommand)
+			{
+				SetEnabled(true);
+				SetCircleLocation();
+				UpdateCircleRender();
+				moveCommandPosition = circleLineRenderer.transform.position;
+			}
 		}
 
-		if (Input.GetButton("Fire2"))
+		if (!bActionCommand)
 		{
-			SetCircleLocation();
-			UpdateMouseMovement();
-			VisualizeMoveOrder(moveCommandPosition);
+			if (Input.GetButton("Fire2"))
+			{
+				SetCircleLocation();
+				UpdateMouseMovement();
+				VisualizeMoveOrder(moveCommandPosition);
+			}
 		}
 
 		if (Input.GetButtonUp("Fire2"))
 		{
-			if (mouseContext.GetSpacecraftInformation() != null)
-				SetFollowOrder(mouseContext.GetSpacecraftInformation().transform);
-			else
+			if (!bActionCommand)
 				SetMoveOrder(moveCommandPosition);
 			SetEnabled(false);
+			bActionCommand = false;
 		}
 	}
 
@@ -204,8 +220,16 @@ public class MouseCommandHUD : MonoBehaviour
 	void SetMoveOrder(Vector3 position)
 	{
 		if (selectedSquad != null)
-		{
 			selectedSquad.BeginCommandMove();
+	}
+
+	void SetActionOrder(Transform actionTarget)
+	{
+		selectedSpacecraftList = mouseSelection.GetSelectedSpacecraft();
+		foreach (Spacecraft sp in selectedSpacecraftList)
+		{
+			if (sp.GetAgent().teamID == 0)
+				sp.GetAgent().SuggestTarget(actionTarget);
 		}
 	}
 

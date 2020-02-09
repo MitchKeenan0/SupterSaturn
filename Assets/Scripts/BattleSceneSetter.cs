@@ -9,11 +9,13 @@ public class BattleSceneSetter : MonoBehaviour
 	public GameObject templePrefab;
 
 	private Game game;
+	private GravitySystem gravitySystem;
 	private IEnumerator loadWaitCoroutine;
 
     void Start()
     {
 		game = FindObjectOfType<Game>();
+		gravitySystem = FindObjectOfType<GravitySystem>();
 		loadWaitCoroutine = LoadWait(0.3f);
 		StartCoroutine(loadWaitCoroutine);
     }
@@ -42,5 +44,8 @@ public class BattleSceneSetter : MonoBehaviour
 			if (bs != null)
 				bs.InitScene();
 		}
+
+		if (gravitySystem != null)
+			gravitySystem.InitGravitySystem();
 	}
 }

@@ -22,5 +22,7 @@ public class Star : MonoBehaviour
 
 		float randomSize = Random.Range(minSize, maxSize);
 		meshRenderer.transform.localScale = Vector3.one * randomSize;
+
+		transform.rotation = Random.rotation;
 	}
 }

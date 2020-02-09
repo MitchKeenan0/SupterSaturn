@@ -539,10 +539,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56be16d7219f6094c853b696fde62835, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spread: 10
-  verticalScale: 0.16
-  minDistanceBetweenLocations: 12
-  locationCount: 30
+  spread: 5
+  verticalScale: 0.3
+  minDistanceBetweenLocations: 10
+  locationCount: 12
   commonLocations:
   - {fileID: 1327140190271649242, guid: 2ea43e93f775e7d41b85ec4454a55651, type: 3}
   uniqueLocations:

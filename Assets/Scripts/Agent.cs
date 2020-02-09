@@ -16,6 +16,7 @@ public class Agent : MonoBehaviour
 	private RaycastManager raycastManager;
 	private TeamFleetHUD teamFleetHUD;
 	private SelectionSquad selectedSquad;
+	private ActionCommandHUD actionHud;
 	private Transform targetTransform = null;
 	private Transform followTransform = null;
 	private List<Spacecraft> spacecraftList;
@@ -40,16 +41,17 @@ public class Agent : MonoBehaviour
 		raycastManager = FindObjectOfType<RaycastManager>();
 		teamFleetHUD = FindObjectOfType<TeamFleetHUD>();
 		selectedSquad = FindObjectOfType<SelectionSquad>();
+		actionHud = FindObjectOfType<ActionCommandHUD>();
 	}
 
 	void Update()
     {
 		if (isActiveAndEnabled)
 		{
-			if (scanner != null)
-				UpdateTarget();
 			if (autopilot != null)
 				autopilot.SpacecraftNavigationCommands();
+			if ((teamID != 0) || ((targetTransform != null)))
+				UpdateTarget();
 		}
 	}
 
@@ -131,12 +133,18 @@ public class Agent : MonoBehaviour
 	void SetTarget(Transform value)
 	{
 		targetTransform = value;
-		if (autopilot != null)
-			autopilot.SetTarget(value);
+		//if (autopilot != null)
+		//	autopilot.SetTarget(value);
 		if (value != null)
+		{
 			targetList.Add(value.gameObject.GetComponent<SpacecraftInformation>());
+			if (teamID == 0)
+				actionHud.SetTarget(value);
+		}
 		else
+		{
 			targetList.Clear();
+		}
 	}
 
 	void NotifyTeamOfTarget(Transform value)
@@ -144,13 +152,8 @@ public class Agent : MonoBehaviour
 		List<Spacecraft> teamSpacecraftList = teamFleetHUD.GetTeamList(teamID);
 		foreach (Spacecraft sp in teamSpacecraftList)
 		{
-			if ((sp != null))// && (teamID != targetTeam))
-			{
-				if (LineOfSight(sp.transform.position, sp.transform))
-				{
-					sp.GetAgent().SuggestTarget(value);
-				}
-			}
+			if (sp != null)
+				sp.GetAgent().SuggestTarget(value);
 		}
 	}
 

@@ -92,7 +92,7 @@ public class Autopilot : MonoBehaviour
 			LineMeasureHUD lineMeasure = routeVisualizer.gameObject.GetComponentInChildren<LineMeasureHUD>();
 			if (bExecutingMoveCommand)
 			{
-				routeVisualizer.SetRouteColor(Color.green);
+				routeVisualizer.SetRouteColor(Color.grey);
 			}
 			else if (spacecraft != null)
 			{
@@ -268,7 +268,7 @@ public class Autopilot : MonoBehaviour
 		if (routeVisualizer != null)
 		{
 			routeVisualizer.ClearLine(-1);
-			routeVisualizer.SetRouteColor(Color.grey);
+			routeVisualizer.SetRouteColor(Color.white);
 		}
 		previousRouteVector = transform.position;
 	}

@@ -6,19 +6,21 @@ public class GravityTelemetryHUD : MonoBehaviour
 {
 	public GameObject telemetryLinePrefab;
 
+	private GravitySystem gravitySystem;
 	private List<Gravity> gravityList;
-	private List<LineRenderer> lineList;
+	private List<List<LineRenderer>> lineMasterList;
 	private IEnumerator loadWaitCoroutine;
 
 	void Awake()
 	{
 		gravityList = new List<Gravity>();
-		lineList = new List<LineRenderer>();
+		lineMasterList = new List<List<LineRenderer>>();
+		gravitySystem = FindObjectOfType<GravitySystem>();
 	}
 
 	void Start()
 	{
-		loadWaitCoroutine = LoadWait(0.5f);
+		loadWaitCoroutine = LoadWait(0.6f);
 		StartCoroutine(loadWaitCoroutine);
 	}
 
@@ -26,47 +28,9 @@ public class GravityTelemetryHUD : MonoBehaviour
 	{
 		if ((gravityList != null) && (gravityList.Count > 0))
 		{
-			foreach (Gravity g in gravityList)
-				UpdateTelemetry(g);
-		}
-	}
-
-	void UpdateTelemetry(Gravity gravity)
-	{
-		List<Rigidbody> gravityRbs = new List<Rigidbody>(gravity.GetRBList());
-		int numInteractions = gravityRbs.Count;
-		List<LineRenderer> usedLines = new List<LineRenderer>();
-		for(int i = 0; i < numInteractions; i++)
-		{
-			if (gravityRbs[i] != null)
-			{
-				LineRenderer line = null;
-				if (i < lineList.Count)
-					line = lineList[i];
-				else
-					line = CreateTelemetryLine();
-				usedLines.Add(line);
-
-				Spacecraft sp = gravityRbs[i].gameObject.GetComponent<Spacecraft>();
-				if (sp != null)
-				{
-					if (!line.gameObject.activeInHierarchy)
-						line.gameObject.SetActive(true);
-					line.SetPosition(0, sp.transform.position);
-					line.SetPosition(1, gravity.transform.position);
-				}
-			}
-		}
-
-		int numLines = lineList.Count;
-		if (numInteractions < numLines)
-		{
-			for(int i = 0; i < numLines; i++)
-			{
-				LineRenderer line = lineList[i];
-				if (!usedLines.Contains(line))
-					line.gameObject.SetActive(false);
-			}
+			int numGravities = gravityList.Count;
+			for(int i = 0; i < numGravities; i++)
+				UpdateTelemetry(i);
 		}
 	}
 
@@ -74,34 +38,77 @@ public class GravityTelemetryHUD : MonoBehaviour
 	{
 		yield return new WaitForSeconds(waitTime);
 		InitGravities();
-		InitLines();
 	}
 
 	void InitGravities()
 	{
 		Gravity[] allGravities = FindObjectsOfType<Gravity>();
 		foreach (Gravity g in allGravities)
+		{
 			gravityList.Add(g);
+			CreateLineList();
+		}
 	}
 
-	void InitLines()
+	void UpdateTelemetry(int gravityIndex)
 	{
-		for (int i = 0; i < 10; i++)
-			CreateTelemetryLine();
+		Gravity gravity = gravityList[gravityIndex];
+		List<LineRenderer> lineList = new List<LineRenderer>();
+		List<LineRenderer> usedLines = new List<LineRenderer>();
+		if (gravityIndex < lineMasterList.Count)
+			lineList = lineMasterList[gravityIndex];
+		else
+			lineList = CreateLineList();
+
+		ClearLines(lineList);
+		List<Rigidbody> gravityRbs = new List<Rigidbody>(gravity.GetRbList());
+		int numInteractions = gravityRbs.Count;
+		for (int i = 0; i < numInteractions; i++)
+		{
+			if (gravityRbs[i] != null)
+			{
+				Spacecraft sp = gravityRbs[i].gameObject.GetComponent<Spacecraft>();
+				if (sp != null)
+				{
+					if ((sp.GetAgent() != null) && (sp.GetAgent().teamID == 0))
+					{
+						LineRenderer line = null;
+						if (i < lineList.Count)
+							line = lineList[i];
+						else
+							line = CreateTelemetryLine(lineList);
+
+						usedLines.Add(line);
+						line.SetPosition(0, sp.transform.position);
+						line.SetPosition(1, gravity.bodyTransform.position);
+						if (!line.gameObject.activeInHierarchy)
+							line.gameObject.SetActive(true);
+					}
+				}
+			}
+		}
+
+		lineMasterList[gravityIndex] = lineList;
 	}
 
-	void ClearLines()
+	void ClearLines(List<LineRenderer> list)
 	{
-		for (int i = 0; i < lineList.Count; i++)
-			lineList[i].gameObject.SetActive(false);
+		for (int i = 0; i < list.Count; i++)
+			list[i].gameObject.SetActive(false);
 	}
 
-	LineRenderer CreateTelemetryLine()
+	LineRenderer CreateTelemetryLine(List<LineRenderer> list)
 	{
 		GameObject obj = Instantiate(telemetryLinePrefab, transform);
-		obj.SetActive(false);
 		LineRenderer line = obj.GetComponent<LineRenderer>();
-		lineList.Add(line);
+		list.Add(line);
 		return line;
+	}
+
+	List<LineRenderer> CreateLineList()
+	{
+		List<LineRenderer> lineList = new List<LineRenderer>();
+		lineMasterList.Add(lineList);
+		return lineList;
 	}
 }

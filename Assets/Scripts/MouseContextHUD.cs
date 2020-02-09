@@ -68,6 +68,12 @@ public class MouseContextHUD : MonoBehaviour
 				texts[0].text = spacecraftInformation.GetSpacecraftName();
 				texts[1].text = spacecraftInformation.GetHeadline();
 
+				if (spacecraftInformation.GetTeamID() != 0)
+				{
+					texts[0].color = Color.red;
+					texts[1].color = Color.red;
+				}
+
 				Vector3 spacecraftScreenPosition = cameraMain.WorldToScreenPoint(spacecraftInformation.GetPosition());
 				Vector3 offset = new Vector2(60f, -35f);
 				panel.transform.position = spacecraftScreenPosition + offset;

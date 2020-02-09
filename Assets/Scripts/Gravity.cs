@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class Gravity : MonoBehaviour
 {
+	public Transform bodyTransform;
 	public float radius = 3f;
 	public float strength = 0.1f;
-	public float updateInterval = 0.1f;
 
 	private List<Rigidbody> rbList;
 	private GravityTelemetryHUD telemetry;
+	private PlanetArm planetArm;
 	private IEnumerator surroundingCheckCoroutine;
 
-	public List<Rigidbody> GetRBList() { return rbList; }
+	public List<Rigidbody> GetRbList() { return rbList; }
+	public void SetRbList(List<Rigidbody> list) { rbList = list; }
 
 	void Awake()
 	{
@@ -21,17 +23,25 @@ public class Gravity : MonoBehaviour
 
     void Start()
     {
+		planetArm = FindObjectOfType<PlanetArm>();
 		telemetry = FindObjectOfType<GravityTelemetryHUD>();
-		surroundingCheckCoroutine = SurroundingCheck(updateInterval);
-		StartCoroutine(surroundingCheckCoroutine);
+		if (!bodyTransform)
+		{
+			if (planetArm != null)
+				bodyTransform = planetArm.planetTransform;
+			else
+				bodyTransform = transform;
+		}
     }
 
     void FixedUpdate()
     {
-		if (rbList.Count > 0)
+		int numRbs = rbList.Count;
+		if (numRbs > 0)
 		{
-			foreach (Rigidbody r in rbList)
+			for(int i = 0; i < numRbs; i++)
 			{
+				Rigidbody r = rbList[i];
 				if ((r != null) && (!r.isKinematic))
 				{
 					Vector3 g = GetGravity(r);
@@ -45,9 +55,10 @@ public class Gravity : MonoBehaviour
 	public Vector3 GetGravity(Rigidbody r)
 	{
 		Vector3 gravity = Vector3.zero;
-		if (r != null && !r.isKinematic)
+		if ((r != null) && !r.isKinematic)
 		{
-			Vector3 toCenter = transform.position - r.position;
+			Debug.DrawLine(r.transform.position, bodyTransform.position, Color.magenta);
+			Vector3 toCenter = bodyTransform.position - r.position;
 			if (toCenter.magnitude <= radius)
 			{
 				float G = (1f / toCenter.magnitude) * r.mass * strength;
@@ -56,42 +67,5 @@ public class Gravity : MonoBehaviour
 			}
 		}
 		return gravity;
-	}
-
-	private IEnumerator SurroundingCheck(float intervalTime)
-	{
-		while (true)
-		{
-			yield return new WaitForSeconds(intervalTime);
-
-			Collider[] nears = Physics.OverlapSphere(transform.position, radius);
-			int numNears = nears.Length;
-			for (int i = 0; i < numNears; i++){
-				if (nears[i] != null){
-					Rigidbody r = nears[i].GetComponent<Rigidbody>();
-					if (r != null)
-					{
-						if (!rbList.Contains(r))
-							rbList.Add(r);
-					}
-				}
-			}
-
-			// check over for objects beyond reach
-			int numRbs = rbList.Count;
-			if (numRbs > 0)
-			{
-				Vector3 myPos = transform.position;
-				for(int i = 0; i < numRbs; i++)
-				{
-					if (rbList[i] != null)
-					{
-						float distance = Vector3.Distance(rbList[i].transform.position, myPos);
-						if (distance >= radius)
-							rbList.RemoveAt(i);
-					}
-				}
-			}
-		}
 	}
 }
