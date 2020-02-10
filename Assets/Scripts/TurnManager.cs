@@ -25,8 +25,6 @@ public class TurnManager : MonoBehaviour
 		locationDisplay = FindObjectOfType<LocationDisplay>();
 		InitFleetControllers();
 		InitFleetAgents();
-		turnPassCoroutine = PassTurn(turnPassWaitTime);
-		StartCoroutine(turnPassCoroutine);
 	}
 
 	void InitFleetControllers()

@@ -38,7 +38,7 @@ public class Fleet : MonoBehaviour
 	{
 		yield return new WaitForSeconds(waitTime);
 		InitSavedFleet();
-		campaign.InitFleetLocation(this);
+		campaign.InitFleetLocations(this);
 	}
 
 	void InitSavedFleet()

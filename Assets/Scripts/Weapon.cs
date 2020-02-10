@@ -11,6 +11,7 @@ public class Weapon : MonoBehaviour
 	public float prefireTime = 0.1f;
 	public float fireRate = 1f;
 	public float rateDeviation = 0.5f;
+	public Sprite weaponSprite;
 
 	private Spacecraft spacecraft;
 	private BattleOutcome battleOutcome;

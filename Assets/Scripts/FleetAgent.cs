@@ -43,7 +43,7 @@ public class FleetAgent : MonoBehaviour
 	{
 		yield return new WaitForSeconds(waitTime);
 		InitAgent();
-		turnWaitCoroutine = TurnWait(0.5f);
+		turnWaitCoroutine = TurnWait(0.2f);
 		StartCoroutine(turnWaitCoroutine);
 	}
 
@@ -55,7 +55,7 @@ public class FleetAgent : MonoBehaviour
 
 	public void TakeTurnActions()
 	{
-		if (playerFleetController != null)
+		if ((playerFleetController != null) && (fleet != null))
 		{
 			if (myFleetController == null)
 				myFleetController = transform.parent.GetComponentInChildren<FleetController>();
@@ -63,9 +63,12 @@ public class FleetAgent : MonoBehaviour
 			if ((myFleetController.GetRoute() == null)
 				|| myFleetController.GetRoute().Count <= 1)
 			{
-				int neighborIndex = Random.Range(0, fleet.GetLocation().GetNeighbors().Count);
-				CampaignLocation neighbor = fleet.GetLocation().GetNeighbors()[neighborIndex];
-				myFleetController.StandbyMove(neighbor);
+				if (fleet.GetLocation() != null)
+				{
+					int neighborIndex = Random.Range(0, fleet.GetLocation().GetNeighbors().Count);
+					CampaignLocation neighbor = fleet.GetLocation().GetNeighbors()[neighborIndex];
+					myFleetController.StandbyMove(neighbor);
+				}
 			}
 		}
 	}

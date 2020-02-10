@@ -27,31 +27,48 @@ public class Campaign : MonoBehaviour
 		locationManager = FindObjectOfType<LocationManager>();
     }
 
-	public void InitFleetLocation(Fleet fleet)
+	public void InitFleetLocations(Fleet fleet)
 	{
-		locationList = locationManager.GetAllLocations();
-		fleetList = fleetHud.GetFleetList();
-		int numFleets = fleetList.Count;
-		for (int i = 0; i < numFleets; i++)
+		if (!bLocationsInit)
 		{
-			CampaignLocation furthestLocation = null;
-			float furthestDistance = 0f;
-			foreach (CampaignLocation cl in locationList)
+			locationList = locationManager.GetAllLocations();
+			fleetList = fleetHud.GetFleetList();
+			int numFleets = fleetList.Count;
+
+			for (int i = 0; i < numFleets; i++)
 			{
-				if ((cl.GetNeighbors().Count > 0) && (!originLocations.Contains(cl)))
+				CampaignLocation furthestLocation = null;
+				float furthestDistance = 0f;
+				foreach (CampaignLocation cl in locationList)
 				{
-					float distanceToLocation = Vector3.Distance(cl.transform.position, Vector3.zero);
-					if (distanceToLocation > furthestDistance)
+					if ((cl.GetNeighbors().Count > 0) && (!originLocations.Contains(cl)))
 					{
-						furthestLocation = cl;
-						furthestDistance = distanceToLocation;
+						float distanceToLocation = Vector3.Distance(cl.transform.position, Vector3.zero);
+						if (distanceToLocation > furthestDistance)
+						{
+							furthestLocation = cl;
+							furthestDistance = distanceToLocation;
+						}
 					}
 				}
-			}
-			if (furthestLocation != null)
-			{
-				fleetList[i].SetLocation(furthestLocation, true);
-				originLocations.Add(furthestLocation);
+				if (furthestLocation != null)
+				{
+					fleetList[i].SetLocation(furthestLocation, true);
+					originLocations.Add(furthestLocation);
+
+					if (fleetList[i].teamID == 0)
+					{
+						CameraController cc = FindObjectOfType<CameraController>();
+						if (cc != null)
+						{
+							Vector3 locationPosition = furthestLocation.transform.position;
+							cc.SetCameraPosition(locationPosition + (locationPosition.normalized * 10));
+							cc.CameraLookAt(furthestLocation.transform);
+						}
+					}
+				}
+
+				bLocationsInit = true;
 			}
 		}
 	}
