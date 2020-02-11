@@ -72,6 +72,9 @@ public class Spacecraft : MonoBehaviour
 		SetAgentEnabled(bAgentStartsEnabled);
 		if (agent != null && (agent.teamID != 0))
 			SetRenderComponents(false);
+
+		var em = thrustParticles.emission;
+		em.enabled = false;
 	}
 
 	void FixedUpdate()

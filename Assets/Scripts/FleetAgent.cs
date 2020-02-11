@@ -59,7 +59,8 @@ public class FleetAgent : MonoBehaviour
 		{
 			if (myFleetController == null)
 				myFleetController = transform.parent.GetComponentInChildren<FleetController>();
-			myFleetController.StandbyMove(playerFleetController.GetLocation());
+			
+			///myFleetController.StandbyMove(playerFleetController.GetLocation());
 			if ((myFleetController.GetRoute() == null)
 				|| myFleetController.GetRoute().Count <= 1)
 			{

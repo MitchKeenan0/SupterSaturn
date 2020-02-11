@@ -5,6 +5,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
 	public int damage = 1;
+	public float hitboxScale = 1;
 	public float impactForce = 1f;
 	public Transform impactPrefab;
 	public float maxLifetime = 5f;

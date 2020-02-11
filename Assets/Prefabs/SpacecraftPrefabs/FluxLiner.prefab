@@ -244,6 +244,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   teamID: 0
   preferredEngagementDistance: 5
+  bAttackPredictions: 1
 --- !u!114 &1389119047813023650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,15 +285,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e13fa68e42e8b8440943f266f3c67048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponSpeed: 300
-  weaponAccuracy: 10
+  weaponSpeed: 1000
+  weaponAccuracy: 1
   munitionPrefab: {fileID: 298334711150030353, guid: 70345f5aeca2efd448dac5714d0187c8,
     type: 3}
   armingParticles: {fileID: 2259053088472580658, guid: c70e3152077d3d445907612dae5b1704,
     type: 3}
   prefireTime: 0.05
-  fireRate: 0.1
+  fireRate: 0.215
   rateDeviation: 0.1
+  weaponSprite: {fileID: 0}
 --- !u!114 &4889395795704047185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1091,7 +1093,7 @@ PrefabInstance:
     - target: {fileID: 2262925761331553153, guid: d4d511709294c7b4193921eb4db902a5,
         type: 3}
       propertyPath: m_Parameters.widthMultiplier
-      value: 1
+      value: 0.02
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4d511709294c7b4193921eb4db902a5, type: 3}

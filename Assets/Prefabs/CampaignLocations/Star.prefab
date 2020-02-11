@@ -54,7 +54,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   reach: 25
-  connections: 3
+  connections: 5
   locationName: Name
   locationValue: 1
   rarity: 0

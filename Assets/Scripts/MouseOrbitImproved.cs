@@ -46,9 +46,9 @@ public class MouseOrbitImproved : MonoBehaviour
 	{
 		cameraController = FindObjectOfType<CameraController>();
 		cameraMain = Camera.main;
-		Vector3 angles = transform.eulerAngles;
-		x = angles.y;
-		y = angles.x;
+		//Vector3 angles = transform.eulerAngles;
+		//x = angles.y;
+		//y = angles.x;
 		target = orbitAnchor;
 		distance = distanceMax = orbitAnchor.localPosition.magnitude;
 		lastMovePosition = transform.position;
@@ -65,7 +65,8 @@ public class MouseOrbitImproved : MonoBehaviour
 		bActivated = bInputting || Input.GetButton("Fire2");
 		if (target != null)
 		{
-			if (bEdgeMousing || bActivated || ((target != orbitAnchor) && (lx != 0f || ly != 0f)))
+			if (bEdgeMousing || bActivated 
+				|| ((target != orbitAnchor) && (lx != 0f || ly != 0f)))
 			{
 				lx = Mathf.Lerp(lx, Input.GetAxis("Mouse X") * 0.05f * xSpeed, Time.deltaTime * turnAcceleration);
 				ly = Mathf.Lerp(ly, Input.GetAxis("Mouse Y") * 0.05f * ySpeed, Time.deltaTime * turnAcceleration);
@@ -77,7 +78,7 @@ public class MouseOrbitImproved : MonoBehaviour
 
 			Quaternion rotation = Quaternion.Euler(y, x, 0);
 
-			distance = Mathf.Clamp(distance - Input.GetAxis("Mouse ScrollWheel") * 5, distanceMin, distanceMax + 1f);
+			distance = Mathf.Clamp(distance - Input.GetAxis("Mouse ScrollWheel"), distanceMin, distanceMax + 1f);
 			if (distance > distanceMax)
 			{
 				SetOrbitTarget(null);
@@ -91,14 +92,14 @@ public class MouseOrbitImproved : MonoBehaviour
 				lerpSpeed *= 10f;
 
 			transform.rotation = rotation;
-			transform.position = position;
+			transform.position = position + moveVector;
 
-			transform.position += moveVector;
+			Debug.Log("updating");
 		}
-		else
-		{
-			SetOrbitTarget(null);
-		}
+		//else
+		//{
+		//	SetOrbitTarget(null);
+		//}
 	}
 
 	void MoveInput()
@@ -176,5 +177,18 @@ public class MouseOrbitImproved : MonoBehaviour
 			target = orbitAnchor;
 			distance = distanceMax = orbitAnchor.localPosition.magnitude;
 		}
+	}
+
+	public void SetCameraPosition(Vector3 posi)
+	{
+		transform.position = posi;
+	}
+
+	public void SetCameraRotation(Quaternion value)
+	{
+		x = y = lx = ly = 0;
+		x = -28f;
+		transform.rotation = value;
+		Debug.Log("rotation: " + transform.rotation);
 	}
 }

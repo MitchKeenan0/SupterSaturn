@@ -66,7 +66,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bAgentStartsEnabled: 1
   mainEnginePower: 3
-  turningPower: 0.2
+  turningPower: 1.5
   maneuverPower: 1
   spacecraftName: Superliner
   thrustParticles: {fileID: 2379070149716345965}
@@ -90,6 +90,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   teamID: 0
   preferredEngagementDistance: 10
+  bAttackPredictions: 1
 --- !u!114 &1389119047813023650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,14 +131,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e13fa68e42e8b8440943f266f3c67048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponSpeed: 3000
+  weaponSpeed: 2000
   weaponAccuracy: 10
   munitionPrefab: {fileID: 298334711150030353, guid: 207a3b16d330e8e4db11ab61331570d3,
     type: 3}
   armingParticles: {fileID: 8015741792548370538}
   prefireTime: 0.3
   fireRate: 2
-  rateDeviation: 1.9
+  rateDeviation: 1
+  weaponSprite: {fileID: 0}
 --- !u!114 &4889395795704047185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -769,7 +771,7 @@ PrefabInstance:
     - target: {fileID: 2262925761331553153, guid: d4d511709294c7b4193921eb4db902a5,
         type: 3}
       propertyPath: m_Parameters.widthMultiplier
-      value: 0.1
+      value: 0.07
       objectReference: {fileID: 0}
     - target: {fileID: 2262925761331553153, guid: d4d511709294c7b4193921eb4db902a5,
         type: 3}

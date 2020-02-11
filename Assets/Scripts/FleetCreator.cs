@@ -308,13 +308,8 @@ public class FleetCreator : MonoBehaviour
 	private IEnumerator LoadScene(float waitTime, string sceneName)
 	{
 		loadingPanel.SetActive(true);
-		SaveGame();
+		game.SaveGame();
 		yield return new WaitForSeconds(waitTime);
 		SceneManager.LoadScene(sceneName);
-	}
-
-	public void SaveGame()
-	{
-		game.SaveGame();
 	}
 }

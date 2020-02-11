@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bodyTransform: {fileID: 5273469545884070276}
-  radius: 5
+  radius: 10
   strength: 0.01
 --- !u!135 &8303981145886502231
 SphereCollider:

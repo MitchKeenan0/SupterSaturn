@@ -9,9 +9,7 @@ public class LocationManager : MonoBehaviour
 	public float verticalScale = 0.618f;
 	public float minDistanceBetweenLocations = 5f;
 	public int locationCount = 12;
-	public GameObject[] commonLocations;
-	public GameObject[] uniqueLocations; 
-	public GameObject[] rareLocations;
+	public GameObject[] locationLibrary;
 
 	private Campaign campaign;
 	private List<CampaignLocation> allLocations;
@@ -19,28 +17,44 @@ public class LocationManager : MonoBehaviour
 
 	public List<CampaignLocation> GetAllLocations() { return allLocations; }
 
+	void Awake()
+	{
+		allLocations = new List<CampaignLocation>();
+	}
+
     void Start()
     {
 		route = new List<CampaignLocation>();
 		campaign = GetComponent<Campaign>();
-		InitLocations();
-		///Debug.Log("Finished location manager start");
-    }
+		if (allLocations.Count == 0)
+			InitLocations();
+	}
+
+	public void LoadLocations(List<int> locationIDs, List<Vector3> locationPositions, List<string> locationNames)
+	{
+		int numLocations = locationIDs.Count;
+		if (numLocations > 0)
+		{
+			for (int i = 0; i < numLocations; i++)
+			{
+				int locationID = locationIDs[i];
+				Vector3 locationPosition = locationPositions[i];
+				string locationName = locationNames[i];
+				GameObject locationObj = Instantiate(locationLibrary[locationID], locationPosition, Quaternion.identity);
+				CampaignLocation cl = locationObj.GetComponent<CampaignLocation>();
+				cl.Rename(locationName);
+				allLocations.Add(cl);
+			}
+		}
+	}
 
 	void InitLocations()
 	{
-		allLocations = new List<CampaignLocation>();
-		float concentricRange = 3.14f / locationCount;
+		float concentricRange = spread;
 		for (int i = 0; i < locationCount; i++)
 		{
-			float rando = Random.Range(0f, 1f);
-			if (rando > 0.9f)
-				SpawnRandomFrom(rareLocations, concentricRange);
-			else if (rando > 0.6f)
-				SpawnRandomFrom(uniqueLocations, concentricRange);
-			else
-				SpawnRandomFrom(commonLocations, concentricRange);
-			concentricRange += (3.14f / locationCount);
+			SpawnRandomFrom(locationLibrary, concentricRange);
+			concentricRange += (spread / locationCount);
 		}
 	}
 
@@ -56,9 +70,10 @@ public class LocationManager : MonoBehaviour
 	{
 		Vector3 pos = Vector3.zero;
 		bool messy = true;
+		float liveSpread = spread;
 		while (messy)
 		{
-			pos = Random.insideUnitSphere * spread * 3;
+			pos = Random.insideUnitSphere * liveSpread;
 			pos.y *= verticalScale;
 			int numLocations = allLocations.Count;
 			bool hitAny = false;
@@ -66,7 +81,10 @@ public class LocationManager : MonoBehaviour
 			{
 				Vector3 toPos = allLocations[i].transform.position - pos;
 				if (toPos.magnitude < minDistanceBetweenLocations)
+				{
 					hitAny = true;
+					liveSpread *= 0.05f;
+				}
 			}
 			messy = hitAny;
 		}

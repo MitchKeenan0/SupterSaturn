@@ -10,9 +10,6 @@ public class CameraController : MonoBehaviour
 	private TeamFleetHUD teamFleetHUD;
 	private Transform lastTarget = null;
 
-	public void SetCameraPosition(Vector3 posi) { cameraMain.transform.position = posi; }
-	public void CameraLookAt(Transform tran) { cameraMain.transform.LookAt(tran); }
-
     void Start()
     {
 		cameraMain = Camera.main;

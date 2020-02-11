@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class MouseContextHUD : MonoBehaviour
 {
+	public Texture2D defaultCursor;
+	public Texture2D actionCursor;
+
 	private SpacecraftInformation spacecraftInformation;
 	private List<Text> texts;
 	private Camera cameraMain;
@@ -38,12 +41,13 @@ public class MouseContextHUD : MonoBehaviour
 			panel.SetActive(true);
 			foreach (Text t in texts)
 				t.gameObject.SetActive(true);
-			ReadMouseContext();
 		}
 		else
 		{
 			panel.SetActive(false);
 		}
+
+		ReadMouseContext();
 	}
 
 	private IEnumerator UpdateMouseContext(float waitTime)
@@ -72,6 +76,7 @@ public class MouseContextHUD : MonoBehaviour
 				{
 					texts[0].color = Color.red;
 					texts[1].color = Color.red;
+					Cursor.SetCursor(actionCursor, Vector2.zero, CursorMode.Auto);
 				}
 
 				Vector3 spacecraftScreenPosition = cameraMain.WorldToScreenPoint(spacecraftInformation.GetPosition());
@@ -82,7 +87,12 @@ public class MouseContextHUD : MonoBehaviour
 			{
 				if (panel.activeInHierarchy)
 					panel.SetActive(false);
+				Cursor.SetCursor(defaultCursor, Vector2.zero, CursorMode.Auto);
 			}
+		}
+		else
+		{
+			Cursor.SetCursor(defaultCursor, Vector2.zero, CursorMode.Auto);
 		}
 	}
 }

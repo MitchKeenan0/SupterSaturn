@@ -186,11 +186,14 @@ public class Autopilot : MonoBehaviour
 		if (distanceToDestination > 0.1f)
 		{
 			float dotToDestination = Vector3.Dot(transform.forward, toDestination.normalized);
-			float throttle = Mathf.Clamp(((distanceToDestination * 0.1f) * spacecraft.mainEnginePower * dotToDestination), -1, 1);
-			float dotToVelocity = Vector3.Dot(transform.forward, rb.velocity.normalized);
-			if ((dotToVelocity > 0) && (distanceToDestination < rb.velocity.magnitude))
-				throttle *= 0.0f;
-			spacecraft.MainEngines(throttle);
+			if (dotToDestination > 0.8f)
+			{
+				float throttle = Mathf.Clamp(((distanceToDestination * 0.1f) * spacecraft.mainEnginePower * dotToDestination), -1, 1);
+				float dotToVelocity = Vector3.Dot(transform.forward, rb.velocity.normalized);
+				if ((dotToVelocity > 0) && (distanceToDestination < rb.velocity.magnitude))
+					throttle *= 0.0f;
+				spacecraft.MainEngines(throttle);
+			}
 		}
 	}
 

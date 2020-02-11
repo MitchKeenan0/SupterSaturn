@@ -25,6 +25,7 @@ public class TurnManager : MonoBehaviour
 		locationDisplay = FindObjectOfType<LocationDisplay>();
 		InitFleetControllers();
 		InitFleetAgents();
+		BeginTurn(false);
 	}
 
 	void InitFleetControllers()

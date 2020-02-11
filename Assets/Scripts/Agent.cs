@@ -6,6 +6,7 @@ public class Agent : MonoBehaviour
 {
 	public int teamID = 0;
 	public float preferredEngagementDistance = 10f;
+	public bool bAttackPredictions = true;
 
 	private Spacecraft spacecraft;
 	private Autopilot autopilot;
@@ -24,7 +25,7 @@ public class Agent : MonoBehaviour
 	private List<Prediction> predictionList;
 	private bool bEnabled = false;
 	private bool bPredictingTarget = false;
-	private bool bAttackPredictions = false;
+	private bool bAutoTarget = false;
 	private IEnumerator targetDestroyedRestCoroutine;
 
     void Awake()
@@ -50,7 +51,7 @@ public class Agent : MonoBehaviour
 		{
 			if (autopilot != null)
 				autopilot.SpacecraftNavigationCommands();
-			if ((teamID != 0) || ((targetTransform != null)))
+			if ((teamID != 0) || ((targetTransform != null)) || bAutoTarget)
 				UpdateTarget();
 		}
 	}
@@ -63,7 +64,7 @@ public class Agent : MonoBehaviour
 			{
 				Spacecraft targetSpacecraft = targetTransform.GetComponent<Spacecraft>();
 				bool validSpacecraft = (targetSpacecraft != null) && (targetSpacecraft.IsAlive()) && (targetSpacecraft.GetMarks() > 0);
-				bool validPrediction = bAttackPredictions && (bPredictingTarget && (targetTransform.position != Vector3.zero));
+				bool validPrediction = !validSpacecraft && bAttackPredictions && (bPredictingTarget && (targetTransform.position != Vector3.zero));
 				
 				if (validSpacecraft || validPrediction)
 				{
@@ -184,6 +185,11 @@ public class Agent : MonoBehaviour
 			autopilot.SetFollowTransform(followTransform);
 		}
 		followTransform = follow;
+	}
+
+	public void SetOffense(bool value)
+	{
+		bAutoTarget = value;
 	}
 
 	public void Regroup()

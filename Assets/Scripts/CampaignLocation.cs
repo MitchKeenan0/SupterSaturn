@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CampaignLocation : MonoBehaviour
 {
+	public int locationID = 0;
 	public float reach = 10f;
 	public int connections = 2;
 	public string locationName = "Name";
@@ -17,40 +18,14 @@ public class CampaignLocation : MonoBehaviour
 
 	private List<CampaignLocation> connectedLocations;
 	public List<CampaignLocation> GetNeighbors() { return connectedLocations; }
-	public bool AddConnection(CampaignLocation c, bool executive)
-	{
-		bool bConnected = false;
-		if (((c != this) && !connectedLocations.Contains(c) && (connectedLocations.Count < connections))
-			|| executive)
-		{
-			connectedLocations.Add(c);
-			c.AddConnection(this, false);
-			bConnected = true;
-		}
-		if (bConnected)
-			CreateLineRenderer();
-		return bConnected;
-	}
-
-	public void GetScouted(CampaignLocation origin, GameObject connectionPrefab)
-	{
-		connectedLocations.Add(origin);
-		origin.AddConnection(this, true);
-
-		GameObject scoutConnectionLine = Instantiate(connectionPrefab, transform.position, Quaternion.identity);
-		LineRenderer connectionLine = scoutConnectionLine.GetComponent<LineRenderer>();
-		lineList.Add(connectionLine);
-		connectionLine.SetPosition(0, transform.position);
-		connectionLine.SetPosition(1, origin.transform.position);
-	}
 
 	private IEnumerator loadWaitCoroutine;
 
 	void Awake()
-    {
+	{
 		lineList = new List<LineRenderer>(connections);
 		connectedLocations = new List<CampaignLocation>(connections);
-    }
+	}
 
 	void Start()
 	{
@@ -61,7 +36,8 @@ public class CampaignLocation : MonoBehaviour
 	private IEnumerator LoadWait(float waitTime)
 	{
 		yield return new WaitForSeconds(waitTime);
-		InitName();
+		if (locationName == "Name")
+			InitName();
 		InitConnections();
 	}
 
@@ -139,5 +115,37 @@ public class CampaignLocation : MonoBehaviour
 		lineList.Add(liner);
 		lineObject.SetActive(false);
 		///Debug.Log("Created line");
+	}
+
+	public bool AddConnection(CampaignLocation c, bool executive)
+	{
+		bool bConnected = false;
+		if (((c != this) && !connectedLocations.Contains(c) && (connectedLocations.Count < connections))
+			|| executive)
+		{
+			connectedLocations.Add(c);
+			c.AddConnection(this, false);
+			bConnected = true;
+		}
+		if (bConnected)
+			CreateLineRenderer();
+		return bConnected;
+	}
+
+	public void GetScouted(CampaignLocation origin, GameObject connectionPrefab)
+	{
+		connectedLocations.Add(origin);
+		origin.AddConnection(this, true);
+
+		GameObject scoutConnectionLine = Instantiate(connectionPrefab, transform.position, Quaternion.identity);
+		LineRenderer connectionLine = scoutConnectionLine.GetComponent<LineRenderer>();
+		lineList.Add(connectionLine);
+		connectionLine.SetPosition(0, transform.position);
+		connectionLine.SetPosition(1, origin.transform.position);
+	}
+
+	public void Rename(string value)
+	{
+		locationName = value;
 	}
 }

@@ -13,7 +13,4 @@ public class Save
 	public List<int> cardList = new List<int>();
 	public List<int> healthList = new List<int>();
 	public List<int> enemyCardList = new List<int>();
-
-	//public List<int> locationList = new List<int>();
-	//public List<Vector3> locationPositionList = new List<Vector3>();
 }

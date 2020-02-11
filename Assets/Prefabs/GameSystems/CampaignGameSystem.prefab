@@ -542,12 +542,10 @@ MonoBehaviour:
   spread: 5
   verticalScale: 0.3
   minDistanceBetweenLocations: 10
-  locationCount: 12
-  commonLocations:
+  locationCount: 30
+  locationLibrary:
   - {fileID: 1327140190271649242, guid: 2ea43e93f775e7d41b85ec4454a55651, type: 3}
-  uniqueLocations:
   - {fileID: 8910081187324853507, guid: c1fc642cc78fdc24c96a9b88f801ddbc, type: 3}
-  rareLocations:
   - {fileID: 1984189909704474978, guid: 2087b7fcc66c9d646b7a4f1dca318306, type: 3}
 --- !u!1 &8059707371986079912
 GameObject:

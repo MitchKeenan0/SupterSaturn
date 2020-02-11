@@ -305,6 +305,7 @@ MonoBehaviour:
   prefireTime: 0.2
   fireRate: 3
   rateDeviation: 1.9
+  weaponSprite: {fileID: 0}
 --- !u!114 &4889395795704047185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -958,7 +959,7 @@ PrefabInstance:
     - target: {fileID: 2262925761331553153, guid: d4d511709294c7b4193921eb4db902a5,
         type: 3}
       propertyPath: m_Parameters.widthMultiplier
-      value: 1
+      value: 0.05
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4d511709294c7b4193921eb4db902a5, type: 3}

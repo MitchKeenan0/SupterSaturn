@@ -43,11 +43,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fde62e7b58e5cc04cb9d522057b38a91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minimumObjectCount: 5
-  maximumObjectCount: 50
-  distanceScale: 1
-  planetMinSize: 0.1
-  planetMaxSize: 1
+  minimumObjectCount: 3
+  maximumObjectCount: 30
+  distanceScale: 3
+  planetMinSize: 2
+  planetMaxSize: 5
   sunPrefab: {fileID: 6143951963767822065, guid: 0e67b66183fa3c649972cce192036fba,
     type: 3}
   planetPrefabs:

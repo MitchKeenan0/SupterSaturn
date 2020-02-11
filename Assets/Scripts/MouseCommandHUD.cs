@@ -115,7 +115,7 @@ public class MouseCommandHUD : MonoBehaviour
 		{
 			Vector3 originScreenPosition = cameraMain.WorldToScreenPoint(lineOrigin);
 			Vector3 verticalMousePosition = Input.mousePosition;
-			float distToMouse = (mousePosition - originScreenPosition).y / 10;
+			float distToMouse = (mousePosition - originScreenPosition).y / 15;
 			lineElevation = distToMouse;
 
 			Vector3 elevationLine = lineOrigin + (Vector3.up * lineElevation);

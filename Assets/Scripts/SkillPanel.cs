@@ -6,7 +6,11 @@ using UnityEngine.UI;
 public class SkillPanel : MonoBehaviour
 {
 	public GameObject skillPanel;
+	public Image offenseImage;
+	public Text offenseText;
+
 	private List<Spacecraft> spacecraftList;
+	private bool offense = false;
 
     void Start()
     {
@@ -26,9 +30,23 @@ public class SkillPanel : MonoBehaviour
 			sp.GetAgent().EnableMoveCommand(false);
 	}
 
-	public void SetAggressionStance(bool bHostile)
+	public void SetOffense()
 	{
-
+		offense = !offense;
+		if (offense)
+		{
+			offenseImage.color = Color.red;
+			offenseText.color = Color.red;
+			offenseText.text = "Auto-Target";
+		}
+		else
+		{
+			offenseImage.color = Color.white;
+			offenseText.color = Color.white;
+			offenseText.text = "Manual";
+		}
+		foreach (Spacecraft sp in spacecraftList)
+			sp.GetAgent().SetOffense(offense);
 	}
 
 	public void Regroup()

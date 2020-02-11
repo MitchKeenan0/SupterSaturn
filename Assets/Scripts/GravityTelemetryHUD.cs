@@ -81,6 +81,12 @@ public class GravityTelemetryHUD : MonoBehaviour
 						usedLines.Add(line);
 						line.SetPosition(0, sp.transform.position);
 						line.SetPosition(1, gravity.bodyTransform.position);
+
+						float lineDistance = Vector3.Distance(line.GetPosition(0), line.GetPosition(1));
+						Color lineColor = line.startColor;
+						lineColor.a = 1f / lineDistance;
+						line.startColor = line.endColor = lineColor;
+
 						if (!line.gameObject.activeInHierarchy)
 							line.gameObject.SetActive(true);
 					}

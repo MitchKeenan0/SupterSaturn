@@ -53,7 +53,7 @@ public class SolarSystem : BattleScene
 					biggestScale = planetSize;
 				}
 
-				int numMoons = Random.Range(0, Mathf.FloorToInt(planetSize * 10));
+				int numMoons = Random.Range(0, Mathf.FloorToInt(planetSize));
 				if (numMoons > 0)
 				{
 					for (int j = 0; j < numMoons; j++)
@@ -62,7 +62,7 @@ public class SolarSystem : BattleScene
 						GameObject spawnedMoon = Instantiate(moonPrefabs[randomMoonIndex], planet.planetMesh.transform.position, Quaternion.identity);
 						spawnedMoon.transform.SetParent(planet.planetMesh.transform);
 						if (spawnedMoon.GetComponent<PlanetArm>())
-							spawnedMoon.GetComponent<PlanetArm>().SetLength((j + 1) * distanceScale * Random.Range(0.3f, 0.5f));
+							spawnedMoon.GetComponent<PlanetArm>().SetLength((j + 1) * distanceScale * Random.Range(0.1f, 0.3f));
 						Planet moonPlanet = spawnedMoon.GetComponent<Planet>();
 						if (moonPlanet != null)
 						{

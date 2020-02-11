@@ -19,6 +19,7 @@ public class Game : MonoBehaviour
 	private Fleet playerFleet;
 	private Fleet enemyFleet;
 	private GameHUD gameHud;
+	private Campaign campaign;
 	private List<Card> selectedCardList;
 	private List<Card> enemyCardList;
 	private List<Spacecraft> spacecraftList;
@@ -26,6 +27,7 @@ public class Game : MonoBehaviour
 	private List<int> savedHealthList;
 	private int sceneSetting = 0;
 	private int chevrons = 0;
+	private bool bEscapeMenu = false;
 	private bool bFleetTutorialClosed = false;
 	private bool bGameTutorialClosed = false;
 
@@ -48,7 +50,7 @@ public class Game : MonoBehaviour
 	}
 	void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
 	{
-		///Debug.Log("scene loaded");
+		Time.timeScale = 1;
 	}
 
 	void Awake()
@@ -70,12 +72,32 @@ public class Game : MonoBehaviour
 		savedHealthList = new List<int>();
 		player = FindObjectOfType<Player>();
 		gameHud = FindObjectOfType<GameHUD>();
+		campaign = FindObjectOfType<Campaign>();
 		Application.targetFrameRate = 70;
 	}
 
 	void Start()
 	{
 		Screen.sleepTimeout = SleepTimeout.NeverSleep;
+	}
+
+	void Update()
+	{
+		if (Input.GetButtonDown("Cancel"))
+		{
+			EscapeMenu();
+		}
+	}
+
+	public void EscapeMenu()
+	{
+		bEscapeMenu = !bEscapeMenu;
+		if (gameHud != null)
+			gameHud.SetEscapeMenuActive(bEscapeMenu);
+		if (bEscapeMenu)
+			Time.timeScale = Time.deltaTime * 5f;
+		else
+			Time.timeScale = 1f;
 	}
 
 	public void SetSelectedCard(int index, Card card)
@@ -167,6 +189,11 @@ public class Game : MonoBehaviour
 			spacecraftList.Clear();
 			enemySpacecraftList.Clear();
 			savedHealthList.Clear();
+
+			if (!campaign)
+				campaign = FindObjectOfType<Campaign>();
+			if (campaign != null)
+				campaign.LoadCampaign();
 
 			// player name
 			string playerName = save.playerName;
@@ -287,6 +314,11 @@ public class Game : MonoBehaviour
 	{
 		Save save = new Save();
 
+		if (!campaign)
+			campaign = FindObjectOfType<Campaign>();
+		if (campaign != null)
+			campaign.SaveCampaign();
+
 		// player name
 		if (player != null)
 		{
@@ -331,8 +363,6 @@ public class Game : MonoBehaviour
 			for (int i = 0; i < numSpacecraft; i++)
 			{
 				FleetCreator fleetCreator = FindObjectOfType<FleetCreator>();
-				Campaign campaign = FindObjectOfType<Campaign>();
-
 				// live spacecraft
 				if (spacecraftList[i] != null)
 				{
@@ -397,6 +427,9 @@ public class Game : MonoBehaviour
 		{
 			Debug.LogException(ex);
 		}
+
+		if (campaign != null)
+			campaign.DeleteSave();
 	}
 
 	private string GetSaveFilePath
