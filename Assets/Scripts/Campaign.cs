@@ -70,8 +70,6 @@ public class Campaign : MonoBehaviour
 							Vector3 cameraPosition = cameraMain.transform.position;
 							Vector3 relativePos = locationPosition - cameraPosition;
 							Quaternion toCenter = Quaternion.LookRotation(relativePos, Vector3.up);
-							toCenter.y *= 100;
-							Debug.Log("toCenter rotation: " + toCenter);
 							moi.SetCameraRotation(toCenter);
 						}
 					}
@@ -95,6 +93,8 @@ public class Campaign : MonoBehaviour
 	private SaveCampaign CreateSaveCampaignObject()
 	{
 		SaveCampaign save = new SaveCampaign();
+		if (locationList == null)
+			locationList = new List<CampaignLocation>();
 		int numLocations = locationList.Count;
 		if (numLocations > 0)
 		{
@@ -108,6 +108,29 @@ public class Campaign : MonoBehaviour
 				save.locationNameList.Add(cl.locationName);
 			}
 		}
+
+		Identity[] ids = FindObjectsOfType<Identity>();
+		List<Identity> idList = new List<Identity>();
+		int numIDs = ids.Length;
+		if (numIDs > 0)
+		{
+			for(int i = 0; i < numIDs; i++)
+			{
+				Identity id = ids[i];
+				save.identityNames.Add(id.identityName);
+				save.identityColorsR.Add(id.identityColor.r);
+				save.identityColorsG.Add(id.identityColor.g);
+				save.identityColorsB.Add(id.identityColor.b);
+
+				if (id.GetFleetList().Count > 0)
+				{
+					CampaignLocation idLocation = id.GetFleetList()[0].GetLocation();
+					if (locationList.Contains(idLocation))
+						save.identityLocationList.Add(locationList.IndexOf(idLocation));
+				}
+			}
+		}
+
 		return save;
 	}
 
@@ -130,6 +153,21 @@ public class Campaign : MonoBehaviour
 					positionList.Add(locationPosition);
 				}
 				locationManager.LoadLocations(save.locationList, positionList, save.locationNameList);
+			}
+
+			if (save.identityNames != null)
+			{
+				int numSavedIdentities = save.identityNames.Count;
+				if (numSavedIdentities > 0)
+				{
+					Identity[] allIDs = FindObjectsOfType<Identity>();
+					for (int i = 0; i < numSavedIdentities; i++)
+					{
+						Identity id = allIDs[i];
+						Color idColor = new Color(save.identityColorsR[i], save.identityColorsG[i], save.identityColorsB[i]);
+						id.LoadIdentity(save.identityNames[i], idColor);
+					}
+				}
 			}
 		}
 	}

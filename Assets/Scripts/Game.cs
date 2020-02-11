@@ -74,6 +74,9 @@ public class Game : MonoBehaviour
 		gameHud = FindObjectOfType<GameHUD>();
 		campaign = FindObjectOfType<Campaign>();
 		Application.targetFrameRate = 70;
+
+		if (transform.GetComponent<Campaign>())
+			Destroy(transform.GetComponent<Campaign>());
 	}
 
 	void Start()
@@ -419,6 +422,11 @@ public class Game : MonoBehaviour
 			enemyCardList = new List<Card>();
 			enemySpacecraftList = new List<Spacecraft>();
 
+			if (!campaign)
+				campaign = gameObject.AddComponent<Campaign>();
+			if (campaign != null)
+				campaign.DeleteSave();
+
 			SaveGame();
 
 			///Debug.Log("save deleted");
@@ -427,9 +435,6 @@ public class Game : MonoBehaviour
 		{
 			Debug.LogException(ex);
 		}
-
-		if (campaign != null)
-			campaign.DeleteSave();
 	}
 
 	private string GetSaveFilePath

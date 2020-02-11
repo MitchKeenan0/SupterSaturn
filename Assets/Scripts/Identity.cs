@@ -11,12 +11,23 @@ public class Identity : MonoBehaviour
 	private float likelyhoodOfAttackingPlayer = 0f;
 	private float likelyhoodOfDefendingPlayer = 0f;
 	private float identityWealth = 0f;
+	private List<Fleet> fleetList;
+	private bool bLoaded = false;
 
 	void Awake()
     {
+		fleetList = new List<Fleet>();
 		nameLibrary = FindObjectOfType<NameLibrary>();
-		InitIdentity();
-    }
+		if (!bLoaded)
+			InitIdentity();
+	}
+
+	public void LoadIdentity(string idName, Color idColor)
+	{
+		bLoaded = true;
+		identityName = idName;
+		identityColor = idColor;
+	}
 
 	public void InitIdentity()
 	{
@@ -35,5 +46,15 @@ public class Identity : MonoBehaviour
 		color.g = identityWealth;
 
 		identityColor = color;
+	}
+
+	public void AddFleet(Fleet fleet)
+	{
+		fleetList.Add(fleet);
+	}
+
+	public List<Fleet> GetFleetList()
+	{
+		return fleetList;
 	}
 }

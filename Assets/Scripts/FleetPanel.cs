@@ -33,6 +33,7 @@ public class FleetPanel : MonoBehaviour
 		{
 			fleetNameText.text = identity.identityName;
 			fleetNameText.color = identity.identityColor;
+			identity.AddFleet(fleet);
 		}
 		else
 		{

@@ -11,6 +11,9 @@ public class SaveCampaign
 	public List<float> locationPositionsZ = new List<float>();
 	public List<string> locationNameList = new List<string>();
 	//
-	public List<int> identityList = new List<int>();
+	public List<string> identityNames = new List<string>();
 	public List<int> identityLocationList = new List<int>();
+	public List<float> identityColorsR = new List<float>();
+	public List<float> identityColorsG = new List<float>();
+	public List<float> identityColorsB = new List<float>();
 }
