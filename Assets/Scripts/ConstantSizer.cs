@@ -5,6 +5,7 @@ using UnityEngine;
 public class ConstantSizer : MonoBehaviour
 {
 	public float updateInterval = 0.1f;
+	public float scaleFactor = 1f;
 
 	private Transform cameraTransform = null;
 	private Vector3 naturalSize = Vector3.zero;
@@ -39,6 +40,7 @@ public class ConstantSizer : MonoBehaviour
 	{
 		Vector3 cameraPosition = cameraTransform.position;
 		float distToCamera = Vector3.Distance(transform.position, cameraPosition);
+		distToCamera *= scaleFactor;
 		if (bPureTransform)
 		{
 			transform.localScale = naturalSize * distToCamera;

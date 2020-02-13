@@ -53,6 +53,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e285e6741bd3a147bb55120930e8c56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  locationID: 0
   reach: 25
   connections: 5
   locationName: Name
@@ -60,6 +61,8 @@ MonoBehaviour:
   rarity: 0
   linePrefab: {fileID: 6188276859891317614, guid: 73b3201796e390e4ea2d08bb466d286e,
     type: 3}
+  defaultLineMaterial: {fileID: 2100000, guid: 673522835ab4482479de9390c3ef0bc1, type: 2}
+  moveLineMaterial: {fileID: 2100000, guid: 1dde5970218d42a498180b479c4cb3d8, type: 2}
   bRouteHit: 0
 --- !u!114 &6690337772456755234
 MonoBehaviour:

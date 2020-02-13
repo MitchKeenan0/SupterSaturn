@@ -50,11 +50,16 @@ public class Game : MonoBehaviour
 	}
 	void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
 	{
-		Time.timeScale = 1;
+		//Time.timeScale = 1;
 	}
 
 	void Awake()
 	{
+		Campaign[] componentCampaigns = GetComponents<Campaign>();
+		int numCampaigns = componentCampaigns.Length;
+		for (int i = 0; i < numCampaigns; i++)
+			Destroy(componentCampaigns[i]);
+
 		if (game == null)
 		{
 			DontDestroyOnLoad(gameObject);
@@ -70,6 +75,7 @@ public class Game : MonoBehaviour
 		spacecraftList = new List<Spacecraft>();
 		enemySpacecraftList = new List<Spacecraft>();
 		savedHealthList = new List<int>();
+
 		player = FindObjectOfType<Player>();
 		gameHud = FindObjectOfType<GameHUD>();
 		campaign = FindObjectOfType<Campaign>();
@@ -105,6 +111,8 @@ public class Game : MonoBehaviour
 
 	public void SetSelectedCard(int index, Card card)
 	{
+		if (selectedCardList == null)
+			selectedCardList = new List<Card>();
 		if (index < selectedCardList.Count)
 		{
 			if (card == null)
@@ -187,11 +195,14 @@ public class Game : MonoBehaviour
 			Save save = (Save)bf.Deserialize(file);
 			file.Close();
 
-			selectedCardList.Clear();
-			enemyCardList.Clear();
-			spacecraftList.Clear();
-			enemySpacecraftList.Clear();
-			savedHealthList.Clear();
+			if (selectedCardList != null)
+			{
+				selectedCardList.Clear();
+				enemyCardList.Clear();
+				spacecraftList.Clear();
+				enemySpacecraftList.Clear();
+				savedHealthList.Clear();
+			}
 
 			if (!campaign)
 				campaign = FindObjectOfType<Campaign>();
@@ -199,10 +210,13 @@ public class Game : MonoBehaviour
 				campaign.LoadCampaign();
 
 			// player name
-			string playerName = save.playerName;
-			if (playerName == "")
-				playerName = "No Name";
-			player.SetName(playerName);
+			if (player != null)
+			{
+				string playerName = save.playerName;
+				if (playerName == "")
+					playerName = "No Name";
+				player.SetName(playerName);
+			}
 
 			// player cards
 			int savedCardCount = save.cardList.Count;
@@ -422,10 +436,16 @@ public class Game : MonoBehaviour
 			enemyCardList = new List<Card>();
 			enemySpacecraftList = new List<Spacecraft>();
 
-			if (!campaign)
-				campaign = gameObject.AddComponent<Campaign>();
-			if (campaign != null)
-				campaign.DeleteSave();
+			Campaign cp = campaign;
+			if (!cp)
+			{
+				cp = gameObject.AddComponent<Campaign>();
+				cp.enabled = false;
+			}
+			if (cp != null)
+				cp.DeleteSave();
+			if (gameObject.GetComponent<Campaign>())
+				DestroyImmediate(gameObject.GetComponent<Campaign>(), true);
 
 			SaveGame();
 

@@ -11,6 +11,8 @@ public class CampaignLocation : MonoBehaviour
 	public int locationValue = 1;
 	public int rarity = 0;
 	public GameObject linePrefab;
+	public Material defaultLineMaterial;
+	public Material moveLineMaterial;
 	public bool bRouteHit = false;
 
 	private NameLibrary nameLibrary;
@@ -147,5 +149,17 @@ public class CampaignLocation : MonoBehaviour
 	public void Rename(string value)
 	{
 		locationName = value;
+	}
+
+	public void ConnectionsLit(bool balue)
+	{
+		Material connectionMat = defaultLineMaterial;
+		if (balue)
+			connectionMat = moveLineMaterial;
+		if (lineList != null)
+		{
+			foreach (LineRenderer line in lineList)
+				line.material = connectionMat;
+		}
 	}
 }

@@ -15,12 +15,14 @@ public class Fleet : MonoBehaviour
 	private List<Spacecraft> spacecraftList;
 	private CampaignLocation campaignLocation;
 	private FleetController fleetController;
+	private List<CampaignLocation> routeList;
 
 	private IEnumerator loadWaitCoroutine;
 
     void Awake()
     {
 		spacecraftList = new List<Spacecraft>();
+		routeList = new List<CampaignLocation>();
 		game = FindObjectOfType<Game>();
 		player = FindObjectOfType<Player>();
 		campaign = FindObjectOfType<Campaign>();
@@ -70,10 +72,29 @@ public class Fleet : MonoBehaviour
 
 	public void SetLocation(CampaignLocation location, bool position)
 	{
+		if (campaignLocation != null)
+			campaignLocation.ConnectionsLit(false);
+
 		campaignLocation = location;
+		campaignLocation.ConnectionsLit(teamID == 0);
 		if (position)
 			transform.position = location.transform.position;
 	}
+
+	public void SetRoute(List<CampaignLocation> list)
+	{
+		routeList.Clear();
+		if (list != null)
+		{
+			foreach (CampaignLocation cl in list)
+			{
+				if (cl != campaignLocation)
+					routeList.Add(cl);
+			}
+		}
+	}
+
+	public List<CampaignLocation> GetRoute() { return routeList; }
 
 	public CampaignLocation GetLocation() { return campaignLocation; }
 

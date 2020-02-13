@@ -15,43 +15,40 @@ public class MouseOrbitImproved : MonoBehaviour
 	public float yMinLimit = -20f;
 	public float yMaxLimit = 80f;
 
-	public float distanceMin = .5f;
+	public float distanceMin = 0.5f;
 	public float distanceMax = 15f;
 
 	public float moveSpeed = 10f;
 	public float moveAcceleration = 10f;
 	public float turnAcceleration = 10f;
 
-	float lx = 0;
-	float ly = 0;
-	float x = 0.0f;
-	float y = 0.0f;
-
+	private CameraController cameraController;
+	private Camera cameraMain;
+	private Vector3 moveInput = Vector3.zero;
+	private Vector3 moveVector = Vector3.zero;
 	private float inputX = 0f;
 	private float inputZ = 0f;
 	private float inputElevation = 0f;
-	bool bActivated = false;
-	bool bInputting = false;
-	bool bEdgeMousing = false;
-	Vector3 moveInput = Vector3.zero;
-	Vector3 lastMovePosition = Vector3.zero;
-	private Vector3 moveVector = Vector3.zero;
-	private Vector3 lastWidePosition = Vector3.zero;
-	private Quaternion lastWideRotation = Quaternion.identity;
-	CameraController cameraController;
-	Camera cameraMain;
+	private float lx = 0f;
+	private float ly = 0f;
+	private float x = 0f;
+	private float y = 0f;
+	private bool bActivated = false;
+	private bool bInputting = false;
+	private bool bEdgeMousing = false;
 
 	// Use this for initialization
 	void Start()
 	{
 		cameraController = FindObjectOfType<CameraController>();
 		cameraMain = Camera.main;
-		//Vector3 angles = transform.eulerAngles;
-		//x = angles.y;
-		//y = angles.x;
+		Vector3 angles = transform.eulerAngles;
+		x = angles.y;
+		y = angles.x;
 		target = orbitAnchor;
 		distance = distanceMax = orbitAnchor.localPosition.magnitude;
-		lastMovePosition = transform.position;
+		if (FindObjectOfType<BattleOutcome>())
+			SetCameraRotation(Quaternion.identity);
 	}
 
 	void Update()
@@ -62,21 +59,20 @@ public class MouseOrbitImproved : MonoBehaviour
 	void LateUpdate()
 	{
 		MouseScreenEdgeInput();
-		bActivated = bInputting || Input.GetButton("Fire2");
+		Quaternion rotation = Quaternion.identity;
+		Vector3 position = Vector3.zero;
+		
 		if (target != null)
 		{
-			if (bEdgeMousing || bActivated 
+			bActivated = bInputting || Input.GetButton("Fire2");
+			if (bEdgeMousing || bActivated
 				|| ((target != orbitAnchor) && (lx != 0f || ly != 0f)))
 			{
 				lx = Mathf.Lerp(lx, Input.GetAxis("Mouse X") * 0.05f * xSpeed, Time.deltaTime * turnAcceleration);
 				ly = Mathf.Lerp(ly, Input.GetAxis("Mouse Y") * 0.05f * ySpeed, Time.deltaTime * turnAcceleration);
 				x += lx;
 				y -= ly;
-
-				y = ClampAngle(y, yMinLimit, yMaxLimit);
 			}
-
-			Quaternion rotation = Quaternion.Euler(y, x, 0);
 
 			distance = Mathf.Clamp(distance - Input.GetAxis("Mouse ScrollWheel"), distanceMin, distanceMax + 1f);
 			if (distance > distanceMax)
@@ -84,22 +80,13 @@ public class MouseOrbitImproved : MonoBehaviour
 				SetOrbitTarget(null);
 			}
 
+			rotation *= Quaternion.Euler(y, x, 0);
 			Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
-			Vector3 position = (rotation * negDistance) + target.position;
-
-			float lerpSpeed = moveAcceleration;
-			if (moveInput == Vector3.zero)
-				lerpSpeed *= 10f;
-
-			transform.rotation = rotation;
-			transform.position = position + moveVector;
-
-			Debug.Log("updating");
+			position = (rotation * negDistance) + target.position;
 		}
-		//else
-		//{
-		//	SetOrbitTarget(null);
-		//}
+
+		transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * turnAcceleration);
+		transform.position = position + moveVector;
 	}
 
 	void MoveInput()
@@ -134,25 +121,13 @@ public class MouseOrbitImproved : MonoBehaviour
 		int margin = 3;
 
 		if (mousePosition.x <= 0f + margin)
-		{
-			//lx += -mousePanSpeed * Time.deltaTime;
 			bEdgeMousing = true;
-		}
 		if (mousePosition.x >= Screen.width - margin)
-		{
-			//lx += mousePanSpeed * Time.deltaTime;
 			bEdgeMousing = true;
-		}
 		if (mousePosition.y <= 0f + margin)
-		{
-			//ly += -mousePanSpeed * Time.deltaTime;
 			bEdgeMousing = true;
-		}
 		if (mousePosition.y >= Screen.height - margin)
-		{
-			//ly += mousePanSpeed * Time.deltaTime;
 			bEdgeMousing = true;
-		}
 	}
 
 	public static float ClampAngle(float angle, float min, float max)
@@ -186,9 +161,10 @@ public class MouseOrbitImproved : MonoBehaviour
 
 	public void SetCameraRotation(Quaternion value)
 	{
-		x = y = lx = ly = 0;
-		x = -28f;
 		transform.rotation = value;
-		Debug.Log("rotation: " + transform.rotation);
+		cameraMain.transform.localRotation = Quaternion.identity;
+		Vector3 angles = transform.eulerAngles;
+		x = angles.y;
+		y = angles.x;
 	}
 }

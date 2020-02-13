@@ -10,6 +10,7 @@ public class FleetAgent : MonoBehaviour
 	private Campaign campaign;
 	private ObjectManager objectManager;
 	private Fleet fleet;
+	private Identity identity;
 	private FleetController myFleetController;
 	private FleetController playerFleetController;
 	private LocationManager locationManager;
@@ -30,9 +31,10 @@ public class FleetAgent : MonoBehaviour
 		campaign = FindObjectOfType<Campaign>();
 		objectManager = FindObjectOfType<ObjectManager>();
 		fleet = GetComponentInParent<Fleet>();
+		identity = GetComponent<Identity>();
 		locationManager = FindObjectOfType<LocationManager>();
 		turnManager = FindObjectOfType<TurnManager>();
-		myFleetController = GetComponentInParent<FleetController>();
+		myFleetController = transform.parent.GetComponentInChildren<FleetController>();
 		nameLibrary = FindObjectOfType<NameLibrary>();
 
 		loadWaitCoroutine = LoadWait(0.2f);
@@ -59,17 +61,12 @@ public class FleetAgent : MonoBehaviour
 		{
 			if (myFleetController == null)
 				myFleetController = transform.parent.GetComponentInChildren<FleetController>();
-			
-			///myFleetController.StandbyMove(playerFleetController.GetLocation());
-			if ((myFleetController.GetRoute() == null)
-				|| myFleetController.GetRoute().Count <= 1)
+
+			if (fleet.GetLocation() != null)
 			{
-				if (fleet.GetLocation() != null)
-				{
-					int neighborIndex = Random.Range(0, fleet.GetLocation().GetNeighbors().Count);
-					CampaignLocation neighbor = fleet.GetLocation().GetNeighbors()[neighborIndex];
-					myFleetController.StandbyMove(neighbor);
-				}
+				int neighborIndex = Random.Range(0, fleet.GetLocation().GetNeighbors().Count);
+				CampaignLocation neighbor = fleet.GetLocation().GetNeighbors()[neighborIndex];
+				myFleetController.StandbyMove(neighbor);
 			}
 		}
 	}

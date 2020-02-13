@@ -45,7 +45,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numericID: 1
   cardName: Satellite
-  cardDescription: Ultralight orbital scanner
+  cardDescription: This ultralight orbital scanner cannot receive commands but the
+    large scanner onboard can return invaluable data.
   cardObjectPrefab: {fileID: 3172205958561284648, guid: f4496bfb5fac0614e8748e0b2c75ad15,
     type: 3}
   cardSprite: {fileID: 21300000, guid: 3e41fbc66b54709439bf9501f71038e2, type: 3}

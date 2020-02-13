@@ -30,11 +30,13 @@ public class MainMenu : MonoBehaviour
 
 	public void StartGame()
 	{
+		gameLoadingPanel.SetActive(true);
 		SceneManager.LoadScene("CampaignScene");
 	}
 
 	public void FleetCreator()
 	{
+		fleetLoadingPanel.SetActive(true);
 		SceneManager.LoadScene("FleetScene");
 	}
 }

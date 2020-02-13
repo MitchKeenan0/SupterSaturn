@@ -44,10 +44,10 @@ public class TurnManager : MonoBehaviour
 	{
 		fleetAgentList = new List<FleetAgent>();
 		FleetAgent[] fleetAgents = FindObjectsOfType<FleetAgent>();
-		foreach (FleetAgent fa in fleetAgents)
+		foreach (FleetAgent fleetAgent in fleetAgents)
 		{
-			fleetAgentList.Add(fa);
-			fa.SetPlayerFleetController(playerFleetController);
+			fleetAgentList.Add(fleetAgent);
+			fleetAgent.SetPlayerFleetController(playerFleetController);
 		}
 	}
 
@@ -59,16 +59,8 @@ public class TurnManager : MonoBehaviour
 		warningPanel.SetActive(false);
 
 		int numAgents = fleetAgentList.Count;
-		if (numAgents == 0)
-		{
-			fleetAgentList = new List<FleetAgent>(FindObjectsOfType<FleetAgent>());
-			numAgents = fleetAgentList.Count;
-		}
-		///Debug.Log("Num agents " + numAgents);
-		for(int i = 0; i < numAgents; i++)
-		{
+		for (int i = 0; i < numAgents; i++)
 			fleetAgentList[i].TakeTurnActions();
-		}
 	}
 
 	public void SetTurnAction()
@@ -89,9 +81,8 @@ public class TurnManager : MonoBehaviour
 	public void EndTurn()
 	{
 		foreach(FleetController fc in fleetControllerList)
-		{
 			fc.ExecuteTurn();
-		}
+
 		warningPanel.SetActive(false);
 		endTurnPanel.SetActive(false);
 		undoPanel.SetActive(false);
@@ -121,7 +112,6 @@ public class TurnManager : MonoBehaviour
 			if (fc.IsMoving())
 			{
 				bMoving = true;
-				Debug.Log(fc.name + " is moving");
 				break;
 			}
 		}

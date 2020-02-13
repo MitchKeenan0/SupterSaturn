@@ -44,7 +44,7 @@ public class Campaign : MonoBehaviour
 				float furthestDistance = 0f;
 				foreach (CampaignLocation cl in locationList)
 				{
-					if ((cl.GetNeighbors().Count > 0) && (!originLocations.Contains(cl)))
+					if ((cl.GetNeighbors().Count > 1) && (!originLocations.Contains(cl)))
 					{
 						float distanceToLocation = Vector3.Distance(cl.transform.position, Vector3.zero);
 						if (distanceToLocation > furthestDistance)
@@ -54,6 +54,7 @@ public class Campaign : MonoBehaviour
 						}
 					}
 				}
+
 				if (furthestLocation != null)
 				{
 					fleetList[i].SetLocation(furthestLocation, true);
@@ -64,12 +65,11 @@ public class Campaign : MonoBehaviour
 						MouseOrbitImproved moi = FindObjectOfType<MouseOrbitImproved>();
 						if (moi != null)
 						{
+							///moi.SetOrbitTarget(furthestLocation.transform);
 							Vector3 locationPosition = furthestLocation.transform.position;
 							moi.SetCameraPosition(locationPosition + (locationPosition.normalized * 10));
 
-							Vector3 cameraPosition = cameraMain.transform.position;
-							Vector3 relativePos = locationPosition - cameraPosition;
-							Quaternion toCenter = Quaternion.LookRotation(relativePos, Vector3.up);
+							Quaternion toCenter = Quaternion.LookRotation(locationPosition - moi.transform.position, Vector3.up);
 							moi.SetCameraRotation(toCenter);
 						}
 					}
@@ -82,7 +82,6 @@ public class Campaign : MonoBehaviour
 
 	public void SaveCampaign()
 	{
-		Debug.Log("saving campaign");
 		SaveCampaign save = CreateSaveCampaignObject();
 		BinaryFormatter bf = new BinaryFormatter();
 		FileStream file = File.Create(Application.persistentDataPath + "/campaignsave.save");

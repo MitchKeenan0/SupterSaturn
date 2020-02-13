@@ -66,7 +66,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bAgentStartsEnabled: 1
   mainEnginePower: 3
-  turningPower: 1.5
+  turningPower: 1
   maneuverPower: 1
   spacecraftName: Superliner
   thrustParticles: {fileID: 2379070149716345965}
@@ -646,6 +646,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateInterval: 0.1
+  scaleFactor: 0.8
 --- !u!1001 &2540978967155015790
 PrefabInstance:
   m_ObjectHideFlags: 0

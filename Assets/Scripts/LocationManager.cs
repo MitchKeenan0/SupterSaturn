@@ -83,7 +83,7 @@ public class LocationManager : MonoBehaviour
 				if (toPos.magnitude < minDistanceBetweenLocations)
 				{
 					hitAny = true;
-					liveSpread *= 0.05f;
+					liveSpread *= 1.05f;
 				}
 			}
 			messy = hitAny;
