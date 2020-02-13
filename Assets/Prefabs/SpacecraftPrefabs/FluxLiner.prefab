@@ -285,7 +285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e13fa68e42e8b8440943f266f3c67048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponSpeed: 1000
+  weaponSpeed: 250
   weaponAccuracy: 1
   munitionPrefab: {fileID: 298334711150030353, guid: 70345f5aeca2efd448dac5714d0187c8,
     type: 3}
@@ -293,7 +293,7 @@ MonoBehaviour:
     type: 3}
   prefireTime: 0.05
   fireRate: 0.215
-  rateDeviation: 0.1
+  reliability: 0.5
   weaponSprite: {fileID: 0}
 --- !u!114 &4889395795704047185
 MonoBehaviour:
@@ -340,9 +340,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1906621234774554819}
   serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0.3
-  m_AngularDrag: 0.3
+  m_Mass: 2
+  m_Drag: 0.2
+  m_AngularDrag: 0.5
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 1
@@ -556,6 +556,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateInterval: 0.1
+  scaleFactor: 1
 --- !u!1 &9164560056384610837
 GameObject:
   m_ObjectHideFlags: 0

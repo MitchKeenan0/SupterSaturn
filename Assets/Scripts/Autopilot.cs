@@ -158,7 +158,7 @@ public class Autopilot : MonoBehaviour
 		Vector3 toDestination = (destination - rb.velocity) - transform.position;
 
 		// steering
-		if (toDestination.magnitude >= 0.5f)
+		if (toDestination.magnitude >= 1f)
 		{
 			Vector3 maneuverVector = destination - rb.velocity;
 			spacecraft.Maneuver(maneuverVector);
@@ -267,7 +267,8 @@ public class Autopilot : MonoBehaviour
 
 	void ClearRoute()
 	{
-		routeVectors.Clear();
+		if (routeVectors != null)
+			routeVectors.Clear();
 		if (routeVisualizer != null)
 		{
 			routeVisualizer.ClearLine(-1);

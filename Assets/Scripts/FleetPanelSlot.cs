@@ -102,7 +102,7 @@ public class FleetPanelSlot : MonoBehaviour, IDeselectHandler
 			costText.enabled = true;
 			originalSlotCost = slotCard.cost;
 
-			int maxHealth = slotCard.cardObjectPrefab.GetComponent<Health>().maxHealth;
+			int maxHealth = slotCard.health;
 			int currentHealth = game.GetSavedHealth(index);
 			if (newCard)
 			{

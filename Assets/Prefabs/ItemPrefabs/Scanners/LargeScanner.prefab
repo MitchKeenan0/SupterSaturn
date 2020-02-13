@@ -47,7 +47,7 @@ MonoBehaviour:
   scanInterval: 10
   intervalDeviation: 0.1
   scanSpeed: 5
-  maxRadius: 40
+  maxRadius: 50
   updateInterval: 0.01
   scanRecoveryPeriod: 5
 --- !u!1 &5155169036934119614

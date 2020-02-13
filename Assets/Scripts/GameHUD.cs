@@ -8,6 +8,7 @@ public class GameHUD : MonoBehaviour
 {
 	public GameObject tutorialPanel;
 	public GameObject escapeMenuPanel;
+	public Button disengageButton;
 	public GameObject disengageDelayPanel;
 	public Text disengageDelayText;
 
@@ -20,6 +21,10 @@ public class GameHUD : MonoBehaviour
 		tutorialPanel.SetActive(false);
 		escapeMenuPanel.SetActive(false);
 		disengageDelayPanel.SetActive(false);
+		if (FindObjectOfType<BattleFleet>())
+			disengageButton.interactable = true;
+		else
+			disengageButton.interactable = false;
 	}
 
 	public void SetTutorialActive(bool value)

@@ -9,6 +9,7 @@ public class BattleFleet : MonoBehaviour
 
 	private Game game;
 	private Player player;
+	private CardToSpacecraftLoader cardLoader;
 
 	private IEnumerator loadWaitCoroutine;
     
@@ -16,11 +17,12 @@ public class BattleFleet : MonoBehaviour
 	{
 		game = FindObjectOfType<Game>();
 		player = FindObjectOfType<Player>();
+		cardLoader = FindObjectOfType<CardToSpacecraftLoader>();
 	}
 
     void Start()
     {
-		loadWaitCoroutine = LoadWait(0.1f);
+		loadWaitCoroutine = LoadWait(0.15f);
 		StartCoroutine(loadWaitCoroutine);
 	}
 
@@ -47,6 +49,14 @@ public class BattleFleet : MonoBehaviour
 					amidstPosition = groupPositions[i];
 				sp.transform.position = transform.position + amidstPosition;
 				sp.transform.SetParent(transform);
+
+				Card spCard = null;
+				if (teamID == 0)
+					spCard = game.GetSelectedCards()[i];
+				else
+					spCard = game.cardLibrary[Random.Range(0, game.npcCardLibrary.Length - 1)];
+				cardLoader.UploadCardToSpacecraft(spCard, sp);
+
 				sp.gameObject.SetActive(true);
 
 				if (sp.GetAgent() != null)

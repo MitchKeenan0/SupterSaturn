@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
+  hitboxScale: 1
   impactForce: 10
   impactPrefab: {fileID: 4929095700065580019, guid: a3764d103d069fa41ad9f6e2ddabde43,
     type: 3}
@@ -132,6 +133,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6447380005445377347, guid: c28a3a33ec843ed489ebefc9c291072c,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.ctime0
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6447380005445377347, guid: c28a3a33ec843ed489ebefc9c291072c,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key1.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6447380005445377347, guid: c28a3a33ec843ed489ebefc9c291072c,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key1.g
+      value: 0.39215687
+      objectReference: {fileID: 0}
+    - target: {fileID: 6447380005445377347, guid: c28a3a33ec843ed489ebefc9c291072c,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key1.b
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c28a3a33ec843ed489ebefc9c291072c, type: 3}

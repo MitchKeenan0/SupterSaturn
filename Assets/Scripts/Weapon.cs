@@ -10,7 +10,7 @@ public class Weapon : MonoBehaviour
 	public ParticleSystem armingParticles;
 	public float prefireTime = 0.1f;
 	public float fireRate = 1f;
-	public float rateDeviation = 0.5f;
+	public float reliability = 0.5f;
 	public Sprite weaponSprite;
 
 	private Spacecraft spacecraft;
@@ -107,7 +107,7 @@ public class Weapon : MonoBehaviour
 
 	private IEnumerator Recover(float waitTime)
 	{
-		float fireRateDeviationDelay = Random.Range(0f, rateDeviation);
+		float fireRateDeviationDelay = Random.Range(0f, Mathf.Clamp(1 - reliability, 0f, 1f));
 		yield return new WaitForSeconds(waitTime + fireRateDeviationDelay);
 		Recover();
 	}

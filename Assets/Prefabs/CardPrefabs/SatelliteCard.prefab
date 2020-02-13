@@ -50,8 +50,11 @@ MonoBehaviour:
   cardObjectPrefab: {fileID: 3172205958561284648, guid: f4496bfb5fac0614e8748e0b2c75ad15,
     type: 3}
   cardSprite: {fileID: 21300000, guid: 3e41fbc66b54709439bf9501f71038e2, type: 3}
-  iconSprite: {fileID: 0}
+  iconSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   level: 1
   cost: 50
   health: 2
   damage: 0
+  mainEnginePower: 0.1
+  turningPower: 0.1
+  maneuverPower: 0.1
