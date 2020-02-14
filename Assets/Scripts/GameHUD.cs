@@ -13,11 +13,17 @@ public class GameHUD : MonoBehaviour
 	public Text disengageDelayText;
 
 	private Game game;
+	private OptionsMenu options;
+	private MainMenu menu;
+	private TurnManager turnManager;
+	private CampaignHud campaignHud;
+	private TeamFleetHUD teamHud;
 	private IEnumerator disengageDelay;
 
 	void Awake()
 	{
 		game = FindObjectOfType<Game>();
+		options = Resources.FindObjectsOfTypeAll<OptionsMenu>()[0];
 		tutorialPanel.SetActive(false);
 		escapeMenuPanel.SetActive(false);
 		disengageDelayPanel.SetActive(false);
@@ -25,6 +31,15 @@ public class GameHUD : MonoBehaviour
 			disengageButton.interactable = true;
 		else
 			disengageButton.interactable = false;
+		ClockObjects();
+	}
+
+	void ClockObjects()
+	{
+		menu = FindObjectOfType<MainMenu>();
+		turnManager = FindObjectOfType<TurnManager>();
+		campaignHud = FindObjectOfType<CampaignHud>();
+		teamHud = FindObjectOfType<TeamFleetHUD>();
 	}
 
 	public void SetTutorialActive(bool value)
@@ -41,11 +56,31 @@ public class GameHUD : MonoBehaviour
 
 	public void SetEscapeMenuActive(bool value)
 	{
+		ClockObjects();
+		if (menu != null)
+			menu.SetMenuPanelVisible(!value);
+		if (turnManager != null)
+			turnManager.SetPanelActive(!value);
+		if (campaignHud != null)
+			campaignHud.SetPanelActive(!value);
+		if (teamHud != null)
+			teamHud.gameObject.SetActive(!value);
+
 		escapeMenuPanel.SetActive(value);
 	}
 
 	public void CloseEscapeMenu()
 	{
+		ClockObjects();
+		if (menu != null)
+			menu.SetMenuPanelVisible(true);
+		if (turnManager != null)
+			turnManager.SetPanelActive(true);
+		if (campaignHud != null)
+			campaignHud.SetPanelActive(true);
+		if (teamHud != null)
+			teamHud.gameObject.SetActive(true);
+
 		game.EscapeMenu();
 	}
 
@@ -72,8 +107,21 @@ public class GameHUD : MonoBehaviour
 		SceneManager.LoadScene("FleetScene");
 	}
 
+	public void Options()
+	{
+		options.EnterOptions();
+	}
+
+	public void ReturnToMainMenu()
+	{
+		Time.timeScale = 1;
+		game.SaveGame();
+		SceneManager.LoadScene("BaseScene");
+	}
+
 	public void ExitToDesktop()
 	{
+		Time.timeScale = 1;
 		game.SaveGame();
 		Application.Quit();
 	}

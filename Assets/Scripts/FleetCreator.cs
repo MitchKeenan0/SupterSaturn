@@ -294,13 +294,13 @@ public class FleetCreator : MonoBehaviour
 
 	public void StartGame()
 	{
-		sceneLoadCoroutine = LoadScene(0.3f, "CampaignScene");
+		sceneLoadCoroutine = LoadScene(0.5f, "CampaignScene");
 		StartCoroutine(sceneLoadCoroutine);
 	}
 
 	public void BackToMenu()
 	{
-		sceneLoadCoroutine = LoadScene(0.3f, "BaseScene");
+		sceneLoadCoroutine = LoadScene(0.2f, "BaseScene");
 		StartCoroutine(sceneLoadCoroutine);
 	}
 
@@ -309,7 +309,10 @@ public class FleetCreator : MonoBehaviour
 	{
 		loadingPanel.SetActive(true);
 		game.SaveGame();
+
+		Debug.Log("Loading " + sceneName + "...");
 		yield return new WaitForSeconds(waitTime);
+
 		SceneManager.LoadScene(sceneName);
 	}
 }

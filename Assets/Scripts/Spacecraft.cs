@@ -93,18 +93,19 @@ public class Spacecraft : MonoBehaviour
 			if (turningVector != Vector3.zero)
 			{
 				Vector3 torqueVector = Vector3.zero;
+				Vector3 angularVelocity = rb.angularVelocity;
 
 				float yaw = Vector3.Dot(transform.right, turningVector);
-				torqueVector += (transform.up * yaw * Mathf.Sqrt(Mathf.Abs(yaw))) * Time.fixedDeltaTime;
+				torqueVector += (transform.up * yaw * Mathf.Sqrt(Mathf.Abs(yaw)));
 
 				float pitch = -Vector3.Dot(transform.up, turningVector);
-				torqueVector += (transform.right * pitch * Mathf.Sqrt(Mathf.Abs(pitch))) * Time.fixedDeltaTime;
+				torqueVector += (transform.right * pitch * Mathf.Sqrt(Mathf.Abs(pitch)));
 
-				float roll = -transform.rotation.z;
-				torqueVector += (transform.forward * roll * Mathf.Sqrt(Mathf.Abs(roll))) * Time.fixedDeltaTime;
+				float roll = -transform.localRotation.z;
+				torqueVector += (transform.forward * roll * Mathf.Sqrt(Mathf.Abs(roll)));
 
-				rb.AddTorque(torqueVector * turningPower * 0.1f);
-				//transform.rotation = rb.rotation;
+				rb.AddTorque(torqueVector.normalized * turningPower * Time.fixedDeltaTime);
+				transform.rotation = rb.rotation;
 			}
 
 			Vector3 rbForceVector = Vector3.zero;

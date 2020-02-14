@@ -5,6 +5,7 @@ using UnityEngine;
 public class TurnManager : MonoBehaviour
 {
 	public float turnPassWaitTime = 1f;
+	public GameObject turnPanel;
 	public GameObject endTurnPanel;
 	public GameObject warningPanel;
 	public GameObject undoPanel;
@@ -125,5 +126,11 @@ public class TurnManager : MonoBehaviour
 			turnPassCoroutine = PassTurn(0.5f);
 			StartCoroutine(turnPassCoroutine);
 		}
+	}
+
+	public void SetPanelActive(bool value)
+	{
+		turnPanel.SetActive(value);
+		this.enabled = value;
 	}
 }

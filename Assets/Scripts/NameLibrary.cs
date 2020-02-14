@@ -11,7 +11,7 @@ public class NameLibrary : MonoBehaviour
 	public string[] uniqueLocationNames = { "Reccez", "Aqua Nebula", "Karaoke Nebula", "Randal's Cloud", "The Maelstrom", "Teh Garden", "Hydrogean", "Helix Nebula", "Sauna", "Guedes Giant", "Harrow" };
 	public string[] rareLocationNames = { "Family Fortress", "Edne", "Reasearch Base", "Nike", "HG-413", "Lost Temple", "Super Saturn", "Seed of the Stars", "Matrices of Or", "Father Star", "Never", "Empress" };
 
-	public string[] identityNames = { "Bauer", "CultureViper", "Carrera", "Voltez", "Kara", "Abriette", "Tangerine", "Minerva", "Chandra", "Ali", "Mahdi" };
+	public string[] identityNames = { "Bauer", "Culture Viper", "Carrera", "Voltez", "Kara", "Abriette", "Tangerine", "Minerva", "Chandra", "Ali", "Mahdi" };
 	public string[] fleetNames = { "Rogue Navy", "Scerzaron", "Thief Cartel", "Herald Fleet", "Bodysnatchers" };
 
 	public List<int> usedCommonLocations;

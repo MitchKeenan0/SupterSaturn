@@ -13,7 +13,7 @@ public class ObjectManager : MonoBehaviour
 	private Game game;
 	private CraftIconHUD hud;
 	private BattleOutcome battleOutcome;
-	private BattleAgent battleAgent;
+	private GameAgent gameAgent;
 
 	private IEnumerator loadWaitCoroutine;
 
@@ -21,7 +21,7 @@ public class ObjectManager : MonoBehaviour
 	{
 		spacecraftList = new List<Spacecraft>();
 		game = FindObjectOfType<Game>();
-		battleAgent = FindObjectOfType<BattleAgent>();
+		gameAgent = FindObjectOfType<GameAgent>();
 	}
 
 	void Start()
@@ -40,7 +40,7 @@ public class ObjectManager : MonoBehaviour
 
 		InitSpacecraftList();
 		InitGravityList();
-		battleAgent.SetAgentList(game.GetEnemySpacecraftList());
+		gameAgent.SetAgentList(game.GetEnemySpacecraftList());
 	}
 
 	void InitSpacecraftList()

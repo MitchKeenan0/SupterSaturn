@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class CampaignHud : MonoBehaviour
 {
+	public GameObject campaignPanel;
+
 	private Game game;
 
 	private IEnumerator fleetJumpDelay;
@@ -19,6 +21,12 @@ public class CampaignHud : MonoBehaviour
 		game.SaveGame();
 		fleetJumpDelay = FleetReturn(0.3f);
 		StartCoroutine(fleetJumpDelay);
+	}
+
+	public void SetPanelActive(bool value)
+	{
+		campaignPanel.SetActive(value);
+		this.enabled = value;
 	}
 
 	private IEnumerator FleetReturn(float waitTime)

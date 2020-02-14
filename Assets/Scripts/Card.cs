@@ -22,4 +22,7 @@ public class Card : MonoBehaviour
 	public float mainEnginePower = 1f;
 	public float turningPower = 1f;
 	public float maneuverPower = 0.6f;
+	public float mass = 1f;
+	public float linearDrag = 0.1f;
+	public float angularDrag = 0.1f;
 }

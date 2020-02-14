@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BattleAgent : MonoBehaviour
+public class GameAgent : MonoBehaviour
 {
 	public float updateInterval = 0.1f;
 	public float intervalDeviation = 0.1f;
 
 	private List<Agent> agentList;
+	private Identity identity;
 	private IEnumerator updateCoroutine;
 
 	void Awake()

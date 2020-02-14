@@ -56,6 +56,11 @@ MonoBehaviour:
   cost: 150
   health: 3
   damage: 1
+  rateOfFire: 1
+  weaponSprite: {fileID: 0}
   mainEnginePower: 5
-  turningPower: 1
-  maneuverPower: 1.5
+  turningPower: 0.5
+  maneuverPower: 1
+  mass: 1
+  linearDrag: 0.2
+  angularDrag: 0.2

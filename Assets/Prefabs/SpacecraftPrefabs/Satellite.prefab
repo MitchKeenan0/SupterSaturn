@@ -184,6 +184,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   teamID: 0
   preferredEngagementDistance: 10
+  bAttackPredictions: 1
 --- !u!114 &5836535628115178733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249,7 +250,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.1
+  m_Radius: 0.15
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!135 &3172205958561284657
 SphereCollider:

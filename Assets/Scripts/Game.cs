@@ -93,9 +93,7 @@ public class Game : MonoBehaviour
 	void Update()
 	{
 		if (Input.GetButtonDown("Cancel"))
-		{
 			EscapeMenu();
-		}
 	}
 
 	public void EscapeMenu()
@@ -429,6 +427,11 @@ public class Game : MonoBehaviour
 		try
 		{
 			File.Delete(GetSaveFilePath);
+
+			Spacecraft[] allSpacecraft = FindObjectsOfType<Spacecraft>();
+			int numSp = allSpacecraft.Length;
+			for (int i = 0; i < numSp; i++)
+				Destroy(allSpacecraft[i]);
 
 			selectedCardList = new List<Card>();
 			savedHealthList = new List<int>();

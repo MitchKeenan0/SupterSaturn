@@ -67,11 +67,15 @@ public class TargetPredictionHUD : MonoBehaviour
 	public void SetPrediction(Spacecraft sp, Vector3 position, Vector3 velocity, float period)
 	{
 		Prediction predictionToSet = null;
+
 		foreach (Prediction pre in predictionList)
 		{
 			if (pre.spacecraft == sp)
 				predictionToSet = pre;
 		}
+
+		if (!predictionToSet)
+			predictionToSet = CreateNewPrediction();
 
 		if (predictionToSet != null)
 			predictionToSet.SetPrediction(sp, position, velocity, period);

@@ -17,7 +17,8 @@ public class CardToSpacecraftLoader : MonoBehaviour
 
 		if (csp.GetComponent<Health>())
 		{
-			csp.GetComponent<Health>().maxHealth = card.health;
+			Health cspHealth = csp.GetComponent<Health>();
+			cspHealth.maxHealth = card.health;
 		}
 
 		if (csp.GetComponent<Weapon>() && csp.GetComponent<Weapon>().munitionPrefab.GetComponent<Projectile>())
@@ -26,6 +27,14 @@ public class CardToSpacecraftLoader : MonoBehaviour
 			cspWeapon.munitionPrefab.GetComponent<Projectile>().damage = card.damage;
 			cspWeapon.fireRate = card.rateOfFire;
 			cspWeapon.weaponSprite = card.weaponSprite;
+		}
+
+		if (csp.GetComponent<Rigidbody>())
+		{
+			Rigidbody cspRigidbody = csp.GetComponent<Rigidbody>();
+			cspRigidbody.mass = card.mass;
+			cspRigidbody.drag = card.linearDrag;
+			cspRigidbody.angularDrag = card.angularDrag;
 		}
 
 		/*

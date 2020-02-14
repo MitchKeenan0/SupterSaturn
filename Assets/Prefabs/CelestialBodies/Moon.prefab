@@ -222,9 +222,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   xForceDirection: 0
-  yForceDirection: 1
+  yForceDirection: 0.1
   zForceDirection: 0
-  speedMultiplier: 1
+  speedMultiplier: 0.01
   bRandomRotationStart: 1
   bRandomSpeed: 1
   worldPivot: 0

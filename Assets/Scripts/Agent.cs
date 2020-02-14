@@ -51,40 +51,37 @@ public class Agent : MonoBehaviour
 		{
 			if (autopilot != null)
 				autopilot.SpacecraftNavigationCommands();
-			if ((teamID != 0) || ((targetTransform != null)) || bAutoTarget)
+			if (bEnabled && ((teamID != 0) || (targetTransform != null) || bAutoTarget))
 				UpdateTarget();
 		}
 	}
 
 	void UpdateTarget()
 	{
-		if (bEnabled)
+		if (targetTransform != null)
 		{
-			if (targetTransform != null)
+			Spacecraft targetSpacecraft = targetTransform.GetComponent<Spacecraft>();
+			bool validSpacecraft = (targetSpacecraft != null) && (targetSpacecraft.IsAlive()) && (targetSpacecraft.GetMarks() > 0);
+			bool validPrediction = !validSpacecraft && bAttackPredictions && (bPredictingTarget && (targetTransform.position != Vector3.zero));
+
+			if (validSpacecraft || validPrediction)
 			{
-				Spacecraft targetSpacecraft = targetTransform.GetComponent<Spacecraft>();
-				bool validSpacecraft = (targetSpacecraft != null) && (targetSpacecraft.IsAlive()) && (targetSpacecraft.GetMarks() > 0);
-				bool validPrediction = !validSpacecraft && bAttackPredictions && (bPredictingTarget && (targetTransform.position != Vector3.zero));
-				
-				if (validSpacecraft || validPrediction)
+				if (LineOfSight(targetTransform.position, targetTransform) || !validSpacecraft)
 				{
-					if (LineOfSight(targetTransform.position, targetTransform) || !validSpacecraft)
+					if (fireCoordinator != null)
 					{
-						if (fireCoordinator != null)
-						{
-							fireCoordinator.UpdateFireCoordinator();
-						}
+						fireCoordinator.UpdateFireCoordinator();
 					}
-				}
-				else
-				{
-					AquireTarget();
 				}
 			}
 			else
 			{
 				AquireTarget();
 			}
+		}
+		else
+		{
+			AquireTarget();
 		}
 	}
 
@@ -97,7 +94,6 @@ public class Agent : MonoBehaviour
 			GameObject ga = scannerTargets[0];
 			if (ga != null)
 			{
-				// tbd target selection
 				if (LineOfSight(ga.transform.position, ga.transform))
 				{
 					SetTarget(ga.transform);
@@ -190,6 +186,7 @@ public class Agent : MonoBehaviour
 	public void SetOffense(bool value)
 	{
 		bAutoTarget = value;
+		bAttackPredictions = value;
 	}
 
 	public void Regroup()

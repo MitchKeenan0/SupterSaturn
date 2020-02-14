@@ -155,12 +155,12 @@ public class Autopilot : MonoBehaviour
 
 	void FlyTo(Vector3 destination)
 	{
-		Vector3 toDestination = (destination - rb.velocity) - transform.position;
+		Vector3 toDestination = destination - rb.velocity - transform.position;
 
 		// steering
 		if (toDestination.magnitude >= 1f)
 		{
-			Vector3 maneuverVector = destination - rb.velocity;
+			Vector3 maneuverVector = destination;
 			spacecraft.Maneuver(maneuverVector);
 		}
 
@@ -183,15 +183,13 @@ public class Autopilot : MonoBehaviour
 
 		// thrust
 		float distanceToDestination = toDestination.magnitude;
-		if (distanceToDestination > 0.1f)
+		if ((distanceToDestination > 0.1f) && (destination != holdPosition))
 		{
 			float dotToDestination = Vector3.Dot(transform.forward, toDestination.normalized);
 			if (dotToDestination > 0.8f)
 			{
-				float throttle = Mathf.Clamp(((distanceToDestination * 0.1f) * spacecraft.mainEnginePower * dotToDestination), -1, 1);
-				float dotToVelocity = Vector3.Dot(transform.forward, rb.velocity.normalized);
-				if ((dotToVelocity > 0) && (distanceToDestination < rb.velocity.magnitude))
-					throttle *= 0.0f;
+				float throttle = Mathf.Clamp(((distanceToDestination * 0.01f) * spacecraft.mainEnginePower * dotToDestination), -1, 1);
+				float destinationVelocityDot = Vector3.Dot(toDestination.normalized, rb.velocity.normalized);
 				spacecraft.MainEngines(throttle);
 			}
 		}

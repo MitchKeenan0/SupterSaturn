@@ -15,7 +15,7 @@ public class Scanner : MonoBehaviour
 	private List<GameObject> targetList;
 	private GameObject scanRender;
 	private MeshRenderer meshRenderer;
-	private Spacecraft spacecraft;
+	private Spacecraft mySpacecraft;
 	private TargetPredictionHUD predictionHud;
 	private IEnumerator scanCoroutine;
 	private IEnumerator updateCoroutine;
@@ -29,7 +29,7 @@ public class Scanner : MonoBehaviour
 	void Start()
     {
 		targetList = new List<GameObject>();
-		spacecraft = GetComponentInParent<Spacecraft>();
+		mySpacecraft = GetComponentInParent<Spacecraft>();
 		predictionHud = FindObjectOfType<TargetPredictionHUD>();
 
 		meshRenderer = GetComponentInChildren<MeshRenderer>();
@@ -41,21 +41,41 @@ public class Scanner : MonoBehaviour
 		StartCoroutine(scanCoroutine);
 	}
 
+	private IEnumerator LoopingScanLaunch(float waitTime)
+	{
+		while (true)
+		{
+			LaunchScan();
+			yield return new WaitForSeconds(waitTime);
+		}
+	}
+
 	void LaunchScan()
 	{
 		ClearTargets();
 		currentRadius = 0f;
 		timeAtScan = Time.time;
+
 		updateCoroutine = UpdateScan(updateInterval);
 		StartCoroutine(updateCoroutine);
 	}
 
 	void UpdateScan()
 	{
-		if (spacecraft.GetAgent().teamID == 0)
+		if (mySpacecraft.GetAgent().teamID == 0)
 		{
 			UpdateScanRender();
-			meshRenderer.enabled = true;
+			if (!meshRenderer.enabled)
+				meshRenderer.enabled = true;
+		}
+
+		currentRadius += (scanSpeed * Time.deltaTime);
+		bool bScanFinished = (Time.time - timeAtScan) >= scanInterval;
+		if (bScanFinished)
+		{
+			ClearTargets();
+			StopCoroutine(updateCoroutine);
+			return;
 		}
 
 		hits = Physics.OverlapSphere(transform.position, currentRadius);
@@ -67,33 +87,17 @@ public class Scanner : MonoBehaviour
 				if (hit.transform != gameObject.transform)
 				{
 					Spacecraft sp = hit.gameObject.GetComponent<Spacecraft>();
-					if ((sp != null) && (sp != spacecraft))
+					if ((sp != null) 
+						&& sp.IsAlive()
+						&& (sp.GetAgent().teamID != mySpacecraft.GetAgent().teamID)
+						&& mySpacecraft.GetAgent().LineOfSight(sp.transform.position, sp.transform)
+						&& (Vector3.Distance(sp.transform.position, transform.position) <= maxRadius))
 					{
-						if (sp.GetAgent().teamID != spacecraft.GetAgent().teamID)
-						{
-							if (spacecraft.GetAgent().LineOfSight(sp.transform.position, sp.transform))
-							{
-								if (Vector3.Distance(sp.transform.position, transform.position) <= maxRadius)
-								{
-									targetList.Add(hit.gameObject);
-									sp.GetComponent<Spacecraft>().AddMarkValue(1);
-
-									if (spacecraft.GetAgent().teamID == 0)
-										predictionHud.SetPrediction(sp, Vector3.zero, Vector3.zero, 0f);
-								}
-							}
-						}
+						targetList.Add(hit.gameObject);
+						sp.GetComponent<Spacecraft>().AddMarkValue(1);
 					}
 				}
 			}
-		}
-
-		currentRadius += (scanSpeed * Time.deltaTime);
-		bool bScanFinished = (Time.time - timeAtScan) >= scanInterval;
-		if (bScanFinished)
-		{
-			ClearTargets();
-			StopCoroutine(updateCoroutine);
 		}
 	}
 
@@ -112,10 +116,13 @@ public class Scanner : MonoBehaviour
 	void ClearTargets()
 	{
 		int numTargets = targetList.Count;
-		if (numTargets > 0){
+		if (numTargets > 0)
+		{
 			// looping thru each target..
-			for(int i = 0; i < numTargets; i++){
-				if ((targetList.Count > i) && (targetList[i] != null)){
+			for(int i = 0; i < numTargets; i++)
+			{
+				if ((targetList.Count > i) && (targetList[i] != null))
+				{
 					GameObject c = targetList[i];
 
 					// optionally keep predictions unless theyre gone
@@ -125,28 +132,18 @@ public class Scanner : MonoBehaviour
 						if ((targetPrediction.spacecraft == null) || (!targetPrediction.spacecraft.IsAlive()))
 							targetList.Remove(targetPrediction.gameObject);
 					}
+					
 					// create prediction and lose contact
 					else if (c.GetComponent<Spacecraft>())
 					{
 						Spacecraft sp = c.GetComponent<Spacecraft>();
 						sp.AddMarkValue(-1);
-						if (spacecraft.GetAgent().teamID == 0)
-						{
+						if (mySpacecraft.GetAgent().teamID == 0)
 							predictionHud.SetPrediction(sp, c.transform.position, c.GetComponent<Rigidbody>().velocity, scanInterval - scanRecoveryPeriod);
-						}
 						targetList.Remove(sp.gameObject);
 					}
 				}
 			}
-		}
-	}
-
-	private IEnumerator LoopingScanLaunch(float waitTime)
-	{
-		while (true)
-		{
-			LaunchScan();
-			yield return new WaitForSeconds(waitTime);
 		}
 	}
 

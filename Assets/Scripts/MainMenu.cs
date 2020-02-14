@@ -7,25 +7,19 @@ public class MainMenu : MonoBehaviour
 {
 	public GameObject gameLoadingPanel;
 	public GameObject fleetLoadingPanel;
+	public GameObject menuPanel;
 
 	private Game game;
+	private OptionsMenu options;
 
     void Start()
     {
 		gameLoadingPanel.SetActive(false);
 		fleetLoadingPanel.SetActive(false);
+		options = FindObjectOfType<OptionsMenu>();
+		options.gameObject.SetActive(false);
 		game = FindObjectOfType<Game>();
 		game.LoadGame();
-	}
-
-	public void GameLoading()
-	{
-		gameLoadingPanel.SetActive(true);
-	}
-
-	public void FleetLoading()
-	{
-		fleetLoadingPanel.SetActive(true);
 	}
 
 	public void StartGame()
@@ -38,5 +32,22 @@ public class MainMenu : MonoBehaviour
 	{
 		fleetLoadingPanel.SetActive(true);
 		SceneManager.LoadScene("FleetScene");
+	}
+
+	public void Options()
+	{
+		options.EnterOptions();
+	}
+
+	public void ExitGame()
+	{
+		game.SaveGame();
+		Application.Quit();
+	}
+
+	public void SetMenuPanelVisible(bool value)
+	{
+		menuPanel.SetActive(value);
+		this.enabled = value;
 	}
 }
