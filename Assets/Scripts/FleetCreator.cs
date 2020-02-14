@@ -41,6 +41,7 @@ public class FleetCreator : MonoBehaviour
 
 	void Awake()
 	{
+		Time.timeScale = 1;
 		player = FindObjectOfType<Player>();
 		game = FindObjectOfType<Game>();
 		game.LoadGame();
@@ -307,12 +308,13 @@ public class FleetCreator : MonoBehaviour
 	private IEnumerator sceneLoadCoroutine;
 	private IEnumerator LoadScene(float waitTime, string sceneName)
 	{
+		Time.timeScale = 1;
 		loadingPanel.SetActive(true);
 		game.SaveGame();
-
-		Debug.Log("Loading " + sceneName + "...");
+		
 		yield return new WaitForSeconds(waitTime);
 
+		Debug.Log("Fleetcreator scene manager loading scene " + sceneName + "...");
 		SceneManager.LoadScene(sceneName);
 	}
 }

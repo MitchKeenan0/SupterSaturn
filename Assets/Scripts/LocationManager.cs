@@ -12,6 +12,9 @@ public class LocationManager : MonoBehaviour
 	public GameObject[] locationLibrary;
 
 	private Campaign campaign;
+	private FleetCreator fleetCreator;
+	private MainMenu menu;
+	private BattleOutcome battle;
 	private List<CampaignLocation> allLocations;
 	private List<CampaignLocation> route;
 
@@ -20,13 +23,16 @@ public class LocationManager : MonoBehaviour
 	void Awake()
 	{
 		allLocations = new List<CampaignLocation>();
+		route = new List<CampaignLocation>();
+		campaign = GetComponent<Campaign>();
+		fleetCreator = FindObjectOfType<FleetCreator>();
+		menu = FindObjectOfType<MainMenu>();
+		battle = FindObjectOfType<BattleOutcome>();
 	}
 
     void Start()
     {
-		route = new List<CampaignLocation>();
-		campaign = GetComponent<Campaign>();
-		if (allLocations.Count == 0)
+		if ((allLocations.Count == 0) && (!fleetCreator && !menu && !battle))
 			InitLocations();
 	}
 

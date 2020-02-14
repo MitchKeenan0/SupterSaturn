@@ -159,7 +159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locationID: 2
   reach: 15
-  connections: 2
+  connections: 3
   locationName: Name
   locationValue: 3
   rarity: 2

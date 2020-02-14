@@ -14,12 +14,14 @@ public class Game : MonoBehaviour
 	public Card[] npcCardLibrary;
 	public List<Card> initialSpacecraftCards;
 	public int initialChevrons = 200;
+	public Campaign ghostCampaignPrefab;
 
 	private Player player;
 	private Fleet playerFleet;
 	private Fleet enemyFleet;
 	private GameHUD gameHud;
 	private Campaign campaign;
+	private GameObject ghostCampaign;
 	private List<Card> selectedCardList;
 	private List<Card> enemyCardList;
 	private List<Spacecraft> spacecraftList;
@@ -55,11 +57,6 @@ public class Game : MonoBehaviour
 
 	void Awake()
 	{
-		Campaign[] componentCampaigns = GetComponents<Campaign>();
-		int numCampaigns = componentCampaigns.Length;
-		for (int i = 0; i < numCampaigns; i++)
-			Destroy(componentCampaigns[i]);
-
 		if (game == null)
 		{
 			DontDestroyOnLoad(gameObject);
@@ -202,8 +199,6 @@ public class Game : MonoBehaviour
 				savedHealthList.Clear();
 			}
 
-			if (!campaign)
-				campaign = FindObjectOfType<Campaign>();
 			if (campaign != null)
 				campaign.LoadCampaign();
 
@@ -327,10 +322,9 @@ public class Game : MonoBehaviour
 
 	private Save CreateSaveGameObject()
 	{
+		Debug.Log("saving game...");
 		Save save = new Save();
 
-		if (!campaign)
-			campaign = FindObjectOfType<Campaign>();
 		if (campaign != null)
 			campaign.SaveCampaign();
 
@@ -417,7 +411,7 @@ public class Game : MonoBehaviour
 		save.fleetTutorialClosed = bFleetTutorialClosed;
 		save.gameTutorialClosed = bGameTutorialClosed;
 
-		///Debug.Log("Game Saved");
+		Debug.Log("game saved");
 
 		return save;
 	}
@@ -427,6 +421,9 @@ public class Game : MonoBehaviour
 		try
 		{
 			File.Delete(GetSaveFilePath);
+
+			if (campaign != null)
+				campaign.DeleteSave();
 
 			Spacecraft[] allSpacecraft = FindObjectsOfType<Spacecraft>();
 			int numSp = allSpacecraft.Length;
@@ -438,17 +435,6 @@ public class Game : MonoBehaviour
 			spacecraftList = new List<Spacecraft>();
 			enemyCardList = new List<Card>();
 			enemySpacecraftList = new List<Spacecraft>();
-
-			Campaign cp = campaign;
-			if (!cp)
-			{
-				cp = gameObject.AddComponent<Campaign>();
-				cp.enabled = false;
-			}
-			if (cp != null)
-				cp.DeleteSave();
-			if (gameObject.GetComponent<Campaign>())
-				DestroyImmediate(gameObject.GetComponent<Campaign>(), true);
 
 			SaveGame();
 

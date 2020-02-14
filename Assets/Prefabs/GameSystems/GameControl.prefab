@@ -55,3 +55,5 @@ MonoBehaviour:
   initialSpacecraftCards:
   - {fileID: 5883829961090761148, guid: f87ade3d4e2a75641a02aced5dc863f5, type: 3}
   initialChevrons: 999
+  ghostCampaignPrefab: {fileID: 4911098824289123668, guid: 98a239bf1a49efb44b0bdac877cc469d,
+    type: 3}

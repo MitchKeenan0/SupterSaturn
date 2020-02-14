@@ -18,7 +18,7 @@ public class Identity : MonoBehaviour
     {
 		fleetList = new List<Fleet>();
 		nameLibrary = FindObjectOfType<NameLibrary>();
-		if (!bLoaded && nameLibrary != null)
+		if (nameLibrary != null)
 			InitIdentity();
 	}
 

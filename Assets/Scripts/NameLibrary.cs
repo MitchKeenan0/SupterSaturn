@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class NameLibrary : MonoBehaviour
 {
+	public static NameLibrary nameLibrary;
+
 	public string[] fighterNames = { "Bauer", "Carrera", "Voltez", "Abbey" };
 	public string[] schoonerNames = { "Libra", "Calet", "Figurine" };
 
@@ -21,11 +23,20 @@ public class NameLibrary : MonoBehaviour
 
 	void Awake()
 	{
+		if (nameLibrary == null)
+		{
+			DontDestroyOnLoad(gameObject);
+			nameLibrary = this;
+		}
+		else if (nameLibrary != this)
+		{
+			Destroy(gameObject);
+		}
+
 		usedCommonLocations = new List<int>();
 		usedUniqueLocations = new List<int>();
 		usedRareLocations = new List<int>();
 		usedIdentityNames = new List<int>();
-		DontDestroyOnLoad(gameObject);
 	}
 
 	string GetSerializedName()

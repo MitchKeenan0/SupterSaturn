@@ -45,13 +45,12 @@ public class GameHUD : MonoBehaviour
 	public void SetTutorialActive(bool value)
 	{
 		tutorialPanel.SetActive(value);
+
 		if (!game)
 			game = FindObjectOfType<Game>();
 
 		if ((game != null) && (value == false))
-		{
 			game.CloseTutorial();
-		}
 	}
 
 	public void SetEscapeMenuActive(bool value)
