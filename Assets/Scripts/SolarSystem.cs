@@ -24,11 +24,8 @@ public class SolarSystem : BattleScene
 		base.InitScene();
 
 		bool solarCenter = false;
-		//if (Random.Range(0f, 1f) > 0.3f)
-		//{
-			GameObject sunObj = Instantiate(sunPrefab, transform);
-			solarCenter = true;
-		//}
+		GameObject sunObj = Instantiate(sunPrefab, transform);
+		solarCenter = true;
 
 		GameObject backupCenter = null;
 		float biggestScale = 0f;

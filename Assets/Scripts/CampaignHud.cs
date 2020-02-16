@@ -8,25 +8,28 @@ public class CampaignHud : MonoBehaviour
 	public GameObject campaignPanel;
 
 	private Game game;
+	private Campaign campaign;
 
 	private IEnumerator fleetJumpDelay;
 
     void Start()
     {
 		game = FindObjectOfType<Game>();
+		campaign = FindObjectOfType<Campaign>();
     }
-
-	public void FleetCreator()
-	{
-		game.SaveGame();
-		fleetJumpDelay = FleetReturn(0.3f);
-		StartCoroutine(fleetJumpDelay);
-	}
 
 	public void SetPanelActive(bool value)
 	{
 		campaignPanel.SetActive(value);
 		this.enabled = value;
+	}
+
+	public void FleetCreator()
+	{
+		campaign.SaveCampaign();
+		game.SaveGame();
+		fleetJumpDelay = FleetReturn(0.3f);
+		StartCoroutine(fleetJumpDelay);
 	}
 
 	private IEnumerator FleetReturn(float waitTime)

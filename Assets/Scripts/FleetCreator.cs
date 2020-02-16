@@ -36,6 +36,7 @@ public class FleetCreator : MonoBehaviour
 
 	private IEnumerator deselectGraceCoroutine;
 	private IEnumerator loadGraceCoroutine;
+	private IEnumerator sceneLoadCoroutine;
 
 	public List<FleetPanelSlot> GetPanelSlots() { return panelSlots; }
 
@@ -289,32 +290,31 @@ public class FleetCreator : MonoBehaviour
 
 	public void SetName(string value)
 	{
-		///Debug.Log("Set player name " + value);
 		player.SetName(value);
 	}
 
 	public void StartGame()
 	{
-		sceneLoadCoroutine = LoadScene(0.5f, "CampaignScene");
+		game.SaveGame();
+		sceneLoadCoroutine = LoadScene(0.2f, "CampaignScene");
 		StartCoroutine(sceneLoadCoroutine);
 	}
 
 	public void BackToMenu()
 	{
+		game.SaveGame();
 		sceneLoadCoroutine = LoadScene(0.2f, "BaseScene");
 		StartCoroutine(sceneLoadCoroutine);
 	}
 
-	private IEnumerator sceneLoadCoroutine;
 	private IEnumerator LoadScene(float waitTime, string sceneName)
 	{
 		Time.timeScale = 1;
 		loadingPanel.SetActive(true);
-		game.SaveGame();
 		
 		yield return new WaitForSeconds(waitTime);
 
-		Debug.Log("Fleetcreator scene manager loading scene " + sceneName + "...");
+		Debug.Log("Fleetcreator loading scene " + sceneName + "...");
 		SceneManager.LoadScene(sceneName);
 	}
 }

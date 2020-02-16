@@ -4,11 +4,10 @@ using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System;
+using UnityEngine.SceneManagement;
 
 public class Campaign : MonoBehaviour
 {
-	public static Campaign campaign;
-
 	private Game game;
 	private Camera cameraMain;
 	private FleetHUD fleetHud;
@@ -20,20 +19,24 @@ public class Campaign : MonoBehaviour
 	private List<CampaignLocation> originLocations = new List<CampaignLocation>();
 	private bool bLocationsInit = false;
 
+	void OnEnable()
+	{
+		SceneManager.sceneLoaded += OnLevelFinishedLoading;
+	}
+	void OnDisable()
+	{
+		SceneManager.sceneLoaded -= OnLevelFinishedLoading;
+	}
+	void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
+	{
+		LoadCampaign();
+		if (game != null)
+			game.LoadGame();
+	}
+
 	void Awake()
     {
 		Time.timeScale = 1;
-
-		if (campaign == null)
-		{
-			DontDestroyOnLoad(gameObject);
-			campaign = this;
-		}
-		else if (campaign != this)
-		{
-			Destroy(gameObject);
-		}
-
 		fleetList = new List<Fleet>();
 		locationList = new List<CampaignLocation>();
 		originLocations = new List<CampaignLocation>();
@@ -43,34 +46,24 @@ public class Campaign : MonoBehaviour
 		locationManager = FindObjectOfType<LocationManager>();
 		cameraMain = Camera.main;
 		game = FindObjectOfType<Game>();
-
-		if (locationManager != null)
-		{
-			game.LoadGame();
-			Debug.Log("campaign loaded game");
-		}
 	}
 
-	public void InitFleetLocations(Fleet fleet)
+	public void InitFleetLocations()
 	{
 		if (!bLocationsInit)
 		{
-			if (!locationManager)
-				locationManager = FindObjectOfType<LocationManager>();
-			if (!fleetHud)
-				fleetHud = FindObjectOfType<FleetHUD>();
-			if (fleetList == null)
-				fleetList = new List<Fleet>();
 			locationList = locationManager.GetAllLocations();
 			fleetList = fleetHud.GetFleetList();
 			int numFleets = fleetList.Count;
 
+			///Debug.Log("init fleet locations with " + numFleets + " fleets    " + locationList.Count + " locations");
 			for (int i = 0; i < numFleets; i++)
 			{
 				CampaignLocation furthestLocation = null;
 				float furthestDistance = 0f;
 				foreach (CampaignLocation cl in locationList)
 				{
+					///Debug.Log("neighbors: " + cl.GetNeighbors().Count + "    contained in origins: " + originLocations.Contains(cl));
 					if ((cl.GetNeighbors().Count > 0) && (!originLocations.Contains(cl)))
 					{
 						float distanceToLocation = Vector3.Distance(cl.transform.position, Vector3.zero);
@@ -84,6 +77,7 @@ public class Campaign : MonoBehaviour
 
 				if (furthestLocation != null)
 				{
+					///Debug.Log("campaign setting fleet location");
 					fleetList[i].SetLocation(furthestLocation, true);
 					originLocations.Add(furthestLocation);
 
@@ -92,7 +86,6 @@ public class Campaign : MonoBehaviour
 						MouseOrbitImproved moi = FindObjectOfType<MouseOrbitImproved>();
 						if (moi != null)
 						{
-							///moi.SetOrbitTarget(furthestLocation.transform);
 							Vector3 locationPosition = furthestLocation.transform.position;
 							moi.SetCameraPosition(locationPosition + (locationPosition.normalized * 10));
 
@@ -101,9 +94,15 @@ public class Campaign : MonoBehaviour
 						}
 					}
 				}
+				//else
+				//{
+				//	Debug.Log("furthest location was null");
+				//}
 
 				bLocationsInit = true;
 			}
+
+			SaveCampaign();
 		}
 	}
 
@@ -124,6 +123,7 @@ public class Campaign : MonoBehaviour
 		int numLocations = locationList.Count;
 		if (numLocations > 0)
 		{
+			///Debug.Log("campaign saving " + numLocations + " locations");
 			for (int i = 0; i < numLocations; i++)
 			{
 				CampaignLocation cl = locationList[i];
@@ -138,7 +138,6 @@ public class Campaign : MonoBehaviour
 			}
 		}
 
-		Debug.Log("Saving identities... " + Time.time);
 		Identity[] ids = FindObjectsOfType<Identity>();
 		List<Identity> idList = new List<Identity>();
 		int numIDs = ids.Length;
@@ -154,19 +153,21 @@ public class Campaign : MonoBehaviour
 					save.identityColorsG.Add(id.identityColor.g);
 					save.identityColorsB.Add(id.identityColor.b);
 
-					if ((id.GetFleetList().Count > 0) && (id.GetFleetList()[0] != null))
+					if (id.GetLocation() != null)
 					{
-						CampaignLocation idLocation = id.GetFleetList()[0].GetLocation();
+						CampaignLocation idLocation = id.GetLocation();
 						if (locationList.Contains(idLocation))
 							save.identityLocationList.Add(locationList.IndexOf(idLocation));
 					}
+					//else
+					//{
+					//	Debug.Log("id location is null");
+					//}
 				}
 			}
 
-			Debug.Log("Identities saved " + Time.time);
+			///Debug.Log("Campaign saved " + save.identityNames.Count + " identity names    " + save.identityLocationList.Count + " id locations");
 		}
-
-		Debug.Log("Campaign saved " + Time.time);
 
 		return save;
 	}
@@ -180,7 +181,7 @@ public class Campaign : MonoBehaviour
 			SaveCampaign save = (SaveCampaign)bf.Deserialize(file);
 			file.Close();
 
-			if ((fleetCreator == null) && (fleetHud != null) && (save.locationList.Count > 0))
+			if (save.locationList.Count > 0)
 			{
 				int numSavedLocations = save.locationList.Count;
 				if (numSavedLocations > 0)
@@ -191,8 +192,13 @@ public class Campaign : MonoBehaviour
 						Vector3 locationPosition = new Vector3(save.locationPositionsX[i], save.locationPositionsY[i], save.locationPositionsZ[i]);
 						positionList.Add(locationPosition);
 					}
+
 					locationManager.LoadLocations(save.locationList, positionList, save.locationNameList);
 				}
+			}
+			else
+			{
+				locationManager.InitNewLocations();
 			}
 
 			if ((save.identityNames != null) && (save.identityNames.Count > 0))
@@ -203,7 +209,7 @@ public class Campaign : MonoBehaviour
 				{
 					for (int i = 0; i < numSavedIdentities; i++)
 					{
-						if (allIDs[i] != null)
+						if ((i < allIDs.Length) && (allIDs[i] != null))
 						{
 							Identity id = allIDs[i];
 							Color idColor = new Color(save.identityColorsR[i], save.identityColorsG[i], save.identityColorsB[i]);
@@ -213,23 +219,11 @@ public class Campaign : MonoBehaviour
 				}
 			}
 		}
-	}
-
-	public void DeleteSave()
-	{
-		try
+		else
 		{
-			File.Delete(GetSaveFilePath);
-			///Debug.Log("save campaign deleted");
+			locationManager.InitNewLocations();
 		}
-		catch (Exception ex)
-		{
-			Debug.LogException(ex);
-		}
-	}
 
-	private string GetSaveFilePath
-	{
-		get { return Application.persistentDataPath + "/campaignsave.save"; }
+		///Debug.Log("Campaign loaded");
 	}
 }

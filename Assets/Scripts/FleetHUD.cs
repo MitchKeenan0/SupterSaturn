@@ -10,12 +10,13 @@ public class FleetHUD : MonoBehaviour
 	public GameObject fleetPanelPrefab;
 	public Vector3 panelOffset = new Vector3(0f, 100f, 0f);
 
-	private List<Fleet> fleetList;
-	private List<FleetPanel> panelList;
-	private LocationDisplay locationDisplay;
 	private Camera cameraMain;
 	private Fleet playerFleet;
 	private Game game;
+	private Campaign campaign;
+	private List<Fleet> fleetList;
+	private List<FleetPanel> panelList;
+	private LocationDisplay locationDisplay;
 
 	private bool bMouseOnUI = false;
 	public void MouseOnUI(bool value) { bMouseOnUI = value; }
@@ -29,16 +30,13 @@ public class FleetHUD : MonoBehaviour
 		fleetList = new List<Fleet>();
 		panelList = new List<FleetPanel>();
 		game = FindObjectOfType<Game>();
+		campaign = FindObjectOfType<Campaign>();
+		cameraMain = Camera.main;
+		locationDisplay = FindObjectOfType<LocationDisplay>();
 	}
 
 	void Start()
     {
-		cameraMain = Camera.main;
-		locationDisplay = FindObjectOfType<LocationDisplay>();
-
-		loadWaitCoroutine = LoadWait(0.2f);
-		StartCoroutine(loadWaitCoroutine);
-
 		Fleet[] allFleets = FindObjectsOfType<Fleet>();
 		foreach (Fleet f in allFleets)
 		{
@@ -49,6 +47,28 @@ public class FleetHUD : MonoBehaviour
 				FleetController fc = playerFleet.gameObject.GetComponentInChildren<FleetController>();
 				locationDisplay.SetPlayerFleetController(fc);
 			}
+		}
+		
+		campaign.InitFleetLocations();
+
+		loadWaitCoroutine = LoadWait(0.2f);
+		StartCoroutine(loadWaitCoroutine);
+	}
+
+	private IEnumerator LoadWait(float waitTime)
+	{
+		yield return new WaitForSeconds(waitTime);
+		InitPanels();
+	}
+
+	void InitPanels()
+	{
+		int numFleets = fleetList.Count;
+		for (int i = 0; i < numFleets; i++)
+		{
+			FleetPanel panel = CreateFleetPanel();
+			Fleet panelFleet = fleetList[i];
+			panel.SetFleet(panelFleet);
 		}
 	}
 
@@ -86,23 +106,6 @@ public class FleetHUD : MonoBehaviour
 			bClickedObject = true;
 		
 		return bClickedObject;
-	}
-
-	private IEnumerator LoadWait(float waitTime)
-	{
-		yield return new WaitForSeconds(waitTime);
-		InitPanels();
-	}
-
-	void InitPanels()
-	{
-		int numFleets = fleetList.Count;
-		for (int i = 0; i < numFleets; i++)
-		{
-			FleetPanel panel = CreateFleetPanel();
-			Fleet panelFleet = fleetList[i];
-			panel.SetFleet(panelFleet);
-		}
 	}
 
 	FleetPanel CreateFleetPanel()

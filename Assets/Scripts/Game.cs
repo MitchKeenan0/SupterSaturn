@@ -52,7 +52,15 @@ public class Game : MonoBehaviour
 	}
 	void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
 	{
-		//Time.timeScale = 1;
+		selectedCardList = new List<Card>();
+		enemyCardList = new List<Card>();
+		spacecraftList = new List<Spacecraft>();
+		enemySpacecraftList = new List<Spacecraft>();
+		savedHealthList = new List<int>();
+
+		player = FindObjectOfType<Player>();
+		gameHud = FindObjectOfType<GameHUD>();
+		campaign = FindObjectOfType<Campaign>();
 	}
 
 	void Awake()
@@ -77,9 +85,6 @@ public class Game : MonoBehaviour
 		gameHud = FindObjectOfType<GameHUD>();
 		campaign = FindObjectOfType<Campaign>();
 		Application.targetFrameRate = 70;
-
-		if (transform.GetComponent<Campaign>())
-			Destroy(transform.GetComponent<Campaign>());
 	}
 
 	void Start()
@@ -98,6 +103,8 @@ public class Game : MonoBehaviour
 		bEscapeMenu = !bEscapeMenu;
 		if (gameHud != null)
 			gameHud.SetEscapeMenuActive(bEscapeMenu);
+		else
+			Debug.Log("no game menu");
 		if (bEscapeMenu)
 			Time.timeScale = Time.deltaTime * 5f;
 		else
@@ -199,9 +206,6 @@ public class Game : MonoBehaviour
 				savedHealthList.Clear();
 			}
 
-			if (campaign != null)
-				campaign.LoadCampaign();
-
 			// player name
 			if (player != null)
 			{
@@ -285,7 +289,7 @@ public class Game : MonoBehaviour
 				}
 			}
 
-			///Debug.Log("Game Loaded");
+			//Debug.Log("Game Loaded");
 		}
 	}
 
@@ -324,9 +328,6 @@ public class Game : MonoBehaviour
 	{
 		Debug.Log("saving game...");
 		Save save = new Save();
-
-		if (campaign != null)
-			campaign.SaveCampaign();
 
 		// player name
 		if (player != null)
@@ -420,10 +421,8 @@ public class Game : MonoBehaviour
 	{
 		try
 		{
-			File.Delete(GetSaveFilePath);
-
-			if (campaign != null)
-				campaign.DeleteSave();
+			File.Delete(Application.persistentDataPath + "/gamesave.save");
+			File.Delete(Application.persistentDataPath + "/campaignsave.save");
 
 			Spacecraft[] allSpacecraft = FindObjectsOfType<Spacecraft>();
 			int numSp = allSpacecraft.Length;
@@ -436,7 +435,7 @@ public class Game : MonoBehaviour
 			enemyCardList = new List<Card>();
 			enemySpacecraftList = new List<Spacecraft>();
 
-			SaveGame();
+			//SaveGame();
 
 			///Debug.Log("save deleted");
 		}
@@ -444,10 +443,5 @@ public class Game : MonoBehaviour
 		{
 			Debug.LogException(ex);
 		}
-	}
-
-	private string GetSaveFilePath
-	{
-		get { return Application.persistentDataPath + "/gamesave.save"; }
 	}
 }

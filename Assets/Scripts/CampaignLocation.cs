@@ -21,25 +21,15 @@ public class CampaignLocation : MonoBehaviour
 	private List<CampaignLocation> connectedLocations;
 	public List<CampaignLocation> GetNeighbors() { return connectedLocations; }
 
-	private IEnumerator loadWaitCoroutine;
-
 	void Awake()
 	{
 		lineList = new List<LineRenderer>(connections);
 		connectedLocations = new List<CampaignLocation>(connections);
 	}
 
-	void Start()
+	public void InitLocation()
 	{
-		loadWaitCoroutine = LoadWait(0.1f);
-		StartCoroutine(loadWaitCoroutine);
-	}
-
-	private IEnumerator LoadWait(float waitTime)
-	{
-		yield return new WaitForSeconds(waitTime);
-		if (locationName == "Name")
-			InitName();
+		InitName();
 		InitConnections();
 	}
 
@@ -49,9 +39,7 @@ public class CampaignLocation : MonoBehaviour
 		{
 			CampaignLocation connection = ConnectToClosestLocation();
 			if (connection != null)
-			{
 				connection.AddConnection(this, false);
-			}
 		}
 
 		int numLines = lineList.Count;
@@ -65,12 +53,9 @@ public class CampaignLocation : MonoBehaviour
 					thisLine.SetPosition(0, transform.position);
 					thisLine.SetPosition(1, connectedLocations[i].transform.position);
 					thisLine.gameObject.SetActive(true);
-					///Debug.Log("init line");
 				}
 			}
 		}
-
-		///Debug.Log("init campaign location");
 	}
 
 	CampaignLocation ConnectToClosestLocation()
@@ -116,7 +101,6 @@ public class CampaignLocation : MonoBehaviour
 		lineObject.transform.SetParent(transform);
 		lineList.Add(liner);
 		lineObject.SetActive(false);
-		///Debug.Log("Created line");
 	}
 
 	public bool AddConnection(CampaignLocation c, bool executive)

@@ -62,7 +62,9 @@ public class Scanner : MonoBehaviour
 
 	void UpdateScan()
 	{
-		if (mySpacecraft.GetAgent().teamID == 0)
+		if (((mySpacecraft != null && mySpacecraft.GetAgent() != null)
+			&& (mySpacecraft.GetAgent().teamID == 0))
+			|| (mySpacecraft == null))
 		{
 			UpdateScanRender();
 			if (!meshRenderer.enabled)

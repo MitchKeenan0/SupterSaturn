@@ -23,7 +23,8 @@ public class GameHUD : MonoBehaviour
 	void Awake()
 	{
 		game = FindObjectOfType<Game>();
-		options = Resources.FindObjectsOfTypeAll<OptionsMenu>()[0];
+		if (Resources.FindObjectsOfTypeAll<OptionsMenu>().Length > 0)
+			options = Resources.FindObjectsOfTypeAll<OptionsMenu>()[0];
 		tutorialPanel.SetActive(false);
 		escapeMenuPanel.SetActive(false);
 		disengageDelayPanel.SetActive(false);

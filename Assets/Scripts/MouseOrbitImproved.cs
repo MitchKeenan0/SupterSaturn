@@ -37,8 +37,7 @@ public class MouseOrbitImproved : MonoBehaviour
 	private bool bInputting = false;
 	private bool bEdgeMousing = false;
 
-	// Use this for initialization
-	void Start()
+	void Awake()
 	{
 		cameraController = FindObjectOfType<CameraController>();
 		cameraMain = Camera.main;

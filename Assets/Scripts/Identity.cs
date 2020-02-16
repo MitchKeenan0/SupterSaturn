@@ -8,6 +8,7 @@ public class Identity : MonoBehaviour
 	public Color identityColor = Color.green;
 
 	private NameLibrary nameLibrary;
+	private CampaignLocation currentLocation;
 	private float likelyhoodOfAttackingPlayer = 0f;
 	private float likelyhoodOfDefendingPlayer = 0f;
 	private float identityWealth = 0f;
@@ -18,6 +19,7 @@ public class Identity : MonoBehaviour
     {
 		fleetList = new List<Fleet>();
 		nameLibrary = FindObjectOfType<NameLibrary>();
+		Fleet myFleet = transform.parent.GetComponentInChildren<Fleet>();
 		if (nameLibrary != null)
 			InitIdentity();
 	}
@@ -50,11 +52,27 @@ public class Identity : MonoBehaviour
 
 	public void AddFleet(Fleet fleet)
 	{
-		fleetList.Add(fleet);
+		if ((fleetList.Count == 0) || (!fleetList.Contains(fleet)))
+		{
+			fleetList.Add(fleet);
+			fleet.SetIdentity(this);
+			if (fleet.GetLocation() != null)
+				SetLocation(fleet.GetLocation());
+		}
 	}
 
 	public List<Fleet> GetFleetList()
 	{
 		return fleetList;
+	}
+
+	public void SetLocation(CampaignLocation location)
+	{
+		currentLocation = location;
+	}
+
+	public CampaignLocation GetLocation()
+	{
+		return currentLocation;
 	}
 }

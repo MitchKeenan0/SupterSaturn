@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6609643690122630335
+--- !u!1 &6139045339321594913
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6609643690122630334}
-  - component: {fileID: 6609643690122630329}
+  - component: {fileID: 6139045339321594914}
+  - component: {fileID: 8818236627854527309}
   m_Layer: 0
-  m_Name: LocationManager
+  m_Name: IdentityManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6609643690122630334
+--- !u!4 &6139045339321594914
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6609643690122630335}
+  m_GameObject: {fileID: 6139045339321594913}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31,23 +31,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6609643690122630329
+--- !u!114 &8818236627854527309
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6609643690122630335}
+  m_GameObject: {fileID: 6139045339321594913}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56be16d7219f6094c853b696fde62835, type: 3}
+  m_Script: {fileID: 11500000, guid: 6de0631c2218dbb4b82b737e1d2afd18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spread: 3.5
-  verticalScale: 0.6
-  minDistanceBetweenLocations: 10
-  locationCount: 25
-  locationLibrary:
-  - {fileID: 1327140190271649242, guid: 2ea43e93f775e7d41b85ec4454a55651, type: 3}
-  - {fileID: 8910081187324853507, guid: c1fc642cc78fdc24c96a9b88f801ddbc, type: 3}
-  - {fileID: 1984189909704474978, guid: 2087b7fcc66c9d646b7a4f1dca318306, type: 3}
+  identityPrefab: {fileID: 6385299402363718546, guid: 88d81340a77aa194d9c4c9f9eda2be50,
+    type: 3}
+  identityCount: 3

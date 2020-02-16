@@ -11,11 +11,6 @@ public class TeamFleetDiagram : MonoBehaviour
 	public Image gravityIcon;
 	public Image violenceIcon;
 
-    void Start()
-    {
-        
-    }
-
 	public void SetClass(string value)
 	{
 		classText.text = value;

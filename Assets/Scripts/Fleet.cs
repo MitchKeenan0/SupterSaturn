@@ -12,6 +12,7 @@ public class Fleet : MonoBehaviour
 	private Player player;
 	private Campaign campaign;
 	private FleetAgent fleetAgent;
+	private Identity identity;
 	private List<Spacecraft> spacecraftList;
 	private CampaignLocation campaignLocation;
 	private FleetController fleetController;
@@ -40,7 +41,6 @@ public class Fleet : MonoBehaviour
 	{
 		yield return new WaitForSeconds(waitTime);
 		InitSavedFleet();
-		campaign.InitFleetLocations(this);
 	}
 
 	void InitSavedFleet()
@@ -50,14 +50,19 @@ public class Fleet : MonoBehaviour
 			fleetName = player.playerName;
 			if (fleetName == "")
 				fleetName = "No Name";
-
 			spacecraftList = game.GetSpacecraftList();
-			///Debug.Log("fleet got " + spacecraftList.Count);
 		}
-		else
+		else if (fleetAgent != null)
 		{
 			spacecraftList = fleetAgent.GetAgentSpacecraftList();
 		}
+	}
+
+	public void SetIdentity(Identity id)
+	{
+		identity = id;
+		if (GetLocation() != null)
+			identity.SetLocation(GetLocation());
 	}
 
 	public void SetName(string value)
@@ -79,6 +84,11 @@ public class Fleet : MonoBehaviour
 		campaignLocation.ConnectionsLit(teamID == 0);
 		if (position)
 			transform.position = location.transform.position;
+
+		if (!identity)
+			identity = GetComponentInChildren<Identity>();
+		if (identity != null)
+			identity.SetLocation(location);
 	}
 
 	public void SetRoute(List<CampaignLocation> list)

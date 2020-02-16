@@ -30,12 +30,6 @@ public class LocationManager : MonoBehaviour
 		battle = FindObjectOfType<BattleOutcome>();
 	}
 
-    void Start()
-    {
-		if ((allLocations.Count == 0) && (!fleetCreator && !menu && !battle))
-			InitLocations();
-	}
-
 	public void LoadLocations(List<int> locationIDs, List<Vector3> locationPositions, List<string> locationNames)
 	{
 		int numLocations = locationIDs.Count;
@@ -52,15 +46,28 @@ public class LocationManager : MonoBehaviour
 				allLocations.Add(cl);
 			}
 		}
+
+		InitLocations();
 	}
 
-	void InitLocations()
+	public void InitNewLocations()
 	{
 		float concentricRange = spread;
 		for (int i = 0; i < locationCount; i++)
 		{
 			SpawnRandomFrom(locationLibrary, concentricRange);
 			concentricRange += (spread / locationCount);
+		}
+
+		InitLocations();
+	}
+
+	void InitLocations()
+	{
+		if (allLocations.Count > 0)
+		{
+			foreach (CampaignLocation cl in allLocations)
+				cl.InitLocation();
 		}
 	}
 

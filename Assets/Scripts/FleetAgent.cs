@@ -44,9 +44,12 @@ public class FleetAgent : MonoBehaviour
 	private IEnumerator LoadWait(float waitTime)
 	{
 		yield return new WaitForSeconds(waitTime);
-		InitAgent();
-		turnWaitCoroutine = TurnWait(0.2f);
-		StartCoroutine(turnWaitCoroutine);
+		if (fleet != null)
+		{
+			InitAgent();
+			turnWaitCoroutine = TurnWait(waitTime);
+			StartCoroutine(turnWaitCoroutine);
+		}
 	}
 
 	private IEnumerator TurnWait(float waitTime)
@@ -73,7 +76,8 @@ public class FleetAgent : MonoBehaviour
 
 	void InitAgent()
 	{
-		fleet.fleetName = nameLibrary.GetFleetName();
+		if (nameLibrary != null)
+			fleet.fleetName = nameLibrary.GetFleetName();
 		int max = game.GetSpacecraftList().Count * 3;
 		int fleetSpacecraftCount = Random.Range(1, max);
 		for (int i = 0; i < fleetSpacecraftCount; i++)
