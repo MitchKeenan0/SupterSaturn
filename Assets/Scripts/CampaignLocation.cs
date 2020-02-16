@@ -29,12 +29,14 @@ public class CampaignLocation : MonoBehaviour
 
 	public void InitLocation()
 	{
-		InitName();
 		InitConnections();
 	}
 
 	void InitConnections()
 	{
+		if (locationName == "Name")
+			InitName();
+
 		for (int i = 0; i < connections; i++)
 		{
 			CampaignLocation connection = ConnectToClosestLocation();

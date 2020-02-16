@@ -59,6 +59,14 @@ public class NameLibrary : MonoBehaviour
 		return result;
 	}
 
+	public void ResetUsedLists()
+	{
+		usedCommonLocations = new List<int>();
+		usedUniqueLocations = new List<int>();
+		usedRareLocations = new List<int>();
+		usedIdentityNames = new List<int>();
+	}
+
 	public string GetLocationName(int rarity)
 	{
 		string[] nameArray = new string[0];
@@ -80,11 +88,10 @@ public class NameLibrary : MonoBehaviour
 			default:
 				break;
 		}
-
-		bool foundName = false;
-		string result = "";
+		
+		string result = "Unknown";
 		int safeTries = nameArray.Length * nameArray.Length;
-		while (!foundName && (safeTries > 0))
+		while (safeTries > 0)
 		{
 			safeTries--;
 			int randomIndex = Random.Range(0, nameArray.Length);
@@ -105,11 +112,11 @@ public class NameLibrary : MonoBehaviour
 					default:
 						break;
 				}
-				foundName = true;
+				break;
 			}
 		}
 
-		if (!foundName)
+		if (result == "Unknown")
 			result = GetSerializedName();
 
 		return result;
@@ -125,16 +132,18 @@ public class NameLibrary : MonoBehaviour
 
 	public string GetIdentityName()
 	{
-		string idName = "";
-		bool nameFound = false;
-		while (!nameFound)
+		string idName = "Unknown";
+		int safeMaxTries = identityNames.Length;
+		int safe = 0;
+		while (safe < safeMaxTries)
 		{
+			safe++;
 			int rando = Random.Range(0, identityNames.Length - 1);
 			if (!usedIdentityNames.Contains(rando))
 			{
 				idName = identityNames[rando];
 				usedIdentityNames.Add(rando);
-				nameFound = true;
+				break;
 			}
 		}
 		return idName;

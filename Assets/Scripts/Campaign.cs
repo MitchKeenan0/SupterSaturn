@@ -14,6 +14,7 @@ public class Campaign : MonoBehaviour
 	private FleetCreator fleetCreator;
 	private CampaignBattle campaignBattle;
 	private LocationManager locationManager;
+	private NameLibrary nameLibrary;
 	private List<CampaignLocation> locationList;
 	private List<Fleet> fleetList;
 	private List<CampaignLocation> originLocations = new List<CampaignLocation>();
@@ -29,6 +30,9 @@ public class Campaign : MonoBehaviour
 	}
 	void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
 	{
+		nameLibrary = FindObjectOfType<NameLibrary>();
+		nameLibrary.ResetUsedLists();
+
 		LoadCampaign();
 		if (game != null)
 			game.LoadGame();
@@ -123,7 +127,7 @@ public class Campaign : MonoBehaviour
 		int numLocations = locationList.Count;
 		if (numLocations > 0)
 		{
-			///Debug.Log("campaign saving " + numLocations + " locations");
+			Debug.Log("campaign saving " + numLocations + " locations");
 			for (int i = 0; i < numLocations; i++)
 			{
 				CampaignLocation cl = locationList[i];
@@ -143,7 +147,8 @@ public class Campaign : MonoBehaviour
 		int numIDs = ids.Length;
 		if (numIDs > 0)
 		{
-			for(int i = 0; i < numIDs; i++)
+			Debug.Log("campaign saving " + numLocations + " identities");
+			for (int i = 0; i < numIDs; i++)
 			{
 				if ((i < ids.Length) && (ids[i] != null))
 				{
@@ -159,10 +164,6 @@ public class Campaign : MonoBehaviour
 						if (locationList.Contains(idLocation))
 							save.identityLocationList.Add(locationList.IndexOf(idLocation));
 					}
-					//else
-					//{
-					//	Debug.Log("id location is null");
-					//}
 				}
 			}
 
