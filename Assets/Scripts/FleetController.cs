@@ -175,32 +175,25 @@ public class FleetController : MonoBehaviour
 		if (targetLocation != null)
 			SetTargetLocation(targetLocation);
 
-		// check for battle
-		foreach(Fleet f in allFleetsList)
-		{
-			CampaignLocation thisLocation = myFleet.GetLocation();
-			if ((f.GetLocation() == thisLocation) && (f.teamID != myFleet.teamID))
-			{
-				if ((myFleet.teamID == 0) || (f.teamID == 0))
-				{
-					Fleet[] parties = new Fleet[] { myFleet, f };
-					campaignBattle.HeraldBattle(thisLocation, parties);
-					break;
-				}
-			}
-		}
-
 		ClearLines();
 
-		// reset turn manager
 		if (GetTeamID() == 0)
+		{
+			if (moveLocation != null)
+				campaignBattle.PromptActionMission(moveLocation, new Fleet[] { myFleet });
 			turnManager.BeginTurn(route.Count > 2);
-		//StandbyMove(targetLocation);
+		}
 	}
 
 	void ClearLines()
 	{
 		movementLine.enabled = false;
 		scoutingLine.enabled = false;
+	}
+
+	public void PromptMission(CampaignLocation location)
+	{
+		if (GetTeamID() == 0)
+			campaignBattle.PromptActionMission(location, new Fleet[] { myFleet });
 	}
 }

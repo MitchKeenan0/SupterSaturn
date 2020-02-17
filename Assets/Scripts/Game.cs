@@ -435,6 +435,9 @@ public class Game : MonoBehaviour
 			enemyCardList = new List<Card>();
 			enemySpacecraftList = new List<Spacecraft>();
 
+			bFleetTutorialClosed = false;
+			bGameTutorialClosed = false;
+
 			//SaveGame();
 
 			///Debug.Log("save deleted");

@@ -89,6 +89,9 @@ public class Fleet : MonoBehaviour
 			identity = GetComponentInChildren<Identity>();
 		if (identity != null)
 			identity.SetLocation(location);
+
+		if ((fleetController != null) && (teamID == 0))
+			fleetController.PromptMission(location);
 	}
 
 	public void SetRoute(List<CampaignLocation> list)

@@ -1101,51 +1101,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2068962977033283545, guid: 853ac79d9734f3d4b897502182286293,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2068962976688491763, guid: 853ac79d9734f3d4b897502182286293,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 338.00006
-      objectReference: {fileID: 0}
-    - target: {fileID: 2068962976688491763, guid: 853ac79d9734f3d4b897502182286293,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 76.000015
-      objectReference: {fileID: 0}
-    - target: {fileID: 2068962976688491763, guid: 853ac79d9734f3d4b897502182286293,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 600
-      objectReference: {fileID: 0}
-    - target: {fileID: 2068962978089136021, guid: 853ac79d9734f3d4b897502182286293,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 600
-      objectReference: {fileID: 0}
-    - target: {fileID: 2068962978089136021, guid: 853ac79d9734f3d4b897502182286293,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2068962978089136021, guid: 853ac79d9734f3d4b897502182286293,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 591
-      objectReference: {fileID: 0}
-    - target: {fileID: 2068962978089136021, guid: 853ac79d9734f3d4b897502182286293,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 300
-      objectReference: {fileID: 0}
-    - target: {fileID: 2068962978089136021, guid: 853ac79d9734f3d4b897502182286293,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 76
-      objectReference: {fileID: 0}
     - target: {fileID: 2068962978015513393, guid: 853ac79d9734f3d4b897502182286293,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -1366,6 +1321,144 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 96
       objectReference: {fileID: 0}
+    - target: {fileID: 2068962976688491763, guid: 853ac79d9734f3d4b897502182286293,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 338.00006
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068962976688491763, guid: 853ac79d9734f3d4b897502182286293,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 76.000015
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068962976688491763, guid: 853ac79d9734f3d4b897502182286293,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068962977435476332, guid: 853ac79d9734f3d4b897502182286293,
+        type: 3}
+      propertyPath: m_Name
+      value: SelectionImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068962978077121467, guid: 853ac79d9734f3d4b897502182286293,
+        type: 3}
+      propertyPath: m_Name
+      value: MoveCommandImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068962977033283545, guid: 853ac79d9734f3d4b897502182286293,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068962978089136021, guid: 853ac79d9734f3d4b897502182286293,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068962978089136021, guid: 853ac79d9734f3d4b897502182286293,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068962978089136021, guid: 853ac79d9734f3d4b897502182286293,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 591
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068962978089136021, guid: 853ac79d9734f3d4b897502182286293,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068962978089136021, guid: 853ac79d9734f3d4b897502182286293,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 76
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068962977435476330, guid: 853ac79d9734f3d4b897502182286293,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 1f660072ec83f7a469826d0cc179e530,
+        type: 3}
+    - target: {fileID: 2068962977909696205, guid: 853ac79d9734f3d4b897502182286293,
+        type: 3}
+      propertyPath: m_Text
+      value: <b>Left Mouse Button</b> + <b>Drag</b> to select spacecraft
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068962977909696205, guid: 853ac79d9734f3d4b897502182286293,
+        type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    - target: {fileID: 2068962977909696205, guid: 853ac79d9734f3d4b897502182286293,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068962978015513392, guid: 853ac79d9734f3d4b897502182286293,
+        type: 3}
+      propertyPath: m_Text
+      value: NAVIGATION
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068962978015513392, guid: 853ac79d9734f3d4b897502182286293,
+        type: 3}
+      propertyPath: m_FontData.m_FontStyle
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068962978015513392, guid: 853ac79d9734f3d4b897502182286293,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068962978015513392, guid: 853ac79d9734f3d4b897502182286293,
+        type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 3c4286ecb6a45574e8a9bd24f4991868,
+        type: 3}
+    - target: {fileID: 2068962978077121465, guid: 853ac79d9734f3d4b897502182286293,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 6096fe238554ada458584f052df42662,
+        type: 3}
+    - target: {fileID: 2068962978336344289, guid: 853ac79d9734f3d4b897502182286293,
+        type: 3}
+      propertyPath: m_Text
+      value: <b>Right Mouse Button</b> to issue move and action commands
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068962978336344289, guid: 853ac79d9734f3d4b897502182286293,
+        type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    - target: {fileID: 2068962978336344289, guid: 853ac79d9734f3d4b897502182286293,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068962976688491760, guid: 853ac79d9734f3d4b897502182286293,
+        type: 3}
+      propertyPath: m_Padding.m_Bottom
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068962976688491760, guid: 853ac79d9734f3d4b897502182286293,
+        type: 3}
+      propertyPath: m_ChildControlHeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068962976688491760, guid: 853ac79d9734f3d4b897502182286293,
+        type: 3}
+      propertyPath: m_ChildAlignment
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068962976688491760, guid: 853ac79d9734f3d4b897502182286293,
+        type: 3}
+      propertyPath: m_ChildForceExpandHeight
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2068962978426047633, guid: 853ac79d9734f3d4b897502182286293,
         type: 3}
       propertyPath: m_LocalPosition.z
@@ -1406,72 +1499,16 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 300
       objectReference: {fileID: 0}
-    - target: {fileID: 2068962976688491760, guid: 853ac79d9734f3d4b897502182286293,
+    - target: {fileID: 2068962978426047632, guid: 853ac79d9734f3d4b897502182286293,
         type: 3}
-      propertyPath: m_Padding.m_Bottom
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 2068962976688491760, guid: 853ac79d9734f3d4b897502182286293,
-        type: 3}
-      propertyPath: m_ChildControlHeight
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2068962976688491760, guid: 853ac79d9734f3d4b897502182286293,
-        type: 3}
-      propertyPath: m_ChildAlignment
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2068962976688491760, guid: 853ac79d9734f3d4b897502182286293,
-        type: 3}
-      propertyPath: m_ChildForceExpandHeight
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2068962977435476332, guid: 853ac79d9734f3d4b897502182286293,
-        type: 3}
-      propertyPath: m_Name
-      value: SelectionImage
-      objectReference: {fileID: 0}
-    - target: {fileID: 2068962978077121467, guid: 853ac79d9734f3d4b897502182286293,
-        type: 3}
-      propertyPath: m_Name
-      value: MoveCommandImage
-      objectReference: {fileID: 0}
-    - target: {fileID: 2068962977435476330, guid: 853ac79d9734f3d4b897502182286293,
-        type: 3}
-      propertyPath: m_Sprite
+      propertyPath: m_FontData.m_Font
       value: 
-      objectReference: {fileID: 21300000, guid: 1f660072ec83f7a469826d0cc179e530,
+      objectReference: {fileID: 12800000, guid: 3c4286ecb6a45574e8a9bd24f4991868,
         type: 3}
-    - target: {fileID: 2068962977909696205, guid: 853ac79d9734f3d4b897502182286293,
+    - target: {fileID: 2068962978426047632, guid: 853ac79d9734f3d4b897502182286293,
         type: 3}
       propertyPath: m_Text
-      value: <b>Left Mouse Button</b> + <b>Drag</b> to select spacecraft
-      objectReference: {fileID: 0}
-    - target: {fileID: 2068962978015513392, guid: 853ac79d9734f3d4b897502182286293,
-        type: 3}
-      propertyPath: m_Text
-      value: action commission
-      objectReference: {fileID: 0}
-    - target: {fileID: 2068962978015513392, guid: 853ac79d9734f3d4b897502182286293,
-        type: 3}
-      propertyPath: m_FontData.m_FontStyle
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2068962978015513392, guid: 853ac79d9734f3d4b897502182286293,
-        type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2068962978077121465, guid: 853ac79d9734f3d4b897502182286293,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 6096fe238554ada458584f052df42662,
-        type: 3}
-    - target: {fileID: 2068962978336344289, guid: 853ac79d9734f3d4b897502182286293,
-        type: 3}
-      propertyPath: m_Text
-      value: <b>Right Mouse Button</b> to issue move and action commands
+      value: i understand
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 853ac79d9734f3d4b897502182286293, type: 3}

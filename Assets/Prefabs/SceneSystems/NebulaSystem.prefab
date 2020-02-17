@@ -50,9 +50,9 @@ MonoBehaviour:
   - {fileID: 7747302546721590218, guid: 11c8c83884a610f49802d2a6021255e8, type: 3}
   - {fileID: 7747302546721590218, guid: d43389d7b80d7ea44ab90777b0a68384, type: 3}
   minimumObjectCount: 10
-  maximumObjectCount: 30
-  distanceScale: 0.5
+  maximumObjectCount: 100
+  distanceScale: 100
   cloudMinSize: 1
   cloudMaxSize: 10
-  starMinSize: 0.1
-  starMaxSize: 1
+  starMinSize: 1
+  starMaxSize: 10

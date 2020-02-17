@@ -28,7 +28,7 @@ public class CampaignBattle : MonoBehaviour
 			UpdateScreenPosition();
 	}
 
-	public void HeraldBattle(CampaignLocation location, Fleet[] fleets)
+	public void PromptActionMission(CampaignLocation location, Fleet[] fleets)
 	{
 		bOnScreen = true;
 		battlePanel.SetActive(true);

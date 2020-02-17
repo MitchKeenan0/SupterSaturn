@@ -215,7 +215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   battlePanel: {fileID: 4736824667123304423}
-  battlePanelOffset: {x: 100, y: 0, z: 0}
+  battlePanelOffset: {x: 150, y: 0, z: 0}
 --- !u!1 &4736824668231916322
 GameObject:
   m_ObjectHideFlags: 0
