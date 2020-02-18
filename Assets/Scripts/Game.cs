@@ -289,7 +289,7 @@ public class Game : MonoBehaviour
 				}
 			}
 
-			//Debug.Log("Game Loaded");
+			Debug.Log("Game Loaded");
 		}
 	}
 

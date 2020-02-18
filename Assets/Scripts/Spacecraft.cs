@@ -93,17 +93,18 @@ public class Spacecraft : MonoBehaviour
 			if (turningVector != Vector3.zero)
 			{
 				Vector3 torqueVector = Vector3.zero;
-				Vector3 angularVelocity = rb.angularVelocity;
+				Vector3 angularTurn = turningVector + rb.angularVelocity;
 
-				float yaw = Vector3.Dot(transform.right, turningVector);
+				float yaw = Vector3.Dot(transform.right, angularTurn);
 				torqueVector += (transform.up * yaw * Mathf.Sqrt(Mathf.Abs(yaw)));
 
-				float pitch = -Vector3.Dot(transform.up, turningVector);
+				float pitch = -Vector3.Dot(transform.up, angularTurn);
 				torqueVector += (transform.right * pitch * Mathf.Sqrt(Mathf.Abs(pitch)));
 
 				float roll = -transform.localRotation.z;
 				torqueVector += (transform.forward * roll * Mathf.Sqrt(Mathf.Abs(roll)));
 
+				float angularV = Mathf.Clamp(turningPower - rb.angularVelocity.magnitude, 0f, 1f);
 				rb.AddTorque(torqueVector.normalized * turningPower * Time.fixedDeltaTime);
 				transform.rotation = rb.rotation;
 			}
@@ -152,7 +153,7 @@ public class Spacecraft : MonoBehaviour
 
 	public void Maneuver(Vector3 targetPoint)
 	{
-		turningVector = Vector3.Lerp(turningVector, (targetPoint - transform.position).normalized, Time.deltaTime * turningPower);
+		turningVector = Vector3.Lerp(turningVector, targetPoint, Time.deltaTime * turningPower);
 	}
 
 	public void SpacecraftKnockedOut(Transform responsibleTransform)
@@ -184,7 +185,7 @@ public class Spacecraft : MonoBehaviour
 			{
 				Transform destroyedEffects = Instantiate(destroyedParticlesPrefab, transform.position, transform.rotation);
 				Destroy(destroyedEffects.gameObject, 5f);
-				Destroy(gameObject, 0.22f);
+				Destroy(gameObject, 0.2f);
 			}
 		}
 

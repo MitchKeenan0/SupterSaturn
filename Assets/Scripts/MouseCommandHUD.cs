@@ -26,8 +26,10 @@ public class MouseCommandHUD : MonoBehaviour
 	private bool bEnabled = true;
 	private bool bActionCommand = false;
 	private float originalRadius = 0f;
-	private float mouseX = 0;
-	private float mouseY = 0;
+	private float mouseX = 0f;
+	private float mouseY = 0f;
+	private float scroll = 0f;
+	private float lineScrollScale = 0f;
 
 	void Awake()
 	{
@@ -76,12 +78,15 @@ public class MouseCommandHUD : MonoBehaviour
 			}
 		}
 
-		if (!bActionCommand)
+		if (Input.GetButton("Fire2"))
 		{
-			if (Input.GetButton("Fire2"))
+			if (!bActionCommand)
 			{
 				SetCircleLocation();
 				UpdateMouseMovement();
+				scroll += Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * 1000f;
+				Debug.Log("scroll: " + scroll);
+				UpdateCircleRender();
 				VisualizeMoveOrder(moveCommandPosition);
 			}
 		}
@@ -92,6 +97,7 @@ public class MouseCommandHUD : MonoBehaviour
 				SetMoveOrder(moveCommandPosition);
 			SetEnabled(false);
 			bActionCommand = false;
+			scroll = 0f;
 		}
 	}
 
@@ -116,12 +122,14 @@ public class MouseCommandHUD : MonoBehaviour
 			Vector3 originScreenPosition = cameraMain.WorldToScreenPoint(lineOrigin);
 			Vector3 verticalMousePosition = Input.mousePosition;
 			float distToMouse = (mousePosition - originScreenPosition).y / 15;
-			lineElevation = distToMouse;
+			lineElevation = distToMouse + (scroll * 1.6f);
 
 			Vector3 elevationLine = lineOrigin + (Vector3.up * lineElevation);
 			elevationLineRenderer.SetPosition(0, lineOrigin);
 			elevationLineRenderer.SetPosition(1, elevationLine);
 			moveCommandPosition = Vector3.Lerp(moveCommandPosition, elevationLine, Time.deltaTime * 10f);
+
+			lineScrollScale = Vector3.Distance(lineOrigin, elevationLine);
 		}
 	}
 
@@ -132,8 +140,8 @@ public class MouseCommandHUD : MonoBehaviour
 
 		for (int i = 0; i < numCircleSegments + 1; i++)
 		{
-			float x = circleRadius * Mathf.Cos(theta);
-			float z = circleRadius * Mathf.Sin(theta);
+			float x = (circleRadius + (scroll * 5f)) * Mathf.Cos(theta);
+			float z = (circleRadius + (scroll * 5f)) * Mathf.Sin(theta);
 			Vector3 pos = new Vector3(x, 0, z);
 			circleLineRenderer.SetPosition(i, pos);
 			theta += deltaTheta;

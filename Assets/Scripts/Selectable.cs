@@ -2,6 +2,13 @@
 
 public class Selectable : MonoBehaviour
 {
+	private CircleRenderer circle;
+
+	void Awake()
+	{
+		circle = gameObject.GetComponentInChildren<CircleRenderer>();
+	}
+
 	internal bool isSelected
 	{
 		get
@@ -18,16 +25,35 @@ public class Selectable : MonoBehaviour
 				sp.SelectionHighlight(isSelected);
 			}
 
-			Renderer[] rendererArray = GetComponentsInChildren<Renderer>();
-			int numRenders = rendererArray.Length;
-			if (rendererArray.Length > 0)
+			if (!circle)
+				circle = gameObject.GetComponent<CircleRenderer>();
+			if (circle != null)
 			{
-				for (int i = 0; i < numRenders; i++)
+				if (value)
 				{
-					Renderer r = rendererArray[i];
-					if ((r != null) && (r.CompareTag("Selection")))
-						r.material.color = value ? Color.green : Color.white;
+					circle.Open();
+					circle.SetPosition(transform.position);
+					circle.StartAutoUpdate();
 				}
+				else
+				{
+					circle.Close();
+				}
+			}
+		}
+	}
+
+	public void SetColor(Color value)
+	{
+		Renderer[] rendererArray = GetComponentsInChildren<Renderer>();
+		int numRenders = rendererArray.Length;
+		if (rendererArray.Length > 0)
+		{
+			for (int i = 0; i < numRenders; i++)
+			{
+				Renderer r = rendererArray[i];
+				if ((r != null) && (r.CompareTag("Selection")))
+					r.material.color = value;
 			}
 		}
 	}

@@ -31,6 +31,7 @@ public class ButtonInteraction : MonoBehaviour, IPointerEnterHandler, IPointerEx
 		int siblingIndex = transform.GetSiblingIndex();
 		teamFleetHUD.ButtonHovered(false, siblingIndex);
 		mouseSelection.SetEnabled(true);
+		Debug.Log("pointer exit");
 	}
 
 	void TaskOnClick()

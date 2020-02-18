@@ -102,7 +102,7 @@ public class GameHUD : MonoBehaviour
 			yield return new WaitForSeconds(deltaT);
 			disengageDelayText.text = (1f - time).ToString("F2");
 			time += deltaT;
-			Time.timeScale = Mathf.Lerp(Time.timeScale, 1f, (time + 0.2f) * Time.deltaTime);
+			Time.timeScale = Mathf.Lerp(Time.timeScale, 1f, (time + 0.618f) * Time.deltaTime);
 		}
 		SceneManager.LoadScene("FleetScene");
 	}

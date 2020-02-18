@@ -160,7 +160,7 @@ public class Autopilot : MonoBehaviour
 		// steering
 		if (toDestination.magnitude >= 1f)
 		{
-			Vector3 maneuverVector = destination;
+			Vector3 maneuverVector = destination - transform.position;
 			spacecraft.Maneuver(maneuverVector);
 		}
 
@@ -168,13 +168,20 @@ public class Autopilot : MonoBehaviour
 		Vector3 frameVelocity = rb.velocity.normalized;
 		Vector3 frameDestination = toDestination.normalized;
 		Vector3 driveVector = Vector3.zero;
-		if (frameVelocity.x != frameDestination.x)
-			driveVector.x = frameDestination.x - frameVelocity.x;
-		if (frameVelocity.y != frameDestination.y)
-			driveVector.y = frameDestination.y - frameVelocity.y;
-		if (frameVelocity.z != frameDestination.z)
-			driveVector.z = frameDestination.z - frameVelocity.z;
-		driveVector.z = Mathf.Clamp(driveVector.z, -1f, 0f);
+		if (destination != holdPosition)
+		{
+			if (frameVelocity.x != frameDestination.x)
+				driveVector.x = frameDestination.x - frameVelocity.x;
+			if (frameVelocity.y != frameDestination.y)
+				driveVector.y = frameDestination.y - frameVelocity.y;
+			if (frameVelocity.z != frameDestination.z)
+				driveVector.z = frameDestination.z - frameVelocity.z;
+			driveVector.z = Mathf.Clamp(driveVector.z, -1f, 1f);
+		}
+		else
+		{
+			driveVector = -rb.velocity;
+		}
 		if (driveVector != Vector3.zero)
 		{
 			driveVector = Vector3.ClampMagnitude(driveVector, 1);
@@ -186,7 +193,7 @@ public class Autopilot : MonoBehaviour
 		if ((distanceToDestination > 0.1f) && (destination != holdPosition))
 		{
 			float dotToDestination = Vector3.Dot(transform.forward, toDestination.normalized);
-			if (dotToDestination > 0.8f)
+			if (Mathf.Abs(dotToDestination) > 0.8f)
 			{
 				float throttle = Mathf.Clamp(((distanceToDestination * 0.01f) * spacecraft.mainEnginePower * dotToDestination), -1, 1);
 				float destinationVelocityDot = Vector3.Dot(toDestination.normalized, rb.velocity.normalized);

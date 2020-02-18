@@ -9,30 +9,99 @@ public class CircleRenderer : MonoBehaviour
 	public float circleRadius = 3.0f;
 	[Range(3, 256)]
 	public int numCircleSegments = 55;
+	public float updateInterval = 0.1f;
+	public bool bStartEnabled = true;
+	public bool bAlwaysFaceCamera = false;
 
 	private LineRenderer circleLineRenderer;
 	private Camera cameraMain;
+	private bool bAutoUpdating = false;
+
+	private IEnumerator updateCoroutine;
 
 	void Start()
     {
 		cameraMain = Camera.main;
-		circleLineRenderer = GetComponent<LineRenderer>();
-		circleLineRenderer.positionCount = numCircleSegments + 1;
+		circleLineRenderer = GetComponentInChildren<LineRenderer>();
+		SetNumSegments(numCircleSegments);
 		UpdateCircleRender();
+		if (!bStartEnabled)
+			circleLineRenderer.enabled = false;
+	}
+
+	private IEnumerator UpdateCircleTimer(float updateInterval)
+	{
+		while (true)
+		{
+			UpdateCircleRender();
+			yield return new WaitForSeconds(updateInterval);
+		}
+	}
+
+	public void StartAutoUpdate()
+	{
+		if (!bAutoUpdating)
+		{
+			bAutoUpdating = true;
+			updateCoroutine = UpdateCircleTimer(updateInterval);
+			StartCoroutine(updateCoroutine);
+		}
+	}
+
+	public void EndAutoUpdate()
+	{
+		if (bAutoUpdating)
+		{
+			StopCoroutine(updateCoroutine);
+			bAutoUpdating = false;
+		}
+	}
+
+	public void Open()
+	{
+		circleLineRenderer.enabled = true;
+	}
+
+	public void Close()
+	{
+		EndAutoUpdate();
+		circleLineRenderer.enabled = false;
+	}
+
+	public void SetPosition(Vector3 value)
+	{
+		transform.position = value;
+	}
+
+	public void SetRadius(float value)
+	{
+		circleRadius = value;
+	}
+
+	public void SetNumSegments(int value)
+	{
+		numCircleSegments = value;
+		circleLineRenderer.positionCount = numCircleSegments + 1;
 	}
 
 	public void UpdateCircleRender()
 	{
-		transform.position = transform.parent.position;
-		float deltaTheta = (float)(2.0 * Mathf.PI) / numCircleSegments;
-		float theta = 0f;
-		for (int i = 0; i < numCircleSegments + 1; i++)
+		if (circleLineRenderer != null)
 		{
-			float x = circleRadius * Mathf.Cos(theta);
-			float z = circleRadius * Mathf.Sin(theta);
-			Vector3 pos = new Vector3(x, 0, z);
-			circleLineRenderer.SetPosition(i, pos);
-			theta += deltaTheta;
+			circleLineRenderer.enabled = true;
+			float deltaTheta = (float)(2.0 * Mathf.PI) / numCircleSegments;
+			float theta = 0f;
+			for (int i = 0; i < numCircleSegments + 1; i++)
+			{
+				float x = circleRadius * Mathf.Cos(theta);
+				float z = circleRadius * Mathf.Sin(theta);
+				Vector3 pos = new Vector3(x, 0, z);
+				circleLineRenderer.SetPosition(i, pos);
+				theta += deltaTheta;
+			}
+
+			if (bAlwaysFaceCamera)
+				transform.LookAt(cameraMain.transform);
 		}
 	}
 }

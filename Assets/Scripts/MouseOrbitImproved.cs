@@ -73,12 +73,6 @@ public class MouseOrbitImproved : MonoBehaviour
 				y -= ly;
 			}
 
-			distance = Mathf.Clamp(distance - Input.GetAxis("Mouse ScrollWheel"), distanceMin, distanceMax + 1f);
-			if (distance > distanceMax)
-			{
-				SetOrbitTarget(null);
-			}
-
 			rotation *= Quaternion.Euler(y, x, 0);
 			Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
 			position = (rotation * negDistance) + target.position;
@@ -101,7 +95,12 @@ public class MouseOrbitImproved : MonoBehaviour
 				(cameraMain.transform.right * inputX)
 				+ (cameraMain.transform.forward * inputZ)
 				).normalized * moveSpeed;
-			rawMove = Vector3.ProjectOnPlane(rawMove, Vector3.up);
+
+			// normalized or free mode
+			float cameraPitch = WrapAngle(cameraMain.transform.eulerAngles.x);
+			if (Mathf.Abs(cameraPitch) < 30f)
+				rawMove = Vector3.ProjectOnPlane(rawMove, Vector3.up);
+
 			rawMove += (cameraMain.transform.up * inputElevation) * moveSpeed;
 
 			moveVector = Vector3.Lerp(moveVector, rawMove, Time.deltaTime * moveAcceleration * 0.1f);
@@ -111,6 +110,25 @@ public class MouseOrbitImproved : MonoBehaviour
 		{
 			moveVector = Vector3.Lerp(moveVector, Vector3.zero, Time.deltaTime * moveAcceleration);
 		}
+	}
+
+	private static float WrapAngle(float angle)
+	{
+		angle %= 360;
+		if (angle > 180)
+			return angle - 360;
+
+		return angle;
+	}
+
+	private static float UnwrapAngle(float angle)
+	{
+		if (angle >= 0)
+			return angle;
+
+		angle = -angle % 360;
+
+		return 360 - angle;
 	}
 
 	void MouseScreenEdgeInput()
