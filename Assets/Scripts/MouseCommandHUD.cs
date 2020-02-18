@@ -85,7 +85,6 @@ public class MouseCommandHUD : MonoBehaviour
 				SetCircleLocation();
 				UpdateMouseMovement();
 				scroll += Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * 1000f;
-				Debug.Log("scroll: " + scroll);
 				UpdateCircleRender();
 				VisualizeMoveOrder(moveCommandPosition);
 			}

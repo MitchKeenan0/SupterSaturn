@@ -40,12 +40,28 @@ public class FleetCreator : MonoBehaviour
 
 	public List<FleetPanelSlot> GetPanelSlots() { return panelSlots; }
 
+	void OnEnable()
+	{
+		SceneManager.sceneLoaded += OnLevelFinishedLoading;
+	}
+	void OnDisable()
+	{
+		SceneManager.sceneLoaded -= OnLevelFinishedLoading;
+	}
+	void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
+	{
+		//nameLibrary = FindObjectOfType<NameLibrary>();
+		//nameLibrary.ResetUsedLists();
+		if (game != null)
+			game.LoadGame();
+	}
+
 	void Awake()
 	{
 		Time.timeScale = 1;
 		player = FindObjectOfType<Player>();
 		game = FindObjectOfType<Game>();
-		game.LoadGame();
+		//game.LoadGame();
 
 		emptyButton.interactable = false;
 		loadingPanel.SetActive(true);
