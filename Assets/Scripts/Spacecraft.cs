@@ -93,19 +93,25 @@ public class Spacecraft : MonoBehaviour
 			if (turningVector != Vector3.zero)
 			{
 				Vector3 torqueVector = Vector3.zero;
-				Vector3 angularTurn = turningVector + rb.angularVelocity;
+                Vector3 angularVelocity = rb.angularVelocity;
+                Vector3 angularTurn = turningVector + transform.InverseTransformVector(rb.angularVelocity);
 
-				float yaw = Vector3.Dot(transform.right, angularTurn);
-				torqueVector += (transform.up * yaw * Mathf.Sqrt(Mathf.Abs(yaw)));
+                float yaw = Vector3.Dot(transform.right, angularTurn);
+                torqueVector += (transform.up * yaw * Mathf.Sqrt(Mathf.Abs(yaw))) * Time.fixedDeltaTime;
 
-				float pitch = -Vector3.Dot(transform.up, angularTurn);
-				torqueVector += (transform.right * pitch * Mathf.Sqrt(Mathf.Abs(pitch)));
+                float pitch = -Vector3.Dot(transform.up, angularTurn);
+                torqueVector += (transform.right * pitch * Mathf.Sqrt(Mathf.Abs(pitch))) * Time.fixedDeltaTime;
 
-				float roll = -transform.localRotation.z;
-				torqueVector += (transform.forward * roll * Mathf.Sqrt(Mathf.Abs(roll)));
+                float roll = -transform.localRotation.z;
+                torqueVector += (transform.forward * roll * Mathf.Sqrt(Mathf.Abs(roll))) * Time.fixedDeltaTime;
 
-				float angularV = Mathf.Clamp(turningPower - rb.angularVelocity.magnitude, 0f, 1f);
-				rb.AddTorque(torqueVector.normalized * turningPower * Time.fixedDeltaTime);
+                float angularV = Mathf.Clamp(turningPower - rb.angularVelocity.magnitude, 0f, 1f);
+                rb.AddTorque(torqueVector.normalized * turningPower * Time.fixedDeltaTime);
+                transform.rotation = rb.rotation;
+			}
+			else
+			{
+				rb.AddTorque(transform.InverseTransformVector(-rb.angularVelocity) * turningPower * Time.fixedDeltaTime);
 				transform.rotation = rb.rotation;
 			}
 
@@ -132,7 +138,6 @@ public class Spacecraft : MonoBehaviour
 	public void MainEngines(float driveDirection)
 	{
 		mainEnginesVector = transform.forward * driveDirection * mainEnginePower;
-		//Debug.DrawRay(transform.position, mainEnginesVector, Color.blue);
 		var ps = thrustParticles.main;
 		var em = thrustParticles.emission;
 		if (Mathf.Abs(driveDirection) > 0.1f)
@@ -153,7 +158,7 @@ public class Spacecraft : MonoBehaviour
 
 	public void Maneuver(Vector3 targetPoint)
 	{
-		turningVector = Vector3.Lerp(turningVector, targetPoint, Time.deltaTime * turningPower);
+		turningVector = targetPoint;
 	}
 
 	public void SpacecraftKnockedOut(Transform responsibleTransform)

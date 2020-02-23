@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
 	public GameObject gameLoadingPanel;
-	public GameObject fleetLoadingPanel;
 	public GameObject menuPanel;
 
 	private Game game;
@@ -15,7 +14,6 @@ public class MainMenu : MonoBehaviour
     void Start()
     {
 		gameLoadingPanel.SetActive(false);
-		fleetLoadingPanel.SetActive(false);
 		options = FindObjectOfType<OptionsMenu>();
 		options.gameObject.SetActive(false);
 		game = FindObjectOfType<Game>();
@@ -25,13 +23,29 @@ public class MainMenu : MonoBehaviour
 	public void StartGame()
 	{
 		gameLoadingPanel.SetActive(true);
-		SceneManager.LoadScene("CampaignScene");
+		game.SetGameMode(2);
+		game.LoadScene("BayScene");
+	}
+
+	public void StartBattle()
+	{
+		gameLoadingPanel.SetActive(true);
+		game.SetGameMode(1);
+		game.LoadScene("BattleScene");
+	}
+
+	public void StartCampaign()
+	{
+		gameLoadingPanel.SetActive(true);
+		game.SetGameMode(3);
+		game.LoadScene("CampaignScene");
 	}
 
 	public void FleetCreator()
 	{
-		fleetLoadingPanel.SetActive(true);
-		SceneManager.LoadScene("FleetScene");
+		gameLoadingPanel.SetActive(true);
+		game.SetGameMode(0);
+		game.LoadScene("FleetScene");
 	}
 
 	public void Options()

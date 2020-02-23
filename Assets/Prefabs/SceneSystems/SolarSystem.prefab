@@ -46,8 +46,8 @@ MonoBehaviour:
   minimumObjectCount: 3
   maximumObjectCount: 30
   distanceScale: 10
-  planetMinSize: 25
-  planetMaxSize: 50
+  planetMinSize: 30
+  planetMaxSize: 80
   sunPrefab: {fileID: 6143951963767822065, guid: 0e67b66183fa3c649972cce192036fba,
     type: 3}
   planetPrefabs:

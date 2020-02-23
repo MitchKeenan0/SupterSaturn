@@ -55,13 +55,16 @@ public class Autopilot : MonoBehaviour
 			float distance = Vector3.Distance(transform.position, currentRouteVector);
 			if ((distance < 0.5f) && ((Time.time - timeAtLastMoveCommand) > 1f))
 			{
-				holdPosition = currentRouteVector;
+				holdPosition = transform.position;
 				routeVectors.Remove(currentRouteVector);
 				if (routeVisualizer != null)
 					routeVisualizer.ClearLine(0);
 
 				if (routeVectors.Count == 0)
+				{
 					EnableMoveCommand(false);
+					AllStop();
+				}
 			}
 		}
 		else
@@ -97,7 +100,7 @@ public class Autopilot : MonoBehaviour
 			else if (spacecraft != null)
 			{
 				routeVisualizer.ClearLine(-1);
-				holdPosition = spacecraft.transform.position;
+				holdPosition = transform.position;
 			}
 		}
 		if (bExecutingMoveCommand)
@@ -155,51 +158,66 @@ public class Autopilot : MonoBehaviour
 
 	void FlyTo(Vector3 destination)
 	{
+		Debug.DrawLine(transform.position, destination, Color.green);
+
 		Vector3 toDestination = destination - rb.velocity - transform.position;
 
 		// steering
-		if (toDestination.magnitude >= 1f)
+		if (toDestination.magnitude >= 1.62f)
 		{
 			Vector3 maneuverVector = destination - transform.position;
 			spacecraft.Maneuver(maneuverVector);
 		}
 
-		// side jets
 		Vector3 frameVelocity = rb.velocity.normalized;
 		Vector3 frameDestination = toDestination.normalized;
 		Vector3 driveVector = Vector3.zero;
+
+		// side jets setup
+		if (frameVelocity.x != frameDestination.x)
+			driveVector.x = frameDestination.x - frameVelocity.x;
+		if (frameVelocity.y != frameDestination.y)
+			driveVector.y = frameDestination.y - frameVelocity.y;
+		if (frameVelocity.z != frameDestination.z)
+			driveVector.z = frameDestination.z - frameVelocity.z;
+		driveVector.z = Mathf.Clamp(driveVector.z, -1f, 1f);
+
+		// thrust
 		if (destination != holdPosition)
 		{
-			if (frameVelocity.x != frameDestination.x)
-				driveVector.x = frameDestination.x - frameVelocity.x;
-			if (frameVelocity.y != frameDestination.y)
-				driveVector.y = frameDestination.y - frameVelocity.y;
-			if (frameVelocity.z != frameDestination.z)
-				driveVector.z = frameDestination.z - frameVelocity.z;
-			driveVector.z = Mathf.Clamp(driveVector.z, -1f, 1f);
+			float distanceToDestination = toDestination.magnitude;
+			if ((distanceToDestination > 0.1f) && (destination != holdPosition))
+			{
+				float dotToDestination = Vector3.Dot((rb.velocity + transform.forward).normalized, toDestination.normalized);
+				if (Mathf.Abs(dotToDestination) > 0.95f)
+				{
+					float throttle = Mathf.Clamp(((distanceToDestination * 0.1f) * spacecraft.mainEnginePower * dotToDestination), -1, 1);
+					float destinationVelocityDot = Vector3.Dot(toDestination.normalized, rb.velocity.normalized);
+					spacecraft.MainEngines(throttle);
+				}
+				else if (dotToDestination < 0f)
+				{
+					spacecraft.MainEngines(dotToDestination);
+				}
+			}
 		}
 		else
 		{
-			driveVector = -rb.velocity;
-		}
-		if (driveVector != Vector3.zero)
-		{
-			driveVector = Vector3.ClampMagnitude(driveVector, 1);
-			spacecraft.ManeuverEngines(driveVector);
+			driveVector = -frameVelocity;
 		}
 
-		// thrust
-		float distanceToDestination = toDestination.magnitude;
-		if ((distanceToDestination > 0.1f) && (destination != holdPosition))
+		if (driveVector != Vector3.zero)
 		{
-			float dotToDestination = Vector3.Dot(transform.forward, toDestination.normalized);
-			if (Mathf.Abs(dotToDestination) > 0.8f)
-			{
-				float throttle = Mathf.Clamp(((distanceToDestination * 0.01f) * spacecraft.mainEnginePower * dotToDestination), -1, 1);
-				float destinationVelocityDot = Vector3.Dot(toDestination.normalized, rb.velocity.normalized);
-				spacecraft.MainEngines(throttle);
-			}
+			driveVector = Vector3.ClampMagnitude(driveVector, spacecraft.maneuverPower);
+			spacecraft.ManeuverEngines(driveVector);
 		}
+	}
+
+	void AllStop()
+	{
+		spacecraft.MainEngines(0f);
+		spacecraft.ManeuverEngines(Vector3.zero);
+		spacecraft.Maneuver(Vector3.zero);
 	}
 
 	Vector3 GetGravityEscapeFrom(Vector3 position)

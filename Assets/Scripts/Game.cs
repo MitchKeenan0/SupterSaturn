@@ -29,6 +29,7 @@ public class Game : MonoBehaviour
 	private List<int> savedHealthList;
 	private int sceneSetting = 0;
 	private int chevrons = 0;
+	private int gameMode = -1;
 	private bool bEscapeMenu = false;
 	private bool bFleetTutorialClosed = false;
 	private bool bGameTutorialClosed = false;
@@ -96,6 +97,33 @@ public class Game : MonoBehaviour
 	{
 		if (Input.GetButtonDown("Cancel"))
 			EscapeMenu();
+	}
+
+	public int GetGameMode() { return gameMode; }
+	public void SetGameMode(int value)
+	{
+		gameMode = value;
+	}
+
+	public void LoadScene(string sceneName)
+	{
+		SceneManager.LoadScene(sceneName);
+	}
+
+	public void LoadGameMode()
+	{
+		string sceneName = "";
+		switch(gameMode)
+		{
+			case 1: sceneName = "BattleScene";
+				break;
+			case 2: sceneName = "BayScene";
+				break;
+			default:
+				break;
+		}
+		if (sceneName != "")
+			SceneManager.LoadScene(sceneName);
 	}
 
 	public void EscapeMenu()

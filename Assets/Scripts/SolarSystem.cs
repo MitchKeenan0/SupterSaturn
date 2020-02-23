@@ -24,21 +24,29 @@ public class SolarSystem : BattleScene
 		base.InitScene();
 
 		bool solarCenter = false;
-		GameObject sunObj = Instantiate(sunPrefab, transform);
-		solarCenter = true;
+		int celestialBodyCount = Random.Range(minimumObjectCount, maximumObjectCount);
+		if (Random.Range(0f, 1f) > 99) /// disabled for now
+		{
+			GameObject sunObj = Instantiate(sunPrefab, transform);
+			solarCenter = true;
+		}
+		else
+		{
+			celestialBodyCount = 1;
+		}
 
 		GameObject backupCenter = null;
 		float biggestScale = 0f;
-		int celestialBodyCount = Random.Range(minimumObjectCount, maximumObjectCount);
 		for (int i = 0; i < celestialBodyCount; i++)
 		{
 			int randomLibraryIndex = Random.Range(0, planetPrefabs.Length - 1);
 			GameObject spawnedPlanet = Instantiate(planetPrefabs[randomLibraryIndex], transform);
-			if (spawnedPlanet.GetComponent<PlanetArm>())
+			if (solarCenter && spawnedPlanet.GetComponent<PlanetArm>())
 			{
 				int armLengthIndex = i + 5;
 				spawnedPlanet.GetComponent<PlanetArm>().SetLength(armLengthIndex * distanceScale);
 			}
+
 			Planet planet = spawnedPlanet.GetComponent<Planet>();
 			if (planet != null)
 			{
@@ -74,7 +82,11 @@ public class SolarSystem : BattleScene
 		if (!solarCenter)
 		{
 			GameObject dirLight = Instantiate(directionalLightPrefab, transform);
-			dirLight.transform.rotation = Random.rotation;
+			Vector3 offsetEuler = Vector3.zero;
+			offsetEuler.x = Random.Range(-15, 15);
+			offsetEuler.y = Random.Range(-15, 15);
+			offsetEuler.z = Random.Range(-15, 15);
+			dirLight.transform.rotation = Quaternion.Euler(offsetEuler);
 
 			if (backupCenter != null)
 			{

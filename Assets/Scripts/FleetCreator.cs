@@ -61,6 +61,8 @@ public class FleetCreator : MonoBehaviour
 		Time.timeScale = 1;
 		player = FindObjectOfType<Player>();
 		game = FindObjectOfType<Game>();
+		if (game.GetGameMode() == 0)
+			startGameButton.interactable = false;
 		//game.LoadGame();
 
 		emptyButton.interactable = false;
@@ -181,9 +183,12 @@ public class FleetCreator : MonoBehaviour
 
 		if ((total <= game.GetChevrons()) && (total > 0))
 		{
-			startGameButton.interactable = true;
-			chevronBalanceText.color = moneyColor;
-			chevronDividerImage.color = moneyColor;
+			if (game.GetGameMode() != 0)
+			{
+				startGameButton.interactable = true;
+				chevronBalanceText.color = moneyColor;
+				chevronDividerImage.color = moneyColor;
+			}
 		}
 		else
 		{
@@ -312,25 +317,21 @@ public class FleetCreator : MonoBehaviour
 	public void StartGame()
 	{
 		game.SaveGame();
-		sceneLoadCoroutine = LoadScene(0.2f, "CampaignScene");
+		sceneLoadCoroutine = StartGameMode(0.2f);
 		StartCoroutine(sceneLoadCoroutine);
 	}
 
 	public void BackToMenu()
 	{
 		game.SaveGame();
-		sceneLoadCoroutine = LoadScene(0.2f, "BaseScene");
-		StartCoroutine(sceneLoadCoroutine);
+		SceneManager.LoadScene("BaseScene");
 	}
 
-	private IEnumerator LoadScene(float waitTime, string sceneName)
+	private IEnumerator StartGameMode(float waitTime)
 	{
 		Time.timeScale = 1;
 		loadingPanel.SetActive(true);
-		
 		yield return new WaitForSeconds(waitTime);
-
-		Debug.Log("Fleetcreator loading scene " + sceneName + "...");
-		SceneManager.LoadScene(sceneName);
+		game.LoadGameMode();
 	}
 }
