@@ -22,6 +22,7 @@ public class IdentityManager : MonoBehaviour
 	{
 		GameObject idObj = Instantiate(identityPrefab, Vector3.zero, Quaternion.identity);
 		Identity id = idObj.GetComponent<Identity>();
+		Debug.Log("Spawned identity");
 		return id;
 	}
 }

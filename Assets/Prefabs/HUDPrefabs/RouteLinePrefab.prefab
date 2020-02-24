@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateInterval: 0.1
+  scaleFactor: 0.1
 --- !u!120 &1717023931117533250
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -87,7 +88,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.002
+    widthMultiplier: 0.1
     widthCurve:
       serializedVersion: 2
       m_Curve:

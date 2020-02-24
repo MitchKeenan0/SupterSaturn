@@ -147,7 +147,7 @@ public class Campaign : MonoBehaviour
 		int numIDs = ids.Length;
 		if (numIDs > 0)
 		{
-			Debug.Log("campaign saving " + numLocations + " identities");
+			Debug.Log("campaign saving " + numIDs + " identities");
 			for (int i = 0; i < numIDs; i++)
 			{
 				if ((i < ids.Length) && (ids[i] != null))

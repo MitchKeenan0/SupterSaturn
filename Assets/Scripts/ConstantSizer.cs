@@ -55,7 +55,7 @@ public class ConstantSizer : MonoBehaviour
 			else if (secondPointDistance < firstPointDistance)
 				distToCamera = secondPointDistance;
 
-			line.widthMultiplier = naturalWidth * distToCamera;
+			line.widthMultiplier = naturalWidth * distToCamera * scaleFactor;
 		}
 	}
 }

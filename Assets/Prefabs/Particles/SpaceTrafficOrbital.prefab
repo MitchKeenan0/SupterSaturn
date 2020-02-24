@@ -3970,7 +3970,7 @@ ParticleSystem:
   TrailModule:
     enabled: 1
     mode: 0
-    ratio: 0.8
+    ratio: 0.95
     lifetime:
       serializedVersion: 2
       minMaxState: 3

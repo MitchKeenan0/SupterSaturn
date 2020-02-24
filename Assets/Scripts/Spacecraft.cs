@@ -90,40 +90,22 @@ public class Spacecraft : MonoBehaviour
 	{
 		if (IsAlive())
 		{
-			if (turningVector != Vector3.zero)
-			{
-				Vector3 torqueVector = Vector3.zero;
-                Vector3 angularVelocity = rb.angularVelocity;
-                Vector3 angularTurn = turningVector + transform.InverseTransformVector(rb.angularVelocity);
+			// rotation
+			Vector3 torqueVector = Vector3.zero;
+			Vector3 localAngularV = transform.InverseTransformVector(rb.angularVelocity) * rb.mass * 3f;
+			float yaw = Vector3.Dot(rb.transform.right, turningVector.normalized) - localAngularV.y;
+			torqueVector += rb.transform.up * yaw;
+			float pitch = -Vector3.Dot(rb.transform.up, turningVector.normalized) - localAngularV.x;
+			torqueVector += rb.transform.right * pitch;
+			float roll = -rb.transform.localRotation.z;
+			torqueVector += rb.transform.forward * roll;
+			float masterDot = Vector3.Dot(rb.transform.forward, turningVector.normalized);
+			rb.AddTorque(torqueVector * turningPower * Time.fixedDeltaTime);
 
-                float yaw = Vector3.Dot(transform.right, angularTurn);
-                torqueVector += (transform.up * yaw * Mathf.Sqrt(Mathf.Abs(yaw))) * Time.fixedDeltaTime;
-
-                float pitch = -Vector3.Dot(transform.up, angularTurn);
-                torqueVector += (transform.right * pitch * Mathf.Sqrt(Mathf.Abs(pitch))) * Time.fixedDeltaTime;
-
-                float roll = -transform.localRotation.z;
-                torqueVector += (transform.forward * roll * Mathf.Sqrt(Mathf.Abs(roll))) * Time.fixedDeltaTime;
-
-                float angularV = Mathf.Clamp(turningPower - rb.angularVelocity.magnitude, 0f, 1f);
-                rb.AddTorque(torqueVector.normalized * turningPower * Time.fixedDeltaTime);
-                transform.rotation = rb.rotation;
-			}
-			else
-			{
-				rb.AddTorque(transform.InverseTransformVector(-rb.angularVelocity) * turningPower * Time.fixedDeltaTime);
-				transform.rotation = rb.rotation;
-			}
-
+			// thrust & side jets
 			Vector3 rbForceVector = Vector3.zero;
-			if (mainEnginesVector != Vector3.zero)
-			{
-				rbForceVector += mainEnginesVector;
-			}
-			if (maneuverEnginesVector != Vector3.zero)
-			{
-				rbForceVector += maneuverEnginesVector;
-			}
+			rbForceVector += mainEnginesVector;
+			rbForceVector += maneuverEnginesVector;
 			if (rbForceVector != Vector3.zero)
 				rb.AddForce(rbForceVector);
 		}
@@ -159,6 +141,8 @@ public class Spacecraft : MonoBehaviour
 	public void Maneuver(Vector3 targetPoint)
 	{
 		turningVector = targetPoint;
+		if (turningVector == Vector3.zero)
+			turningVector = transform.position + transform.forward;
 	}
 
 	public void SpacecraftKnockedOut(Transform responsibleTransform)

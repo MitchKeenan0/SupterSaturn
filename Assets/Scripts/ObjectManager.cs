@@ -40,7 +40,8 @@ public class ObjectManager : MonoBehaviour
 
 		InitSpacecraftList();
 		InitGravityList();
-		gameAgent.SetAgentList(game.GetEnemySpacecraftList());
+		if (gameAgent != null)
+			gameAgent.SetAgentList(game.GetEnemySpacecraftList());
 	}
 
 	void InitSpacecraftList()

@@ -169,11 +169,10 @@ public class Autopilot : MonoBehaviour
 			spacecraft.Maneuver(maneuverVector);
 		}
 
+		// side jets setup
 		Vector3 frameVelocity = rb.velocity.normalized;
 		Vector3 frameDestination = toDestination.normalized;
 		Vector3 driveVector = Vector3.zero;
-
-		// side jets setup
 		if (frameVelocity.x != frameDestination.x)
 			driveVector.x = frameDestination.x - frameVelocity.x;
 		if (frameVelocity.y != frameDestination.y)
@@ -181,6 +180,12 @@ public class Autopilot : MonoBehaviour
 		if (frameVelocity.z != frameDestination.z)
 			driveVector.z = frameDestination.z - frameVelocity.z;
 		driveVector.z = Mathf.Clamp(driveVector.z, -1f, 1f);
+		driveVector = Vector3.ProjectOnPlane(driveVector, toDestination);
+		if (driveVector != Vector3.zero)
+		{
+			driveVector = Vector3.ClampMagnitude(driveVector, spacecraft.maneuverPower);
+			spacecraft.ManeuverEngines(driveVector);
+		}
 
 		// thrust
 		if (destination != holdPosition)
@@ -188,8 +193,8 @@ public class Autopilot : MonoBehaviour
 			float distanceToDestination = toDestination.magnitude;
 			if ((distanceToDestination > 0.1f) && (destination != holdPosition))
 			{
-				float dotToDestination = Vector3.Dot((rb.velocity + transform.forward).normalized, toDestination.normalized);
-				if (Mathf.Abs(dotToDestination) > 0.95f)
+				float dotToDestination = Vector3.Dot(transform.forward, toDestination.normalized);
+				if (Mathf.Abs(dotToDestination) > 0.99f)
 				{
 					float throttle = Mathf.Clamp(((distanceToDestination * 0.1f) * spacecraft.mainEnginePower * dotToDestination), -1, 1);
 					float destinationVelocityDot = Vector3.Dot(toDestination.normalized, rb.velocity.normalized);
@@ -200,16 +205,6 @@ public class Autopilot : MonoBehaviour
 					spacecraft.MainEngines(dotToDestination);
 				}
 			}
-		}
-		else
-		{
-			driveVector = -frameVelocity;
-		}
-
-		if (driveVector != Vector3.zero)
-		{
-			driveVector = Vector3.ClampMagnitude(driveVector, spacecraft.maneuverPower);
-			spacecraft.ManeuverEngines(driveVector);
 		}
 	}
 

@@ -466,7 +466,7 @@ public class Game : MonoBehaviour
 			bFleetTutorialClosed = false;
 			bGameTutorialClosed = false;
 
-			//SaveGame();
+			SaveGame();
 
 			///Debug.Log("save deleted");
 		}

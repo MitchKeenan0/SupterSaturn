@@ -63,4 +63,4 @@ MonoBehaviour:
   maneuverPower: 1
   mass: 1
   linearDrag: 0.3
-  angularDrag: 0.5
+  angularDrag: 0.3
