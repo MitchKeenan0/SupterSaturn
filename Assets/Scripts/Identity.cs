@@ -13,7 +13,6 @@ public class Identity : MonoBehaviour
 	private float likelyhoodOfDefendingPlayer = 0f;
 	private float identityWealth = 0f;
 	private List<Fleet> fleetList;
-	private bool bLoaded = false;
 
 	void Awake()
     {
@@ -26,7 +25,6 @@ public class Identity : MonoBehaviour
 
 	public void LoadIdentity(string idName, Color idColor)
 	{
-		bLoaded = true;
 		identityName = idName;
 		identityColor = idColor;
 	}

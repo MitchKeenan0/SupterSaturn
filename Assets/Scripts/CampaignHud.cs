@@ -9,6 +9,7 @@ public class CampaignHud : MonoBehaviour
 
 	private Game game;
 	private Campaign campaign;
+	private SoundManager soundManager;
 
 	private IEnumerator fleetJumpDelay;
 
@@ -16,6 +17,7 @@ public class CampaignHud : MonoBehaviour
     {
 		game = FindObjectOfType<Game>();
 		campaign = FindObjectOfType<Campaign>();
+		soundManager = FindObjectOfType<SoundManager>();
     }
 
 	public void SetPanelActive(bool value)
@@ -26,6 +28,7 @@ public class CampaignHud : MonoBehaviour
 
 	public void FleetCreator()
 	{
+		soundManager.NegativeButton();
 		campaign.SaveCampaign();
 		game.SaveGame();
 		fleetJumpDelay = FleetReturn(0.3f);

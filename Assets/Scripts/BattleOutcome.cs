@@ -20,7 +20,6 @@ public class BattleOutcome : MonoBehaviour
 	private Player player;
 	private int playerScore = 0;
 	private int playerLost = 0;
-	private float targetTimescale = 1;
 
     void Awake()
     {

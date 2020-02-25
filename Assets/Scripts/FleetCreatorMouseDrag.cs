@@ -6,12 +6,12 @@ using UnityEngine.UI;
 public class FleetCreatorMouseDrag : MonoBehaviour
 {
 	public Transform mouseTransform;
-	private FleetPanelSlot panelSlot;
+	private CardRosterSlot panelSlot;
 	private bool bDragging = false;
 
     void Start()
     {
-		panelSlot = GetComponent<FleetPanelSlot>();
+		panelSlot = GetComponent<CardRosterSlot>();
 	}
 
 	void OnMouseDown()

@@ -18,7 +18,6 @@ public class CraftIconHUD : MonoBehaviour
 
 	private IEnumerator loadWaitCoroutine;
 	private IEnumerator updateCoroutine;
-	private bool bInit = false;
 
 	void Awake()
 	{
@@ -108,8 +107,6 @@ public class CraftIconHUD : MonoBehaviour
 				img.enabled = false;
 			}
 		}
-
-		bInit = true;
 	}
 
 	GameObject CreateSpacecraftIcon()
