@@ -153,6 +153,9 @@ public class Autopilot : MonoBehaviour
 		//	velocity += followingRoute;
 		//}
 
+		// normalize to surface
+		velocity = Vector3.ProjectOnPlane(velocity, previousRouteVector.normalized);
+
 		return velocity;
 	}
 

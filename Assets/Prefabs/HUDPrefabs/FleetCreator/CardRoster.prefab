@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7167784088313684937}
   - component: {fileID: 7167784088313684951}
   - component: {fileID: 7167784088313684948}
-  - component: {fileID: 345136620115849735}
   - component: {fileID: 7990510878154088356}
   m_Layer: 5
   m_Name: CardRoster
@@ -37,7 +36,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 385, y: 633}
+  m_SizeDelta: {x: 385, y: 900}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7167784088313684951
 CanvasRenderer:
@@ -65,40 +64,13 @@ MonoBehaviour:
     m_Top: 5
     m_Bottom: 5
   m_ChildAlignment: 1
-  m_Spacing: 2
+  m_Spacing: 10
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
---- !u!114 &345136620115849735
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7167784088313684936}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -98529514, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.05882353}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Texture: {fileID: 0}
-  m_UVRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
 --- !u!114 &7990510878154088356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,4 +85,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardRosterSlotPrefab: {fileID: 4954847900004830636, guid: f2656bbe0707f254ab25fc0cc189948a,
     type: 3}
-  maxSlotsAvailable: 8
+  maxSlotsAvailable: 5

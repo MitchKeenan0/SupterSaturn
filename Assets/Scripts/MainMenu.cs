@@ -35,7 +35,7 @@ public class MainMenu : MonoBehaviour
 		soundManager.AffirmativeButton();
 		gameLoadingPanel.SetActive(true);
 		game.SetGameMode(1);
-		game.LoadScene("BattleScene");
+		game.LoadScene("GameScene");
 	}
 
 	public void FleetCreator()

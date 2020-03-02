@@ -99,13 +99,13 @@ public class Spacecraft : MonoBehaviour
 			torqueVector += rb.transform.right * pitch;
 			float roll = -rb.transform.localRotation.z;
 			torqueVector += rb.transform.forward * roll;
-			float masterDot = Vector3.Dot(rb.transform.forward, turningVector.normalized);
 			rb.AddTorque(torqueVector * turningPower * Time.fixedDeltaTime);
 
 			// thrust & side jets
 			Vector3 rbForceVector = Vector3.zero;
 			rbForceVector += mainEnginesVector;
 			rbForceVector += maneuverEnginesVector;
+			rbForceVector = Vector3.ProjectOnPlane(rbForceVector, rb.transform.position.normalized);
 			if (rbForceVector != Vector3.zero)
 				rb.AddForce(rbForceVector);
 		}

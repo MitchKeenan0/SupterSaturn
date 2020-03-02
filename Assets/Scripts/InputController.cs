@@ -4,14 +4,20 @@ using UnityEngine;
 
 public class InputController : MonoBehaviour
 {
-	public bool bEscape;
-
+	public bool bEscape = false;
+	public Vector3 deltaTouch = Vector3.zero;
+	Touch touch;
     
     void Update()
     {
-        if (Input.GetButtonDown("Cancel"))
-		{
-
-		}
+        UpdateTouch();
     }
+
+	void UpdateTouch()
+	{
+		if (Input.touchCount > 0)
+		{
+			touch = Input.GetTouch(0);
+		}
+	}
 }

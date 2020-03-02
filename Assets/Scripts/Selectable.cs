@@ -3,10 +3,13 @@
 public class Selectable : MonoBehaviour
 {
 	private CircleRenderer circle;
+	private SpacecraftController spacecraftController;
+	private TargetCamera targetCamera;
 
 	void Awake()
 	{
 		circle = gameObject.GetComponentInChildren<CircleRenderer>();
+		targetCamera = FindObjectOfType<TargetCamera>();
 	}
 
 	internal bool isSelected
@@ -29,15 +32,20 @@ public class Selectable : MonoBehaviour
 				circle = gameObject.GetComponent<CircleRenderer>();
 			if (circle != null)
 			{
+				spacecraftController = gameObject.GetComponentInChildren<SpacecraftController>();
 				if (value)
 				{
 					circle.Open();
 					circle.SetPosition(transform.position);
 					circle.StartAutoUpdate();
+					if (spacecraftController != null)
+						spacecraftController.SetActive(true);
 				}
 				else
 				{
 					circle.Close();
+					if (spacecraftController != null)
+						spacecraftController.SetActive(false);
 				}
 			}
 		}

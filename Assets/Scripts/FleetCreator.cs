@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class FleetCreator : MonoBehaviour
 {
-	public GameObject loadingPanel;
 	public Text playerNameText;
 	public Text placeholderNameText;
 	public Text chevronValueText;
@@ -14,7 +13,7 @@ public class FleetCreator : MonoBehaviour
 	public Image chevronDividerImage;
 	public Color moneyColor;
 	public Color bankruptColor;
-	public Button mainMenuButton;
+	public Button startGameButton;
 	public Button emptyButton;
 	public Button emptyAllButton;
 
@@ -50,7 +49,6 @@ public class FleetCreator : MonoBehaviour
 		cardRoster = GetComponentInChildren<CardRoster>();
 		cardSelector = GetComponentInChildren<CardSelector>();
 		emptyButton.interactable = false;
-		loadingPanel.SetActive(true);
 	}
 
 	void Start()
@@ -77,8 +75,6 @@ public class FleetCreator : MonoBehaviour
 			playerName = "No Name";
 		playerNameText.text = player.playerName;
 		placeholderNameText.text = player.playerName;
-
-		loadingPanel.SetActive(false);
 	}
 
 	void UpdateChevronBalance()
@@ -100,14 +96,14 @@ public class FleetCreator : MonoBehaviour
 		{
 			if (game.GetGameMode() != 0)
 			{
-				mainMenuButton.interactable = true;
+				startGameButton.interactable = true;
 				chevronBalanceText.color = moneyColor;
 				chevronDividerImage.color = moneyColor;
 			}
 		}
 		else
 		{
-			mainMenuButton.interactable = false;
+			startGameButton.interactable = false;
 			chevronBalanceText.color = bankruptColor;
 			chevronDividerImage.color = bankruptColor;
 		}
@@ -206,7 +202,6 @@ public class FleetCreator : MonoBehaviour
 	public void BackToMenu()
 	{
 		soundManager.NegativeButton();
-		loadingPanel.SetActive(true);
 		game.SaveGame();
 		SceneManager.LoadScene("BaseScene");
 	}

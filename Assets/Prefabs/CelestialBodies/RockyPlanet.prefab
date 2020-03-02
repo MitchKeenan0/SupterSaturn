@@ -27,15 +27,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4766638517062956649}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.16832335, y: -0, z: -0, w: 0.9857319}
+  m_LocalPosition: {x: 0, y: 0.076324, z: 0.013033092}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1972876330934583819}
   - {fileID: 403465362739086372}
   m_Father: {fileID: 6143951963767822069}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 19.381, y: 0, z: 0}
 --- !u!33 &6778420731978736680
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 5915447a6783d8d46873752d81b95395, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -96,7 +96,7 @@ MonoBehaviour:
   xForceDirection: 0
   yForceDirection: 1
   zForceDirection: 0
-  speedMultiplier: 10
+  speedMultiplier: 1
   bRandomRotationStart: 0
   bRandomSpeed: 0
   worldPivot: 0
@@ -163,7 +163,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bodyTransform: {fileID: 5273469545884070276}
-  radius: 15
+  radius: 50
   strength: 0.02
 --- !u!114 &9115644990372860287
 MonoBehaviour:
@@ -193,7 +193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5712115b8c039dc4da688e77a7a2302b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  armLength: 1.6
+  armLength: 50
   planetTransform: {fileID: 5273469545884070276}
   offsetRotationScale: 25
 --- !u!114 &2195280497328947487
@@ -203,17 +203,17 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6143951963767822065}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 40b3f8e52d954ce4c8d89069b4abdfeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   xForceDirection: 0
-  yForceDirection: 1
+  yForceDirection: 0.1
   zForceDirection: 0
-  speedMultiplier: 0.1
-  bRandomRotationStart: 1
-  bRandomSpeed: 1
+  speedMultiplier: 0.01
+  bRandomRotationStart: 0
+  bRandomSpeed: 0
   worldPivot: 0
 --- !u!54 &6469468458821320962
 Rigidbody:
@@ -289,7 +289,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 673522835ab4482479de9390c3ef0bc1, type: 2}
+  - {fileID: 2100000, guid: 57288e0ecd5722a40be152d18b16a815, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -539,6 +539,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077121153080925060, guid: 72bcdf07eccfb364cbb28dcc265a8c0a,
+        type: 3}
+      propertyPath: circleRadius
+      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 72bcdf07eccfb364cbb28dcc265a8c0a, type: 3}

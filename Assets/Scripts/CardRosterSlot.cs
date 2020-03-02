@@ -141,6 +141,5 @@ public class CardRosterSlot : MonoBehaviour, IDeselectHandler
 		slotNameText.enabled = value;
 		costText.enabled = value;
 		healthBar.gameObject.SetActive(value);
-		Debug.Log("Set slot active " + value);
 	}
 }

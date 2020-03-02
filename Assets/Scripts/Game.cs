@@ -64,6 +64,16 @@ public class Game : MonoBehaviour
 		campaign = FindObjectOfType<Campaign>();
 	}
 
+	private void OnApplicationPause(bool paused)
+	{
+		SaveGame();
+	}
+
+	void OnApplicationQuit()
+	{
+		SaveGame();
+	}
+
 	void Awake()
 	{
 		if (game == null)
@@ -85,7 +95,7 @@ public class Game : MonoBehaviour
 		player = FindObjectOfType<Player>();
 		gameHud = FindObjectOfType<GameHUD>();
 		campaign = FindObjectOfType<Campaign>();
-		Application.targetFrameRate = 70;
+		Application.targetFrameRate = 30;
 	}
 
 	void Start()
