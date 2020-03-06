@@ -5,6 +5,7 @@ using System.Linq;
 
 public class MouseSelection : MonoBehaviour
 {
+	public bool bBoxDragMode = false;
 	public static List<Selectable> selectables = new List<Selectable>();
 
 	[Tooltip("Canvas is set automatically if not set in the inspector")]
@@ -85,7 +86,7 @@ public class MouseSelection : MonoBehaviour
 			}
 
 			//If we never set the selectionBox variable in the inspector, we are simply not able to drag the selectionBox to easily select multiple objects. 'Regular' selection should still work
-			if (selectionBox == null)
+			if ((selectionBox == null) || !bBoxDragMode)
 				return;
 
 			//We finished our selection box when the key is released

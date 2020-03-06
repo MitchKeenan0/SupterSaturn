@@ -82,7 +82,7 @@ public class GravityTelemetryHUD : MonoBehaviour
 						line.SetPosition(0, sp.transform.position);
 						line.SetPosition(1, gravity.bodyTransform.position);
 
-						float lineDistance = Vector3.Distance(line.GetPosition(0), line.GetPosition(1));
+						float lineDistance = 0.1f * Vector3.Distance(line.GetPosition(0), line.GetPosition(1));
 						Color lineColor = line.startColor;
 						lineColor.a = 1f / lineDistance;
 						line.startColor = line.endColor = lineColor;

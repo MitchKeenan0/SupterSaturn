@@ -315,15 +315,15 @@ public class Game : MonoBehaviour
 				{
 					if (bFleetTutorialClosed)
 						gameHud.SetTutorialActive(false);
-					else
-						gameHud.SetTutorialActive(true);
+					//else
+					//	gameHud.SetTutorialActive(true);
 				}
 				else if (sceneName == "GameScene")
 				{
 					if (bGameTutorialClosed)
 						gameHud.SetTutorialActive(false);
-					else
-						gameHud.SetTutorialActive(true);
+					//else
+					//	gameHud.SetTutorialActive(true);
 				}
 			}
 

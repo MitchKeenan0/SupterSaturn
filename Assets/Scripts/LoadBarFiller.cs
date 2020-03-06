@@ -28,8 +28,8 @@ public class LoadBarFiller : MonoBehaviour
 
 	void UpdateBarValue()
 	{
-		deltaLoadSize = Mathf.Lerp(deltaLoadSize, totalSize, Time.deltaTime * (1f / loadDuration));
-		if (deltaLoadSize >= (totalSize - 0.5f))
+		deltaLoadSize = Mathf.Lerp(deltaLoadSize, totalSize * 1.1f, Time.deltaTime * (1f / loadDuration));
+		if (deltaLoadSize >= totalSize)
 			deltaLoadSize = totalSize;
 		if (deltaLoadSize == totalSize)
 			gameObject.SetActive(false);

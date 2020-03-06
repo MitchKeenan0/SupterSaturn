@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 120049750544886671}
   - component: {fileID: 120049750544886664}
+  - component: {fileID: 1490529778734066621}
   m_Layer: 0
   m_Name: SphereScanner
   m_TagString: Untagged
@@ -29,7 +30,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 838495658025710544}
-  - {fileID: 1226555275394993334}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -45,12 +45,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e874bf0cf30e8a64cb5f6acdd14716b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scanInterval: 2
+  scanInterval: 3
   intervalDeviation: 0.1
-  scanSpeed: 25
-  maxRadius: 100
+  scanSpeed: 35
+  maxRadius: 1000
   updateInterval: 0.1
   scanRecoveryPeriod: 1
+  maxPointSize: 0.2
+--- !u!114 &1490529778734066621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 120049750544886670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6a944a6153ef4844b76018082395976, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bStartActive: 0
+  pointPrefab: {fileID: 4544285656800160718, guid: 2762b7cf70adfa045b1c4844d0f625c3,
+    type: 3}
+  sphereScale: 1
+  numPoints: 3600
 --- !u!1 &5155169036934119614
 GameObject:
   m_ObjectHideFlags: 0
@@ -108,7 +126,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8f3edf038c927274682888287e2a6314, type: 3}
+  - {fileID: 10758, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -128,78 +146,3 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!1001 &3561952683365931714
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 120049750544886671}
-    m_Modifications:
-    - target: {fileID: 2335961458007496311, guid: 98464ef5bbdf5bb4a92d43e8cfe9a31b,
-        type: 3}
-      propertyPath: m_Name
-      value: SphereScanParticles
-      objectReference: {fileID: 0}
-    - target: {fileID: 2335961458007496308, guid: 98464ef5bbdf5bb4a92d43e8cfe9a31b,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2335961458007496308, guid: 98464ef5bbdf5bb4a92d43e8cfe9a31b,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2335961458007496308, guid: 98464ef5bbdf5bb4a92d43e8cfe9a31b,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2335961458007496308, guid: 98464ef5bbdf5bb4a92d43e8cfe9a31b,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2335961458007496308, guid: 98464ef5bbdf5bb4a92d43e8cfe9a31b,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2335961458007496308, guid: 98464ef5bbdf5bb4a92d43e8cfe9a31b,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2335961458007496308, guid: 98464ef5bbdf5bb4a92d43e8cfe9a31b,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2335961458007496308, guid: 98464ef5bbdf5bb4a92d43e8cfe9a31b,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2335961458007496308, guid: 98464ef5bbdf5bb4a92d43e8cfe9a31b,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2335961458007496308, guid: 98464ef5bbdf5bb4a92d43e8cfe9a31b,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2335961458007496308, guid: 98464ef5bbdf5bb4a92d43e8cfe9a31b,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 98464ef5bbdf5bb4a92d43e8cfe9a31b, type: 3}
---- !u!4 &1226555275394993334 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2335961458007496308, guid: 98464ef5bbdf5bb4a92d43e8cfe9a31b,
-    type: 3}
-  m_PrefabInstance: {fileID: 3561952683365931714}
-  m_PrefabAsset: {fileID: 0}

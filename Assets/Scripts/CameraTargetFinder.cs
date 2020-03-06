@@ -44,6 +44,14 @@ public class CameraTargetFinder : MonoBehaviour
 
 	public Transform GetFirstTarget()
 	{
+		TargetFind();
 		return targetTransform;
+	}
+
+	public void SetActive(bool value)
+	{
+		bActive = value;
+		if (bActive)
+			TargetFind();
 	}
 }

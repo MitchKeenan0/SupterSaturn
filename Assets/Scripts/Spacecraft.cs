@@ -105,7 +105,6 @@ public class Spacecraft : MonoBehaviour
 			Vector3 rbForceVector = Vector3.zero;
 			rbForceVector += mainEnginesVector;
 			rbForceVector += maneuverEnginesVector;
-			rbForceVector = Vector3.ProjectOnPlane(rbForceVector, rb.transform.position.normalized);
 			if (rbForceVector != Vector3.zero)
 				rb.AddForce(rbForceVector);
 		}

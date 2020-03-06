@@ -38,8 +38,7 @@ public class Selectable : MonoBehaviour
 					circle.Open();
 					circle.SetPosition(transform.position);
 					circle.StartAutoUpdate();
-					if (spacecraftController != null)
-						spacecraftController.SetActive(true);
+					
 				}
 				else
 				{
@@ -51,6 +50,7 @@ public class Selectable : MonoBehaviour
 		}
 	}
 
+	/// unused
 	public void SetColor(Color value)
 	{
 		Renderer[] rendererArray = GetComponentsInChildren<Renderer>();

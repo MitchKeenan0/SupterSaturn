@@ -126,6 +126,7 @@ GameObject:
   - component: {fileID: 9115644990372860287}
   - component: {fileID: 2385305642852186100}
   - component: {fileID: 7925452251586000607}
+  - component: {fileID: 415070425766339163}
   m_Layer: 0
   m_Name: Moon
   m_TagString: Untagged
@@ -230,6 +231,18 @@ MonoBehaviour:
   bRandomRotationStart: 1
   bRandomSpeed: 1
   worldPivot: 0
+--- !u!114 &415070425766339163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6143951963767822065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 268d9b17815068446a95003e6ad34908, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6213774146651943447
 GameObject:
   m_ObjectHideFlags: 0
@@ -397,7 +410,7 @@ PrefabInstance:
     - target: {fileID: 6077121153080925060, guid: 72bcdf07eccfb364cbb28dcc265a8c0a,
         type: 3}
       propertyPath: circleRadius
-      value: 100
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 72bcdf07eccfb364cbb28dcc265a8c0a, type: 3}

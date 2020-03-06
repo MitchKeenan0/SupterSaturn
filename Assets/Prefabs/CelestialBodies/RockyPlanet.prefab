@@ -163,8 +163,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bodyTransform: {fileID: 5273469545884070276}
-  radius: 50
-  strength: 0.02
+  radius: 100
+  strength: 50
 --- !u!114 &9115644990372860287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,11 +209,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   xForceDirection: 0
-  yForceDirection: 0.1
+  yForceDirection: 0.05
   zForceDirection: 0
   speedMultiplier: 0.01
-  bRandomRotationStart: 0
-  bRandomSpeed: 0
+  bRandomRotationStart: 1
+  bRandomSpeed: 1
   worldPivot: 0
 --- !u!54 &6469468458821320962
 Rigidbody:

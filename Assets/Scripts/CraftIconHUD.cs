@@ -75,33 +75,33 @@ public class CraftIconHUD : MonoBehaviour
 				Health spacecraftHealth = sp.GetComponent<Health>();
 				healthBar.InitHeath(spacecraftHealth.maxHealth, spacecraftHealth.GetHealth());
 
-				//Color iconColor = img.color;
-				//if (sp.GetAgent() != null)
-				//{
-				//	switch (sp.GetAgent().teamID)
-				//	{
-				//		case 0:
-				//			iconColor = Color.blue;
-				//			break;
-				//		case 1:
-				//			iconColor = Color.red;
-				//			break;
-				//		case 2:
-				//			iconColor = Color.black;
-				//			break;
-				//		case 3:
-				//			iconColor = Color.white;
-				//			break;
-				//		case 4:
-				//			iconColor = Color.yellow;
-				//			break;
-				//		default:
-				//			iconColor = img.color;
-				//			break;
-				//	}
-				//}
+				Color iconColor = img.color;
+				if (sp.GetAgent() != null)
+				{
+					switch (sp.GetAgent().teamID)
+					{
+						case 0:
+							iconColor = Color.blue;
+							break;
+						case 1:
+							iconColor = Color.red;
+							break;
+						case 2:
+							iconColor = Color.black;
+							break;
+						case 3:
+							iconColor = Color.white;
+							break;
+						case 4:
+							iconColor = Color.yellow;
+							break;
+						default:
+							iconColor = img.color;
+							break;
+					}
+				}
 
-				//img.color = iconColor;
+				img.color = iconColor;
 				sp.SetHUDIcon(img.gameObject);
 				img.gameObject.SetActive(true);
 				img.enabled = false;
@@ -136,7 +136,7 @@ public class CraftIconHUD : MonoBehaviour
 						Image img = sp.GetHUDIcon().GetComponent<Image>();
 						if ((sp.GetMarks() > 0) || (sp.GetAgent() && (sp.GetAgent().teamID == 0)))
 						{
-							//img.enabled = true;
+							img.enabled = true;
 							if (!img.gameObject.activeInHierarchy)
 								img.gameObject.SetActive(true);
 							img.sprite = sp.craftIcon;

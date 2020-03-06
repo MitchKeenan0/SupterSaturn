@@ -57,6 +57,7 @@ public class GameHUD : MonoBehaviour
 	public void SetEscapeMenuActive(bool value)
 	{
 		ClockObjects();
+
 		if (menu != null)
 			menu.SetMenuPanelVisible(!value);
 		if (turnManager != null)
@@ -72,6 +73,7 @@ public class GameHUD : MonoBehaviour
 	public void CloseEscapeMenu()
 	{
 		ClockObjects();
+
 		if (menu != null)
 			menu.SetMenuPanelVisible(true);
 		if (turnManager != null)
@@ -109,7 +111,10 @@ public class GameHUD : MonoBehaviour
 
 	public void Options()
 	{
-		options.EnterOptions();
+		if (options != null)
+		{
+			options.EnterOptions();
+		}
 	}
 
 	public void ReturnToMainMenu()

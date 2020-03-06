@@ -81,12 +81,12 @@ public class SolarSystem : BattleScene
 
 		if (!solarCenter)
 		{
-			GameObject dirLight = Instantiate(directionalLightPrefab, transform);
-			Vector3 offsetEuler = Vector3.zero;
-			offsetEuler.x = Random.Range(-15, 15);
-			offsetEuler.y = Random.Range(-15, 15);
-			offsetEuler.z = Random.Range(-15, 15);
-			dirLight.transform.rotation = Quaternion.Euler(offsetEuler);
+			//GameObject dirLight = Instantiate(directionalLightPrefab, transform);
+			//Vector3 offsetEuler = Vector3.zero;
+			//offsetEuler.x = Random.Range(-15, 15);
+			//offsetEuler.y = Random.Range(-15, 15);
+			//offsetEuler.z = Random.Range(-15, 15);
+			//dirLight.transform.rotation = Quaternion.Euler(offsetEuler);
 
 			if (backupCenter != null)
 			{

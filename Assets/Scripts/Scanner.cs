@@ -10,11 +10,13 @@ public class Scanner : MonoBehaviour
 	public float maxRadius = 1f;
 	public float updateInterval = 0.1f;
 	public float scanRecoveryPeriod = 0.5f;
+	public float maxPointSize = 1f;
 
 	private Collider[] hits;
 	private List<GameObject> targetList;
 	private GameObject scanRender;
 	private MeshRenderer meshRenderer;
+	private SpherePointDistribution spherePoints;
 	private Spacecraft mySpacecraft;
 	private TargetPredictionHUD predictionHud;
 	private IEnumerator scanCoroutine;
@@ -23,6 +25,7 @@ public class Scanner : MonoBehaviour
 	private float currentRadius = 0f;
 	private float timeAtScan = 0f;
 	private float originalAlpha = 0;
+	private float pointSize = 0f;
 
 	public GameObject[] GetTargets() { return targetList.ToArray(); }
 
@@ -32,6 +35,9 @@ public class Scanner : MonoBehaviour
 		mySpacecraft = GetComponentInParent<Spacecraft>();
 		predictionHud = FindObjectOfType<TargetPredictionHUD>();
 
+		spherePoints = GetComponent<SpherePointDistribution>();
+		spherePoints.enabled = false;
+		spherePoints.transform.SetParent(null);
 		meshRenderer = GetComponentInChildren<MeshRenderer>();
 		scanRender = meshRenderer.gameObject;
 		originalAlpha = meshRenderer.material.color.a;
@@ -55,9 +61,20 @@ public class Scanner : MonoBehaviour
 		ClearTargets();
 		currentRadius = 0f;
 		timeAtScan = Time.time;
+		pointSize = 0f;
+		spherePoints.SetPointSize(pointSize);
 
 		updateCoroutine = UpdateScan(updateInterval);
 		StartCoroutine(updateCoroutine);
+	}
+
+	private IEnumerator UpdateScan(float waitTime)
+	{
+		while (true)
+		{
+			UpdateScan();
+			yield return new WaitForSeconds(waitTime);
+		}
 	}
 
 	void UpdateScan()
@@ -69,6 +86,8 @@ public class Scanner : MonoBehaviour
 			UpdateScanRender();
 			if (!meshRenderer.enabled)
 				meshRenderer.enabled = true;
+			if (!spherePoints.enabled)
+				spherePoints.enabled = true;
 		}
 
 		currentRadius += (scanSpeed * Time.deltaTime);
@@ -109,10 +128,20 @@ public class Scanner : MonoBehaviour
 		scanRender.transform.localScale = Vector3.one * safeRadius * 2f;
 		scanRender.transform.rotation = Quaternion.identity;
 
+		spherePoints.transform.position = mySpacecraft.transform.position;
+		spherePoints.UpdateSphere(safeRadius);
+
 		Color scanColor = meshRenderer.material.color;
-		float percentOfLifetime = 1f - ((Time.time - timeAtScan) / scanInterval);
-		scanColor.a = Mathf.Clamp(originalAlpha * percentOfLifetime, 0f, 1f);
+		float percentOfLifetimeRemaining = 1f - ((Time.time - timeAtScan) / scanInterval);
+		float opacity = Mathf.Clamp(originalAlpha * percentOfLifetimeRemaining, 0f, 1f);
+		scanColor.a = Mathf.Clamp(originalAlpha * percentOfLifetimeRemaining, 0f, 1f);
 		meshRenderer.material.color = scanColor;
+
+		float targetSize = -0.05f;
+		if (percentOfLifetimeRemaining > 0.75f)
+			targetSize = maxPointSize;
+		pointSize = Mathf.Lerp(pointSize, targetSize, Time.deltaTime);
+		spherePoints.SetPointSize(pointSize);
 	}
 
 	void ClearTargets()
@@ -146,15 +175,6 @@ public class Scanner : MonoBehaviour
 					}
 				}
 			}
-		}
-	}
-
-	private IEnumerator UpdateScan(float waitTime)
-	{
-		while (true)
-		{
-			UpdateScan();
-			yield return new WaitForSeconds(waitTime);
 		}
 	}
 }
