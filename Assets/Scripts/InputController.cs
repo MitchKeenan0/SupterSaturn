@@ -15,6 +15,7 @@ public class InputController : MonoBehaviour
 
 	private MouseSelection mouseSelection;
 	private CameraTargetFinder cameraTargetFinder;
+	private TouchOrbit touchOrbit;
 	private bool bBoxDragMode = false;
 	private bool bNavigationMode = false;
 	private bool bCameraMode = false;
@@ -23,11 +24,13 @@ public class InputController : MonoBehaviour
 	{
 		mouseSelection = FindObjectOfType<MouseSelection>();
 		cameraTargetFinder = FindObjectOfType<CameraTargetFinder>();
+		touchOrbit = FindObjectOfType<TouchOrbit>();
 		mouseSelection.bBoxDragMode = bBoxDragMode;
 		statusText.text = "";
 		ActivateButton(selectionModeButton, false, true);
 		ActivateButton(navigationModeButton, false, true);
 		ActivateButton(cameraModeButton, false, true);
+		CameraMode(true);
 	}
 
 	void ActivateButton(Button button, bool value, bool finished)
@@ -46,48 +49,68 @@ public class InputController : MonoBehaviour
 	void UpdateStatusText()
 	{
 		if (bBoxDragMode)
-			statusText.text = "SELECTION MODE ENABLED";
+			statusText.text = "Selection Mode Enabled";
 		else if (bNavigationMode)
-			statusText.text = "NAVIGATION MODE ENABLED";
+			statusText.text = "Navigation Mode Enabled";
 		else if (bCameraMode)
-			statusText.text = "DIRECT MODE ENABLED";
+			statusText.text = "Camera Mode Enabled";
 		else
 			statusText.text = "";
 	}
 
-	public void SelectionMode()
+	void FallbackCheck()
 	{
-		if (bNavigationMode)
-			NavigationMode();
-		bool turningOff = bBoxDragMode;
-		bBoxDragMode = !bBoxDragMode;
-		mouseSelection.bBoxDragMode = bBoxDragMode;
-		ActivateButton(selectionModeButton, bBoxDragMode, turningOff);
-		UpdateStatusText();
+		if (!bBoxDragMode && !bNavigationMode && !bCameraMode)
+			CameraMode(true);
 	}
 
-	public void NavigationMode()
+	public void SelectionMode(bool active)
+	{
+		if (bNavigationMode)
+			NavigationMode(false);
+		if (bCameraMode)
+			CameraMode(false);
+		bool bTurningOff = bBoxDragMode;
+		bBoxDragMode = active;
+		mouseSelection.bBoxDragMode = bBoxDragMode;
+		ActivateButton(selectionModeButton, bBoxDragMode, bTurningOff);
+		UpdateStatusText();
+		FallbackCheck();
+	}
+
+	public void NavigationMode(bool active)
 	{
 		if (bBoxDragMode)
-			SelectionMode();
+			SelectionMode(false);
+		if (bCameraMode)
+			CameraMode(false);
 		bool bTurningOff = bNavigationMode;
-		bNavigationMode = !bNavigationMode;
+		bNavigationMode = active;
 		List<Spacecraft> selectedSpacecraft = mouseSelection.GetSelectedSpacecraft();
 		foreach (Spacecraft sp in selectedSpacecraft)
 			sp.GetComponentInChildren<SpacecraftController>().SetActive(bNavigationMode);
 		ActivateButton(navigationModeButton, bNavigationMode, bTurningOff);
 		UpdateStatusText();
+		FallbackCheck();
+		Debug.Log("NavigationMode " + bNavigationMode);
 	}
 
-	public void CameraMode()
+	public void CameraMode(bool active)
 	{
-		bool turningOff = bCameraMode;
-		bCameraMode = !bCameraMode;
+		if (bBoxDragMode)
+			SelectionMode(false);
+		if (bNavigationMode)
+			NavigationMode(false);
+		bool bTurningOff = bCameraMode;
+		bCameraMode = active;
 		if (bCameraMode)
 			cameraTargetFinder.GetFirstTarget();
 		else
 			cameraTargetFinder.SetActive(false);
-		ActivateButton(cameraModeButton, bCameraMode, turningOff);
+		touchOrbit.SetActive(bCameraMode);
+		ActivateButton(cameraModeButton, bCameraMode, bTurningOff);
+		UpdateStatusText();
+		Debug.Log("CameraMode " + bCameraMode);
 	}
 
 	public void IncreaseOrbit(float value)

@@ -61,5 +61,5 @@ MonoBehaviour:
   turningPower: 5
   maneuverPower: 2
   mass: 1
-  linearDrag: 0
+  linearDrag: 0.05
   angularDrag: 0.3

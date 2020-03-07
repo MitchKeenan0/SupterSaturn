@@ -31,6 +31,7 @@ public class TouchOrbit : MonoBehaviour
 	private float ly = 0f;
 	private float x = 0f;
 	private float y = 0f;
+	private float twoTouchDistance = 0;
 	private bool bActivated = true;
 
 	void Awake()
@@ -57,26 +58,42 @@ public class TouchOrbit : MonoBehaviour
 		moveInput = Vector3.zero;
 		if (Input.touchCount > 0)
 		{
-			Touch touch = Input.GetTouch(0);
-			moveInput = touch.deltaPosition;
-
-			if (moveInput != Vector3.zero)
+			if (Input.touchCount == 1)
 			{
-				inputX = moveInput.x;
-				inputZ = moveInput.y;
+				Touch touch = Input.GetTouch(0);
+				moveInput = touch.deltaPosition;
 
-				Vector3 rawMove = (
-					(cameraMain.transform.right * inputX)
-					+ (cameraMain.transform.forward * inputZ)
-					).normalized * moveSpeed;
+				if (moveInput != Vector3.zero)
+				{
+					inputX = moveInput.x;
+					inputZ = moveInput.y;
 
-				// normalized to anchor surface
-				Vector3 orbitNormal = (Vector3.zero - cameraMain.transform.position).normalized;
-				rawMove = Vector3.ProjectOnPlane(rawMove, orbitNormal);
+					Vector3 rawMove = (
+						(cameraMain.transform.right * inputX)
+						+ (cameraMain.transform.forward * inputZ)
+						).normalized * moveSpeed;
 
-				// move interply
-				moveVector = Vector3.Lerp(moveVector, rawMove, Time.deltaTime * moveAcceleration * 0.1f);
-				moveVector = Vector3.ClampMagnitude(moveVector, moveSpeed);
+					// normalized to anchor surface
+					Vector3 orbitNormal = (Vector3.zero - cameraMain.transform.position).normalized;
+					rawMove = Vector3.ProjectOnPlane(rawMove, orbitNormal);
+
+					// move interply
+					moveVector = Vector3.Lerp(moveVector, rawMove, Time.deltaTime * moveAcceleration * 0.1f);
+					moveVector = Vector3.ClampMagnitude(moveVector, moveSpeed);
+				}
+			}
+			else if (Input.touchCount == 2)
+			{
+				Vector3 deltaOne = Input.GetTouch(0).position;
+				Vector3 deltaTwo = Input.GetTouch(1).position;
+				float touchDistance = Vector3.Distance(deltaOne, deltaTwo);
+				float targetDistance = distance;
+				if (touchDistance < twoTouchDistance)
+					targetDistance *= 0.6f;
+				else if (touchDistance > twoTouchDistance)
+					targetDistance *= 1.6f;
+				twoTouchDistance = touchDistance;
+				distance = Mathf.Lerp(distance, targetDistance, Time.deltaTime * moveSpeed);
 			}
 		}
 		else
@@ -105,7 +122,7 @@ public class TouchOrbit : MonoBehaviour
 			position = (rotation * negDistance) + orbitAnchor.position;
 		}
 
-		transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * turnAcceleration);
+		transform.rotation = rotation;
 		transform.position = position + moveVector;
 	}
 

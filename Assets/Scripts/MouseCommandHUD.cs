@@ -50,10 +50,10 @@ public class MouseCommandHUD : MonoBehaviour
 		originalRadius = circleRadius;
 	}
 
-	void Update()
-	{
-		UpdateMouseInput();
-	}
+	//void Update()
+	//{
+	//	UpdateMouseInput();
+	//}
 
 	void UpdateMouseInput()
 	{

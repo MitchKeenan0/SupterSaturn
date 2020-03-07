@@ -171,13 +171,13 @@ public class Agent : MonoBehaviour
 		autopilot.EnableMoveCommand(value);
 	}
 
-	public void SetMoveOrder(Vector3 position, bool squadOffset, Transform follow)
+	public void SetMoveOrder(Vector3 position, bool bOrbital, Transform follow)
 	{
 		if (!autopilot && (this != null))
 			autopilot = GetComponent<Autopilot>();
 		if (autopilot != null)
 		{
-			autopilot.SetMoveCommand(position, squadOffset);
+			autopilot.SetMoveCommand(position, bOrbital);
 			autopilot.SetFollowTransform(followTransform);
 		}
 		followTransform = follow;

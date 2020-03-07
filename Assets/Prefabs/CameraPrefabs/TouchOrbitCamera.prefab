@@ -61,16 +61,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orbitAnchor: {fileID: 6167527401676555419}
-  distance: 70
+  distance: 100
   xSpeed: 3
   ySpeed: 3
   mousePanSpeed: 0.1
   yMinLimit: -85
   yMaxLimit: 85
-  distanceMin: 30
-  distanceMax: 80
+  distanceMin: 100
+  distanceMax: 300
   moveSpeed: 1
-  moveAcceleration: 10
+  moveAcceleration: 1
   turnAcceleration: 10
 --- !u!114 &8112959024247920879
 MonoBehaviour:
@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4584f9130e07e3b4dbcca41eaa21d926, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distance: 70
+  distance: 100
   targetTransform: {fileID: 0}
 --- !u!1 &5998128571327595369
 GameObject:
@@ -147,7 +147,7 @@ Camera:
   m_FOVAxisMode: 0
   m_SensorSize: {x: 10, y: 10}
   m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 6.293247
+  m_FocalLength: 18.660254
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -155,8 +155,8 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.01
-  far clip plane: 9000
-  field of view: 76.934456
+  far clip plane: 1000
+  field of view: 30.000002
   orthographic: 0
   orthographic size: 5
   m_Depth: -1

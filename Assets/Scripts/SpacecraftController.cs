@@ -39,11 +39,11 @@ public class SpacecraftController : MonoBehaviour
 				touchLineVector = touchLine.GetLine();
 				if (touchLineVector.magnitude > 5f)
 				{
-					Debug.Log("touchLineVector: " + touchLineVector);
+					//Debug.Log("touchLineVector: " + touchLineVector);
 					moveVector = new Vector3(touchLineVector.x, touchLineVector.y, 0f);
 					Vector3 orbitVector = Vector3.ProjectOnPlane(moveVector, transform.position.normalized);
 					Vector3 aimVector = Vector3.ProjectOnPlane(moveVector, cameraMain.transform.forward.normalized);
-					autopilot.SetMoveCommand(orbitVector + aimVector, false);
+					autopilot.SetMoveCommand(orbitVector + aimVector, true);
 				}
 			}
 		}
@@ -60,7 +60,7 @@ public class SpacecraftController : MonoBehaviour
 		bLining = false;
 		if (moveVector != Vector3.zero)
 			autopilot.EnableMoveCommand(true);
-		inputController.NavigationMode();
+		inputController.NavigationMode(false);
 	}
 
 	public void SetActive(bool value)

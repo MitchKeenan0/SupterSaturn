@@ -78,11 +78,11 @@ public class Autopilot : MonoBehaviour
 		targetTransform = value;
 	}
 
-	public void SetMoveCommand(Vector3 value, bool squadOffset)
+	public void SetMoveCommand(Vector3 value, bool bOrbital)
 	{
 		commandMoveVector = value;
 		if (Vector3.Distance(commandMoveVector, transform.position) > 0.1f)
-			GenerateRoute(squadOffset);
+			GenerateRoute(bOrbital);
 	}
 
 	public void EnableMoveCommand(bool value)
@@ -111,15 +111,15 @@ public class Autopilot : MonoBehaviour
 
 	public void IncreaseOrbit(float value)
 	{
-		Vector3 newOrbitPosition = (commandMoveVector) * value;
-		SetMoveCommand(newOrbitPosition, false);
+		Vector3 newOrbitPosition = (commandMoveVector + transform.position) * value;
+		SetMoveCommand(newOrbitPosition, true);
 		EnableMoveCommand(true);
 	}
 
 	public void DecreaseOrbit(float value)
 	{
 		Vector3 newOrbitPosition = (commandMoveVector) * (1f / value);
-		SetMoveCommand(newOrbitPosition, false);
+		SetMoveCommand(newOrbitPosition, true);
 		EnableMoveCommand(true);
 	}
 
@@ -128,7 +128,7 @@ public class Autopilot : MonoBehaviour
 		followTransform = value;
 	}
 
-	void GenerateRoute(bool squadOffset)
+	void GenerateRoute(bool bOrbital)
 	{
 		ClearRoute();
 		previousRouteVector = transform.position;
@@ -136,7 +136,7 @@ public class Autopilot : MonoBehaviour
 			routeVisualizer = GetComponentInChildren<RouteVisualizer>();
 		for (int i = 0; i < routeVectorPoints; i++)
 		{
-			Vector3 routeStep = GenerateRouteVector(squadOffset);
+			Vector3 routeStep = GenerateRouteVector(bOrbital);
 			routeVectors.Add(routeStep);
 			if (((spacecraft.GetMarks() > 0) || (spacecraft.GetAgent().teamID == 0))
 				&& (routeVisualizer != null))
@@ -145,18 +145,16 @@ public class Autopilot : MonoBehaviour
 		}
 	}
 
-	Vector3 GenerateRouteVector(bool squadOffset)
+	Vector3 GenerateRouteVector(bool bOrbital)
 	{
 		Vector3 velocity = previousRouteVector;
 		float orbitDistance = velocity.magnitude;
 
 		// move command
-		commandMoveVector = Vector3.ProjectOnPlane(commandMoveVector, (Vector3.zero - velocity).normalized);
+		if (bOrbital)
+			commandMoveVector = Vector3.ProjectOnPlane(commandMoveVector, (Vector3.zero - velocity).normalized);
 		if ((commandMoveVector != Vector3.zero) && (spacecraft != null))
 			velocity += ((commandMoveVector - velocity) / routeVectorPoints) * spacecraft.mainEnginePower;
-
-		// normalize to surface
-		//velocity = Vector3.ProjectOnPlane(velocity, (previousRouteVector - velocity).normalized);
 
 		if (velocity.magnitude < orbitDistance)
 			velocity *= (orbitDistance / velocity.magnitude);
@@ -208,10 +206,6 @@ public class Autopilot : MonoBehaviour
 				float throttle = Mathf.Clamp(((distanceToDestination * 0.1f) * spacecraft.mainEnginePower * dotToDestination), -1, 1);
 				float destinationVelocityDot = Vector3.Dot(toDestination.normalized, rb.velocity.normalized);
 				spacecraft.MainEngines(throttle);
-			}
-			else if (dotToDestination < 0f)
-			{
-				spacecraft.MainEngines(dotToDestination);
 			}
 		}
 	}
