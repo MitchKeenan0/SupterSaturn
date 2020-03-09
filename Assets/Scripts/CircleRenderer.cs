@@ -13,6 +13,7 @@ public class CircleRenderer : MonoBehaviour
 	public bool bStartEnabled = true;
 	public bool bAlwaysFaceCamera = false;
 
+	public LineRenderer GetLineRenderer() { return circleLineRenderer; }
 	private LineRenderer circleLineRenderer;
 	private Camera cameraMain;
 	private bool bAutoUpdating = false;
@@ -76,6 +77,7 @@ public class CircleRenderer : MonoBehaviour
 	public void SetRadius(float value)
 	{
 		circleRadius = value;
+		UpdateCircleRender();
 	}
 
 	public void SetNumSegments(int value)

@@ -65,7 +65,7 @@ public class GameHUD : MonoBehaviour
 		if (campaignHud != null)
 			campaignHud.SetPanelActive(!value);
 		if (teamHud != null)
-			teamHud.gameObject.SetActive(!value);
+			teamHud.enabled = !value;
 
 		escapeMenuPanel.SetActive(value);
 	}
@@ -81,9 +81,9 @@ public class GameHUD : MonoBehaviour
 		if (campaignHud != null)
 			campaignHud.SetPanelActive(true);
 		if (teamHud != null)
-			teamHud.gameObject.SetActive(true);
+			teamHud.enabled = true;
 
-		game.EscapeMenu();
+		escapeMenuPanel.SetActive(false);
 	}
 
 	public void Disengage()

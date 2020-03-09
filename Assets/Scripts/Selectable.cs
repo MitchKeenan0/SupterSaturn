@@ -5,11 +5,13 @@ public class Selectable : MonoBehaviour
 	private CircleRenderer circle;
 	private SpacecraftController spacecraftController;
 	private TargetCamera targetCamera;
+	private OrbitController orbitController;
 
 	void Awake()
 	{
 		circle = gameObject.GetComponentInChildren<CircleRenderer>();
 		targetCamera = FindObjectOfType<TargetCamera>();
+		orbitController = FindObjectOfType<OrbitController>();
 	}
 
 	internal bool isSelected
@@ -38,6 +40,7 @@ public class Selectable : MonoBehaviour
 					circle.Open();
 					circle.SetPosition(transform.position);
 					circle.StartAutoUpdate();
+					orbitController.SetAutopilot(gameObject.GetComponent<Autopilot>());
 					
 				}
 				else

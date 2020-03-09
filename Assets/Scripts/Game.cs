@@ -103,12 +103,6 @@ public class Game : MonoBehaviour
 		Screen.sleepTimeout = SleepTimeout.NeverSleep;
 	}
 
-	void Update()
-	{
-		if (Input.GetButtonDown("Cancel"))
-			EscapeMenu();
-	}
-
 	public int GetGameMode() { return gameMode; }
 	public void SetGameMode(int value)
 	{

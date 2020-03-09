@@ -47,9 +47,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scanInterval: 3
   intervalDeviation: 0.1
-  scanSpeed: 35
+  scanSpeed: 50
   maxRadius: 1000
-  updateInterval: 0.1
+  updateInterval: 0.2
   scanRecoveryPeriod: 1
   maxPointSize: 0.2
 --- !u!114 &1490529778734066621
@@ -67,8 +67,8 @@ MonoBehaviour:
   bStartActive: 0
   pointPrefab: {fileID: 4544285656800160718, guid: 2762b7cf70adfa045b1c4844d0f625c3,
     type: 3}
-  sphereScale: 1
-  numPoints: 360
+  sphereScale: 10
+  numPoints: 36
 --- !u!1 &5155169036934119614
 GameObject:
   m_ObjectHideFlags: 0
@@ -119,14 +119,14 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10758, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 673522835ab4482479de9390c3ef0bc1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

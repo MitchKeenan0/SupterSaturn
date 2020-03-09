@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class InputController : MonoBehaviour
 {
 	public Text statusText;
-	public Button selectionModeButton;
 	public Button navigationModeButton;
 	public Button cameraModeButton;
 	public Color standbyColor;
@@ -16,7 +15,6 @@ public class InputController : MonoBehaviour
 	private MouseSelection mouseSelection;
 	private CameraTargetFinder cameraTargetFinder;
 	private TouchOrbit touchOrbit;
-	private bool bBoxDragMode = false;
 	private bool bNavigationMode = false;
 	private bool bCameraMode = false;
 
@@ -25,9 +23,7 @@ public class InputController : MonoBehaviour
 		mouseSelection = FindObjectOfType<MouseSelection>();
 		cameraTargetFinder = FindObjectOfType<CameraTargetFinder>();
 		touchOrbit = FindObjectOfType<TouchOrbit>();
-		mouseSelection.bBoxDragMode = bBoxDragMode;
 		statusText.text = "";
-		ActivateButton(selectionModeButton, false, true);
 		ActivateButton(navigationModeButton, false, true);
 		ActivateButton(cameraModeButton, false, true);
 		CameraMode(true);
@@ -48,9 +44,7 @@ public class InputController : MonoBehaviour
 
 	void UpdateStatusText()
 	{
-		if (bBoxDragMode)
-			statusText.text = "Selection Mode Enabled";
-		else if (bNavigationMode)
+		if (bNavigationMode)
 			statusText.text = "Navigation Mode Enabled";
 		else if (bCameraMode)
 			statusText.text = "Camera Mode Enabled";
@@ -60,28 +54,12 @@ public class InputController : MonoBehaviour
 
 	void FallbackCheck()
 	{
-		if (!bBoxDragMode && !bNavigationMode && !bCameraMode)
+		if (!bNavigationMode && !bCameraMode)
 			CameraMode(true);
-	}
-
-	public void SelectionMode(bool active)
-	{
-		if (bNavigationMode)
-			NavigationMode(false);
-		if (bCameraMode)
-			CameraMode(false);
-		bool bTurningOff = bBoxDragMode;
-		bBoxDragMode = active;
-		mouseSelection.bBoxDragMode = bBoxDragMode;
-		ActivateButton(selectionModeButton, bBoxDragMode, bTurningOff);
-		UpdateStatusText();
-		FallbackCheck();
 	}
 
 	public void NavigationMode(bool active)
 	{
-		if (bBoxDragMode)
-			SelectionMode(false);
 		if (bCameraMode)
 			CameraMode(false);
 		bool bTurningOff = bNavigationMode;
@@ -97,8 +75,6 @@ public class InputController : MonoBehaviour
 
 	public void CameraMode(bool active)
 	{
-		if (bBoxDragMode)
-			SelectionMode(false);
 		if (bNavigationMode)
 			NavigationMode(false);
 		bool bTurningOff = bCameraMode;
@@ -111,23 +87,5 @@ public class InputController : MonoBehaviour
 		ActivateButton(cameraModeButton, bCameraMode, bTurningOff);
 		UpdateStatusText();
 		Debug.Log("CameraMode " + bCameraMode);
-	}
-
-	public void IncreaseOrbit(float value)
-	{
-		List<Spacecraft> selectedSpacecraft = mouseSelection.GetSelectedSpacecraft();
-		foreach (Spacecraft sp in selectedSpacecraft)
-		{
-			sp.GetComponent<Autopilot>().IncreaseOrbit(value);
-		}
-	}
-
-	public void DecreaseOrbit(float value)
-	{
-		List<Spacecraft> selectedSpacecraft = mouseSelection.GetSelectedSpacecraft();
-		foreach (Spacecraft sp in selectedSpacecraft)
-		{
-			sp.GetComponent<Autopilot>().DecreaseOrbit(value);
-		}
 	}
 }

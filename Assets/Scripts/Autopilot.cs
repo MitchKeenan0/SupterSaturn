@@ -16,7 +16,6 @@ public class Autopilot : MonoBehaviour
 	private RouteVisualizer routeVisualizer;
 	private ObjectManager objectManager;
 	private SelectionSquad selectionSquad;
-	private Transform targetTransform;
 	private Transform followTransform;
 	private Vector3 commandMoveVector = Vector3.zero;
 	private Vector3 gravityEscapePosition = Vector3.zero;
@@ -53,7 +52,7 @@ public class Autopilot : MonoBehaviour
 			FlyTo(currentRouteVector);
 
 			float distance = Vector3.Distance(transform.position, currentRouteVector);
-			if ((distance < 10f) && ((Time.time - timeAtLastMoveCommand) > 1f))
+			if ((distance < 5f) && ((Time.time - timeAtLastMoveCommand) > 1f))
 			{
 				holdPosition = transform.position;
 				routeVectors.Remove(currentRouteVector);
@@ -73,16 +72,40 @@ public class Autopilot : MonoBehaviour
 		}
 	}
 
-	public void SetTarget(Transform value)
+	public void SetRoute(List<Vector3> vectors)
 	{
-		targetTransform = value;
+		ClearRoute();
+
+		if (routeVectors == null)
+			routeVectors = new List<Vector3>();
+
+		if ((vectors != null) && (vectors.Count > 0))
+		{
+			int numVectors = vectors.Count;
+			for(int i = 0; i < numVectors; i++)
+			{
+				Vector3 routeStep = vectors[i];
+				routeVectors.Add(routeStep);
+			}
+
+			OptimizeRoute(routeVectors);
+
+			Vector3 previous = Vector3.zero;
+			for (int i = 0; i < numVectors; i++)
+			{
+				Vector3 routeStep = vectors[i];
+				if (previous != Vector3.zero)
+					routeVisualizer.SetLine(i, previous, routeStep);
+				previous = routeStep;
+			}
+		}
 	}
 
 	public void SetMoveCommand(Vector3 value, bool bOrbital)
 	{
-		commandMoveVector = value;
-		if (Vector3.Distance(commandMoveVector, transform.position) > 0.1f)
-			GenerateRoute(bOrbital);
+		//commandMoveVector = value;
+		//if (Vector3.Distance(commandMoveVector, transform.position) > 0.1f)
+		//	GenerateRoute(bOrbital);
 	}
 
 	public void EnableMoveCommand(bool value)
@@ -92,7 +115,6 @@ public class Autopilot : MonoBehaviour
 			routeVisualizer = GetComponentInChildren<RouteVisualizer>();
 		if (routeVisualizer != null)
 		{
-			LineMeasureHUD lineMeasure = routeVisualizer.gameObject.GetComponentInChildren<LineMeasureHUD>();
 			if (bExecutingMoveCommand)
 			{
 				routeVisualizer.SetRouteColor(Color.grey);
@@ -103,24 +125,11 @@ public class Autopilot : MonoBehaviour
 				holdPosition = transform.position;
 			}
 		}
+
 		if (bExecutingMoveCommand)
 			timeAtLastMoveCommand = Time.time;
 		else
 			ClearRoute();
-	}
-
-	public void IncreaseOrbit(float value)
-	{
-		Vector3 newOrbitPosition = (commandMoveVector + transform.position) * value;
-		SetMoveCommand(newOrbitPosition, true);
-		EnableMoveCommand(true);
-	}
-
-	public void DecreaseOrbit(float value)
-	{
-		Vector3 newOrbitPosition = (commandMoveVector) * (1f / value);
-		SetMoveCommand(newOrbitPosition, true);
-		EnableMoveCommand(true);
 	}
 
 	public void SetFollowTransform(Transform value)
@@ -128,46 +137,67 @@ public class Autopilot : MonoBehaviour
 		followTransform = value;
 	}
 
-	void GenerateRoute(bool bOrbital)
+	void OptimizeRoute(List<Vector3> vectors)
 	{
-		ClearRoute();
+		int numVectors = vectors.Count;
 		previousRouteVector = transform.position;
-		if (!routeVisualizer)
-			routeVisualizer = GetComponentInChildren<RouteVisualizer>();
-		for (int i = 0; i < routeVectorPoints; i++)
+		List<Vector3> optimalRoute = new List<Vector3>();
+		List<Vector3> usedPoints = new List<Vector3>();
+
+		// get closest first
+		float closestDistance = 99999f;
+		Vector3 closestPoint = Vector3.zero;
+		for (int i = 0; i < numVectors; i++)
 		{
-			Vector3 routeStep = GenerateRouteVector(bOrbital);
-			routeVectors.Add(routeStep);
-			if (((spacecraft.GetMarks() > 0) || (spacecraft.GetAgent().teamID == 0))
-				&& (routeVisualizer != null))
-				routeVisualizer.SetLine(i, previousRouteVector, routeStep);
-			previousRouteVector = routeStep;
+			Vector3 thisVector = vectors[i];
+			float thisDistance = Vector3.Distance(spacecraft.transform.position, thisVector);
+			if ((thisDistance < closestDistance) && (!usedPoints.Contains(thisVector)))
+			{
+				closestDistance = thisDistance;
+				closestPoint = thisVector;
+			}
 		}
-	}
+		optimalRoute.Add(closestPoint);
+		usedPoints.Add(closestPoint);
 
-	Vector3 GenerateRouteVector(bool bOrbital)
-	{
-		Vector3 velocity = previousRouteVector;
-		float orbitDistance = velocity.magnitude;
-
-		// move command
-		if (bOrbital)
-			commandMoveVector = Vector3.ProjectOnPlane(commandMoveVector, (Vector3.zero - velocity).normalized);
-		if ((commandMoveVector != Vector3.zero) && (spacecraft != null))
-			velocity += ((commandMoveVector - velocity) / routeVectorPoints) * spacecraft.mainEnginePower;
-
-		if (velocity.magnitude < orbitDistance)
-			velocity *= (orbitDistance / velocity.magnitude);
-		velocity = Vector3.ClampMagnitude(velocity, orbitDistance * autopilotAreaRange);
-
-		velocity = Vector3.Lerp(previousRouteVector, velocity, Time.deltaTime * (routeVectorPoints / 10f));
-
-		return velocity;
+		// follow through with dot product
+		float tries = 0;
+		while ((optimalRoute.Count < vectors.Count) && (tries < 300))
+		{
+			tries++;
+			for (int i = 0; i < numVectors; i++)
+			{
+				float closeF = 99999f;
+				Vector3 closeV = Vector3.zero;
+				Vector3 prevPos = Vector3.zero;
+				for (int j = 0; j < numVectors; j++)
+				{
+					Vector3 vector = vectors[i];
+					float thisDistance = Vector3.Distance(prevPos, vector);
+					if ((thisDistance < closeF) && (!usedPoints.Contains(vector)))
+					{
+						closeF = thisDistance;
+						closeV = vector;
+					}
+				}
+				
+				Vector3 thisVector = vectors[i];
+				Vector3 movingDelta = closeV - prevPos;
+				float thisDot = Vector3.Dot(movingDelta.normalized, transform.right.normalized);
+				if (thisDot > 0.0f)
+				{
+					optimalRoute.Add(closeV);
+					usedPoints.Add(closeV);
+					prevPos = closeV;
+				}
+			}
+		}
+		routeVectors = optimalRoute;
 	}
 
 	void FlyTo(Vector3 destination)
 	{
-		///Debug.DrawLine(transform.position, destination, Color.green);
+		Debug.DrawLine(transform.position, destination, Color.green);
 
 		Vector3 toDestination = destination - rb.velocity - transform.position;
 
@@ -245,44 +275,6 @@ public class Autopilot : MonoBehaviour
 			follow = followTransform.position;
 		}
 		return follow;
-	}
-
-	Vector3 GetCombatPosition()
-	{
-		Vector3 combatPos = Vector3.zero;
-		if (targetTransform != null)
-		{
-			// combat position
-			Vector3 toTarget = targetTransform.position - transform.position;
-			if (toTarget.magnitude > (agent.preferredEngagementDistance * 1.6f))
-			{
-				combatPos += toTarget.normalized * targetCombatPosition.magnitude;
-			}
-			else if (toTarget.magnitude < (agent.preferredEngagementDistance / 1.6f))
-			{
-				combatPos -= toTarget;
-			}
-
-			// evasion
-			Vector3 crossFade = Vector3.Project(toTarget, transform.right);
-			combatPos += crossFade;
-
-			// chase / feint
-			Vector3 targetVelocity = targetTransform.GetComponent<Rigidbody>().velocity;
-			if (targetVelocity.magnitude > rb.velocity.magnitude)
-			{
-				Vector3 combatOffset = Random.insideUnitCircle * autopilotSkill;
-				combatPos += (targetTransform.position + targetVelocity);
-			}
-		}
-
-		return combatPos;
-	}
-
-	Vector3 GetAutopilotSkillPosition()
-	{
-		Vector3 randomDeviation = Random.insideUnitSphere * (0.1f / autopilotSkill);
-		return randomDeviation;
 	}
 
 	void ClearRoute()

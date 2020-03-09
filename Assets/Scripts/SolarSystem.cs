@@ -47,7 +47,7 @@ public class SolarSystem : BattleScene
 				spawnedPlanet.GetComponent<PlanetArm>().SetLength(armLengthIndex * distanceScale);
 			}
 
-			Planet planet = spawnedPlanet.GetComponent<Planet>();
+			Planet planet = spawnedPlanet.GetComponentInChildren<Planet>();
 			if (planet != null)
 			{
 				float planetSize = Random.Range(planetMinSize, planetMaxSize);
@@ -68,7 +68,7 @@ public class SolarSystem : BattleScene
 						spawnedMoon.transform.SetParent(planet.planetMesh.transform);
 						if (spawnedMoon.GetComponent<PlanetArm>())
 							spawnedMoon.GetComponent<PlanetArm>().SetLength((j + 1) * distanceScale * Random.Range(0.1f, 0.3f));
-						Planet moonPlanet = spawnedMoon.GetComponent<Planet>();
+						Planet moonPlanet = spawnedMoon.GetComponentInChildren<Planet>();
 						if (moonPlanet != null)
 						{
 							moonPlanet.SetScale(planetSize * Random.Range(0.02f, 0.2f));

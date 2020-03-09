@@ -20,7 +20,8 @@ public class CameraController : MonoBehaviour
 
 	public void SetOrbitTarget(Transform target)
 	{
-		mouseOrbit.SetOrbitTarget(target);
+		if (mouseOrbit != null)
+			mouseOrbit.SetOrbitTarget(target);
 		if (target != null)
 		{
 			lastTarget = target;

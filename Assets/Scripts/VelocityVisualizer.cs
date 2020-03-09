@@ -17,7 +17,8 @@ public class VelocityVisualizer : MonoBehaviour
 		lineRenderList = new List<LineRenderer>();
 		gravityList = new List<Gravity>();
 		objectManager = FindObjectOfType<ObjectManager>();
-		gravityList = objectManager.GetGravityList();
+		if (objectManager != null)
+			gravityList = objectManager.GetGravityList();
 		rb = transform.parent.GetComponent<Rigidbody>();
 		InitLines();
 	}
@@ -41,8 +42,11 @@ public class VelocityVisualizer : MonoBehaviour
 	Vector3 AddGravities(Vector3 velocityPosition)
 	{
 		Vector3 outVelocity = velocityPosition;
-		foreach (Gravity g in gravityList)
-			outVelocity += g.GetGravity(rb, velocityPosition, rb.mass);
+		if (gravityList != null)
+		{
+			foreach (Gravity g in gravityList)
+				outVelocity += g.GetGravity(rb, velocityPosition, rb.mass);
+		}
 		return outVelocity;
 	}
 

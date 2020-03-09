@@ -43,3 +43,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68b8cdc375779dd4aba5e0d23a19e1be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveLineScale: 1

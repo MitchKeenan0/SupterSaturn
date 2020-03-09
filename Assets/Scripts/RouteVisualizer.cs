@@ -37,7 +37,7 @@ public class RouteVisualizer : MonoBehaviour
 
 	public void SetLine(int lineIndex, Vector3 lineStart, Vector3 lineEnd)
 	{
-		if ((lineRenderList != null) && (lineRenderList.Count > 0))
+		if ((lineRenderList != null) && (lineRenderList.Count > lineIndex))
 		{
 			LineRenderer line = lineRenderList[lineIndex];
 			line.SetPosition(0, lineStart);

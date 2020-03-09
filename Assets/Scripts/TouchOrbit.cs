@@ -88,9 +88,9 @@ public class TouchOrbit : MonoBehaviour
 				Vector3 deltaTwo = Input.GetTouch(1).position;
 				float touchDistance = Vector3.Distance(deltaOne, deltaTwo);
 				float targetDistance = distance;
-				if (touchDistance < twoTouchDistance)
+				if (touchDistance > twoTouchDistance)
 					targetDistance *= 0.6f;
-				else if (touchDistance > twoTouchDistance)
+				else if (touchDistance < twoTouchDistance)
 					targetDistance *= 1.6f;
 				twoTouchDistance = touchDistance;
 				distance = Mathf.Lerp(distance, targetDistance, Time.deltaTime * moveSpeed);

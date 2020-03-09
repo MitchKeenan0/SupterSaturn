@@ -40,7 +40,7 @@ public class Scanner : MonoBehaviour
 		spherePoints.transform.SetParent(null);
 		meshRenderer = GetComponentInChildren<MeshRenderer>();
 		scanRender = meshRenderer.gameObject;
-		originalAlpha = meshRenderer.material.color.a;
+		originalAlpha = meshRenderer.material.GetFloat("_Opacity");
 		meshRenderer.enabled = false;
 
 		scanCoroutine = LoopingScanLaunch(scanInterval + scanRecoveryPeriod + Random.Range(-intervalDeviation, intervalDeviation));
@@ -117,6 +117,13 @@ public class Scanner : MonoBehaviour
 						targetList.Add(hit.gameObject);
 						sp.GetComponent<Spacecraft>().AddMarkValue(1);
 					}
+
+					Planet pt = hit.gameObject.GetComponentInChildren<Planet>();
+					if (pt != null && (mySpacecraft != null))
+					{
+						Color32 scanColor = new Color32(255, 255, 255, 255);
+						pt.GetScanned(mySpacecraft.transform.position, currentRadius, scanColor);
+					}
 				}
 			}
 		}
@@ -128,14 +135,15 @@ public class Scanner : MonoBehaviour
 		scanRender.transform.localScale = Vector3.one * safeRadius * 2f;
 		scanRender.transform.rotation = Quaternion.identity;
 
-		spherePoints.transform.position = mySpacecraft.transform.position;
-		spherePoints.UpdateSphere(safeRadius);
+		if (mySpacecraft != null)
+		{
+			spherePoints.transform.position = mySpacecraft.transform.position;
+			spherePoints.UpdateSphere(safeRadius);
+		}
 
-		Color scanColor = meshRenderer.material.color;
 		float percentOfLifetimeRemaining = 1f - ((Time.time - timeAtScan) / scanInterval);
-		float opacity = Mathf.Clamp(originalAlpha * percentOfLifetimeRemaining, 0f, 1f);
-		scanColor.a = Mathf.Clamp(originalAlpha * percentOfLifetimeRemaining, 0f, 1f);
-		meshRenderer.material.color = scanColor;
+		float alpha = Mathf.Clamp(originalAlpha * percentOfLifetimeRemaining, 0f, 1f);
+		meshRenderer.material.SetFloat("_Opacity", alpha);
 
 		float targetSize = -0.05f;
 		if (percentOfLifetimeRemaining > 0.75f)

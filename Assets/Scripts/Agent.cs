@@ -178,7 +178,6 @@ public class Agent : MonoBehaviour
 		if (autopilot != null)
 		{
 			autopilot.SetMoveCommand(position, bOrbital);
-			autopilot.SetFollowTransform(followTransform);
 		}
 		followTransform = follow;
 	}
@@ -220,7 +219,6 @@ public class Agent : MonoBehaviour
 	
 	public void NotifyTargetDestroyed(Spacecraft sp)
 	{
-		autopilot.SetTarget(null);
 		fireCoordinator.StandDown();
 		predictionHud.SetPrediction(sp, Vector3.zero, Vector3.zero, 0f);
 		targetTransform = null;
