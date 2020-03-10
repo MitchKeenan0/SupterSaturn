@@ -20,7 +20,7 @@ public class OrbitController : MonoBehaviour
 	public void SetDirection(Vector3 direction)
 	{
 		Vector3 directionEuler = new Vector3(direction.x, direction.z, direction.y);
-		transform.rotation = Quaternion.Euler(directionEuler);
+		transform.rotation = Quaternion.LookRotation(autopilot.gameObject.transform.position, direction); ///Quaternion.Euler(directionEuler);
 	}
 
 	public void SetOrbitRange(float value)
@@ -46,7 +46,7 @@ public class OrbitController : MonoBehaviour
 		if (vArray.Length > 0)
 		{
 			foreach(Vector3 vector in vArray)
-				pointList.Add(transform.InverseTransformPoint(vector));
+				pointList.Add(transform.TransformPoint(vector));
 		}
 		return pointList;
 	}

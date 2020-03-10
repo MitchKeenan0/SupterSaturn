@@ -5,9 +5,9 @@ using UnityEngine;
 public class RouteVisualizer : MonoBehaviour
 {
 	public GameObject linePrefab;
+
 	private Autopilot autoPilot;
 	private List<LineRenderer> lineRenderList;
-	private int numLines = 0;
 	private int numClearedLines = 0;
 
 	void Awake()
@@ -18,24 +18,38 @@ public class RouteVisualizer : MonoBehaviour
 	void Start()
 	{
 		autoPilot = GetComponentInParent<Autopilot>();
-		InitLines();
+		int numLines = autoPilot.routeVectorPoints;
+		InitLines(numLines);
 	}
 
-	void InitLines()
+	public void InitLines(int lineCount)
 	{
-		numLines = autoPilot.routeVectorPoints;
-		for (int i = 0; i < numLines; ++i)
+		int numLines = 0;
+		if (lineRenderList.Count > 0)
 		{
-			GameObject newLine = Instantiate(linePrefab, transform.position, Quaternion.identity);
-			newLine.transform.SetParent(transform);
-			LineRenderer line = newLine.GetComponent<LineRenderer>();
-			lineRenderList.Add(line);
-			line.enabled = false;
-			newLine.SetActive(false);
+			foreach(LineRenderer lr in lineRenderList)
+			{
+				lr.enabled = false;
+				lr.gameObject.SetActive(false);
+				numLines++;
+			}
+		}
+		if (numLines < lineCount)
+		{
+			int remaining = lineCount - numLines;
+			for (int i = 0; i < remaining; ++i)
+			{
+				GameObject newLine = Instantiate(linePrefab, transform.position, Quaternion.identity);
+				newLine.transform.SetParent(transform);
+				LineRenderer line = newLine.GetComponent<LineRenderer>();
+				lineRenderList.Add(line);
+				line.enabled = false;
+				newLine.SetActive(false);
+			}
 		}
 	}
 
-	public void SetLine(int lineIndex, Vector3 lineStart, Vector3 lineEnd)
+	public void DrawLine(int lineIndex, Vector3 lineStart, Vector3 lineEnd)
 	{
 		if ((lineRenderList != null) && (lineRenderList.Count > lineIndex))
 		{

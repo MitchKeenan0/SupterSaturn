@@ -63,6 +63,7 @@ public class Scanner : MonoBehaviour
 		timeAtScan = Time.time;
 		pointSize = 0f;
 		spherePoints.SetPointSize(pointSize);
+		meshRenderer.material.SetFloat("_Opacity", originalAlpha);
 
 		updateCoroutine = UpdateScan(updateInterval);
 		StartCoroutine(updateCoroutine);
@@ -141,7 +142,7 @@ public class Scanner : MonoBehaviour
 			spherePoints.UpdateSphere(safeRadius);
 		}
 
-		float percentOfLifetimeRemaining = 1f - ((Time.time - timeAtScan) / scanInterval);
+		float percentOfLifetimeRemaining = 1f - (Time.time - timeAtScan) / scanInterval;
 		float alpha = Mathf.Clamp(originalAlpha * percentOfLifetimeRemaining, 0f, 1f);
 		meshRenderer.material.SetFloat("_Opacity", alpha);
 

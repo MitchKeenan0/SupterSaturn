@@ -11,7 +11,6 @@ public class Autopilot : MonoBehaviour
 	public float autopilotAreaRange = 20f;
 
 	private Agent agent;
-	private Rigidbody rb;
 	private Spacecraft spacecraft;
 	private RouteVisualizer routeVisualizer;
 	private ObjectManager objectManager;
@@ -30,7 +29,6 @@ public class Autopilot : MonoBehaviour
 
 	void Start()
     {
-		rb = GetComponent<Rigidbody>();
 		agent = GetComponent<Agent>();
 		spacecraft = GetComponent<Spacecraft>();
 		routeVisualizer = GetComponentInChildren<RouteVisualizer>();
@@ -81,6 +79,8 @@ public class Autopilot : MonoBehaviour
 
 		if ((vectors != null) && (vectors.Count > 0))
 		{
+			//List<Vector3> insertionList = InsertionVectors()
+
 			int numVectors = vectors.Count;
 			for(int i = 0; i < numVectors; i++)
 			{
@@ -95,10 +95,25 @@ public class Autopilot : MonoBehaviour
 			{
 				Vector3 routeStep = vectors[i];
 				if (previous != Vector3.zero)
-					routeVisualizer.SetLine(i, previous, routeStep);
+					routeVisualizer.DrawLine(i, previous, routeStep);
 				previous = routeStep;
 			}
 		}
+	}
+
+	List<Vector3> InsertionVectors(Vector3 targetPosition, Vector3 targetEulerAngles)
+	{
+		List<Vector3> insertionList = new List<Vector3>();
+		Vector3 currentPosition = spacecraft.transform.position;
+		Vector3 currentEulerAngles = spacecraft.transform.eulerAngles;
+		Vector3 transPosition = Vector3.zero;
+		Vector3 delta = Vector3.zero;
+		for(int i = 0; i < 10; i++)
+		{
+			transPosition = Vector3.Lerp(currentPosition, targetPosition, Time.deltaTime * 10);
+			
+		}
+		return insertionList;
 	}
 
 	public void SetMoveCommand(Vector3 value, bool bOrbital)
@@ -144,54 +159,54 @@ public class Autopilot : MonoBehaviour
 		List<Vector3> optimalRoute = new List<Vector3>();
 		List<Vector3> usedPoints = new List<Vector3>();
 
-		// get closest first
-		float closestDistance = 99999f;
-		Vector3 closestPoint = Vector3.zero;
+		// get insertion point
+		float bestMatch = 0f;
+		Vector3 insertionPoint = Vector3.zero;
+		Vector3 previousVector = vectors[0];
 		for (int i = 0; i < numVectors; i++)
 		{
-			Vector3 thisVector = vectors[i];
-			float thisDistance = Vector3.Distance(spacecraft.transform.position, thisVector);
-			if ((thisDistance < closestDistance) && (!usedPoints.Contains(thisVector)))
+			Vector3 thisVector = vectors[i] - previousVector;
+			Vector3 toSpacecraft = (vectors[i] - spacecraft.transform.position);
+			float thisDot = Vector3.Dot(toSpacecraft.normalized, thisVector.normalized);
+			if (thisDot > bestMatch)
 			{
-				closestDistance = thisDistance;
-				closestPoint = thisVector;
+				bestMatch = thisDot;
+				insertionPoint = vectors[i];
 			}
+			previousVector = vectors[i];
 		}
-		optimalRoute.Add(closestPoint);
-		usedPoints.Add(closestPoint);
+		optimalRoute.Add(insertionPoint);
+		usedPoints.Add(insertionPoint);
 
-		// follow through with dot product
-		float tries = 0;
-		while ((optimalRoute.Count < vectors.Count) && (tries < 300))
+		// follow through
+		while (optimalRoute.Count < vectors.Count)
 		{
-			tries++;
-			for (int i = 0; i < numVectors; i++)
+			int startingIndex = vectors.IndexOf(insertionPoint);
+			for (int i = startingIndex; i < numVectors; i++)
 			{
-				float closeF = 99999f;
-				Vector3 closeV = Vector3.zero;
-				Vector3 prevPos = Vector3.zero;
-				for (int j = 0; j < numVectors; j++)
+				Vector3 nextPoint = Vector3.zero;
+				if (vectors.Count > (i + 1))
+					nextPoint = vectors[i + 1];
+				else
+					nextPoint = vectors[0];
+				optimalRoute.Add(nextPoint);
+				usedPoints.Add(nextPoint);
+				if ((i + 1) == numVectors)
 				{
-					Vector3 vector = vectors[i];
-					float thisDistance = Vector3.Distance(prevPos, vector);
-					if ((thisDistance < closeF) && (!usedPoints.Contains(vector)))
+					for(int j = 0; j < startingIndex; j++)
 					{
-						closeF = thisDistance;
-						closeV = vector;
+						Vector3 remainingPoint = vectors[j];
+						if (!optimalRoute.Contains(remainingPoint) && !usedPoints.Contains(remainingPoint))
+						{
+							optimalRoute.Add(remainingPoint);
+							usedPoints.Add(remainingPoint);
+						}
 					}
-				}
-				
-				Vector3 thisVector = vectors[i];
-				Vector3 movingDelta = closeV - prevPos;
-				float thisDot = Vector3.Dot(movingDelta.normalized, transform.right.normalized);
-				if (thisDot > 0.0f)
-				{
-					optimalRoute.Add(closeV);
-					usedPoints.Add(closeV);
-					prevPos = closeV;
+					break;
 				}
 			}
 		}
+
 		routeVectors = optimalRoute;
 	}
 
@@ -199,42 +214,19 @@ public class Autopilot : MonoBehaviour
 	{
 		Debug.DrawLine(transform.position, destination, Color.green);
 
-		Vector3 toDestination = destination - rb.velocity - transform.position;
+		Vector3 toDestination = destination - transform.position;
 
 		// steering
 		if (toDestination.magnitude >= 1f)
-		{
-			Vector3 maneuverVector = destination - transform.position;
-			spacecraft.Maneuver(maneuverVector);
-		}
-
-		// side jets setup
-		Vector3 frameVelocity = rb.velocity.normalized;
-		Vector3 frameDestination = toDestination.normalized;
-		Vector3 driveVector = Vector3.zero;
-		if (frameVelocity.x != frameDestination.x)
-			driveVector.x = frameDestination.x - frameVelocity.x;
-		if (frameVelocity.y != frameDestination.y)
-			driveVector.y = frameDestination.y - frameVelocity.y;
-		if (frameVelocity.z != frameDestination.z)
-			driveVector.z = frameDestination.z - frameVelocity.z;
-		driveVector.z = Mathf.Clamp(driveVector.z, -1f, 1f);
-		driveVector = Vector3.ProjectOnPlane(driveVector, toDestination);
-		if (driveVector != Vector3.zero)
-		{
-			driveVector = Vector3.ClampMagnitude(driveVector, spacecraft.maneuverPower);
-			spacecraft.ManeuverEngines(driveVector);
-		}
+			spacecraft.Maneuver(toDestination);
 
 		// thrust
 		if (destination != holdPosition)
 		{
-			float distanceToDestination = toDestination.magnitude;
 			float dotToDestination = Vector3.Dot(transform.forward, toDestination.normalized);
 			if (Mathf.Abs(dotToDestination) > 0.99f)
 			{
-				float throttle = Mathf.Clamp(((distanceToDestination * 0.1f) * spacecraft.mainEnginePower * dotToDestination), -1, 1);
-				float destinationVelocityDot = Vector3.Dot(toDestination.normalized, rb.velocity.normalized);
+				float throttle = Mathf.Clamp(dotToDestination, -1, 1);
 				spacecraft.MainEngines(throttle);
 			}
 		}
@@ -243,7 +235,6 @@ public class Autopilot : MonoBehaviour
 	void AllStop()
 	{
 		spacecraft.MainEngines(0f);
-		spacecraft.ManeuverEngines(Vector3.zero);
 		spacecraft.Maneuver(Vector3.zero);
 	}
 

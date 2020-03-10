@@ -16,7 +16,6 @@ public class Spacecraft : MonoBehaviour
 	public float iconScale = 1f;
 	public int numericID = 0;
 
-	private Rigidbody rb;
 	private Agent agent;
 	private Health health;
 	private SpacecraftInformation spacecraftInformation;
@@ -28,6 +27,8 @@ public class Spacecraft : MonoBehaviour
 	private Vector3 maneuverEnginesVector = Vector3.zero;
 	private Vector3 turningVector = Vector3.zero;
 	private Vector3 lerpTorque = Vector3.zero;
+	private Vector3 velocity = Vector3.zero;
+	private Vector3 angularVelocity = Vector3.zero;
 	private GameObject hudIcon;
 	private GameObject gridObject;
 	private MeshRenderer[] meshRenderComponents;
@@ -50,9 +51,10 @@ public class Spacecraft : MonoBehaviour
 
 	public int GetMarks() { return numMarked; }
 
+	public Vector3 GetVelocity() { return velocity; }
+
 	private void Awake()
 	{
-		rb = GetComponent<Rigidbody>();
 		agent = GetComponent<Agent>();
 		health = GetComponent<Health>();
 		spacecraftInformation = GetComponent<SpacecraftInformation>();
@@ -80,7 +82,7 @@ public class Spacecraft : MonoBehaviour
 		}
 	}
 
-	void FixedUpdate()
+	void Update()
 	{
 		if (mainEnginePower != 0)
 			UpdateSpacecraftPhysics();
@@ -90,23 +92,14 @@ public class Spacecraft : MonoBehaviour
 	{
 		if (IsAlive())
 		{
-			// rotation
-			Vector3 torqueVector = Vector3.zero;
-			Vector3 localAngularV = transform.InverseTransformVector(rb.angularVelocity) * rb.mass * 3f;
-			float yaw = Vector3.Dot(rb.transform.right, turningVector.normalized) - localAngularV.y;
-			torqueVector += rb.transform.up * yaw;
-			float pitch = -Vector3.Dot(rb.transform.up, turningVector.normalized) - localAngularV.x;
-			torqueVector += rb.transform.right * pitch;
-			float roll = -rb.transform.localRotation.z;
-			torqueVector += rb.transform.forward * roll;
-			rb.AddTorque(torqueVector * turningPower * Time.fixedDeltaTime);
+			/// rotation
+			angularVelocity = Vector3.Slerp(angularVelocity, turningVector, Time.deltaTime * turningPower);
+			transform.rotation = Quaternion.LookRotation(angularVelocity);
 
-			// thrust & side jets
-			Vector3 rbForceVector = Vector3.zero;
-			rbForceVector += mainEnginesVector;
-			rbForceVector += maneuverEnginesVector;
-			if (rbForceVector != Vector3.zero)
-				rb.AddForce(rbForceVector);
+			/// thrust & side jets
+			velocity = mainEnginesVector;
+			GetComponent<Rigidbody>().AddForce(velocity * Time.deltaTime * 100f);
+			//transform.Translate(velocity * Time.deltaTime * 10f, Space.World);
 		}
 	}
 
@@ -132,14 +125,9 @@ public class Spacecraft : MonoBehaviour
 		}
 	}
 
-	public void ManeuverEngines(Vector3 driveDirection)
+	public void Maneuver(Vector3 targetDirection)
 	{
-		maneuverEnginesVector = driveDirection * maneuverPower;
-	}
-
-	public void Maneuver(Vector3 targetPoint)
-	{
-		turningVector = targetPoint;
+		turningVector = targetDirection;
 		if (turningVector == Vector3.zero)
 			turningVector = transform.position + transform.forward;
 	}
@@ -245,7 +233,7 @@ public class Spacecraft : MonoBehaviour
 		return hudIcon;
 	}
 
-	// Collision and mouse touch
+	/// Collision and mouse touch
 	private void OnMouseOver()
 	{
 		if (!spacecraftInformation)

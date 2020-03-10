@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class CircleRenderer : MonoBehaviour
 {
 	// circle rendering

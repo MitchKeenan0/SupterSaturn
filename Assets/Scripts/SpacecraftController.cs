@@ -48,15 +48,16 @@ public class SpacecraftController : MonoBehaviour
 				{
 					/// orbit direction
 					moveVector = new Vector3(touchLineVector.x, touchLineVector.y, 0f);
-					Vector3 orbitVector = Vector3.ProjectOnPlane(touchLine.GetPosition(), spacecraft.transform.position.normalized);
-					orbitController.SetDirection(orbitVector);
+					orbitController.SetDirection(moveVector);
 
 					/// circular size
-					Vector3 screenTouch = touchLine.GetPosition();
-					Vector3 screenSpacecraft = cameraMain.WorldToScreenPoint(spacecraft.transform.position);
-					screenTouch.z = screenSpacecraft.z = 0f;
-					float touchDistance = Vector3.Distance(screenTouch, screenSpacecraft);
-					orbitController.SetOrbitRange(15f + (touchDistance * 0.6f));
+					float positionRange = spacecraft.transform.position.magnitude;
+					orbitController.SetOrbitRange(positionRange);
+
+					/// visualize
+					List<Vector3> routeList = new List<Vector3>();
+					routeList = orbitController.GetPoints();
+					autopilot.SetRoute(routeList);
 				}
 			}
 		}

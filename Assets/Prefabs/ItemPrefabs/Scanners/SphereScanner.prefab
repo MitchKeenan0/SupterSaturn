@@ -47,9 +47,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scanInterval: 3
   intervalDeviation: 0.1
-  scanSpeed: 50
+  scanSpeed: 10
   maxRadius: 1000
-  updateInterval: 0.2
+  updateInterval: 0.03
   scanRecoveryPeriod: 1
   maxPointSize: 0.2
 --- !u!114 &1490529778734066621

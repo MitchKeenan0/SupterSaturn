@@ -3861,26 +3861,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5133179162005431254, guid: a6802d9b7bc5dc044ab77bb6a0491aff,
-        type: 3}
-      propertyPath: m_Name
-      value: TextOrbit
-      objectReference: {fileID: 0}
-    - target: {fileID: 5133179162005431248, guid: a6802d9b7bc5dc044ab77bb6a0491aff,
-        type: 3}
-      propertyPath: m_Text
-      value: Orbit
-      objectReference: {fileID: 0}
-    - target: {fileID: 5133179161984375748, guid: a6802d9b7bc5dc044ab77bb6a0491aff,
-        type: 3}
-      propertyPath: m_Name
-      value: TextO
-      objectReference: {fileID: 0}
-    - target: {fileID: 5133179161984375750, guid: a6802d9b7bc5dc044ab77bb6a0491aff,
-        type: 3}
-      propertyPath: m_Text
-      value: O
-      objectReference: {fileID: 0}
     - target: {fileID: 5133179161902351411, guid: a6802d9b7bc5dc044ab77bb6a0491aff,
         type: 3}
       propertyPath: m_AnchorMin.y
