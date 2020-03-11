@@ -151,3 +151,4 @@ MonoBehaviour:
   iconPrefab: {fileID: 5691855316100906280, guid: 031b28d923822f24a83017d96ed26027,
     type: 3}
   healthBarScale: {x: 30, y: 3, z: 0}
+  updateInterval: 0.03

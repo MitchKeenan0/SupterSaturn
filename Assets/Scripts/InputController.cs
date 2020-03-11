@@ -16,7 +16,8 @@ public class InputController : MonoBehaviour
 	private CameraTargetFinder cameraTargetFinder;
 	private TouchOrbit touchOrbit;
 	private bool bNavigationMode = false;
-	private bool bCameraMode = false;
+	private bool bTargetCameraMode = false;
+	private bool bFreeCameraMode = false;
 
 	void Start()
 	{
@@ -26,66 +27,90 @@ public class InputController : MonoBehaviour
 		statusText.text = "";
 		ActivateButton(navigationModeButton, false, true);
 		ActivateButton(cameraModeButton, false, true);
-		CameraMode(true);
+		EnableCameraControl(true);
 	}
 
 	void ActivateButton(Button button, bool value, bool finished)
 	{
-		ColorBlock buttonColor = button.colors;
-		if (value && !finished)
-			buttonColor.normalColor = activeColor;
-		else
-			buttonColor.normalColor = standbyColor;
-		button.colors = buttonColor;
-
 		if (finished)
 			EventSystem.current.SetSelectedGameObject(null);
+
+		Color color = standbyColor;
+		if (value && !finished)
+			color = activeColor;
+		ColorBlock buttonColorBlock = button.colors;
+		buttonColorBlock.normalColor = color;
+		buttonColorBlock.highlightedColor = color;
+		buttonColorBlock.pressedColor = Color.black;
+		buttonColorBlock.selectedColor = color;
+		button.colors = buttonColorBlock;
+
+		if (!value)
+			FallbackCheck();
 	}
 
-	void UpdateStatusText()
+	void UpdateStatusText(string value)
 	{
-		if (bNavigationMode)
-			statusText.text = "Navigation Mode Enabled";
-		else if (bCameraMode)
-			statusText.text = "Camera Mode Enabled";
-		else
-			statusText.text = "";
+		statusText.text = value;
 	}
 
 	void FallbackCheck()
 	{
-		if (!bNavigationMode && !bCameraMode)
-			CameraMode(true);
+		if (!bNavigationMode && !bTargetCameraMode && !bFreeCameraMode)
+			EnableCameraControl(true);
 	}
 
-	public void NavigationMode(bool active)
+	public void NavigationMode(bool value)
 	{
-		if (bCameraMode)
-			CameraMode(false);
+		if (bFreeCameraMode)
+			EnableCameraControl(false);
 		bool bTurningOff = bNavigationMode;
-		bNavigationMode = active;
+		if (value == false)
+			bTurningOff = true;
+		if (bTurningOff)
+			value = false;
+		bNavigationMode = value;
+
 		List<Spacecraft> selectedSpacecraft = mouseSelection.GetSelectedSpacecraft();
 		foreach (Spacecraft sp in selectedSpacecraft)
 			sp.GetComponentInChildren<SpacecraftController>().SetActive(bNavigationMode);
+
+		if (bNavigationMode)
+			UpdateStatusText("Navigation mode");
+		else
+			UpdateStatusText("");
 		ActivateButton(navigationModeButton, bNavigationMode, bTurningOff);
-		UpdateStatusText();
-		FallbackCheck();
-		Debug.Log("NavigationMode " + bNavigationMode);
 	}
 
-	public void CameraMode(bool active)
+	public void TargetCameraMode(bool value)
 	{
 		if (bNavigationMode)
 			NavigationMode(false);
-		bool bTurningOff = bCameraMode;
-		bCameraMode = active;
-		if (bCameraMode)
-			cameraTargetFinder.GetFirstTarget();
+		bool bTurningOff = bTargetCameraMode;
+		if (value == false)
+			bTurningOff = true;
+		if (bTurningOff)
+			value = false;
+		bTargetCameraMode = value;
+
+		cameraTargetFinder.SetActive(bTargetCameraMode);
+
+		if (bTargetCameraMode)
+			UpdateStatusText("Target camera mode");
 		else
-			cameraTargetFinder.SetActive(false);
-		touchOrbit.SetActive(bCameraMode);
-		ActivateButton(cameraModeButton, bCameraMode, bTurningOff);
-		UpdateStatusText();
-		Debug.Log("CameraMode " + bCameraMode);
+			UpdateStatusText("");
+		ActivateButton(cameraModeButton, bTargetCameraMode, bTurningOff);
+	}
+
+	public void EnableCameraControl(bool value)
+	{
+		bFreeCameraMode = value;
+		touchOrbit.SetActive(bFreeCameraMode);
+		UpdateStatusText("Free camera " + (value ? ("on") : ("off")));
+	}
+
+	public void SetCameraTarget(Transform target)
+	{
+		cameraTargetFinder.SetTarget(target);
 	}
 }

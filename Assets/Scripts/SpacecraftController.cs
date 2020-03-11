@@ -18,7 +18,9 @@ public class SpacecraftController : MonoBehaviour
 	private bool bLining = false;
 	private int teamID = -1;
 
-    void Start()
+	private IEnumerator loadCoroutine;
+
+	void Start()
     {
 		spacecraft = GetComponent<Spacecraft>();
 		if (!spacecraft && (transform.parent != null))
@@ -30,9 +32,17 @@ public class SpacecraftController : MonoBehaviour
 		inputController = FindObjectOfType<InputController>();
 		orbitController = FindObjectOfType<OrbitController>();
 		cameraMain = Camera.main;
+		loadCoroutine = LoadWait(0.5f);
+		StartCoroutine(loadCoroutine);
     }
+	
+	IEnumerator LoadWait(float waitTime)
+	{
+		yield return new WaitForSeconds(waitTime);
+		inputController.SetCameraTarget(spacecraft.transform);
+	}
 
-    void Update()
+	void Update()
     {
 		if (bActive && (teamID == 0))
 		{

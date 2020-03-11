@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class OrbitController : MonoBehaviour
 {
+	public bool bAutoOrbit = false;
+
 	private CircleRenderer circleRenderer;
 	private Autopilot autopilot;
+	private Vector3 inputVector = Vector3.zero;
+	private List<Vector3> trajectoryList;
 
-    void Start()
+    void Awake()
     {
+		trajectoryList = new List<Vector3>();
 		circleRenderer = GetComponentInChildren<CircleRenderer>();
     }
 
@@ -19,8 +24,8 @@ public class OrbitController : MonoBehaviour
 
 	public void SetDirection(Vector3 direction)
 	{
-		Vector3 directionEuler = new Vector3(direction.x, direction.z, direction.y);
-		transform.rotation = Quaternion.LookRotation(autopilot.gameObject.transform.position, direction); ///Quaternion.Euler(directionEuler);
+		inputVector = new Vector3(direction.x, direction.z, direction.y);
+		transform.rotation = Quaternion.LookRotation(autopilot.gameObject.transform.position, direction);
 	}
 
 	public void SetOrbitRange(float value)
@@ -30,10 +35,20 @@ public class OrbitController : MonoBehaviour
 
 	public void ModifyOrbitRange(float increment)
 	{
-		float nextRadius = circleRenderer.circleRadius + increment;
-		circleRenderer.SetRadius(nextRadius);
-		autopilot.SetRoute(GetPoints());
-		autopilot.EnableMoveCommand(true);
+		bool toeTest = (GetPoints()[0].magnitude > 1.6f);
+		if (toeTest)
+		{
+			float nextRadius = circleRenderer.circleRadius + increment;
+			circleRenderer.SetRadius(nextRadius);
+			autopilot.SetRoute(GetPoints());
+			autopilot.EnableMoveCommand(true);
+		}
+	}
+
+	public List<Vector3> GetTrajectory() { return trajectoryList; }
+	void UpdateTrajectory()
+	{
+		trajectoryList.Clear();
 	}
 
 	public List<Vector3> GetPoints()

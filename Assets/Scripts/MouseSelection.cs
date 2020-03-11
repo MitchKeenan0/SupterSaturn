@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -24,6 +25,9 @@ public class MouseSelection : MonoBehaviour
 
 	private SelectionSquad selectionSquad;
 	private SkillPanel skillPanel;
+	private TeamFleetHUD teamHud;
+
+	private IEnumerator loadCoroutine;
 
 	void Awake()
 	{
@@ -42,6 +46,29 @@ public class MouseSelection : MonoBehaviour
 
 		selectionSquad = GetComponent<SelectionSquad>();
 		skillPanel = FindObjectOfType<SkillPanel>();
+		teamHud = FindObjectOfType<TeamFleetHUD>();
+
+		loadCoroutine = LoadWait(0.5f);
+		StartCoroutine(loadCoroutine);
+	}
+
+	IEnumerator LoadWait(float waitTime)
+	{
+		yield return new WaitForSeconds(waitTime);
+		InitialSelection();
+	}
+
+	void InitialSelection()
+	{
+		if ((teamHud.GetTeamList(0) != null) && (teamHud.GetTeamList(0)[0] != null))
+		{
+			Spacecraft firstBoye = teamHud.GetTeamList(0)[0];
+			if (firstBoye != null)
+			{
+				Selectable selectable = firstBoye.gameObject.GetComponent<Selectable>();
+				UpdateSelection(selectable, true);
+			}
+		}
 	}
 
 	void Update()

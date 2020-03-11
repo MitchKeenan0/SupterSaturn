@@ -16,6 +16,7 @@ public class Spacecraft : MonoBehaviour
 	public float iconScale = 1f;
 	public int numericID = 0;
 
+	private Rigidbody rb;
 	private Agent agent;
 	private Health health;
 	private SpacecraftInformation spacecraftInformation;
@@ -55,6 +56,7 @@ public class Spacecraft : MonoBehaviour
 
 	private void Awake()
 	{
+		rb = GetComponent<Rigidbody>();
 		agent = GetComponent<Agent>();
 		health = GetComponent<Health>();
 		spacecraftInformation = GetComponent<SpacecraftInformation>();
@@ -71,6 +73,8 @@ public class Spacecraft : MonoBehaviour
 		mouseSelection = FindObjectOfType<MouseSelection>();
 		battleOutcome = FindObjectOfType<BattleOutcome>();
 
+		angularVelocity = transform.eulerAngles;
+
 		SetAgentEnabled(bAgentStartsEnabled);
 		if (agent != null && (agent.teamID != 0))
 			SetRenderComponents(false);
@@ -84,22 +88,35 @@ public class Spacecraft : MonoBehaviour
 
 	void Update()
 	{
-		if (mainEnginePower != 0)
-			UpdateSpacecraftPhysics();
+		UpdateSpacecraftPhysics();
 	}
 
 	void UpdateSpacecraftPhysics()
 	{
 		if (IsAlive())
 		{
-			/// rotation
-			angularVelocity = Vector3.Slerp(angularVelocity, turningVector, Time.deltaTime * turningPower);
-			transform.rotation = Quaternion.LookRotation(angularVelocity);
+			/// rotating
+			if (turningVector != Vector3.zero)
+			{
+				float kernScale = Vector3.Dot(transform.forward.normalized, turningVector.normalized) * 3f;
+				kernScale = Mathf.Clamp(kernScale, 1f, 3f);
+				angularVelocity = Vector3.MoveTowards(angularVelocity, turningVector, Time.deltaTime * turningPower * kernScale);
+				if (angularVelocity != turningVector) /// ignore zero-vectors
+					transform.rotation = Quaternion.LookRotation(angularVelocity);
+			}
 
-			/// thrust & side jets
-			velocity = mainEnginesVector;
-			GetComponent<Rigidbody>().AddForce(velocity * Time.deltaTime * 100f);
-			//transform.Translate(velocity * Time.deltaTime * 10f, Space.World);
+			/// thrust
+			velocity = mainEnginesVector * Time.deltaTime * 100f;
+			Vector3 myVelocity = rb.velocity;
+			if (myVelocity.magnitude > 0.2f)
+			{
+				float dotToTargetVelocity = Vector3.Dot(myVelocity.normalized * 2, velocity.normalized);
+				if (dotToTargetVelocity < 0.6f)
+				{
+					velocity = -rb.velocity * Time.deltaTime;
+				}
+			}
+			rb.AddForce(velocity, ForceMode.Force);
 		}
 	}
 

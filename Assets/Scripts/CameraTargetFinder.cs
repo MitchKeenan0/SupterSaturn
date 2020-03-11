@@ -6,24 +6,16 @@ public class CameraTargetFinder : MonoBehaviour
 {
 	public float startDelayTime = 1f;
 
+	private TouchOrbit touchOrbit = null;
 	private TeamFleetHUD teamHud = null;
 	private Transform targetTransform = null;
 	private bool bActive = false;
-	private IEnumerator startDelay;
 
     void Start()
     {
+		touchOrbit = FindObjectOfType<TouchOrbit>();
 		teamHud = FindObjectOfType<TeamFleetHUD>();
-		startDelay = StartDelay(startDelayTime);
-		StartCoroutine(startDelay);
     }
-
-	IEnumerator StartDelay(float delayTime)
-	{
-		yield return new WaitForSeconds(delayTime);
-		bActive = true;
-		TargetFind();
-	}
 
 	void TargetFind()
 	{
@@ -36,6 +28,7 @@ public class CameraTargetFinder : MonoBehaviour
 				if (sp != null)
 				{
 					targetTransform = sp.transform;
+					touchOrbit.SetAnchorTransform(targetTransform);
 					break;
 				}
 			}
@@ -53,5 +46,12 @@ public class CameraTargetFinder : MonoBehaviour
 		bActive = value;
 		if (bActive)
 			TargetFind();
+		else
+			touchOrbit.ResetAnchor();
+	}
+
+	public void SetTarget(Transform value)
+	{
+		targetTransform = value;
 	}
 }

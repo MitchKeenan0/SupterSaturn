@@ -4,13 +4,11 @@ public class Selectable : MonoBehaviour
 {
 	private CircleRenderer circle;
 	private SpacecraftController spacecraftController;
-	private TargetCamera targetCamera;
 	private OrbitController orbitController;
 
 	void Awake()
 	{
 		circle = gameObject.GetComponentInChildren<CircleRenderer>();
-		targetCamera = FindObjectOfType<TargetCamera>();
 		orbitController = FindObjectOfType<OrbitController>();
 	}
 
@@ -53,7 +51,6 @@ public class Selectable : MonoBehaviour
 		}
 	}
 
-	/// unused
 	public void SetColor(Color value)
 	{
 		Renderer[] rendererArray = GetComponentsInChildren<Renderer>();

@@ -8,6 +8,7 @@ public class CraftIconHUD : MonoBehaviour
 	public GameObject iconParent;
 	public GameObject iconPrefab;
 	public Vector3 healthBarScale;
+	public float updateInterval = 0.2f;
 
 	private Camera cameraMain;
 	private ObjectManager objectManager;
@@ -41,7 +42,7 @@ public class CraftIconHUD : MonoBehaviour
 
 		InitIconFleet();
 
-		updateCoroutine = UpdateIconHud(0.015f);
+		updateCoroutine = UpdateIconHud(updateInterval);
 		StartCoroutine(updateCoroutine);
 	}
 

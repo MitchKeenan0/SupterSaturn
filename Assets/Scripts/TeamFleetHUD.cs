@@ -74,9 +74,7 @@ public class TeamFleetHUD : MonoBehaviour
 					{
 						tfd.SetClass(sp.spacecraftName);
 						tfd.SetName("");
-						float speed = 100 * sp.GetVelocity().magnitude;
-						if (speed <= 1.1f)
-							speed = 0f;
+						float speed = 6 * sp.GetVelocity().magnitude;
 						string speedText = speed.ToString("F1") + " Km/sec";
 						tfd.SetSpeed(speedText);
 					}

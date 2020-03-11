@@ -33,11 +33,11 @@ public class TouchOrbit : MonoBehaviour
 	private float y = 0f;
 	private float twoTouchDistance = 0;
 	private bool bActivated = true;
+	private Transform anchorTransform = null;
 
 	void Awake()
 	{
-		orbitAnchor.transform.SetParent(null);
-		orbitAnchor.transform.position = Vector3.zero;
+		ResetAnchor();
 		cameraController = FindObjectOfType<CameraController>();
 		cameraMain = Camera.main;
 		inputController = FindObjectOfType<InputController>();
@@ -107,7 +107,7 @@ public class TouchOrbit : MonoBehaviour
 		Quaternion rotation = Quaternion.identity;
 		Vector3 position = Vector3.zero;
 
-		if (orbitAnchor != null)
+		if (anchorTransform != null)
 		{
 			if (bActivated || (lx != 0f) || (ly != 0f))
 			{
@@ -119,16 +119,29 @@ public class TouchOrbit : MonoBehaviour
 
 			rotation *= Quaternion.Euler(y, x, 0);
 			Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
-			position = (rotation * negDistance) + orbitAnchor.position;
+			position = (rotation * negDistance) + anchorTransform.position;
 		}
 
 		transform.rotation = rotation;
 		transform.position = position + moveVector;
 	}
 
+	public void ResetAnchor()
+	{
+		if (orbitAnchor != null)
+			anchorTransform = orbitAnchor;
+		anchorTransform.transform.SetParent(null);
+		anchorTransform.transform.position = Vector3.zero;
+	}
+
 	public void SetActive(bool value)
 	{
 		bActivated = value;
 		this.enabled = value;
+	}
+
+	public void SetAnchorTransform(Transform value)
+	{
+		anchorTransform = value;
 	}
 }

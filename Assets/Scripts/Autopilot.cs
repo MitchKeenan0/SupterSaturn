@@ -10,6 +10,7 @@ public class Autopilot : MonoBehaviour
 	public float autopilotSkill = 0.9f;
 	public float autopilotAreaRange = 20f;
 
+	private Rigidbody rb;
 	private Agent agent;
 	private Spacecraft spacecraft;
 	private RouteVisualizer routeVisualizer;
@@ -24,11 +25,16 @@ public class Autopilot : MonoBehaviour
 	private Vector3 maneuverVector = Vector3.zero;
 	private Vector3 previousRouteVector = Vector3.zero;
 	private bool bExecutingMoveCommand = false;
+	private bool bEngineActive = false;
 	private float timeAtLastMoveCommand = 0;
 	private List<Vector3> routeVectors;
+	private Vector3 targetPosition = Vector3.zero;
+
+	private IEnumerator engineCoroutine;
 
 	void Start()
     {
+		rb = GetComponent<Rigidbody>();
 		agent = GetComponent<Agent>();
 		spacecraft = GetComponent<Spacecraft>();
 		routeVisualizer = GetComponentInChildren<RouteVisualizer>();
@@ -50,7 +56,7 @@ public class Autopilot : MonoBehaviour
 			FlyTo(currentRouteVector);
 
 			float distance = Vector3.Distance(transform.position, currentRouteVector);
-			if ((distance < 5f) && ((Time.time - timeAtLastMoveCommand) > 1f))
+			if ((distance < 10f) && ((Time.time - timeAtLastMoveCommand) > 1f))
 			{
 				holdPosition = transform.position;
 				routeVectors.Remove(currentRouteVector);
@@ -212,24 +218,47 @@ public class Autopilot : MonoBehaviour
 
 	void FlyTo(Vector3 destination)
 	{
-		Debug.DrawLine(transform.position, destination, Color.green);
+		Vector3 toDestination = destination - rb.velocity - transform.position;
+		///Debug.DrawLine(transform.position, destination, Color.green);
 
-		Vector3 toDestination = destination - transform.position;
-
-		// steering
+		/// steering
 		if (toDestination.magnitude >= 1f)
 			spacecraft.Maneuver(toDestination);
 
-		// thrust
-		if (destination != holdPosition)
+		/// thrust
+		if ((destination != holdPosition) && !bEngineActive)
 		{
+			Vector3 myVelocity = spacecraft.GetComponent<Rigidbody>().velocity;
+			float distance = toDestination.magnitude;
+			float speed = myVelocity.magnitude;
 			float dotToDestination = Vector3.Dot(transform.forward, toDestination.normalized);
-			if (Mathf.Abs(dotToDestination) > 0.99f)
+			if (dotToDestination > 0.99f)
 			{
-				float throttle = Mathf.Clamp(dotToDestination, -1, 1);
-				spacecraft.MainEngines(throttle);
+				if (distance > speed)
+				{
+					if (speed < spacecraft.mainEnginePower)
+						speed = spacecraft.mainEnginePower;
+					float thrustTime = (distance / speed) / 6f;
+					engineCoroutine = MainEngineBurn(thrustTime);
+					StartCoroutine(engineCoroutine);
+				}
 			}
 		}
+	}
+
+	IEnumerator MainEngineBurn(float durationTime)
+	{
+		Debug.Log("Starting burn of " + durationTime + " seconds at " + Time.time.ToString("F1"));
+		bEngineActive = true;
+		spacecraft.MainEngines(1f);
+		float timeElapsed = 0f;
+		while (timeElapsed < durationTime)
+		{
+			timeElapsed += Time.deltaTime;
+			yield return new WaitForSeconds(Time.deltaTime);
+		}
+		spacecraft.MainEngines(0f);
+		bEngineActive = false;
 	}
 
 	void AllStop()

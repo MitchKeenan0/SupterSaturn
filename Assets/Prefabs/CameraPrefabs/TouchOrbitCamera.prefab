@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3717436700731877111}
   - component: {fileID: -7606627719409619835}
   - component: {fileID: 8112959024247920879}
-  - component: {fileID: 7928923710052432564}
   m_Layer: 0
   m_Name: TouchOrbitCamera
   m_TagString: Untagged
@@ -85,20 +84,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startDelayTime: 1
---- !u!114 &7928923710052432564
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3717436700731877109}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4584f9130e07e3b4dbcca41eaa21d926, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  distance: 100
-  targetTransform: {fileID: 0}
 --- !u!1 &5998128571327595369
 GameObject:
   m_ObjectHideFlags: 0
@@ -155,7 +140,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.01
-  far clip plane: 1000
+  far clip plane: 2000
   field of view: 21
   orthographic: 0
   orthographic size: 5
