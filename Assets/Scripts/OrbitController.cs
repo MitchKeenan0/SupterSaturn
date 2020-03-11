@@ -11,11 +11,19 @@ public class OrbitController : MonoBehaviour
 	private Vector3 inputVector = Vector3.zero;
 	private List<Vector3> trajectoryList;
 
-    void Awake()
+	public List<Vector3> GetTrajectory() { return trajectoryList; }
+
+	void Awake()
     {
 		trajectoryList = new List<Vector3>();
 		circleRenderer = GetComponentInChildren<CircleRenderer>();
     }
+
+	void UpdateTrajectory()
+	{
+		trajectoryList.Clear();
+		//
+	}
 
 	public void SetAutopilot(Autopilot ap)
 	{
@@ -24,13 +32,27 @@ public class OrbitController : MonoBehaviour
 
 	public void SetDirection(Vector3 direction)
 	{
-		inputVector = new Vector3(direction.x, direction.z, direction.y);
-		transform.rotation = Quaternion.LookRotation(autopilot.gameObject.transform.position, direction);
+		if (bAutoOrbit)
+		{
+			inputVector = new Vector3(direction.x, direction.z, direction.y);
+			transform.rotation = Quaternion.LookRotation(autopilot.gameObject.transform.position, direction);
+		}
+		else
+		{
+			//
+		}
 	}
 
 	public void SetOrbitRange(float value)
 	{
-		circleRenderer.SetRadius(value);
+		if (bAutoOrbit)
+		{
+			circleRenderer.SetRadius(value);
+		}
+		else
+		{
+			//
+		}
 	}
 
 	public void ModifyOrbitRange(float increment)
@@ -38,17 +60,18 @@ public class OrbitController : MonoBehaviour
 		bool toeTest = (GetPoints()[0].magnitude > 1.6f);
 		if (toeTest)
 		{
-			float nextRadius = circleRenderer.circleRadius + increment;
-			circleRenderer.SetRadius(nextRadius);
-			autopilot.SetRoute(GetPoints());
-			autopilot.EnableMoveCommand(true);
+			if (bAutoOrbit)
+			{
+				float nextRadius = circleRenderer.circleRadius + increment;
+				circleRenderer.SetRadius(nextRadius);
+				autopilot.SetRoute(GetPoints());
+				autopilot.EnableMoveCommand(true);
+			}
+			else
+			{
+				//
+			}
 		}
-	}
-
-	public List<Vector3> GetTrajectory() { return trajectoryList; }
-	void UpdateTrajectory()
-	{
-		trajectoryList.Clear();
 	}
 
 	public List<Vector3> GetPoints()

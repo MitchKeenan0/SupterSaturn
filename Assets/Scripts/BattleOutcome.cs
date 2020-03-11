@@ -18,6 +18,7 @@ public class BattleOutcome : MonoBehaviour
 
 	private Game game;
 	private Player player;
+	private ScoreHUD scoreHud;
 	private int playerScore = 0;
 	private int playerLost = 0;
 
@@ -25,6 +26,7 @@ public class BattleOutcome : MonoBehaviour
     {
 		game = FindObjectOfType<Game>();
 		player = FindObjectOfType<Player>();
+		scoreHud = FindObjectOfType<ScoreHUD>();
 
 		conclusionPanel.SetActive(false);
 		scorePanel.SetActive(false);
@@ -50,6 +52,8 @@ public class BattleOutcome : MonoBehaviour
 		else
 			conclusionText.text = "DEFEAT";
 
+		playerScore = scoreHud.GetScore();
+
 		scoreText.text = "+" + playerScore.ToString();
 		lostText.text = playerLost.ToString();
 		playerNameText.text = player.playerName;
@@ -60,8 +64,8 @@ public class BattleOutcome : MonoBehaviour
 		if (game != null)
 		{
 			int totalNewChevrons = playerScore + playerLost;
-			if (playerScore >= Mathf.Abs(playerLost))
-				totalNewChevrons *= (playerScore - Mathf.Abs(playerLost));
+			//if (playerScore >= Mathf.Abs(playerLost))
+			//	totalNewChevrons *= (playerScore - Mathf.Abs(playerLost));
 
 			game.UpdateChevronAccount(totalNewChevrons);
 			string conference = "+";

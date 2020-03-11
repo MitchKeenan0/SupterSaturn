@@ -81,4 +81,6 @@ public class ScoreHUD : MonoBehaviour
 		scoreo.transform.position = positionOnScreen;
 		UpdateScore(scoreValue, maxValue);
 	}
+
+	public int GetScore() { return score; }
 }

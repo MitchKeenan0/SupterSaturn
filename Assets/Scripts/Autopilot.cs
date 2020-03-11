@@ -153,6 +153,13 @@ public class Autopilot : MonoBehaviour
 			ClearRoute();
 	}
 
+	public void AllStop()
+	{
+		bExecutingMoveCommand = false;
+		spacecraft.MainEngines(0f);
+		spacecraft.Maneuver(Vector3.zero);
+	}
+
 	public void SetFollowTransform(Transform value)
 	{
 		followTransform = value;
@@ -238,7 +245,7 @@ public class Autopilot : MonoBehaviour
 				{
 					if (speed < spacecraft.mainEnginePower)
 						speed = spacecraft.mainEnginePower;
-					float thrustTime = (distance / speed) / 6f;
+					float thrustTime = (distance / speed) / 9f;
 					engineCoroutine = MainEngineBurn(thrustTime);
 					StartCoroutine(engineCoroutine);
 				}
@@ -259,12 +266,6 @@ public class Autopilot : MonoBehaviour
 		}
 		spacecraft.MainEngines(0f);
 		bEngineActive = false;
-	}
-
-	void AllStop()
-	{
-		spacecraft.MainEngines(0f);
-		spacecraft.Maneuver(Vector3.zero);
 	}
 
 	Vector3 GetGravityEscapeFrom(Vector3 position)
@@ -297,7 +298,7 @@ public class Autopilot : MonoBehaviour
 		return follow;
 	}
 
-	void ClearRoute()
+	public void ClearRoute()
 	{
 		if (routeVectors == null)
 			routeVectors = new List<Vector3>();

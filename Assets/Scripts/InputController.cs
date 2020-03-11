@@ -60,17 +60,26 @@ public class InputController : MonoBehaviour
 			EnableCameraControl(true);
 	}
 
+	public void AllStop()
+	{
+		List<Spacecraft> selectedSpacecraft = mouseSelection.GetSelectedSpacecraft();
+		foreach (Spacecraft sp in selectedSpacecraft)
+		{
+			Autopilot autopilot = sp.GetComponent<Autopilot>();
+			autopilot.AllStop();
+		}
+	}
+
 	public void NavigationMode(bool value)
 	{
-		if (bFreeCameraMode)
-			EnableCameraControl(false);
 		bool bTurningOff = bNavigationMode;
 		if (value == false)
 			bTurningOff = true;
 		if (bTurningOff)
 			value = false;
-		bNavigationMode = value;
 
+		EnableCameraControl(bTurningOff);
+		bNavigationMode = value;
 		List<Spacecraft> selectedSpacecraft = mouseSelection.GetSelectedSpacecraft();
 		foreach (Spacecraft sp in selectedSpacecraft)
 			sp.GetComponentInChildren<SpacecraftController>().SetActive(bNavigationMode);
@@ -84,15 +93,15 @@ public class InputController : MonoBehaviour
 
 	public void TargetCameraMode(bool value)
 	{
-		if (bNavigationMode)
-			NavigationMode(false);
 		bool bTurningOff = bTargetCameraMode;
 		if (value == false)
 			bTurningOff = true;
 		if (bTurningOff)
 			value = false;
-		bTargetCameraMode = value;
 
+		if (bNavigationMode)
+			NavigationMode(false);
+		bTargetCameraMode = value;
 		cameraTargetFinder.SetActive(bTargetCameraMode);
 
 		if (bTargetCameraMode)
