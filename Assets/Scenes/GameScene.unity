@@ -4072,6 +4072,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: OrbitalCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 8724809854195689281, guid: 425d09a5d78a077418bf11f2ddff8d20,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8724809854195689285, guid: 425d09a5d78a077418bf11f2ddff8d20,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4180,12 +4185,12 @@ PrefabInstance:
     - target: {fileID: 8724809855664783480, guid: 425d09a5d78a077418bf11f2ddff8d20,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8724809855664783480, guid: 425d09a5d78a077418bf11f2ddff8d20,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8724809855664783480, guid: 425d09a5d78a077418bf11f2ddff8d20,
         type: 3}
@@ -4195,17 +4200,17 @@ PrefabInstance:
     - target: {fileID: 8724809855664783480, guid: 425d09a5d78a077418bf11f2ddff8d20,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -22.5
       objectReference: {fileID: 0}
     - target: {fileID: 8724809854531642544, guid: 425d09a5d78a077418bf11f2ddff8d20,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8724809854531642544, guid: 425d09a5d78a077418bf11f2ddff8d20,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8724809854531642544, guid: 425d09a5d78a077418bf11f2ddff8d20,
         type: 3}
@@ -4215,7 +4220,7 @@ PrefabInstance:
     - target: {fileID: 8724809854531642544, guid: 425d09a5d78a077418bf11f2ddff8d20,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -21
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 425d09a5d78a077418bf11f2ddff8d20, type: 3}

@@ -9,6 +9,7 @@ public class Autopilot : MonoBehaviour
 	public float updateInterval = 0.2f;
 	public float autopilotSkill = 0.9f;
 	public float autopilotAreaRange = 20f;
+	public bool bRotationFollowVelocity = true;
 
 	private Rigidbody rb;
 	private Agent agent;
@@ -85,8 +86,6 @@ public class Autopilot : MonoBehaviour
 
 		if ((vectors != null) && (vectors.Count > 0))
 		{
-			//List<Vector3> insertionList = InsertionVectors()
-
 			int numVectors = vectors.Count;
 			for(int i = 0; i < numVectors; i++)
 			{
@@ -105,21 +104,6 @@ public class Autopilot : MonoBehaviour
 				previous = routeStep;
 			}
 		}
-	}
-
-	List<Vector3> InsertionVectors(Vector3 targetPosition, Vector3 targetEulerAngles)
-	{
-		List<Vector3> insertionList = new List<Vector3>();
-		Vector3 currentPosition = spacecraft.transform.position;
-		Vector3 currentEulerAngles = spacecraft.transform.eulerAngles;
-		Vector3 transPosition = Vector3.zero;
-		Vector3 delta = Vector3.zero;
-		for(int i = 0; i < 10; i++)
-		{
-			transPosition = Vector3.Lerp(currentPosition, targetPosition, Time.deltaTime * 10);
-			
-		}
-		return insertionList;
 	}
 
 	public void SetMoveCommand(Vector3 value, bool bOrbital)
@@ -223,16 +207,19 @@ public class Autopilot : MonoBehaviour
 		routeVectors = optimalRoute;
 	}
 
-	void FlyTo(Vector3 destination)
+	public void SetManeuverVector(Vector3 destination)
 	{
-		Vector3 toDestination = destination - rb.velocity - transform.position;
-		///Debug.DrawLine(transform.position, destination, Color.green);
-
-		/// steering
+		Vector3 toDestination = destination - transform.position;
 		if (toDestination.magnitude >= 1f)
 			spacecraft.Maneuver(toDestination);
+	}
+
+	void FlyTo(Vector3 destination)
+	{
+		SetManeuverVector(destination);
 
 		/// thrust
+		Vector3 toDestination = destination - rb.velocity - transform.position;
 		if ((destination != holdPosition) && !bEngineActive)
 		{
 			Vector3 myVelocity = spacecraft.GetComponent<Rigidbody>().velocity;
@@ -253,6 +240,14 @@ public class Autopilot : MonoBehaviour
 		}
 	}
 
+	public void FireEngineBurn(float burnDuration)
+	{
+		if (bEngineActive)
+			StopAllCoroutines();
+		engineCoroutine = MainEngineBurn(burnDuration);
+		StartCoroutine(engineCoroutine);
+	}
+
 	IEnumerator MainEngineBurn(float durationTime)
 	{
 		Debug.Log("Starting burn of " + durationTime + " seconds at " + Time.time.ToString("F1"));
@@ -266,36 +261,6 @@ public class Autopilot : MonoBehaviour
 		}
 		spacecraft.MainEngines(0f);
 		bEngineActive = false;
-	}
-
-	Vector3 GetGravityEscapeFrom(Vector3 position)
-	{
-		Vector3 gravityEscape = Vector3.zero;
-		foreach (Gravity g in objectManager.GetGravityList())
-		{
-			RaycastHit hit;
-			Vector3 gravityVector = (g.transform.position - position).normalized;
-			if (Physics.Raycast(position, gravityVector, out hit))
-			{
-				if ((hit.collider == g.GetComponent<Collider>()) && (hit.distance < g.radius))
-				{
-					gravityEscape = (-gravityVector * spacecraft.mainEnginePower * g.radius);
-					//Debug.DrawRay(hit.point, gravityEscape, Color.green);
-				}
-			}
-		}
-
-		return gravityEscape;
-	}
-
-	Vector3 GetFollowPosition()
-	{
-		Vector3 follow = Vector3.zero;
-		if (followTransform != null)
-		{
-			follow = followTransform.position;
-		}
-		return follow;
 	}
 
 	public void ClearRoute()

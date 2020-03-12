@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SpacecraftController : MonoBehaviour
 {
+	public float sensitivity = 30f;
 	public float moveLineScale = 10f;
 
 	private Spacecraft spacecraft;
@@ -17,8 +18,10 @@ public class SpacecraftController : MonoBehaviour
 	private bool bActive = false;
 	private bool bLining = false;
 	private int teamID = -1;
+	private float burnDuration = 0f;
 
 	private IEnumerator loadCoroutine;
+	private IEnumerator updateCoroutine;
 
 	void Start()
     {
@@ -56,18 +59,24 @@ public class SpacecraftController : MonoBehaviour
 				touchLineVector = touchLine.GetLine() * moveLineScale;
 				if (Mathf.Abs(touchLineVector.magnitude) > 0f)
 				{
+					/// burn duration
+					float lineLength = touchLineVector.magnitude;
+					burnDuration = lineLength / 50f;
+					orbitController.SetBurnDuration(burnDuration);
+
 					/// orbit direction
-					moveVector = new Vector3(touchLineVector.x, touchLineVector.y, 0f);
+					moveVector = Vector3.Lerp(moveVector, new Vector3(touchLineVector.x, touchLineVector.y, 0f), Time.deltaTime * sensitivity);
 					orbitController.SetDirection(moveVector);
 
-					/// circular size
+					/// circular size for auto-orbit
 					float positionRange = spacecraft.transform.position.magnitude;
 					orbitController.SetOrbitRange(positionRange);
 
 					/// visualize
-					List<Vector3> routeList = new List<Vector3>();
-					routeList = orbitController.GetPoints();
-					autopilot.SetRoute(routeList);
+					///List<Vector3> routeList = new List<Vector3>();
+					///routeList = orbitController.GetTrajectory(); /// GetPoints();
+					///autopilot.SetRoute(routeList);
+					autopilot.SetManeuverVector(orbitController.GetOrbitTarget());
 				}
 			}
 		}
@@ -84,10 +93,12 @@ public class SpacecraftController : MonoBehaviour
 		bLining = false;
 		if (orbitController != null)
 		{
-			List<Vector3> routeList = new List<Vector3>();
-			routeList = orbitController.GetPoints();
-			autopilot.SetRoute(routeList);
-			autopilot.EnableMoveCommand(true);
+			autopilot.SetManeuverVector(spacecraft.transform.forward);
+			autopilot.FireEngineBurn(burnDuration);
+			//List<Vector3> routeList = new List<Vector3>();
+			//routeList = orbitController.GetTrajectory();
+			//autopilot.SetRoute(routeList);
+			//autopilot.EnableMoveCommand(true);
 		}
 		inputController.NavigationMode(false);
 	}

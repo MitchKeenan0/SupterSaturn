@@ -117,4 +117,21 @@ public class GravityTelemetryHUD : MonoBehaviour
 		lineMasterList.Add(lineList);
 		return lineList;
 	}
+
+	public List<Gravity> GetGravitiesAffecting(Rigidbody rb)
+	{
+		List<Gravity> gravities = new List<Gravity>();
+		if (gravityList.Count > 0)
+		{
+			foreach(Gravity grav in gravityList)
+			{
+				if ((grav.GetRbList() != null) && (grav.GetRbList().Count > 0))
+				{
+					if (grav.GetRbList().Contains(rb))
+						gravities.Add(grav);
+				}
+			}
+		}
+		return gravities;
+	}
 }

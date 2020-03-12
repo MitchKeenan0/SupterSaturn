@@ -55,7 +55,7 @@ public class Gravity : MonoBehaviour
 		Vector3 gravity = Vector3.zero;
 		if ((r != null) && !r.isKinematic)
 		{
-			Vector3 toCenter = bodyTransform.position - position;
+			Vector3 toCenter = (transform.position + bodyTransform.localPosition) - position;
 			if (toCenter.magnitude <= radius)
 			{
 				float G = (1f / toCenter.magnitude) * mass * strength;
