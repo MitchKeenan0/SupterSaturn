@@ -53,18 +53,18 @@ public class SelectionSquad : MonoBehaviour
 
 	public void BeginCommandMove()
 	{
-		int numSelected = spacecraftList.Count;
-		if (numSelected > 0)
-		{
-			for (int i = 0; i < numSelected; i++)
-			{
-				if (spacecraftList[i] != null)
-				{
-					if (spacecraftList[i].GetAgent().teamID == 0)
-						spacecraftList[i].GetAgent().EnableMoveCommand(true);
-				}
-			}
-		}
+		//int numSelected = spacecraftList.Count;
+		//if (numSelected > 0)
+		//{
+		//	for (int i = 0; i < numSelected; i++)
+		//	{
+		//		if (spacecraftList[i] != null)
+		//		{
+		//			if (spacecraftList[i].GetAgent().teamID == 0)
+		//				spacecraftList[i].GetAgent().EnableMoveCommand(true);
+		//		}
+		//	}
+		//}
 	}
 
 	public Vector3 GetOffsetOf(Spacecraft sp)

@@ -49,8 +49,6 @@ public class Agent : MonoBehaviour
     {
 		if (isActiveAndEnabled)
 		{
-			if (autopilot != null)
-				autopilot.SpacecraftNavigationCommands();
 			if (bEnabled && ((teamID != 0) || (targetTransform != null) || bAutoTarget))
 				UpdateTarget();
 		}
@@ -166,22 +164,6 @@ public class Agent : MonoBehaviour
 		return result;
 	}
 
-	public void EnableMoveCommand(bool value)
-	{
-		autopilot.EnableMoveCommand(value);
-	}
-
-	public void SetMoveOrder(Vector3 position, bool bOrbital, Transform follow)
-	{
-		if (!autopilot && (this != null))
-			autopilot = GetComponent<Autopilot>();
-		if (autopilot != null)
-		{
-			autopilot.SetMoveCommand(position, bOrbital);
-		}
-		followTransform = follow;
-	}
-
 	public void SetOffense(bool value)
 	{
 		bAutoTarget = value;
@@ -193,8 +175,8 @@ public class Agent : MonoBehaviour
 		if (!selectedSquad)
 			selectedSquad = GetComponent<SelectionSquad>();
 		Vector3 centerPoint = selectedSquad.GetCenterPoint();
-		SetMoveOrder(centerPoint, false, null);
-		EnableMoveCommand(true);
+		//SetMoveOrder(centerPoint, false, null);
+		//EnableMoveCommand(true);
 	}
 
 	public string GetHeadline()

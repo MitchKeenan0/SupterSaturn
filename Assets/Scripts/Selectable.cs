@@ -28,6 +28,9 @@ public class Selectable : MonoBehaviour
 				sp.SelectionHighlight(isSelected);
 			}
 
+			if (_isSelected && (gameObject.GetComponentInChildren<SpacecraftController>() != null))
+				orbitController.SetAutopilot(gameObject.GetComponent<Autopilot>());
+
 			if (!circle)
 				circle = gameObject.GetComponent<CircleRenderer>();
 			if (circle != null)
@@ -38,7 +41,6 @@ public class Selectable : MonoBehaviour
 					circle.Open();
 					circle.SetPosition(transform.position);
 					circle.StartAutoUpdate();
-					orbitController.SetAutopilot(gameObject.GetComponent<Autopilot>());
 					
 				}
 				else

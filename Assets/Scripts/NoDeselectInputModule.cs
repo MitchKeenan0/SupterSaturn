@@ -3,7 +3,7 @@ using UnityEngine.Serialization;
 
 namespace UnityEngine.EventSystems
 {
-	[AddComponentMenu("Event/Standalone Input Module")]
+	[AddComponentMenu("Event/No Deselect Input Module")]
 	public class NoDeselectInputModule : PointerInputModule
 	{
 		private float m_PrevActionTime;

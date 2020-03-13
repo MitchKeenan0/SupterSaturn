@@ -45,7 +45,7 @@ public class VelocityVisualizer : MonoBehaviour
 		if (gravityList != null)
 		{
 			foreach (Gravity g in gravityList)
-				outVelocity += g.GetGravity(rb, velocityPosition, rb.mass);
+				outVelocity += g.GetGravity(rb, velocityPosition, rb.mass, rb.drag);
 		}
 		return outVelocity;
 	}

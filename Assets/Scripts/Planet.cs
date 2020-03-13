@@ -11,8 +11,12 @@ public class Planet : MonoBehaviour
 
 	private Mesh mesh;
 	private ScoreHUD scoreHud;
+	private RaycastManager raycastManager;
 	private List<Vector3> vertexList;
 	private List<Vector3> freshVertices;
+	private float planetSize = 1f;
+
+	public float GetSize() { return planetSize; }
 
 	void Awake()
     {
@@ -21,6 +25,7 @@ public class Planet : MonoBehaviour
 
 	void InitPlanet()
 	{
+		raycastManager = FindObjectOfType<RaycastManager>();
 		scoreHud = FindObjectOfType<ScoreHUD>();
 		mesh = GetComponent<MeshFilter>().mesh;
 		vertexList = new List<Vector3>();
@@ -40,12 +45,20 @@ public class Planet : MonoBehaviour
 
 	public void GetScanned(Vector3 position, float range, Color32 color)
 	{
+		/// vertex hit detection
 		List<Vector3> hitVerts = new List<Vector3>();
 		foreach(Vector3 ve in vertexList)
 		{
 			Vector3 vertex = transform.TransformPoint(ve);
 			if (Vector3.Distance(position, vertex) <= range)
-				hitVerts.Add(ve);
+			{
+				RaycastHit hit = raycastManager.CustomLinecast(position, vertex);
+				if (hit.transform != null)
+				{
+					if (Vector3.Distance(hit.point, vertex) < 5f)
+						hitVerts.Add(ve);
+				}
+			}
 		}
 
 		Color32[] colors = new Color32[vertexList.Count];
@@ -78,5 +91,6 @@ public class Planet : MonoBehaviour
 	{
 		transform.localScale = Vector3.one * sizeMagnitude;
 		GetComponent<SphereCollider>().radius = 0.48f;
+		planetSize = sizeMagnitude;
 	}
 }

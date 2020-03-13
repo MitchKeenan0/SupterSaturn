@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trajectoryLinePrefab: {fileID: 1717023931117533250, guid: a0d7b5bd218da6b4eadfe346386d1715,
     type: 3}
-  bAutoOrbit: 0
+  orbitRange: 1
 --- !u!1001 &1638288499311732541
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -123,26 +123,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Positions.Array.size
       value: 37
-      objectReference: {fileID: 0}
-    - target: {fileID: 4173748644585452337, guid: 72bcdf07eccfb364cbb28dcc265a8c0a,
-        type: 3}
-      propertyPath: m_Parameters.widthMultiplier
-      value: 0.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 4173748644585452337, guid: 72bcdf07eccfb364cbb28dcc265a8c0a,
-        type: 3}
-      propertyPath: m_Parameters.colorGradient.key0.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4173748644585452337, guid: 72bcdf07eccfb364cbb28dcc265a8c0a,
-        type: 3}
-      propertyPath: m_Parameters.colorGradient.key0.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4173748644585452337, guid: 72bcdf07eccfb364cbb28dcc265a8c0a,
-        type: 3}
-      propertyPath: m_Parameters.colorGradient.key0.b
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4173748644585452337, guid: 72bcdf07eccfb364cbb28dcc265a8c0a,
         type: 3}
@@ -508,6 +488,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Positions.Array.data[36].z
       value: -0.00000077882873
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173748644585452337, guid: 72bcdf07eccfb364cbb28dcc265a8c0a,
+        type: 3}
+      propertyPath: m_Parameters.widthMultiplier
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173748644585452337, guid: 72bcdf07eccfb364cbb28dcc265a8c0a,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173748644585452337, guid: 72bcdf07eccfb364cbb28dcc265a8c0a,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4173748644585452337, guid: 72bcdf07eccfb364cbb28dcc265a8c0a,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.b
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4173748644585452337, guid: 72bcdf07eccfb364cbb28dcc265a8c0a,
         type: 3}

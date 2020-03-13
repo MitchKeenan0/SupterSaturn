@@ -27,9 +27,13 @@ public class Autopilot : MonoBehaviour
 	private Vector3 previousRouteVector = Vector3.zero;
 	private bool bExecutingMoveCommand = false;
 	private bool bEngineActive = false;
+	private bool bFaceVelocity = false;
+	private bool bStopping = false;
 	private float timeAtLastMoveCommand = 0;
+	private float burnDuration = 0f;
 	private List<Vector3> routeVectors;
 	private Vector3 targetPosition = Vector3.zero;
+	private Vector3 destination = Vector3.zero;
 
 	private IEnumerator engineCoroutine;
 
@@ -49,234 +53,97 @@ public class Autopilot : MonoBehaviour
 		previousRouteVector = transform.position;
 	}
 
-	public void SpacecraftNavigationCommands()
+	void Update()
 	{
-		if (bExecutingMoveCommand && (routeVectors.Count > 0))
+		Debug.DrawLine(transform.position, destination, Color.grey);
+
+		if (bFaceVelocity && (rb.velocity.magnitude > 1f))
 		{
-			Vector3 currentRouteVector = routeVectors.ElementAt(0);
-			FlyTo(currentRouteVector);
-
-			float distance = Vector3.Distance(transform.position, currentRouteVector);
-			if ((distance < 10f) && ((Time.time - timeAtLastMoveCommand) > 1f))
-			{
-				holdPosition = transform.position;
-				routeVectors.Remove(currentRouteVector);
-				if (routeVisualizer != null)
-					routeVisualizer.ClearLine(0);
-
-				if (routeVectors.Count == 0)
-				{
-					EnableMoveCommand(false);
-					AllStop();
-				}
-			}
-		}
-		else
-		{
-			FlyTo(holdPosition);
-		}
-	}
-
-	public void SetRoute(List<Vector3> vectors)
-	{
-		ClearRoute();
-
-		if (routeVectors == null)
-			routeVectors = new List<Vector3>();
-
-		if ((vectors != null) && (vectors.Count > 0))
-		{
-			int numVectors = vectors.Count;
-			for(int i = 0; i < numVectors; i++)
-			{
-				Vector3 routeStep = vectors[i];
-				routeVectors.Add(routeStep);
-			}
-
-			OptimizeRoute(routeVectors);
-
-			Vector3 previous = Vector3.zero;
-			for (int i = 0; i < numVectors; i++)
-			{
-				Vector3 routeStep = vectors[i];
-				if (previous != Vector3.zero)
-					routeVisualizer.DrawLine(i, previous, routeStep);
-				previous = routeStep;
-			}
-		}
-	}
-
-	public void SetMoveCommand(Vector3 value, bool bOrbital)
-	{
-		//commandMoveVector = value;
-		//if (Vector3.Distance(commandMoveVector, transform.position) > 0.1f)
-		//	GenerateRoute(bOrbital);
-	}
-
-	public void EnableMoveCommand(bool value)
-	{
-		bExecutingMoveCommand = value;
-		if (!routeVisualizer)
-			routeVisualizer = GetComponentInChildren<RouteVisualizer>();
-		if (routeVisualizer != null)
-		{
-			if (bExecutingMoveCommand)
-			{
-				routeVisualizer.SetRouteColor(Color.grey);
-			}
-			else if (spacecraft != null)
-			{
-				routeVisualizer.ClearLine(-1);
-				holdPosition = transform.position;
-			}
+			Vector3 velocity = rb.velocity + transform.position;
+			ManeuverRotationTo(velocity);
 		}
 
-		if (bExecutingMoveCommand)
-			timeAtLastMoveCommand = Time.time;
-		else
-			ClearRoute();
+		if (bStopping)
+		{
+			float velocity = rb.velocity.magnitude;
+			if (Mathf.Abs(velocity) > 0f)
+				spacecraft.Brake();
+		}
 	}
 
 	public void AllStop()
 	{
+		bStopping = true;
 		bExecutingMoveCommand = false;
 		spacecraft.MainEngines(0f);
 		spacecraft.Maneuver(Vector3.zero);
+		spacecraft.SideJets(Vector3.zero);
+		FaceVelocity(false);
 	}
 
-	public void SetFollowTransform(Transform value)
+	public void ManeuverRotationTo(Vector3 target)
 	{
-		followTransform = value;
+		destination = target;
+		Vector3 toDestination = destination - spacecraft.transform.position;
+		spacecraft.Maneuver(toDestination.normalized);
 	}
-
-	void OptimizeRoute(List<Vector3> vectors)
-	{
-		int numVectors = vectors.Count;
-		previousRouteVector = transform.position;
-		List<Vector3> optimalRoute = new List<Vector3>();
-		List<Vector3> usedPoints = new List<Vector3>();
-
-		// get insertion point
-		float bestMatch = 0f;
-		Vector3 insertionPoint = Vector3.zero;
-		Vector3 previousVector = vectors[0];
-		for (int i = 0; i < numVectors; i++)
-		{
-			Vector3 thisVector = vectors[i] - previousVector;
-			Vector3 toSpacecraft = (vectors[i] - spacecraft.transform.position);
-			float thisDot = Vector3.Dot(toSpacecraft.normalized, thisVector.normalized);
-			if (thisDot > bestMatch)
-			{
-				bestMatch = thisDot;
-				insertionPoint = vectors[i];
-			}
-			previousVector = vectors[i];
-		}
-		optimalRoute.Add(insertionPoint);
-		usedPoints.Add(insertionPoint);
-
-		// follow through
-		while (optimalRoute.Count < vectors.Count)
-		{
-			int startingIndex = vectors.IndexOf(insertionPoint);
-			for (int i = startingIndex; i < numVectors; i++)
-			{
-				Vector3 nextPoint = Vector3.zero;
-				if (vectors.Count > (i + 1))
-					nextPoint = vectors[i + 1];
-				else
-					nextPoint = vectors[0];
-				optimalRoute.Add(nextPoint);
-				usedPoints.Add(nextPoint);
-				if ((i + 1) == numVectors)
-				{
-					for(int j = 0; j < startingIndex; j++)
-					{
-						Vector3 remainingPoint = vectors[j];
-						if (!optimalRoute.Contains(remainingPoint) && !usedPoints.Contains(remainingPoint))
-						{
-							optimalRoute.Add(remainingPoint);
-							usedPoints.Add(remainingPoint);
-						}
-					}
-					break;
-				}
-			}
-		}
-
-		routeVectors = optimalRoute;
-	}
-
-	public void SetManeuverVector(Vector3 destination)
-	{
-		Vector3 toDestination = destination - transform.position;
-		if (toDestination.magnitude >= 1f)
-			spacecraft.Maneuver(toDestination);
-	}
-
-	void FlyTo(Vector3 destination)
-	{
-		SetManeuverVector(destination);
-
-		/// thrust
-		Vector3 toDestination = destination - rb.velocity - transform.position;
-		if ((destination != holdPosition) && !bEngineActive)
-		{
-			Vector3 myVelocity = spacecraft.GetComponent<Rigidbody>().velocity;
-			float distance = toDestination.magnitude;
-			float speed = myVelocity.magnitude;
-			float dotToDestination = Vector3.Dot(transform.forward, toDestination.normalized);
-			if (dotToDestination > 0.99f)
-			{
-				if (distance > speed)
-				{
-					if (speed < spacecraft.mainEnginePower)
-						speed = spacecraft.mainEnginePower;
-					float thrustTime = (distance / speed) / 9f;
-					engineCoroutine = MainEngineBurn(thrustTime);
-					StartCoroutine(engineCoroutine);
-				}
-			}
-		}
-	}
-
-	public void FireEngineBurn(float burnDuration)
+	
+	public void FireEngineBurn(float duration)
 	{
 		if (bEngineActive)
 			StopAllCoroutines();
+		burnDuration = duration / 2f;
+		alignCoroutine = Align(Time.deltaTime);
+		StartCoroutine(alignCoroutine);
+	}
+
+	public void FaceVelocity(bool value)
+	{
+		bFaceVelocity = value;
+	}
+
+	private IEnumerator alignCoroutine;
+	IEnumerator Align(float intervalTime)
+	{
+		float dot = 0f;
+		while (dot < 0.99f)
+		{
+			ManeuverRotationTo(destination - rb.velocity);
+
+			Vector3 alignVector = (destination - spacecraft.transform.position);
+			Vector3 myVelocity = rb.velocity;
+			Vector3 projectedVelocity = Vector3.ProjectOnPlane(myVelocity, alignVector.normalized);
+			projectedVelocity.z = 0f;
+			spacecraft.SideJets(projectedVelocity * -1f);
+			
+			dot = Vector3.Dot(transform.forward, alignVector.normalized);
+			Debug.Log("aligning dot " + dot);
+
+			yield return new WaitForSeconds(intervalTime);
+		}
+		spacecraft.SideJets(Vector3.zero);
 		engineCoroutine = MainEngineBurn(burnDuration);
 		StartCoroutine(engineCoroutine);
 	}
 
 	IEnumerator MainEngineBurn(float durationTime)
 	{
-		Debug.Log("Starting burn of " + durationTime + " seconds at " + Time.time.ToString("F1"));
-		bEngineActive = true;
+		Debug.Log("main engines ignited for " + durationTime);
 		spacecraft.MainEngines(1f);
 		float timeElapsed = 0f;
+		bEngineActive = true;
+		bStopping = false;
 		while (timeElapsed < durationTime)
 		{
 			timeElapsed += Time.deltaTime;
+			if ((rb.velocity.magnitude > 5f) &&
+				(Vector3.Dot(rb.velocity.normalized, (destination - spacecraft.transform.position).normalized) > 0.8f))
+			{
+				FaceVelocity(true);
+			}
 			yield return new WaitForSeconds(Time.deltaTime);
 		}
 		spacecraft.MainEngines(0f);
 		bEngineActive = false;
-	}
-
-	public void ClearRoute()
-	{
-		if (routeVectors == null)
-			routeVectors = new List<Vector3>();
-		if (routeVectors != null)
-			routeVectors.Clear();
-		if (routeVisualizer != null)
-		{
-			routeVisualizer.ClearLine(-1);
-			routeVisualizer.SetRouteColor(Color.white);
-		}
-		previousRouteVector = transform.position;
-
-		if (spacecraft == null)
-			spacecraft = GetComponent<Spacecraft>();
 	}
 }

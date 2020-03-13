@@ -44,8 +44,9 @@ public class TouchOrbit : MonoBehaviour
 		Vector3 angles = transform.eulerAngles;
 		x = angles.y;
 		y = angles.x;
-		distance = distanceMax;
+		distance = distanceMin;
 		this.enabled = bActivated;
+		moveInput = new Vector3(-50f, -100f, 0f);
 	}
 
 	void Update()
@@ -55,7 +56,6 @@ public class TouchOrbit : MonoBehaviour
 
 	void MoveInput()
 	{
-		moveInput = Vector3.zero;
 		if (Input.touchCount > 0)
 		{
 			if (Input.touchCount == 1)
@@ -99,6 +99,7 @@ public class TouchOrbit : MonoBehaviour
 		else
 		{
 			moveVector = Vector3.Lerp(moveVector, Vector3.zero, Time.deltaTime * moveAcceleration);
+			moveInput = Vector3.Lerp(moveInput, Vector3.zero, Time.deltaTime * moveAcceleration);
 		}
 	}
 
@@ -123,7 +124,7 @@ public class TouchOrbit : MonoBehaviour
 		}
 
 		transform.rotation = rotation;
-		transform.position = position + moveVector;
+		transform.position = Vector3.Lerp(transform.position, position + moveVector, Time.deltaTime * moveAcceleration);
 	}
 
 	public void ResetAnchor()

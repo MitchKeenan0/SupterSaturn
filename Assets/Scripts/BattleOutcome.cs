@@ -64,6 +64,8 @@ public class BattleOutcome : MonoBehaviour
 		if (game != null)
 		{
 			int totalNewChevrons = playerScore + playerLost;
+			if (bPlayerWin == false)
+				totalNewChevrons /= playerLost;
 			//if (playerScore >= Mathf.Abs(playerLost))
 			//	totalNewChevrons *= (playerScore - Mathf.Abs(playerLost));
 

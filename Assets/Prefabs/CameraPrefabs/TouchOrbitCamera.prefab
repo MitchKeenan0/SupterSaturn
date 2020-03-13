@@ -60,16 +60,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orbitAnchor: {fileID: 6167527401676555419}
-  distance: 100
-  xSpeed: 3
-  ySpeed: 3
+  distance: 0
+  xSpeed: 1.5
+  ySpeed: 1.5
   mousePanSpeed: 0.1
   yMinLimit: -85
   yMaxLimit: 85
-  distanceMin: 100
-  distanceMax: 300
+  distanceMin: 30
+  distanceMax: 600
   moveSpeed: 1
-  moveAcceleration: 1
+  moveAcceleration: 5
   turnAcceleration: 10
 --- !u!114 &8112959024247920879
 MonoBehaviour:
@@ -132,7 +132,7 @@ Camera:
   m_FOVAxisMode: 0
   m_SensorSize: {x: 10, y: 10}
   m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 26.977585
+  m_FocalLength: 10.722534
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -141,7 +141,7 @@ Camera:
     height: 1
   near clip plane: 0.01
   far clip plane: 2000
-  field of view: 21
+  field of view: 50
   orthographic: 0
   orthographic size: 5
   m_Depth: -1

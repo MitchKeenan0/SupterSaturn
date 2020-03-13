@@ -44,24 +44,24 @@ public class Gravity : MonoBehaviour
 				Rigidbody r = rbList[i];
 				if ((r != null) && (!r.isKinematic))
 				{
-					r.AddForce(GetGravity(r, r.position, r.mass));
+					r.AddForce(GetGravity(r, r.position, r.mass, r.drag));
 				}
 			}
 		}
     }
 
-	public Vector3 GetGravity(Rigidbody r, Vector3 position, float mass)
+	public Vector3 GetGravity(Rigidbody r, Vector3 position, float mass, float drag)
 	{
 		Vector3 gravity = Vector3.zero;
 		if ((r != null) && !r.isKinematic)
 		{
-			Vector3 toCenter = (transform.position + bodyTransform.localPosition) - position;
+			Vector3 toCenter = bodyTransform.position - position;
 			if (toCenter.magnitude <= radius)
 			{
-				float G = (1f / toCenter.magnitude) * mass * strength;
+				float G = ((1f / toCenter.magnitude) * mass * strength) - drag;
 				gravity = toCenter.normalized * G;
 			}
 		}
-		return gravity * Time.fixedDeltaTime;
+		return gravity;
 	}
 }

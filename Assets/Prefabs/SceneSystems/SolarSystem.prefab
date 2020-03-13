@@ -43,8 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fde62e7b58e5cc04cb9d522057b38a91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minimumObjectCount: 3
-  maximumObjectCount: 30
+  minimumObjectCount: 1
+  maximumObjectCount: 1
   distanceScale: 10
   planetMinSize: 50
   planetMaxSize: 50

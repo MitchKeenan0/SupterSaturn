@@ -30,6 +30,7 @@ public class Spacecraft : MonoBehaviour
 	private Vector3 lerpTorque = Vector3.zero;
 	private Vector3 velocity = Vector3.zero;
 	private Vector3 angularVelocity = Vector3.zero;
+	private Vector3 sideJetVector = Vector3.zero;
 	private GameObject hudIcon;
 	private GameObject gridObject;
 	private MeshRenderer[] meshRenderComponents;
@@ -51,8 +52,6 @@ public class Spacecraft : MonoBehaviour
 	public float GetHealthPercent() { return Mathf.Floor(health.GetHealth()) / Mathf.Floor(health.maxHealth); }
 
 	public int GetMarks() { return numMarked; }
-
-	public Vector3 GetVelocity() { return velocity; }
 
 	private void Awake()
 	{
@@ -86,7 +85,13 @@ public class Spacecraft : MonoBehaviour
 		}
 	}
 
-	void Update()
+	void SetAgentEnabled(bool value)
+	{
+		if (agent != null)
+			agent.SetEnabled(value);
+	}
+
+	void FixedUpdate()
 	{
 		UpdateSpacecraftPhysics();
 	}
@@ -98,32 +103,37 @@ public class Spacecraft : MonoBehaviour
 			/// rotating
 			if (turningVector != Vector3.zero)
 			{
-				float kernScale = Vector3.Dot(transform.forward.normalized, turningVector.normalized) * 3f;
-				kernScale = Mathf.Clamp(kernScale, 1f, 3f);
-				angularVelocity = Vector3.MoveTowards(angularVelocity, turningVector, Time.deltaTime * turningPower * kernScale);
-				if (angularVelocity != turningVector) /// ignore zero-vectors
-					transform.rotation = Quaternion.LookRotation(angularVelocity);
+				float kernScale = Mathf.Clamp(Vector3.Dot(transform.forward.normalized, turningVector.normalized) * 3f, 0.5f, 3f);
+				angularVelocity = Vector3.Lerp(angularVelocity, turningVector, Time.deltaTime * turningPower * kernScale);
+				transform.rotation = Quaternion.LookRotation(angularVelocity);
 			}
 
+			/// vectoring
+			velocity = Vector3.zero;
+			if (sideJetVector != Vector3.zero)
+				velocity += sideJetVector;
+
 			/// thrust
-			velocity = mainEnginesVector * Time.deltaTime * 100f;
-			Vector3 myVelocity = rb.velocity;
-			if (myVelocity.magnitude > 0.2f)
-			{
-				float dotToTargetVelocity = Vector3.Dot(myVelocity.normalized * 2, velocity.normalized);
-				if (dotToTargetVelocity < 0.6f)
-				{
-					velocity = -rb.velocity * Time.deltaTime;
-				}
-			}
-			rb.AddForce(velocity, ForceMode.Force);
+			if (mainEnginesVector != Vector3.zero)
+				velocity += mainEnginesVector * Time.deltaTime;
+			
+			if (velocity != Vector3.zero)
+				rb.AddForce(velocity);
 		}
 	}
 
-	void SetAgentEnabled(bool value)
+	public void Maneuver(Vector3 targetDirection)
 	{
-		if (agent != null)
-			agent.SetEnabled(value);
+		turningVector = targetDirection;
+		if (turningVector == Vector3.zero)
+			turningVector = transform.forward;
+	}
+
+	public void SideJets(Vector3 driveVector)
+	{
+		sideJetVector = driveVector;
+		if (driveVector == Vector3.zero)
+			sideJetVector = Vector3.zero;
 	}
 
 	public void MainEngines(float driveDirection)
@@ -131,7 +141,7 @@ public class Spacecraft : MonoBehaviour
 		mainEnginesVector = transform.forward * driveDirection * mainEnginePower;
 		var ps = thrustParticles.main;
 		var em = thrustParticles.emission;
-		if (Mathf.Abs(driveDirection) > 0.1f)
+		if (Mathf.Abs(driveDirection) > 0.0f)
 		{
 			em.enabled = true;
 			ps.startSize = Mathf.Abs(driveDirection) * 0.1f;
@@ -142,11 +152,11 @@ public class Spacecraft : MonoBehaviour
 		}
 	}
 
-	public void Maneuver(Vector3 targetDirection)
+	public void Brake()
 	{
-		turningVector = targetDirection;
-		if (turningVector == Vector3.zero)
-			turningVector = transform.position + transform.forward;
+		float brakingScalar = Mathf.Clamp(rb.velocity.magnitude, 1f, 100f);
+		Vector3 brakingVelocity = Vector3.MoveTowards(rb.velocity, Vector3.zero, Time.deltaTime * (mainEnginePower / 50f) * brakingScalar);
+		rb.velocity = brakingVelocity;
 	}
 
 	public void SpacecraftKnockedOut(Transform responsibleTransform)

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpacecraftController : MonoBehaviour
 {
-	public float sensitivity = 30f;
+	public float sensitivity = 15f;
 	public float moveLineScale = 10f;
 
 	private Spacecraft spacecraft;
@@ -14,7 +14,8 @@ public class SpacecraftController : MonoBehaviour
 	private OrbitController orbitController;
 	private Camera cameraMain;
 	private Vector2 touchLineVector = Vector2.zero;
-	private Vector3 moveVector = Vector3.zero;
+	private Vector2 touchPosition = Vector2.zero;
+	private Vector3 inputVector = Vector3.zero;
 	private bool bActive = false;
 	private bool bLining = false;
 	private int teamID = -1;
@@ -43,6 +44,7 @@ public class SpacecraftController : MonoBehaviour
 	{
 		yield return new WaitForSeconds(waitTime);
 		inputController.SetCameraTarget(spacecraft.transform);
+		inputController.Begin();
 	}
 
 	void Update()
@@ -57,51 +59,44 @@ public class SpacecraftController : MonoBehaviour
 			if (bLining)
 			{
 				touchLineVector = touchLine.GetLine() * moveLineScale;
+				touchPosition = touchLine.GetPosition();
 				if (Mathf.Abs(touchLineVector.magnitude) > 0f)
 				{
 					/// burn duration
 					float lineLength = touchLineVector.magnitude;
-					burnDuration = lineLength / 50f;
+					burnDuration = lineLength / 10f;
+					Debug.Log("burn duration " + burnDuration);
 					orbitController.SetBurnDuration(burnDuration);
 
 					/// orbit direction
-					moveVector = Vector3.Lerp(moveVector, new Vector3(touchLineVector.x, touchLineVector.y, 0f), Time.deltaTime * sensitivity);
-					orbitController.SetDirection(moveVector);
+					inputVector = Vector3.Lerp(inputVector, new Vector3(touchPosition.x, touchPosition.y, 0f), Time.deltaTime * sensitivity);
+					orbitController.SetDirection(inputVector);
 
 					/// circular size for auto-orbit
 					float positionRange = spacecraft.transform.position.magnitude;
 					orbitController.SetOrbitRange(positionRange);
 
 					/// visualize
-					///List<Vector3> routeList = new List<Vector3>();
-					///routeList = orbitController.GetTrajectory(); /// GetPoints();
-					///autopilot.SetRoute(routeList);
-					autopilot.SetManeuverVector(orbitController.GetOrbitTarget());
+					autopilot.ManeuverRotationTo(orbitController.GetOrbitTarget() - autopilot.gameObject.GetComponent<Rigidbody>().velocity);
 				}
 			}
 		}
 	}
 
-	void StartTouch()
+	public void StartTouch()
 	{
-		moveVector = Vector3.zero;
+		inputVector = Vector3.zero;
 		bLining = true;
 	}
 
-	void EndTouch()
+	public void EndTouch()
 	{
 		bLining = false;
-		if (orbitController != null)
-		{
-			autopilot.SetManeuverVector(spacecraft.transform.forward);
-			autopilot.FireEngineBurn(burnDuration);
-			//List<Vector3> routeList = new List<Vector3>();
-			//routeList = orbitController.GetTrajectory();
-			//autopilot.SetRoute(routeList);
-			//autopilot.EnableMoveCommand(true);
-		}
+		autopilot.ManeuverRotationTo(orbitController.GetOrbitTarget() - autopilot.gameObject.GetComponent<Rigidbody>().velocity);
+		autopilot.FireEngineBurn(burnDuration);
 		inputController.NavigationMode(false);
 	}
+
 
 	public void SetActive(bool value)
 	{

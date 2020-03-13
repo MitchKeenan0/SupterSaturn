@@ -39,13 +39,13 @@ public class GameAgent : MonoBehaviour
 		while (true)
 		{
 			yield return new WaitForSeconds(intervalTime);
-			UpdateMoveCommands();
+			//UpdateMoveCommands();
 		}
 	}
 
-	void UpdateMoveCommands()
-	{
-		int randomAgentIndex = Random.Range(0, agentList.Count - 1);
-		agentList[randomAgentIndex].SetMoveOrder(Random.insideUnitSphere, true, null);
-	}
+	//void UpdateMoveCommands()
+	//{
+	//	int randomAgentIndex = Random.Range(0, agentList.Count - 1);
+	//	agentList[randomAgentIndex].SetMoveOrder(Random.insideUnitSphere, true, null);
+	//}
 }

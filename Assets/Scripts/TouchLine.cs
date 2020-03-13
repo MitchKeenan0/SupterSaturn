@@ -25,7 +25,7 @@ public class TouchLine : MonoBehaviour
 					case TouchPhase.Began:
 						bTouching = true;
 						startPosition = touch.position;
-						position = startPosition;
+						position = touch.position;
 						break;
 
 					case TouchPhase.Moved:
@@ -36,7 +36,6 @@ public class TouchLine : MonoBehaviour
 
 					case TouchPhase.Ended:
 						bTouching = false;
-						position = touch.position;
 						break;
 				}
 			}

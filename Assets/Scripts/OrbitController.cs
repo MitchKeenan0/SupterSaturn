@@ -5,14 +5,14 @@ using UnityEngine;
 public class OrbitController : MonoBehaviour
 {
 	public LineRenderer trajectoryLinePrefab;
-	public bool bAutoOrbit = false;
+	public float orbitRange = 25f;
 
 	private CircleRenderer circleRenderer;
 	private Autopilot autopilot;
 	private Planet planet;
 	private GravityTelemetryHUD gravityTelemetry;
 	private Vector3 inputVector = Vector3.zero;
-	private float orbitRange = 30f;
+	
 	private float planetRadius = 0f;
 	private float burnDuration = 0f;
 
@@ -33,32 +33,30 @@ public class OrbitController : MonoBehaviour
 	public void SetAutopilot(Autopilot ap)
 	{
 		autopilot = ap;
+		Debug.Log("Set Autopilot");
 	}
 
 	public void SetBurnDuration(float value)
 	{
 		burnDuration = value;
-		Debug.Log("burn duration " + value);
+		Debug.Log("burn duration " + burnDuration);
 	}
 
-	public void SetDirection(Vector3 direction)
+	public void SetDirection(Vector3 onscreenPosition)
 	{
-		if (bAutoOrbit)
-		{
-			inputVector = new Vector3(direction.x, direction.z, direction.y);
-			transform.rotation = Quaternion.LookRotation(autopilot.gameObject.transform.position, direction);
-		}
-		else
+		if (autopilot != null)
 		{
 			if (!planet)
 				planet = FindObjectOfType<Planet>();
-			Vector3 toPlanet = planet.transform.position - autopilot.gameObject.transform.position;
-			Vector3 inputToPlanet = Vector3.ProjectOnPlane(direction, toPlanet.normalized);
+			Camera cameraMain = Camera.main;
+			Vector3 flatPlanetPos = cameraMain.WorldToScreenPoint(Vector3.zero);
+			Vector3 flatTargetPos = onscreenPosition;
+			flatTargetPos.z = flatPlanetPos.z;
+			Vector3 inputToPlanet = flatTargetPos - flatPlanetPos;
+			float worldDirection = (cameraMain.transform.forward * 1000f).normalized.z;
+			inputToPlanet.x *= worldDirection;
 
-			planetRadius = planet.planetMesh.GetComponent<MeshRenderer>().bounds.max.magnitude;
-			inputVector = inputToPlanet.normalized * ((planetRadius + orbitRange) / 2);
-
-			Debug.DrawLine(autopilot.gameObject.transform.position, inputVector, Color.green);
+			inputVector = inputToPlanet * orbitRange;
 
 			SimulateTrajectory(inputVector);
 			RenderTrajectory();
@@ -67,11 +65,14 @@ public class OrbitController : MonoBehaviour
 
 	void SimulateTrajectory(Vector3 heading)
 	{
-		RecallTrajectoryLines();
+		ClearTrajectory();
 
 		Spacecraft spacecraft = autopilot.gameObject.GetComponent<Spacecraft>();
 		Rigidbody spacecraftRb = spacecraft.gameObject.GetComponent<Rigidbody>();
+		float spacecraftMass = spacecraftRb.mass;
+		float spacecraftDrag = spacecraftRb.drag;
 		float simulationTime = 0f;
+		heading += spacecraftRb.velocity * 10;
 
 		Vector3 currentPosition = spacecraft.transform.position;
 		Vector3 velocityDirection = (heading - spacecraft.gameObject.transform.position).normalized;
@@ -81,16 +82,15 @@ public class OrbitController : MonoBehaviour
 		while (simulationTime < burnDuration)
 		{
 			simulationTime += 0.1f;
-			Vector3 velocity = velocityDirection * spacecraft.mainEnginePower;
+			Vector3 velocity = velocityDirection * spacecraft.mainEnginePower * 0.1f;
 			if (gravityList.Count > 0)
 			{
-				float spacecraftMass = spacecraftRb.mass;
 				foreach (Gravity gr in gravityList)
-					velocity += gr.GetGravity(spacecraftRb, currentPosition, spacecraftMass) * 0.1f;
+					velocity += gr.GetGravity(spacecraftRb, currentPosition, spacecraftMass, spacecraftDrag) * (0.1f - spacecraftDrag);
 			}
 			currentPosition += velocity;
 			trajectoryList.Add(currentPosition);
-			velocityDirection = velocity;
+			velocityDirection = velocity.normalized;
 		}
 	}
 
@@ -126,7 +126,7 @@ public class OrbitController : MonoBehaviour
 		return line;
 	}
 
-	void RecallTrajectoryLines()
+	void ClearTrajectory()
 	{
 		if (lineList.Count > 0)
 		{
@@ -148,33 +148,19 @@ public class OrbitController : MonoBehaviour
 
 	public void SetOrbitRange(float value)
 	{
-		if (bAutoOrbit)
-		{
-			circleRenderer.SetRadius(value);
-		}
+		//
 	}
 
 	public void ModifyOrbitRange(float increment)
 	{
-		bool toeTest = (GetPoints()[0].magnitude > 1.6f);
+		bool toeTest = (GetCirclePoints()[0].magnitude > 1.6f);
 		if (toeTest)
 		{
-			if (bAutoOrbit)
-			{
-				planetRadius = planet.planetMesh.GetComponent<MeshRenderer>().bounds.max.magnitude;
-				float nextRadius = planetRadius + orbitRange + increment;
-				circleRenderer.SetRadius(nextRadius);
-				autopilot.SetRoute(GetPoints());
-				autopilot.EnableMoveCommand(true);
-			}
-			else
-			{
-				//
-			}
+			//
 		}
 	}
 
-	public List<Vector3> GetPoints()
+	public List<Vector3> GetCirclePoints()
 	{
 		List<Vector3> pointList = new List<Vector3>();
 		LineRenderer lineRenderer = circleRenderer.GetLineRenderer();

@@ -9,6 +9,7 @@ public class InputController : MonoBehaviour
 	public Text statusText;
 	public Button navigationModeButton;
 	public Button cameraModeButton;
+	public Button stopButton;
 	public Color standbyColor;
 	public Color activeColor;
 
@@ -18,6 +19,7 @@ public class InputController : MonoBehaviour
 	private bool bNavigationMode = false;
 	private bool bTargetCameraMode = false;
 	private bool bFreeCameraMode = false;
+	private bool bStopped = false;
 
 	void Start()
 	{
@@ -27,7 +29,7 @@ public class InputController : MonoBehaviour
 		statusText.text = "";
 		ActivateButton(navigationModeButton, false, true);
 		ActivateButton(cameraModeButton, false, true);
-		EnableCameraControl(true);
+		ActivateButton(stopButton, false, true);
 	}
 
 	void ActivateButton(Button button, bool value, bool finished)
@@ -60,14 +62,32 @@ public class InputController : MonoBehaviour
 			EnableCameraControl(true);
 	}
 
+	public void Begin()
+	{
+		AllStop();
+		TargetCameraMode(true);
+	}
+
 	public void AllStop()
 	{
-		List<Spacecraft> selectedSpacecraft = mouseSelection.GetSelectedSpacecraft();
-		foreach (Spacecraft sp in selectedSpacecraft)
+		bool bTurningOff = bStopped;
+		bStopped = !bStopped;
+
+		if (bStopped)
 		{
-			Autopilot autopilot = sp.GetComponent<Autopilot>();
-			autopilot.AllStop();
+			List<Spacecraft> selectedSpacecraft = mouseSelection.GetSelectedSpacecraft();
+			foreach (Spacecraft sp in selectedSpacecraft)
+			{
+				Autopilot autopilot = sp.GetComponent<Autopilot>();
+				autopilot.AllStop();
+			}
 		}
+
+		if (bStopped)
+			UpdateStatusText("All stop");
+		else
+			UpdateStatusText("Intertial stabilizers off");
+		ActivateButton(stopButton, bStopped, bTurningOff);
 	}
 
 	public void NavigationMode(bool value)
@@ -78,6 +98,8 @@ public class InputController : MonoBehaviour
 		if (bTurningOff)
 			value = false;
 
+		if (bStopped)
+			AllStop();
 		EnableCameraControl(bTurningOff);
 		bNavigationMode = value;
 		List<Spacecraft> selectedSpacecraft = mouseSelection.GetSelectedSpacecraft();
@@ -101,6 +123,7 @@ public class InputController : MonoBehaviour
 
 		if (bNavigationMode)
 			NavigationMode(false);
+		EnableCameraControl(true);
 		bTargetCameraMode = value;
 		cameraTargetFinder.SetActive(bTargetCameraMode);
 

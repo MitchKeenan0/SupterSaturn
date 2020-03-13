@@ -45,13 +45,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e874bf0cf30e8a64cb5f6acdd14716b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scanInterval: 0.5
-  intervalDeviation: 0.1
+  scanInterval: 0.6
+  intervalDeviation: 0
   scanSpeed: 100
   maxRadius: 1000
   updateInterval: 0.03
   scanRecoveryPeriod: 1
-  maxPointSize: 0.2
+  maxPointSize: 0.6
 --- !u!114 &1490529778734066621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,7 +126,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 673522835ab4482479de9390c3ef0bc1, type: 2}
+  - {fileID: 2100000, guid: 25c3d84a5ef5f4a40afdb13d855696f8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

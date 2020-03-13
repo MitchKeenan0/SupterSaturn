@@ -75,8 +75,8 @@ public class SkillPanel : MonoBehaviour
 
 	public void StopSpacecraft()
 	{
-		foreach (Spacecraft sp in spacecraftList)
-			sp.GetAgent().EnableMoveCommand(false);
+		//foreach (Spacecraft sp in spacecraftList)
+		//	sp.GetAgent().EnableMoveCommand(false);
 	}
 
 	public void SetOffense()

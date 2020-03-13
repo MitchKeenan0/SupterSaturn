@@ -214,16 +214,16 @@ public class MouseCommandHUD : MonoBehaviour
 
 	void VisualizeMoveOrder(Vector3 position)
 	{
-		selectedSpacecraftList = mouseSelection.GetSelectedSpacecraft();
-		foreach (Spacecraft sp in selectedSpacecraftList)
-		{
-			if (sp.GetAgent().teamID == 0)
-			{
-				sp.GetAgent().SetMoveOrder(position, true, null);
-			}
-		}
+		//selectedSpacecraftList = mouseSelection.GetSelectedSpacecraft();
+		//foreach (Spacecraft sp in selectedSpacecraftList)
+		//{
+		//	if (sp.GetAgent().teamID == 0)
+		//	{
+		//		sp.GetAgent().SetMoveOrder(position, true, null);
+		//	}
+		//}
 	}
-	
+
 	void SetMoveOrder(Vector3 position)
 	{
 		if (selectedSquad != null)

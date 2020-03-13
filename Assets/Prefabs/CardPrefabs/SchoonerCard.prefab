@@ -57,9 +57,9 @@ MonoBehaviour:
   damage: 2
   rateOfFire: 1
   weaponSprite: {fileID: 0}
-  mainEnginePower: 1
+  mainEnginePower: 30
   turningPower: 1
   maneuverPower: 1
   mass: 2
-  linearDrag: 0.3
+  linearDrag: 0.01
   angularDrag: 0.3

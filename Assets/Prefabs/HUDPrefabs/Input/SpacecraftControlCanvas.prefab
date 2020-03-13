@@ -238,7 +238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -660,6 +660,7 @@ MonoBehaviour:
   statusText: {fileID: 6157324115670987319}
   navigationModeButton: {fileID: 5231100291422787007}
   cameraModeButton: {fileID: 8717609755138699635}
+  stopButton: {fileID: 1860613075532517287}
   standbyColor: {r: 0.39215687, g: 0.39215687, b: 0.39215687, a: 1}
   activeColor: {r: 0.9411765, g: 0.9411765, b: 0.9411765, a: 1}
 --- !u!1 &9159110712077431153
