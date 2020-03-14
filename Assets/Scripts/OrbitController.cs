@@ -6,8 +6,6 @@ public class OrbitController : MonoBehaviour
 {
 	public LineRenderer trajectoryLinePrefab;
 	public float orbitRange = 25f;
-
-	private CircleRenderer circleRenderer;
 	private Autopilot autopilot;
 	private Planet planet;
 	private GravityTelemetryHUD gravityTelemetry;
@@ -15,17 +13,16 @@ public class OrbitController : MonoBehaviour
 	
 	private float planetRadius = 0f;
 	private float burnDuration = 0f;
-
+	private NavigationHud navigationHud;
 	private List<LineRenderer> lineList;
 	private List<Vector3> trajectoryList;
 	public List<Vector3> GetTrajectory() { return trajectoryList; }
-	public Vector3 GetOrbitTarget() { return inputVector; }
 
 	void Awake()
     {
 		lineList = new List<LineRenderer>();
 		trajectoryList = new List<Vector3>();
-		circleRenderer = GetComponentInChildren<CircleRenderer>();
+		navigationHud = FindObjectOfType<NavigationHud>();
 		planet = FindObjectOfType<Planet>();
 		gravityTelemetry = FindObjectOfType<GravityTelemetryHUD>();
 	}
@@ -33,28 +30,17 @@ public class OrbitController : MonoBehaviour
 	public void SetAutopilot(Autopilot ap)
 	{
 		autopilot = ap;
-		Debug.Log("Set Autopilot");
 	}
 
 	public void SetBurnDuration(float value)
 	{
 		burnDuration = value;
-		Debug.Log("burn duration " + burnDuration);
 	}
 
-	public void SetDirection(Vector3 onscreenPosition)
+	public void SetDirection(Vector3 inputVector)
 	{
 		if (autopilot != null)
 		{
-			Camera cameraMain = Camera.main;
-			Vector3 planetScreenPos = cameraMain.WorldToScreenPoint(Vector3.zero);
-			Vector3 onscreenDirection = onscreenPosition - planetScreenPos;
-
-			Vector3 inputToPlanet = (Quaternion.Euler(cameraMain.transform.eulerAngles) * onscreenDirection) - autopilot.transform.position;
-			inputVector = inputToPlanet;
-
-			Debug.DrawLine(Vector3.zero, inputToPlanet, Color.yellow);
-
 			SimulateTrajectory(inputVector);
 			RenderTrajectory();
 		}
@@ -73,22 +59,24 @@ public class OrbitController : MonoBehaviour
 
 		Vector3 currentPosition = spacecraft.transform.position;
 		Vector3 velocityDirection = (heading - spacecraft.gameObject.transform.position).normalized;
-		Vector3 velocity = spacecraftRb.velocity;
+		Vector3 velocity = spacecraft.transform.position + spacecraftRb.velocity;
 		List<Gravity> gravityList = gravityTelemetry.GetGravitiesAffecting(spacecraftRb);
 		trajectoryList.Add(currentPosition);
 
+		float deltaTime = 0.01f;
 		while (simulationTime < burnDuration)
 		{
-			simulationTime += 0.1f;
-			velocity += velocityDirection * spacecraft.mainEnginePower * 0.1f;
+			simulationTime += deltaTime;
+			velocity += velocityDirection * spacecraft.mainEnginePower * deltaTime;
 			if (gravityList.Count > 0)
 			{
 				foreach (Gravity gr in gravityList)
-					velocity += gr.GetGravity(spacecraftRb, currentPosition, spacecraftMass, spacecraftDrag) * (1f - spacecraftDrag);
+					velocity += gr.GetGravity(spacecraftRb, currentPosition, spacecraftMass, spacecraftDrag) * deltaTime * 0.618f;
 			}
-			currentPosition += velocity;
-			trajectoryList.Add(currentPosition);
-			velocityDirection = velocity.normalized;
+			
+			trajectoryList.Add(velocity);
+			velocityDirection = (velocity - currentPosition);
+			currentPosition = velocity;
 		}
 	}
 
@@ -151,25 +139,6 @@ public class OrbitController : MonoBehaviour
 
 	public void ModifyOrbitRange(float increment)
 	{
-		bool toeTest = (GetCirclePoints()[0].magnitude > 1.6f);
-		if (toeTest)
-		{
-			//
-		}
-	}
-
-	public List<Vector3> GetCirclePoints()
-	{
-		List<Vector3> pointList = new List<Vector3>();
-		LineRenderer lineRenderer = circleRenderer.GetLineRenderer();
-		int numPositions = lineRenderer.positionCount;
-		Vector3[] vArray = new Vector3[numPositions];
-		lineRenderer.GetPositions(vArray);
-		if (vArray.Length > 0)
-		{
-			foreach(Vector3 vector in vArray)
-				pointList.Add(transform.TransformPoint(vector));
-		}
-		return pointList;
+		//
 	}
 }

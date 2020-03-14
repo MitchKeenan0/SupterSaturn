@@ -7,11 +7,13 @@ public class AbilityBoost : Ability
 	public float boostPower = 3f;
 
 	private Spacecraft mySpacecraft;
+	private Autopilot autopilot;
 	private float originalEnginePower = 0;
 
     void Start()
     {
 		mySpacecraft = GetComponentInParent<Spacecraft>();
+		autopilot = GetComponentInParent<Autopilot>();
 		originalEnginePower = mySpacecraft.mainEnginePower;
     }
 
@@ -19,6 +21,9 @@ public class AbilityBoost : Ability
 	{
 		base.StartAbility();
 		mySpacecraft.mainEnginePower = boostPower;
+		if (mySpacecraft.GetMainEngineVector() == Vector3.zero)
+			autopilot.FireEngineBurn(1.6f);
+
 		GameObject startEffect = Instantiate(startEffectPrefab, transform.position, transform.rotation);
 		Destroy(startEffect, 1f);
 	}

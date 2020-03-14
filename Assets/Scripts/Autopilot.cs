@@ -92,7 +92,7 @@ public class Autopilot : MonoBehaviour
 	{
 		if (bEngineActive)
 			StopAllCoroutines();
-		burnDuration = duration / 2f;
+		burnDuration = duration;
 		alignCoroutine = Align(Time.deltaTime);
 		StartCoroutine(alignCoroutine);
 	}
@@ -153,6 +153,7 @@ public class Autopilot : MonoBehaviour
 			}
 			yield return new WaitForSeconds(Time.deltaTime);
 		}
+		FaceVelocity(true);
 		spacecraft.MainEngines(0f);
 		bEngineActive = false;
 	}

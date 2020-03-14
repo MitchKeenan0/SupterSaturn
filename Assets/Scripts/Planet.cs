@@ -55,7 +55,7 @@ public class Planet : MonoBehaviour
 				RaycastHit hit = raycastManager.CustomLinecast(position, vertex);
 				if (hit.transform != null)
 				{
-					if (Vector3.Distance(hit.point, vertex) < 5f)
+					if (Vector3.Distance(hit.point, vertex) < 9f)
 						hitVerts.Add(ve);
 				}
 			}

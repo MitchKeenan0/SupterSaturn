@@ -53,6 +53,8 @@ public class Spacecraft : MonoBehaviour
 
 	public int GetMarks() { return numMarked; }
 
+	public Vector3 GetMainEngineVector() { return mainEnginesVector; }
+
 	private void Awake()
 	{
 		rb = GetComponent<Rigidbody>();
@@ -115,7 +117,7 @@ public class Spacecraft : MonoBehaviour
 
 			/// thrust
 			if (mainEnginesVector != Vector3.zero)
-				velocity += mainEnginesVector * Time.deltaTime;
+				velocity += mainEnginesVector * mainEnginePower * Time.deltaTime;
 			
 			if (velocity != Vector3.zero)
 				rb.AddForce(velocity);
@@ -138,7 +140,7 @@ public class Spacecraft : MonoBehaviour
 
 	public void MainEngines(float driveDirection)
 	{
-		mainEnginesVector = transform.forward * driveDirection * mainEnginePower;
+		mainEnginesVector = transform.forward * driveDirection;
 		var ps = thrustParticles.main;
 		var em = thrustParticles.emission;
 		if (Mathf.Abs(driveDirection) > 0.0f)

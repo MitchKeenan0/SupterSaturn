@@ -25,8 +25,11 @@ public class PlanetArm : MonoBehaviour
 			offsetEuler.y = Random.Range(-offsetRotationScale, offsetRotationScale);
 			offsetEuler.z = Random.Range(-offsetRotationScale, offsetRotationScale);
 			transform.rotation = Quaternion.Euler(offsetEuler);
-			circle.SetRadius(value * 2);
-			circle.UpdateCircleRender();
+			if (circle != null)
+			{
+				circle.SetRadius(value * 2);
+				circle.UpdateCircleRender();
+			}
 		}
 	}
 }

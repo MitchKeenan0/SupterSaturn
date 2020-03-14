@@ -20,6 +20,11 @@ public class GravitySystem : MonoBehaviour
 
 	public void InitGravitySystem()
 	{
+		if (gravityList == null)
+			gravityList = new List<Gravity>();
+		if (rbMasterList == null)
+			rbMasterList = new List<List<Rigidbody>>();
+
 		Gravity[] allGravities = FindObjectsOfType<Gravity>();
 		foreach (Gravity g in allGravities)
 		{

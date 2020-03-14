@@ -50,4 +50,4 @@ MonoBehaviour:
   cooldown: 1
   abilitySprite: {fileID: 21300000, guid: 76589e77d80e17b40a2369f99584998c, type: 3}
   abilityName: Boooost
-  boostPower: 10
+  boostPower: 500

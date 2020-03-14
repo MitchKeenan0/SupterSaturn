@@ -19,7 +19,6 @@ public class SkillPanel : MonoBehaviour
     {
 		myAbilityList = new List<Ability>();
 		spacecraftList = new List<Spacecraft>();
-		skillPanel.SetActive(false);
     }
 
 	void CreateAbilityPanel(Ability ability)
@@ -71,39 +70,5 @@ public class SkillPanel : MonoBehaviour
 	{
 		if (myAbilityList[abilityIndex] != null)
 			myAbilityList[abilityIndex].StartAbility();
-	}
-
-	public void StopSpacecraft()
-	{
-		//foreach (Spacecraft sp in spacecraftList)
-		//	sp.GetAgent().EnableMoveCommand(false);
-	}
-
-	public void SetOffense()
-	{
-		offense = !offense;
-		if (offense)
-		{
-			offenseImage.color = Color.red;
-			offenseText.color = Color.red;
-			offenseText.text = "Auto-Target";
-		}
-		else
-		{
-			offenseImage.color = Color.white;
-			offenseText.color = Color.white;
-			offenseText.text = "Manual";
-		}
-		foreach (Spacecraft sp in spacecraftList)
-			sp.GetAgent().SetOffense(offense);
-	}
-
-	public void Regroup()
-	{
-		foreach (Spacecraft sp in spacecraftList)
-		{
-			if ((sp.GetAgent() != null) && (sp.GetAgent().teamID == 0))
-				sp.GetAgent().Regroup();
-		}
 	}
 }

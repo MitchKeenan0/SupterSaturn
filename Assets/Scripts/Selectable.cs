@@ -1,15 +1,18 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class Selectable : MonoBehaviour
 {
 	private CircleRenderer circle;
 	private SpacecraftController spacecraftController;
 	private OrbitController orbitController;
+	private SkillPanel skillPanel;
 
 	void Awake()
 	{
 		circle = gameObject.GetComponentInChildren<CircleRenderer>();
 		orbitController = FindObjectOfType<OrbitController>();
+		skillPanel = FindObjectOfType<SkillPanel>();
 	}
 
 	internal bool isSelected
@@ -26,6 +29,12 @@ public class Selectable : MonoBehaviour
 			if (sp != null)
 			{
 				sp.SelectionHighlight(isSelected);
+				if (_isSelected)
+				{
+					List<Spacecraft> spList = new List<Spacecraft>();
+					spList.Add(sp);
+					skillPanel.SetSpacecraftList(spList);
+				}
 			}
 
 			if (_isSelected && (gameObject.GetComponentInChildren<SpacecraftController>() != null))
@@ -41,7 +50,6 @@ public class Selectable : MonoBehaviour
 					circle.Open();
 					circle.SetPosition(transform.position);
 					circle.StartAutoUpdate();
-					
 				}
 				else
 				{
