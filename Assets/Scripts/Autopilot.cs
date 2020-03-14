@@ -106,6 +106,7 @@ public class Autopilot : MonoBehaviour
 	IEnumerator Align(float intervalTime)
 	{
 		float dot = 0f;
+		bool burn = false;
 		while (dot < 0.99f)
 		{
 			ManeuverRotationTo(destination - rb.velocity);
@@ -115,15 +116,24 @@ public class Autopilot : MonoBehaviour
 			Vector3 projectedVelocity = Vector3.ProjectOnPlane(myVelocity, alignVector.normalized);
 			projectedVelocity.z = 0f;
 			spacecraft.SideJets(projectedVelocity * -1f);
-			
-			dot = Vector3.Dot(transform.forward, alignVector.normalized);
+
+			Vector3 myVector = rb.velocity;
+			if (myVector.magnitude < 1f)
+				myVector = transform.forward;
+			dot = Vector3.Dot(myVector.normalized, alignVector.normalized);
 			Debug.Log("aligning dot " + dot);
+
+			if (!burn && (dot > 0.7f))
+			{
+				burn = true;
+				engineCoroutine = MainEngineBurn(burnDuration);
+				StartCoroutine(engineCoroutine);
+			}
 
 			yield return new WaitForSeconds(intervalTime);
 		}
+
 		spacecraft.SideJets(Vector3.zero);
-		engineCoroutine = MainEngineBurn(burnDuration);
-		StartCoroutine(engineCoroutine);
 	}
 
 	IEnumerator MainEngineBurn(float durationTime)
@@ -136,8 +146,8 @@ public class Autopilot : MonoBehaviour
 		while (timeElapsed < durationTime)
 		{
 			timeElapsed += Time.deltaTime;
-			if ((rb.velocity.magnitude > 5f) &&
-				(Vector3.Dot(rb.velocity.normalized, (destination - spacecraft.transform.position).normalized) > 0.8f))
+			if ((rb.velocity.magnitude > 10f) ||
+				(Vector3.Dot(rb.velocity.normalized, (destination - spacecraft.transform.position).normalized) > 0.99f))
 			{
 				FaceVelocity(true);
 			}

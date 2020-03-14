@@ -46,17 +46,14 @@ public class OrbitController : MonoBehaviour
 	{
 		if (autopilot != null)
 		{
-			if (!planet)
-				planet = FindObjectOfType<Planet>();
 			Camera cameraMain = Camera.main;
-			Vector3 flatPlanetPos = cameraMain.WorldToScreenPoint(Vector3.zero);
-			Vector3 flatTargetPos = onscreenPosition;
-			flatTargetPos.z = flatPlanetPos.z;
-			Vector3 inputToPlanet = flatTargetPos - flatPlanetPos;
-			float worldDirection = (cameraMain.transform.forward * 1000f).normalized.z;
-			inputToPlanet.x *= worldDirection;
+			Vector3 planetScreenPos = cameraMain.WorldToScreenPoint(Vector3.zero);
+			Vector3 onscreenDirection = onscreenPosition - planetScreenPos;
 
-			inputVector = inputToPlanet * orbitRange;
+			Vector3 inputToPlanet = (Quaternion.Euler(cameraMain.transform.eulerAngles) * onscreenDirection) - autopilot.transform.position;
+			inputVector = inputToPlanet;
+
+			Debug.DrawLine(Vector3.zero, inputToPlanet, Color.yellow);
 
 			SimulateTrajectory(inputVector);
 			RenderTrajectory();
@@ -72,21 +69,22 @@ public class OrbitController : MonoBehaviour
 		float spacecraftMass = spacecraftRb.mass;
 		float spacecraftDrag = spacecraftRb.drag;
 		float simulationTime = 0f;
-		heading += spacecraftRb.velocity * 10;
+		heading += spacecraftRb.velocity;
 
 		Vector3 currentPosition = spacecraft.transform.position;
 		Vector3 velocityDirection = (heading - spacecraft.gameObject.transform.position).normalized;
+		Vector3 velocity = spacecraftRb.velocity;
 		List<Gravity> gravityList = gravityTelemetry.GetGravitiesAffecting(spacecraftRb);
 		trajectoryList.Add(currentPosition);
 
 		while (simulationTime < burnDuration)
 		{
 			simulationTime += 0.1f;
-			Vector3 velocity = velocityDirection * spacecraft.mainEnginePower * 0.1f;
+			velocity += velocityDirection * spacecraft.mainEnginePower * 0.1f;
 			if (gravityList.Count > 0)
 			{
 				foreach (Gravity gr in gravityList)
-					velocity += gr.GetGravity(spacecraftRb, currentPosition, spacecraftMass, spacecraftDrag) * (0.1f - spacecraftDrag);
+					velocity += gr.GetGravity(spacecraftRb, currentPosition, spacecraftMass, spacecraftDrag) * (1f - spacecraftDrag);
 			}
 			currentPosition += velocity;
 			trajectoryList.Add(currentPosition);
