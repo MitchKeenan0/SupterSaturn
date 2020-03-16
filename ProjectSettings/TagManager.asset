@@ -10,6 +10,7 @@ TagManager:
   - UI
   - EndTurn
   - SpawnWidget
+  - Hull
   layers:
   - Default
   - TransparentFX

@@ -16,6 +16,7 @@ public class InputController : MonoBehaviour
 	private MouseSelection mouseSelection;
 	private CameraTargetFinder cameraTargetFinder;
 	private TouchOrbit touchOrbit;
+	private float originalCameraScale = 1f;
 	private bool bNavigationMode = false;
 	private bool bTargetCameraMode = false;
 	private bool bFreeCameraMode = false;
@@ -26,6 +27,7 @@ public class InputController : MonoBehaviour
 		mouseSelection = FindObjectOfType<MouseSelection>();
 		cameraTargetFinder = FindObjectOfType<CameraTargetFinder>();
 		touchOrbit = FindObjectOfType<TouchOrbit>();
+		originalCameraScale = touchOrbit.GetInputScale();
 		statusText.text = "";
 		ActivateButton(navigationModeButton, false, true);
 		ActivateButton(cameraModeButton, false, true);
@@ -62,10 +64,19 @@ public class InputController : MonoBehaviour
 			EnableCameraControl(true);
 	}
 
+	void SetDiminishedCameraMode(bool value)
+	{
+		if (value)
+			touchOrbit.SetInputScale(originalCameraScale * 0.2f);
+		else
+			touchOrbit.SetInputScale(originalCameraScale);
+	}
+
 	public void Begin()
 	{
 		AllStop();
 		TargetCameraMode(true);
+		ActivateButton(stopButton, false, true);
 	}
 
 	public void AllStop()
@@ -80,6 +91,15 @@ public class InputController : MonoBehaviour
 			{
 				Autopilot autopilot = sp.GetComponent<Autopilot>();
 				autopilot.AllStop();
+			}
+		}
+		else
+		{
+			List<Spacecraft> selectedSpacecraft = mouseSelection.GetSelectedSpacecraft();
+			foreach (Spacecraft sp in selectedSpacecraft)
+			{
+				Autopilot autopilot = sp.GetComponent<Autopilot>();
+				autopilot.ReleaseBrakes();
 			}
 		}
 
@@ -98,9 +118,7 @@ public class InputController : MonoBehaviour
 		if (bTurningOff)
 			value = false;
 
-		if (bStopped)
-			AllStop();
-		EnableCameraControl(bTurningOff);
+		SetDiminishedCameraMode(!bTurningOff);
 		bNavigationMode = value;
 		List<Spacecraft> selectedSpacecraft = mouseSelection.GetSelectedSpacecraft();
 		foreach (Spacecraft sp in selectedSpacecraft)

@@ -18,6 +18,8 @@ public class OrbitController : MonoBehaviour
 	private List<Vector3> trajectoryList;
 	public List<Vector3> GetTrajectory() { return trajectoryList; }
 
+	public Autopilot GetAutopilot() { return autopilot; }
+
 	void Awake()
     {
 		lineList = new List<LineRenderer>();
@@ -55,7 +57,7 @@ public class OrbitController : MonoBehaviour
 		float spacecraftMass = spacecraftRb.mass;
 		float spacecraftDrag = spacecraftRb.drag;
 		float simulationTime = 0f;
-		heading += spacecraftRb.velocity;
+		heading += spacecraft.transform.forward;
 
 		Vector3 currentPosition = spacecraft.transform.position;
 		Vector3 velocityDirection = (heading - spacecraft.gameObject.transform.position).normalized;
@@ -71,7 +73,7 @@ public class OrbitController : MonoBehaviour
 			if (gravityList.Count > 0)
 			{
 				foreach (Gravity gr in gravityList)
-					velocity += gr.GetGravity(spacecraftRb, currentPosition, spacecraftMass, spacecraftDrag) * deltaTime * 0.618f;
+					velocity += gr.GetGravity(spacecraftRb, currentPosition, spacecraftMass) * deltaTime * 0.618f;
 			}
 			
 			trajectoryList.Add(velocity);

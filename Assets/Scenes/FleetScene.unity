@@ -421,6 +421,12 @@ PrefabInstance:
       propertyPath: spawnWidget
       value: 
       objectReference: {fileID: 746298054}
+    - target: {fileID: 4956461784920696304, guid: dd80a295cb7874a45a2ccbe75ad2b99f,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 65d63fe72fa89fa43902720ef9841b9a,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dd80a295cb7874a45a2ccbe75ad2b99f, type: 3}
 --- !u!224 &309916321 stripped
@@ -615,13 +621,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: fc2beb5431b01bd44bd40b14f435c7c0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 251639d7fabd7444e8f36fdb26f00158, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -875,6 +881,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5699525429359852799, guid: e29e66e19f4dd9a43b6e97f39e1e40eb,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 65d63fe72fa89fa43902720ef9841b9a,
+        type: 3}
+    - target: {fileID: 5699525429636883133, guid: e29e66e19f4dd9a43b6e97f39e1e40eb,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 487e2037a2effda4ba2cada4733b2dea,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e29e66e19f4dd9a43b6e97f39e1e40eb, type: 3}
 --- !u!224 &536907818 stripped
@@ -1871,6 +1889,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6382424292236466907, guid: 63e6342632b5d2949af6e854e7a14da2,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: d197b51c96c655240b6471053ed0f6a4,
+        type: 3}
+    - target: {fileID: 3292731359428510504, guid: 63e6342632b5d2949af6e854e7a14da2,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2471e169d9856fd4aa0f2c4c59e8f220,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63e6342632b5d2949af6e854e7a14da2, type: 3}
 --- !u!224 &1755021296 stripped

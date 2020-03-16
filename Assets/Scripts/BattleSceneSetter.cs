@@ -15,6 +15,10 @@ public class BattleSceneSetter : MonoBehaviour
 
     void Start()
     {
+		BattleScene[] existingScenes = GetComponentsInChildren<BattleScene>();
+		int numScenes = existingScenes.Length;
+		for (int i = 0; i < numScenes; i++)
+			DestroyImmediate(existingScenes[i].gameObject);
 		game = FindObjectOfType<Game>();
 		gravitySystem = FindObjectOfType<GravitySystem>();
 		loadWaitCoroutine = LoadWait(0.3f);

@@ -79,6 +79,12 @@ public class Autopilot : MonoBehaviour
 		spacecraft.Maneuver(Vector3.zero);
 		spacecraft.SideJets(Vector3.zero);
 		FaceVelocity(false);
+		StopAllCoroutines();
+	}
+
+	public void ReleaseBrakes()
+	{
+		bStopping = false;
 	}
 
 	public void ManeuverRotationTo(Vector3 target)
@@ -88,13 +94,21 @@ public class Autopilot : MonoBehaviour
 		spacecraft.Maneuver(toDestination.normalized);
 	}
 	
-	public void FireEngineBurn(float duration)
+	public void FireEngineBurn(float duration, bool bAlign)
 	{
 		if (bEngineActive)
 			StopAllCoroutines();
 		burnDuration = duration;
-		alignCoroutine = Align(Time.deltaTime);
-		StartCoroutine(alignCoroutine);
+		if (bAlign)
+		{
+			alignCoroutine = Align(Time.deltaTime);
+			StartCoroutine(alignCoroutine);
+		}
+		else
+		{
+			engineCoroutine = MainEngineBurn(burnDuration);
+			StartCoroutine(engineCoroutine);
+		}
 	}
 
 	public void FaceVelocity(bool value)
@@ -121,7 +135,6 @@ public class Autopilot : MonoBehaviour
 			if (myVector.magnitude < 1f)
 				myVector = transform.forward;
 			dot = Vector3.Dot(myVector.normalized, alignVector.normalized);
-			Debug.Log("aligning dot " + dot);
 
 			if (!burn && (dot > 0.7f))
 			{
@@ -138,11 +151,11 @@ public class Autopilot : MonoBehaviour
 
 	IEnumerator MainEngineBurn(float durationTime)
 	{
-		Debug.Log("main engines ignited for " + durationTime);
 		spacecraft.MainEngines(1f);
 		float timeElapsed = 0f;
 		bEngineActive = true;
-		bStopping = false;
+		if (rb.velocity.magnitude < 1f)
+			FindObjectOfType<InputController>().AllStop();
 		while (timeElapsed < durationTime)
 		{
 			timeElapsed += Time.deltaTime;

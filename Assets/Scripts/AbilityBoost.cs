@@ -22,7 +22,7 @@ public class AbilityBoost : Ability
 		base.StartAbility();
 		mySpacecraft.mainEnginePower = boostPower;
 		if (mySpacecraft.GetMainEngineVector() == Vector3.zero)
-			autopilot.FireEngineBurn(1.6f);
+			autopilot.FireEngineBurn(1.6f, false);
 
 		GameObject startEffect = Instantiate(startEffectPrefab, transform.position, transform.rotation);
 		Destroy(startEffect, 1f);

@@ -35,9 +35,12 @@ public class TouchOrbit : MonoBehaviour
 	private bool bActivated = true;
 	private Transform anchorTransform = null;
 
+	public float GetInputScale() { return moveSpeed; }
+	public void SetInputScale(float value) { moveSpeed = ySpeed = value; }
+
 	void Awake()
 	{
-		ResetAnchor();
+		ResetAnchor(false);
 		cameraController = FindObjectOfType<CameraController>();
 		cameraMain = Camera.main;
 		inputController = FindObjectOfType<InputController>();
@@ -46,7 +49,7 @@ public class TouchOrbit : MonoBehaviour
 		y = angles.x;
 		distance = distanceMin;
 		this.enabled = bActivated;
-		moveInput = new Vector3(-50f, -100f, 0f);
+		moveInput = new Vector3(-250f, -150f, 0f);
 	}
 
 	void Update()
@@ -127,12 +130,17 @@ public class TouchOrbit : MonoBehaviour
 		transform.position = Vector3.Lerp(transform.position, position + moveVector, Time.deltaTime * moveAcceleration);
 	}
 
-	public void ResetAnchor()
+	public void ResetAnchor(bool overrideDistance)
 	{
 		if (orbitAnchor != null)
 			anchorTransform = orbitAnchor;
 		anchorTransform.transform.SetParent(null);
 		anchorTransform.transform.position = Vector3.zero;
+		if (overrideDistance)
+		{
+			float currentDistance = Vector3.Distance(cameraMain.transform.position, Vector3.zero);
+			distance = currentDistance * 1.2f;
+		}
 	}
 
 	public void SetActive(bool value)
@@ -144,5 +152,6 @@ public class TouchOrbit : MonoBehaviour
 	public void SetAnchorTransform(Transform value)
 	{
 		anchorTransform = value;
+		distance = distanceMin;
 	}
 }

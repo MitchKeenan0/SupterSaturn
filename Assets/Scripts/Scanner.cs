@@ -43,8 +43,8 @@ public class Scanner : MonoBehaviour
 		originalAlpha = meshRenderer.material.GetFloat("_Opacity");
 		meshRenderer.enabled = false;
 
-		scanCoroutine = LoopingScanLaunch(scanInterval + scanRecoveryPeriod + Random.Range(-intervalDeviation, intervalDeviation));
-		StartCoroutine(scanCoroutine);
+		//scanCoroutine = LoopingScanLaunch(scanInterval + scanRecoveryPeriod + Random.Range(-intervalDeviation, intervalDeviation));
+		//StartCoroutine(scanCoroutine);
 	}
 
 	private IEnumerator LoopingScanLaunch(float waitTime)

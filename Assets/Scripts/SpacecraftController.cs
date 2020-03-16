@@ -16,7 +16,7 @@ public class SpacecraftController : MonoBehaviour
 	private NavigationHud navigationHud;
 	private Vector2 touchLineVector = Vector2.zero;
 	private Vector2 touchPosition = Vector2.zero;
-	private Vector3 inputVector = Vector3.zero;
+	private Vector3 directionVector = Vector3.zero;
 	private bool bActive = false;
 	private bool bLining = false;
 	private int teamID = -1;
@@ -67,27 +67,28 @@ public class SpacecraftController : MonoBehaviour
 					/// hud target position
 					navigationHud.SetPosition(touchPosition);
 
-					/// burn duration
+					/// burn duration normalized onscreen
 					Camera cameraMain = Camera.main;
-					Vector3 planetScreenPos = cameraMain.WorldToScreenPoint(Vector3.zero);
-					planetScreenPos.z = 0f;
-					Vector3 onscreenDirection = new Vector3(touchPosition.x, touchPosition.y, 0f) - planetScreenPos;
+					Vector3 centerScreen = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
+					Vector3 onscreenDirection = new Vector3(touchPosition.x, touchPosition.y, 0f) - centerScreen;
 
-					burnDuration = onscreenDirection.magnitude / 100f;
+					Vector3 navigationTarget = (Quaternion.Euler(cameraMain.transform.eulerAngles) * (onscreenDirection * 0.3f));
+					navigationTarget += cameraMain.transform.forward * 100f;
+					Vector3 navigationVector = navigationTarget + spacecraft.transform.position;
+					directionVector = navigationVector;
+					orbitController.SetDirection(directionVector);
+
+					/// burn duration
+					burnDuration = Mathf.Clamp(onscreenDirection.magnitude / 100f, 1.9f, 9.9f);
 					orbitController.SetBurnDuration(burnDuration);
 					navigationHud.SetBurnDuration(burnDuration);
-
-					/// orbit direction
-					Vector3 inputToPlanet = (Quaternion.Euler(cameraMain.transform.eulerAngles) * onscreenDirection) - spacecraft.transform.position;
-					inputVector = inputToPlanet;
-					orbitController.SetDirection(inputVector);
 
 					/// circular size for auto-orbit
 					float positionRange = spacecraft.transform.position.magnitude;
 					orbitController.SetOrbitRange(positionRange);
 
 					/// visualize
-					autopilot.ManeuverRotationTo(inputVector - autopilot.gameObject.GetComponent<Rigidbody>().velocity);
+					autopilot.ManeuverRotationTo(directionVector - autopilot.gameObject.GetComponent<Rigidbody>().velocity);
 				}
 			}
 		}
@@ -95,7 +96,7 @@ public class SpacecraftController : MonoBehaviour
 
 	public void StartTouch()
 	{
-		inputVector = Vector3.zero;
+		directionVector = Vector3.zero;
 		bLining = true;
 		navigationHud.SetActive(true);
 	}
@@ -103,8 +104,8 @@ public class SpacecraftController : MonoBehaviour
 	public void EndTouch()
 	{
 		bLining = false;
-		autopilot.ManeuverRotationTo(inputVector - autopilot.gameObject.GetComponent<Rigidbody>().velocity);
-		autopilot.FireEngineBurn(burnDuration);
+		autopilot.ManeuverRotationTo(directionVector - autopilot.gameObject.GetComponent<Rigidbody>().velocity);
+		autopilot.FireEngineBurn(burnDuration, true);
 		inputController.NavigationMode(false);
 		navigationHud.SetActive(false);
 	}

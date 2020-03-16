@@ -50,7 +50,7 @@ MonoBehaviour:
     heat the etnite.
   cardObjectPrefab: {fileID: 1906621234774554819, guid: 61bd477724389754eb85c84db0ed45c6,
     type: 3}
-  cardSprite: {fileID: 21300000, guid: 41ff8e5c182c0b74a966d1645779afe9, type: 3}
+  cardSprite: {fileID: 21300000, guid: d9780612683731c44819ded573c8b0ae, type: 3}
   iconSprite: {fileID: 21300000, guid: b9ff04663bd256649b84f93bad5677b6, type: 3}
   level: 2
   cost: 300

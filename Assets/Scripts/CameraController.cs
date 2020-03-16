@@ -41,6 +41,7 @@ public class CameraController : MonoBehaviour
 		SpacecraftInformation si = null;
 		if (sp != null)
 			si = sp.GetSpacecraftInformation();
-		mouseContext.SetSpacecraftInformation(value, si);
+		if (mouseContext != null)
+			mouseContext.SetSpacecraftInformation(value, si);
 	}
 }

@@ -157,7 +157,7 @@ public class Spacecraft : MonoBehaviour
 	public void Brake()
 	{
 		float brakingScalar = Mathf.Clamp(rb.velocity.magnitude, 1f, 100f);
-		Vector3 brakingVelocity = Vector3.MoveTowards(rb.velocity, Vector3.zero, Time.deltaTime * (mainEnginePower / 50f) * brakingScalar);
+		Vector3 brakingVelocity = Vector3.MoveTowards(rb.velocity, Vector3.zero, Time.fixedDeltaTime * (mainEnginePower / 50f) * brakingScalar);
 		rb.velocity = brakingVelocity;
 	}
 
@@ -293,6 +293,19 @@ public class Spacecraft : MonoBehaviour
 		else if (collision.gameObject.GetComponent<Spacecraft>())
 		{
 			health.ModifyHealth(-5, collision.gameObject.transform);
+		}
+	}
+
+	private void OnTriggerEnter(Collider other)
+	{
+		ObjectiveTrigger objTrigger = other.gameObject.GetComponent<ObjectiveTrigger>();
+		if ((objTrigger != null) && (!objTrigger.IsTriggered()) && (GetComponent<Agent>().teamID == 0))
+		{
+			other.gameObject.GetComponent<ObjectiveTrigger>().Trigger();
+			FindObjectOfType<InputController>().AllStop();
+			int randomScore = Random.Range(10, 50);
+			battleOutcome.AddScore(randomScore);
+			battleOutcome.BattleOver(true);
 		}
 	}
 }

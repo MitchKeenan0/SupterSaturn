@@ -52,7 +52,7 @@ public class BattleOutcome : MonoBehaviour
 		else
 			conclusionText.text = "DEFEAT";
 
-		playerScore = scoreHud.GetScore();
+		playerScore += scoreHud.GetScore();
 
 		scoreText.text = "+" + playerScore.ToString();
 		lostText.text = playerLost.ToString();

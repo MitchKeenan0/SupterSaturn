@@ -125,7 +125,8 @@ public class MouseSelection : MonoBehaviour
 				skillPanel.SetSpacecraftList(sps);
 			}
 
-			selectionBox.gameObject.SetActive(isSelecting);
+			if (selectionBox != null)
+				selectionBox.gameObject.SetActive(isSelecting);
 
 			if (isSelecting)
 			{
