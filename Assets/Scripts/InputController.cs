@@ -10,30 +10,47 @@ public class InputController : MonoBehaviour
 	public Button navigationModeButton;
 	public Button cameraModeButton;
 	public Button stopButton;
+	public Button scanButton;
 	public Color standbyColor;
 	public Color activeColor;
 
 	private MouseSelection mouseSelection;
+	private Camera cameraMain;
 	private CameraTargetFinder cameraTargetFinder;
 	private TouchOrbit touchOrbit;
 	private float originalCameraScale = 1f;
 	private bool bNavigationMode = false;
-	private bool bTargetCameraMode = false;
 	private bool bFreeCameraMode = false;
 	private bool bStopped = false;
+	private bool bScanning = false;
+	private int cameraMode = 0;
+	private int numCameraModes = 0;
+	private List<float> distanceModes;
 
 	public bool IsStopped() { return bStopped; }
+
+	void Awake()
+	{
+		distanceModes = new List<float>();
+	}
 
 	void Start()
 	{
 		mouseSelection = FindObjectOfType<MouseSelection>();
+		cameraMain = Camera.main;
 		cameraTargetFinder = FindObjectOfType<CameraTargetFinder>();
 		touchOrbit = FindObjectOfType<TouchOrbit>();
+		distanceModes.Add(touchOrbit.distanceMin);
+		distanceModes.Add(touchOrbit.distanceMax - touchOrbit.distanceMin);
+		distanceModes.Add(touchOrbit.distanceMax);
 		originalCameraScale = touchOrbit.GetInputScale();
 		statusText.text = "";
+		numCameraModes = distanceModes.Count;
+
 		ActivateButton(navigationModeButton, false, true);
 		ActivateButton(cameraModeButton, false, true);
 		ActivateButton(stopButton, false, true);
+		ActivateButton(scanButton, false, true);
 	}
 
 	void ActivateButton(Button button, bool value, bool finished)
@@ -62,7 +79,7 @@ public class InputController : MonoBehaviour
 
 	void FallbackCheck()
 	{
-		if (!bNavigationMode && !bTargetCameraMode && !bFreeCameraMode)
+		if (!bNavigationMode && !bFreeCameraMode)
 			EnableCameraControl(true);
 	}
 
@@ -77,7 +94,7 @@ public class InputController : MonoBehaviour
 	public void Begin()
 	{
 		AllStop();
-		TargetCameraMode(true);
+		CameraMode();
 		ActivateButton(stopButton, false, true);
 	}
 
@@ -133,25 +150,35 @@ public class InputController : MonoBehaviour
 		ActivateButton(navigationModeButton, bNavigationMode, bTurningOff);
 	}
 
-	public void TargetCameraMode(bool value)
+	public void CameraMode()
 	{
-		bool bTurningOff = bTargetCameraMode;
-		if (value == false)
-			bTurningOff = true;
-		if (bTurningOff)
-			value = false;
-
-		if (bNavigationMode)
-			NavigationMode(false);
 		EnableCameraControl(true);
-		bTargetCameraMode = value;
-		cameraTargetFinder.SetActive(bTargetCameraMode);
 
-		if (bTargetCameraMode)
-			UpdateStatusText("Target camera mode");
-		else
-			UpdateStatusText("");
-		ActivateButton(cameraModeButton, bTargetCameraMode, bTurningOff);
+		if (numCameraModes > 0)
+		{
+			cameraTargetFinder.SetActive(true);
+			float dist = distanceModes[cameraMode];
+			touchOrbit.SetDistance(dist);
+			cameraMain.focalLength = 1f / (Mathf.Sqrt(dist) * 0.1f) * 6f;
+			cameraMode++;
+			if (cameraMode >= numCameraModes)
+				cameraMode = 0;
+			UpdateStatusText("Camera range " + dist + " km");
+		}
+	}
+
+	public void Scan()
+	{
+		bool bFinished = bScanning;
+		bScanning = !bScanning;
+		List<Spacecraft> selectedSpacecraft = mouseSelection.GetSelectedSpacecraft();
+		foreach (Spacecraft sp in selectedSpacecraft)
+		{
+			if (sp.GetAgent() != null)
+				sp.GetAgent().Scan();
+			UpdateStatusText("Scanner " + (bScanning ? "on" : "off"));
+		}
+		ActivateButton(scanButton, bScanning, bFinished);
 	}
 
 	public void EnableCameraControl(bool value)

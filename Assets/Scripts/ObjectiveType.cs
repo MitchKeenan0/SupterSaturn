@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class ObjectiveType : MonoBehaviour
 {
 	public string objectiveName = "";
-	public string objectiveDesctription = "";
+	public string objectiveDescription = "";
 	public Sprite objectiveIcon;
 	public int objectiveRating = 1;
 	public GameObject[] principleObjectPrefabs;
@@ -41,7 +41,14 @@ public class ObjectiveType : MonoBehaviour
 		SpawnPrincipleObjects();
 		objectiveHud = FindObjectOfType<ObjectiveHUD>();
 		if (objectiveHud != null)
-			objectiveHud.objectiveText.text = objectiveDesctription;
+		{
+			string description = objectiveDescription;
+			int charLength = description.Length;
+			if (charLength > 0)
+			{
+				objectiveHud.objectiveText.text = objectiveDescription;
+			}
+		}
 	}
 
 	public virtual void SpawnPrincipleObjects()

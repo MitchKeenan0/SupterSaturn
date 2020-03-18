@@ -146,7 +146,7 @@ public class Spacecraft : MonoBehaviour
 		if (Mathf.Abs(driveDirection) > 0.0f)
 		{
 			em.enabled = true;
-			ps.startSize = Mathf.Abs(driveDirection) * 0.1f;
+			ps.startSize = Mathf.Abs(driveDirection);
 		}
 		else
 		{

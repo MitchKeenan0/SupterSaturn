@@ -26,8 +26,10 @@ public class Scanner : MonoBehaviour
 	private float timeAtScan = 0f;
 	private float originalAlpha = 0;
 	private float pointSize = 0f;
+	private bool bScanning = false;
 
 	public GameObject[] GetTargets() { return targetList.ToArray(); }
+	public bool IsScanning() { return bScanning; }
 
 	void Start()
     {
@@ -139,17 +141,17 @@ public class Scanner : MonoBehaviour
 		if (mySpacecraft != null)
 		{
 			spherePoints.transform.position = mySpacecraft.transform.position;
-			spherePoints.UpdateSphere(safeRadius);
+			spherePoints.UpdateSphere(Mathf.Sqrt(safeRadius) * 0.6f);
 		}
 
 		float percentOfLifetimeRemaining = 1f - (Time.time - timeAtScan) / scanInterval;
 		float alpha = Mathf.Clamp(originalAlpha * percentOfLifetimeRemaining, 0f, 1f);
 		meshRenderer.material.SetFloat("_Opacity", alpha);
 
-		float targetSize = -0.05f;
+		float targetSize = 0.0f;
 		if (percentOfLifetimeRemaining > 0.75f)
 			targetSize = maxPointSize;
-		pointSize = Mathf.Lerp(pointSize, targetSize, Time.deltaTime);
+		pointSize = Mathf.Lerp(pointSize, targetSize, Time.deltaTime * 5f);
 		spherePoints.SetPointSize(pointSize);
 	}
 
@@ -185,5 +187,18 @@ public class Scanner : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	public void BeginScanning()
+	{
+		bScanning = true;
+		scanCoroutine = LoopingScanLaunch(scanInterval + scanRecoveryPeriod + Random.Range(-intervalDeviation, intervalDeviation));
+		StartCoroutine(scanCoroutine);
+	}
+
+	public void StopScanning()
+	{
+		bScanning = false;
+		StopAllCoroutines();
 	}
 }

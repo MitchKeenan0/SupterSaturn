@@ -67,8 +67,8 @@ MonoBehaviour:
   bStartActive: 0
   pointPrefab: {fileID: 4544285656800160718, guid: 2762b7cf70adfa045b1c4844d0f625c3,
     type: 3}
-  sphereScale: 10
-  numPoints: 12
+  sphereScale: 100
+  numPoints: 106
 --- !u!1 &5155169036934119614
 GameObject:
   m_ObjectHideFlags: 0

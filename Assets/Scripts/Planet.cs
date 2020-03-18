@@ -38,12 +38,10 @@ public class Planet : MonoBehaviour
 
 		Vector3[] vertexArray = vertexList.ToArray();
 		Color32[] colors = new Color32[vertexArray.Length];
+		byte randoGreyscale = (byte)Random.Range(0, 255);
+		Color32 rando = new Color32(randoGreyscale, randoGreyscale, randoGreyscale, 255);
 		for (int i = 0; i < vertexArray.Length; i++)
-		{
-			byte randoGreyscale = (byte)Random.Range(0, 255);
-			Color32 rando = new Color32(randoGreyscale, randoGreyscale, randoGreyscale, 255);
 			colors[i] = rando;
-		}
 		mesh.colors32 = colors;
 	}
 

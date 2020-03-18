@@ -76,7 +76,7 @@ public class OrbitController : MonoBehaviour
 			if (gravityList.Count > 0)
 			{
 				foreach (Gravity gr in gravityList)
-					velocity += gr.GetGravity(spacecraftRb, currentPosition, spacecraftMass) * deltaTime;
+					velocity += gr.GetGravity(spacecraftRb, currentPosition, spacecraftMass) * deltaTime * 0.6f;
 			}
 			
 			trajectoryList.Add(velocity);

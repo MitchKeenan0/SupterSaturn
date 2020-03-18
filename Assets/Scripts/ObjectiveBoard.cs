@@ -34,7 +34,7 @@ public class ObjectiveBoard : MonoBehaviour
 				type = objectiveTypeList[randomType];
 				int typeRating = type.objectiveRating;
 				int indexRating = Mathf.FloorToInt(Mathf.Sqrt(randomType));
-				if (indexRating < typeRating)
+				if (typeRating <= indexRating)
 				{
 					if (objectiveTypeList.Length > randomType)
 						bTypeSet = true;

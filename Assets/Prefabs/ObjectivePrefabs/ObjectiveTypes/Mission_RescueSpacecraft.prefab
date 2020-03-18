@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8090418218676208209}
-  - component: {fileID: 8090418218676208210}
+  - component: {fileID: 9098356191930498205}
   m_Layer: 0
   m_Name: Mission_RescueSpacecraft
   m_TagString: Untagged
@@ -31,7 +31,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8090418218676208210
+--- !u!114 &9098356191930498205
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -40,12 +40,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 8090418218676208208}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6030b363979f04c41b8ecf9623a34476, type: 3}
+  m_Script: {fileID: 11500000, guid: 2de6ce69864d24648b29e38cf6de5fbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   objectiveName: Rescue Spacecraft
   objectiveDesctription: Rescue the H.M.S. Jaddin
   objectiveIcon: {fileID: 21300000, guid: 7be2f35512f214e438319ec42ffa8c71, type: 3}
-  objectiveRating: 2
+  objectiveRating: 1
   principleObjectPrefabs:
   - {fileID: 4323474977949863878, guid: 51e1f98426689bc4094cabeba1e5b309, type: 3}

@@ -37,6 +37,7 @@ public class TouchOrbit : MonoBehaviour
 
 	public float GetInputScale() { return moveSpeed; }
 	public void SetInputScale(float value) { moveSpeed = ySpeed = value; }
+	public void SetDistance(float value) { distance = value; }
 
 	void Awake()
 	{

@@ -55,8 +55,6 @@ public class Autopilot : MonoBehaviour
 
 	void Update()
 	{
-		Debug.DrawLine(transform.position, destination, Color.grey);
-
 		if (bFaceVelocity && (rb.velocity.magnitude > 1f))
 		{
 			Vector3 velocity = rb.velocity + transform.position;
@@ -159,7 +157,7 @@ public class Autopilot : MonoBehaviour
 		while (timeElapsed < durationTime)
 		{
 			timeElapsed += Time.deltaTime;
-			if ((rb.velocity.magnitude > 10f) ||
+			if ((rb.velocity.magnitude > 6f) &&
 				(Vector3.Dot(rb.velocity.normalized, (destination - spacecraft.transform.position).normalized) > 0.99f))
 			{
 				FaceVelocity(true);

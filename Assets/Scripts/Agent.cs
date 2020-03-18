@@ -152,7 +152,17 @@ public class Agent : MonoBehaviour
 		}
 	}
 
-	// External functions
+	public void Scan()
+	{
+		if (scanner != null)
+		{
+			if (!scanner.IsScanning())
+				scanner.BeginScanning();
+			else
+				scanner.StopScanning();
+		}
+	}
+
 	public bool LineOfSight(Vector3 target, Transform targetTrans)
 	{
 		bool result = false;

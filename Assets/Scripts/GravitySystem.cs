@@ -54,41 +54,47 @@ public class GravitySystem : MonoBehaviour
 
 	void UpdateGravities(int gravityIndex)
 	{
-		Gravity gravity = gravityList[gravityIndex];
 		List<Rigidbody> rbList = rbMasterList[gravityIndex];
-
-		Collider[] nears = Physics.OverlapSphere(gravity.bodyTransform.position, gravity.radius);
-		int numNears = nears.Length;
-		for (int i = 0; i < numNears; i++)
+		Gravity gravity = null;
+		if ((gravityIndex < gravityList.Count) && (gravityList[gravityIndex] != null))
 		{
-			if (nears[i] != null)
+			gravity = gravityList[gravityIndex];
+			Collider[] nears = Physics.OverlapSphere(gravity.bodyTransform.position, gravity.radius);
+			int numNears = nears.Length;
+			for (int i = 0; i < numNears; i++)
 			{
-				Rigidbody r = nears[i].gameObject.GetComponent<Rigidbody>();
-				if (r != null)
+				if (nears[i] != null)
 				{
-					if (!rbList.Contains(r))
-						rbList.Add(r);
+					Rigidbody r = nears[i].gameObject.GetComponent<Rigidbody>();
+					if (r != null)
+					{
+						if (!rbList.Contains(r))
+							rbList.Add(r);
+					}
 				}
 			}
 		}
 
 		// check over for objects beyond reach
-		int numRbs = rbList.Count;
-		if (numRbs > 0)
+		if ((rbList != null) && (gravity != null))
 		{
-			Vector3 myPos = gravity.bodyTransform.position;
-			for (int i = 0; i < numRbs; i++)
+			int numRbs = rbList.Count;
+			if (numRbs > 0)
 			{
-				if ((i < rbList.Count) && (rbList[i] != null))
+				Vector3 myPos = gravity.bodyTransform.position;
+				for (int i = 0; i < numRbs; i++)
 				{
-					float distance = Vector3.Distance(rbList[i].transform.position, myPos);
-					if (distance >= gravity.radius)
-						rbList.RemoveAt(i);
+					if ((i < rbList.Count) && (rbList[i] != null))
+					{
+						float distance = Vector3.Distance(rbList[i].transform.position, myPos);
+						if (distance >= gravity.radius)
+							rbList.RemoveAt(i);
+					}
 				}
 			}
-		}
 
-		gravity.SetRbList(rbList);
+			gravity.SetRbList(rbList);
+		}
 	}
 
 	List<Rigidbody> CreateRbList()
