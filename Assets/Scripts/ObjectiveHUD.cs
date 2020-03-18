@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ObjectiveHUD : MonoBehaviour
 {
 	public GameObject objectivePanelPrefab;
+	public Text objectiveText;
 
 	private OrbitController orbitController;
 	private Camera cameraMain;

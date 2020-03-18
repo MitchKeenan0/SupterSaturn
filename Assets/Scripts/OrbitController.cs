@@ -57,27 +57,30 @@ public class OrbitController : MonoBehaviour
 		float spacecraftMass = spacecraftRb.mass;
 		float spacecraftDrag = spacecraftRb.drag;
 		float simulationTime = 0f;
-		heading += spacecraft.transform.forward;
-
+		//heading += spacecraft.transform.forward;
 		Vector3 currentPosition = spacecraft.transform.position;
-		Vector3 velocityDirection = (heading - spacecraft.gameObject.transform.position).normalized;
-		Vector3 velocity = spacecraft.transform.position + spacecraftRb.velocity;
+		Vector3 toHeading = (heading - currentPosition).normalized * 0.01f;
+		Vector3 velocity = spacecraftRb.velocity;
+		Vector3 forward = spacecraft.transform.forward;
 		List<Gravity> gravityList = gravityTelemetry.GetGravitiesAffecting(spacecraftRb);
 		trajectoryList.Add(currentPosition);
 
 		float deltaTime = 0.01f;
-		while (simulationTime < burnDuration)
+		int iterations = 0;
+		while ((simulationTime < burnDuration) && (iterations < 100))
 		{
 			simulationTime += deltaTime;
-			velocity += velocityDirection * spacecraft.mainEnginePower * deltaTime;
+			iterations++;
+
+			velocity = currentPosition + (forward * spacecraft.mainEnginePower * deltaTime);
 			if (gravityList.Count > 0)
 			{
 				foreach (Gravity gr in gravityList)
-					velocity += gr.GetGravity(spacecraftRb, currentPosition, spacecraftMass) * deltaTime * 0.618f;
+					velocity += gr.GetGravity(spacecraftRb, currentPosition, spacecraftMass) * deltaTime;
 			}
 			
 			trajectoryList.Add(velocity);
-			velocityDirection = (velocity - currentPosition);
+			forward = (velocity - currentPosition).normalized;
 			currentPosition = velocity;
 		}
 	}

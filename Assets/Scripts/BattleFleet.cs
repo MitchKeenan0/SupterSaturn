@@ -5,6 +5,7 @@ using UnityEngine;
 public class BattleFleet : MonoBehaviour
 {
 	public int teamID = 0;
+	public bool bSphericalPositions = true;
 	public Vector3[] groupPositions;
 
 	private Game game;
@@ -47,7 +48,10 @@ public class BattleFleet : MonoBehaviour
 				Vector3 amidstPosition = Vector3.forward * -i;
 				if (groupPositions.Length > i)
 					amidstPosition = groupPositions[i];
-				sp.transform.position = transform.position + amidstPosition;
+				Vector3 worldPosition = transform.position;
+				if (bSphericalPositions)
+					worldPosition = Random.onUnitSphere * transform.position.z;
+				sp.transform.position = worldPosition + amidstPosition;
 				sp.transform.SetParent(transform);
 
 				Card spCard = null;

@@ -10,16 +10,17 @@ public class ObjectiveTrigger : MonoBehaviour
 	public float startPositionRangeMax = 200f;
 	public float startPositionRangeMin = 50f;
 
+	private Rigidbody rb;
 	private BattleOutcome outcome;
 	private bool bTriggered = false;
 	private bool bDestroyed = false;
 
 	public bool IsTriggered() { return bTriggered; }
-	public void Trigger() { bTriggered = true; }
 	public bool IsDestroyed() { return bDestroyed; }
 
     void Start()
     {
+		rb = GetComponent<Rigidbody>();
 		outcome = FindObjectOfType<BattleOutcome>();
 
 		if (bRandomStartPosition)
@@ -30,6 +31,20 @@ public class ObjectiveTrigger : MonoBehaviour
 			transform.position = randomPos;
 		}
     }
+
+	public void Trigger()
+	{
+		bTriggered = true;
+		ArrestMovement();
+	}
+
+	public void ArrestMovement()
+	{
+		if (rb != null)
+		{
+			rb.drag = 1.6f;
+		}
+	}
 
 	private void OnCollisionEnter(Collision collision)
 	{

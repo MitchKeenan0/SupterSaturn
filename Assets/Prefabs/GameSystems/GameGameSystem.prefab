@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2217693298875515820}
   - component: {fileID: 2941213363635647673}
   - component: {fileID: 1830387388028709880}
+  - component: {fileID: 2653731708780289070}
   m_Layer: 0
   m_Name: GameGameSystem
   m_TagString: Untagged
@@ -113,3 +114,83 @@ MonoBehaviour:
   canvas: {fileID: 0}
   selectionBox: {fileID: 0}
   copyKey: 306
+--- !u!114 &2653731708780289070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2653731708577820293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06eb72ae022c4f543b79bc0d0b0afa67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fighterNames:
+  - Bauer
+  - Carrera
+  - Voltez
+  - Abbey
+  schoonerNames:
+  - Libra
+  - Calet
+  - Figurine
+  commonLocationNames:
+  - Obes
+  - Tatir
+  - Bando
+  - Sirius
+  - Vega
+  - Caliope
+  - Specta
+  - Maoa
+  - Iyu
+  - Blue Star
+  - Aax
+  uniqueLocationNames:
+  - Reccez
+  - Aqua Nebula
+  - Karaoke Nebula
+  - Randal's Cloud
+  - The Maelstrom
+  - Teh Garden
+  - Hydrogean
+  - Helix Nebula
+  - Sauna
+  - Guedes Giant
+  - Harrow
+  rareLocationNames:
+  - Family Fortress
+  - Edne
+  - Reasearch Base
+  - Nike
+  - HG-413
+  - Lost Temple
+  - Super Saturn
+  - Seed of the Stars
+  - Matrices of Or
+  - Father Star
+  - Never
+  - Empress
+  identityNames:
+  - Bauer
+  - Culture Viper
+  - Carrera
+  - Voltez
+  - Kara
+  - Abriette
+  - Tangerine
+  - Minerva
+  - Chandra
+  - Ali
+  - Mahdi
+  fleetNames:
+  - Rogue Navy
+  - Scerzaron
+  - Thief Cartel
+  - Herald Fleet
+  - Bodysnatchers
+  usedCommonLocations: 
+  usedUniqueLocations: 
+  usedRareLocations: 
+  usedIdentityNames: 

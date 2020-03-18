@@ -22,6 +22,8 @@ public class InputController : MonoBehaviour
 	private bool bFreeCameraMode = false;
 	private bool bStopped = false;
 
+	public bool IsStopped() { return bStopped; }
+
 	void Start()
 	{
 		mouseSelection = FindObjectOfType<MouseSelection>();

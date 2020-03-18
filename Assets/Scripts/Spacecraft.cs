@@ -165,6 +165,7 @@ public class Spacecraft : MonoBehaviour
 	{
 		if (agent.teamID == 0)
 		{
+			FindObjectOfType<TouchOrbit>().SetActive(false);
 			battleOutcome.AddLost(health.maxHealth);
 		}
 		else
@@ -302,7 +303,12 @@ public class Spacecraft : MonoBehaviour
 		if ((objTrigger != null) && (!objTrigger.IsTriggered()) && (GetComponent<Agent>().teamID == 0))
 		{
 			other.gameObject.GetComponent<ObjectiveTrigger>().Trigger();
-			FindObjectOfType<InputController>().AllStop();
+			InputController ic = FindObjectOfType<InputController>();
+			if (ic != null)
+			{
+				if (!ic.IsStopped())
+					ic.AllStop();
+			}
 			int randomScore = Random.Range(10, 50);
 			battleOutcome.AddScore(randomScore);
 			battleOutcome.BattleOver(true);

@@ -85,4 +85,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardRosterSlotPrefab: {fileID: 4954847900004830636, guid: f2656bbe0707f254ab25fc0cc189948a,
     type: 3}
-  maxSlotsAvailable: 5
+  maxSlotsAvailable: 1

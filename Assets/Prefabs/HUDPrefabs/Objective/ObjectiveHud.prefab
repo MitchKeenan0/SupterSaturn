@@ -114,6 +114,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectivePanelPrefab: {fileID: 1761062497579450126, guid: b63041fde6f691843986c08bba8dd224,
     type: 3}
+  objectiveText: {fileID: 7504595563832704866}
 --- !u!1 &8283704504630205437
 GameObject:
   m_ObjectHideFlags: 0

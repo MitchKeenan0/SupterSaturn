@@ -79,7 +79,7 @@ public class SpacecraftController : MonoBehaviour
 					orbitController.SetDirection(directionVector);
 
 					/// burn duration
-					burnDuration = Mathf.Clamp(onscreenDirection.magnitude / 100f, 1.9f, 9.9f);
+					burnDuration = Mathf.Clamp(onscreenDirection.magnitude / 100f, 1f, 3f);
 					orbitController.SetBurnDuration(burnDuration);
 					navigationHud.SetBurnDuration(burnDuration);
 

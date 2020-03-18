@@ -55,9 +55,10 @@ public class Gravity : MonoBehaviour
 		Vector3 gravity = Vector3.zero;
 		if ((r != null) && !r.isKinematic)
 		{
-			Vector3 toCenter = bodyTransform.position - position;
-			if (toCenter.magnitude <= radius)
+			float distance = Vector3.Distance(bodyTransform.position, position);
+			if (distance <= radius)
 			{
+				Vector3 toCenter = bodyTransform.position - position;
 				float G = ((1f / toCenter.magnitude) * mass * strength);
 				gravity = toCenter.normalized * G;
 			}

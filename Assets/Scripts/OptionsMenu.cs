@@ -8,7 +8,7 @@ public class OptionsMenu : MonoBehaviour
 
 	void Awake()
     {
-		DontDestroyOnLoad(gameObject);
+		//DontDestroyOnLoad(gameObject);
 		menu = FindObjectOfType<MainMenu>();
     }
 

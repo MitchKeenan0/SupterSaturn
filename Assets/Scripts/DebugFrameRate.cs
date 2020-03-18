@@ -17,6 +17,6 @@ public class DebugFrameRate : MonoBehaviour
     void Update()
     {
 		fps = 1f / Time.deltaTime;
-		fpsText.text = "PRE-ALPHA    FPS  " + fps.ToString("F0");
+		fpsText.text = "PRE-ALPHA                FPS  " + fps.ToString("F0");
     }
 }

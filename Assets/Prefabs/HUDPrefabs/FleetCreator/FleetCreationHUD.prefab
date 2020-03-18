@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6228396515465901743
 RectTransform:
   m_ObjectHideFlags: 0
@@ -36,7 +36,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 30, y: 1044}
+  m_AnchoredPosition: {x: 25, y: 285}
   m_SizeDelta: {x: 175, y: 75}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &3324370143400397816
@@ -375,7 +375,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2331042483175435291
 RectTransform:
   m_ObjectHideFlags: 0
@@ -393,7 +393,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 220, y: 1043.9999}
+  m_AnchoredPosition: {x: 210, y: 285}
   m_SizeDelta: {x: 200, y: 75}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &2575676160558411628
@@ -653,7 +653,7 @@ PrefabInstance:
     - target: {fileID: 6836459475909965303, guid: 175544721c529b7478adab7747a6139a,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 6836459475909965303, guid: 175544721c529b7478adab7747a6139a,
         type: 3}
@@ -1083,7 +1083,7 @@ PrefabInstance:
     - target: {fileID: 7167784088313684937, guid: fcb5a310466015c4b959fc8d955fcfc0,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 228.055
+      value: 88
       objectReference: {fileID: 0}
     - target: {fileID: 7167784088313684937, guid: fcb5a310466015c4b959fc8d955fcfc0,
         type: 3}
@@ -1093,7 +1093,7 @@ PrefabInstance:
     - target: {fileID: 7167784088313684937, guid: fcb5a310466015c4b959fc8d955fcfc0,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 761.89
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 7167784088313684937, guid: fcb5a310466015c4b959fc8d955fcfc0,
         type: 3}

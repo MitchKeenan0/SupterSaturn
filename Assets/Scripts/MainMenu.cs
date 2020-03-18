@@ -9,6 +9,7 @@ public class MainMenu : MonoBehaviour
 	public GameObject menuPanel;
 
 	private Game game;
+	private ObjectiveBoard objBoard;
 	private OptionsMenu options;
 	private SoundManager soundManager;
 
@@ -16,26 +17,33 @@ public class MainMenu : MonoBehaviour
     {
 		gameLoadingPanel.SetActive(false);
 		options = FindObjectOfType<OptionsMenu>();
+		objBoard = FindObjectOfType<ObjectiveBoard>();
 		options.gameObject.SetActive(false);
 		game = FindObjectOfType<Game>();
 		game.LoadGame();
 		soundManager = FindObjectOfType<SoundManager>();
 	}
 
-	public void StartGame()
+	public void ObjectiveBoard(bool value)
 	{
-		soundManager.AffirmativeButton();
-		gameLoadingPanel.SetActive(true);
-		game.SetGameMode(2);
-		game.LoadScene("CampaignScene");
+		objBoard.SetActive(value);
+		menuPanel.SetActive(!value);
 	}
 
-	public void StartBattle()
+	public void StartGame()
 	{
 		soundManager.AffirmativeButton();
 		gameLoadingPanel.SetActive(true);
 		game.SetGameMode(1);
 		game.LoadScene("GameScene");
+	}
+
+	public void StartCampaign()
+	{
+		soundManager.AffirmativeButton();
+		gameLoadingPanel.SetActive(true);
+		game.SetGameMode(2);
+		game.LoadScene("CampaignScene");
 	}
 
 	public void FleetCreator()

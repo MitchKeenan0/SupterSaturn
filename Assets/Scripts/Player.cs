@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-	public static Player player;
-
 	public string playerName = "";
+	public float reputation = 1f;
 
 	private Game game;
 
+	public static Player player;
 	private void Awake()
 	{
 		if (player == null)
