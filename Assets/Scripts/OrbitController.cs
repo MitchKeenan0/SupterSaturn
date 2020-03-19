@@ -57,7 +57,6 @@ public class OrbitController : MonoBehaviour
 		float spacecraftMass = spacecraftRb.mass;
 		float spacecraftDrag = spacecraftRb.drag;
 		float simulationTime = 0f;
-		//heading += spacecraft.transform.forward;
 		Vector3 currentPosition = spacecraft.transform.position;
 		Vector3 toHeading = (heading - currentPosition).normalized * 0.01f;
 		Vector3 velocity = spacecraftRb.velocity;

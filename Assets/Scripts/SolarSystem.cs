@@ -50,6 +50,7 @@ public class SolarSystem : BattleScene
 			Planet planet = spawnedPlanet.GetComponentInChildren<Planet>();
 			if (planet != null)
 			{
+				planet.gameObject.tag = "Planet";
 				float planetSize = Random.Range(planetMinSize, planetMaxSize);
 				planet.SetScale(planetSize);
 				if (planetSize > biggestScale)

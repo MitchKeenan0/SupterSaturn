@@ -21,7 +21,7 @@ public class ObjectiveBoard : MonoBehaviour
 
 	void InitListingBoard()
 	{
-		for(int i = 0; i < 3; i++)
+		for(int i = 0; i < 5; i++)
 		{
 			ObjectiveListing listing = SpawnListing();
 			ObjectiveType type = null;
@@ -33,7 +33,7 @@ public class ObjectiveBoard : MonoBehaviour
 				int randomType = Random.Range(0, objectiveTypeList.Length - 1);
 				type = objectiveTypeList[randomType];
 				int typeRating = type.objectiveRating;
-				int indexRating = Mathf.FloorToInt(Mathf.Sqrt(randomType));
+				int indexRating = Mathf.FloorToInt(Mathf.Sqrt(randomType)) + 1;
 				if (typeRating <= indexRating)
 				{
 					if (objectiveTypeList.Length > randomType)

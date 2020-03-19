@@ -52,6 +52,8 @@ public class BattleOutcome : MonoBehaviour
 		else
 			conclusionText.text = "DEFEAT";
 
+		if (scoreHud == null)
+			scoreHud = FindObjectOfType<ScoreHUD>();
 		playerScore += scoreHud.GetScore();
 
 		scoreText.text = "+" + playerScore.ToString();
@@ -79,13 +81,6 @@ public class BattleOutcome : MonoBehaviour
 		game.SaveGame();
 	}
 
-	public void Reset()
-	{
-		playerScore = playerLost = 0;
-		conclusionPanel.SetActive(false);
-		scorePanel.SetActive(false);
-	}
-
 	public void Continue()
 	{
 		SceneManager.LoadScene("CampaignScene");
@@ -93,6 +88,13 @@ public class BattleOutcome : MonoBehaviour
 
 	public void Return()
 	{
+		ObjectiveType[] objs = FindObjectsOfType<ObjectiveType>();
+		int numObjs = objs.Length;
+		for(int i = 0; i < numObjs; i++)
+		{
+			GameObject obj = objs[i].gameObject;
+			Destroy(obj);
+		}
 		SceneManager.LoadScene("FleetScene");
 	}
 

@@ -11,6 +11,7 @@ TagManager:
   - EndTurn
   - SpawnWidget
   - Hull
+  - Planet
   layers:
   - Default
   - TransparentFX
