@@ -4,8 +4,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class FleetCreator : MonoBehaviour
+public class SpacecraftEditor : MonoBehaviour
 {
+	public GameObject mainEditorPanel;
 	public Text playerNameText;
 	public Text placeholderNameText;
 	public Text chevronValueText;
@@ -13,7 +14,7 @@ public class FleetCreator : MonoBehaviour
 	public Image chevronDividerImage;
 	public Color moneyColor;
 	public Color bankruptColor;
-	public Button startGameButton;
+	//public Button startGameButton;
 	public Button emptyButton;
 	public Button emptyAllButton;
 
@@ -23,22 +24,9 @@ public class FleetCreator : MonoBehaviour
 	private CardRoster cardRoster;
 	private CardSelector cardSelector;
 	private SoundManager soundManager;
+	private CanvasGroup editorPanelGroup;
 	private IEnumerator deselectGraceCoroutine;
 	private IEnumerator loadGraceCoroutine;
-
-	void OnEnable()
-	{
-		SceneManager.sceneLoaded += OnLevelFinishedLoading;
-	}
-	void OnDisable()
-	{
-		SceneManager.sceneLoaded -= OnLevelFinishedLoading;
-	}
-	void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
-	{
-		if (game != null)
-			game.LoadGame();
-	}
 
 	void Awake()
 	{
@@ -54,6 +42,7 @@ public class FleetCreator : MonoBehaviour
 	void Start()
     {
 		spacecraftViewer = GetComponent<SpacecraftViewer>();
+		editorPanelGroup = mainEditorPanel.GetComponent<CanvasGroup>();
 		loadGraceCoroutine = LoadWait(0.3f);
 		StartCoroutine(loadGraceCoroutine);
 	}
@@ -80,15 +69,11 @@ public class FleetCreator : MonoBehaviour
 	void UpdateChevronBalance()
 	{
 		int total = 0;
-		List<Card> selectedCards = new List<Card>(game.GetSelectedCards());
-		int numSelected = selectedCards.Count;
-		for (int i = 0; i < numSelected; i++)
+		Card selectedCard = game.GetSelectedCard();
+		if (selectedCard != null)
 		{
-			if (game.GetSelectedCards()[i] != null)
-			{
-				int thisCost = game.GetSelectedCards()[i].cost;
-				total += thisCost;
-			}
+			int thisCost = selectedCard.cost;
+			total += thisCost;
 		}
 		chevronBalanceText.text = total.ToString();
 
@@ -96,14 +81,14 @@ public class FleetCreator : MonoBehaviour
 		{
 			if (game.GetGameMode() != 0)
 			{
-				startGameButton.interactable = true;
+				//startGameButton.interactable = true;
 				chevronBalanceText.color = moneyColor;
 				chevronDividerImage.color = moneyColor;
 			}
 		}
 		else
 		{
-			startGameButton.interactable = false;
+			//startGameButton.interactable = false;
 			chevronBalanceText.color = bankruptColor;
 			chevronDividerImage.color = bankruptColor;
 		}
@@ -169,13 +154,6 @@ public class FleetCreator : MonoBehaviour
 				game.SaveGame();
 			}
 		}
-		else
-		{
-			int numSelected = game.GetSelectedCards().Count;
-			int offerSlotIndex = (numSelected);
-			if (offerSlotIndex < cardRoster.GetSlots().Count)
-				cardRoster.SelectSlot(offerSlotIndex);
-		}
 
 		cardSelector.SelectCard(buttonIndex);
 	}
@@ -199,10 +177,10 @@ public class FleetCreator : MonoBehaviour
 		player.SetName(value);
 	}
 
-	public void BackToMenu()
+	public void Editor(bool value)
 	{
-		soundManager.NegativeButton();
-		game.SaveGame();
-		SceneManager.LoadScene("BaseScene");
+		float alpha = (value) ? 1f : 0f;
+		editorPanelGroup.alpha = alpha;
+		editorPanelGroup.blocksRaycasts = value;
 	}
 }

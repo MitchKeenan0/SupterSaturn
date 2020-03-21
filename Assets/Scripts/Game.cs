@@ -9,24 +9,20 @@ using UnityEngine.SceneManagement;
 public class Game : MonoBehaviour
 {
 	public static Game game;
-
 	public Card[] cardLibrary;
 	public Card[] npcCardLibrary;
 	public List<Card> initialSpacecraftCards;
 	public int initialChevrons = 200;
-	public Campaign ghostCampaignPrefab;
 
 	private Player player;
-	private Fleet playerFleet;
-	private Fleet enemyFleet;
 	private GameHUD gameHud;
 	private Campaign campaign;
 	private GameObject ghostCampaign;
-	private List<Card> selectedCardList;
+	private Card playerSpacecraftCard;
 	private List<Card> enemyCardList;
 	private List<Spacecraft> spacecraftList;
 	private List<Spacecraft> enemySpacecraftList;
-	private List<int> savedHealthList;
+	private int savedHealth = 0;
 	private int sceneSetting = 0;
 	private int chevrons = 0;
 	private int gameMode = -1;
@@ -34,11 +30,11 @@ public class Game : MonoBehaviour
 	private bool bFleetTutorialClosed = false;
 	private bool bGameTutorialClosed = false;
 
-	public List<Card> GetSelectedCards() { return selectedCardList; }
+	public Card GetSelectedCard() { return playerSpacecraftCard; }
 	public List<Card> GetEnemyCards() { return enemyCardList; }
 	public List<Spacecraft> GetSpacecraftList() { return spacecraftList; }
 	public List<Spacecraft> GetEnemySpacecraftList() { return enemySpacecraftList; }
-	public int GetSavedHealth(int index) { return (savedHealthList.Count > index) ? savedHealthList[index] : -1; }
+	public int GetSavedHealth() { return savedHealth; }
 	public int GetChevrons() { return chevrons; }
 	public int GetSceneSetting() { return sceneSetting; }
 	public void UpdateChevronAccount(int value) { chevrons += value; }
@@ -53,25 +49,12 @@ public class Game : MonoBehaviour
 	}
 	void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
 	{
-		selectedCardList = new List<Card>();
 		enemyCardList = new List<Card>();
 		spacecraftList = new List<Spacecraft>();
 		enemySpacecraftList = new List<Spacecraft>();
-		savedHealthList = new List<int>();
-
 		player = FindObjectOfType<Player>();
 		gameHud = FindObjectOfType<GameHUD>();
 		campaign = FindObjectOfType<Campaign>();
-	}
-
-	private void OnApplicationPause(bool paused)
-	{
-		SaveGame();
-	}
-
-	void OnApplicationQuit()
-	{
-		SaveGame();
 	}
 
 	void Awake()
@@ -86,12 +69,9 @@ public class Game : MonoBehaviour
 			Destroy(gameObject);
 		}
 
-		selectedCardList = new List<Card>();
 		enemyCardList = new List<Card>();
 		spacecraftList = new List<Spacecraft>();
 		enemySpacecraftList = new List<Spacecraft>();
-		savedHealthList = new List<int>();
-
 		player = FindObjectOfType<Player>();
 		gameHud = FindObjectOfType<GameHUD>();
 		campaign = FindObjectOfType<Campaign>();
@@ -143,56 +123,24 @@ public class Game : MonoBehaviour
 			Time.timeScale = 1f;
 	}
 
-	public void SetSelectedCard(int index, Card card)
+	public void SetSelectedCard(Card card)
 	{
-		if (selectedCardList == null)
-			selectedCardList = new List<Card>();
-		if (index < selectedCardList.Count)
-		{
-			if (card == null)
-				selectedCardList.RemoveAt(index);
-			else
-				selectedCardList[index] = card;
-		}
-		else if (card != null)
-		{
-			selectedCardList.Add(card);
-		}
-
-		///Debug.Log("player has " + selectedCardList.Count + " selected cards");
+		playerSpacecraftCard = card;
 	}
 
-	public void SetSpacecraft(int index, Spacecraft sp)
+	public void SetPlayerSpacecraft(Spacecraft sp)
 	{
-		if (index < spacecraftList.Count)
-		{
-			if (sp == null)
-				spacecraftList.RemoveAt(index);
-			else
-				spacecraftList[index] = sp;
-		}
-		else if (sp != null)
-		{
+		if (spacecraftList == null)
+			spacecraftList = new List<Spacecraft>();
+		if (spacecraftList.Count > 0)
+			spacecraftList[0] = sp;
+		else
 			spacecraftList.Add(sp);
-		}
-
-		///Debug.Log("player has " + spacecraftList.Count + " spacecraft");
 	}
 
-	public void SetSavedHealth(int index, int value)
+	public void SetSavedHealth(int value)
 	{
-		if (value != -1)
-		{
-			if (index < savedHealthList.Count)
-				savedHealthList[index] = value;
-			else
-				savedHealthList.Add(value);
-			///Debug.Log("Setting saved health " + index + " of " + savedHealthList.Count + " to " + value);
-		}
-		else if (index < savedHealthList.Count)
-		{
-			savedHealthList.Remove(index);
-		}
+		savedHealth = value;
 	}
 
 	public void SetEnemyCard(int index, Card card)
@@ -229,13 +177,11 @@ public class Game : MonoBehaviour
 			Save save = (Save)bf.Deserialize(file);
 			file.Close();
 
-			if (selectedCardList != null)
+			if (enemyCardList != null)
 			{
-				selectedCardList.Clear();
 				enemyCardList.Clear();
 				spacecraftList.Clear();
 				enemySpacecraftList.Clear();
-				savedHealthList.Clear();
 			}
 
 			// player name
@@ -247,55 +193,31 @@ public class Game : MonoBehaviour
 				player.SetName(playerName);
 			}
 
-			// player cards
-			int savedCardCount = save.cardList.Count;
-			if (savedCardCount > 0)
-			{
-				for (int i = 0; i < savedCardCount; i++)
-				{
-					int selectedCardID = save.cardList[i];
-					Card selectedCard = cardLibrary[selectedCardID];
-					SetSelectedCard(i, selectedCard);
-					Spacecraft sp = CreateSpacecraft(selectedCard);
-					SetSpacecraft(i, sp);
-				}
-			}
+			// player spacecraft card
+			int selectedCardID = save.playerSpacecraftCard;
+			Card selectedCard = cardLibrary[selectedCardID];
+			playerSpacecraftCard = selectedCard;
+			SetSelectedCard(selectedCard);
+			Spacecraft sp = CreateSpacecraft(selectedCard);
+			SetPlayerSpacecraft(sp);
 
-			// health
-			int savedHealthCount = save.healthList.Count;
-			for (int i = 0; i < savedHealthCount; i++)
+			// player health
+			int savedHealth = save.playerHealth;
+			if ((savedHealth == -1) && (spacecraftList != null) && (spacecraftList.Count > 0))
+				savedHealth = sp.GetComponent<Health>().maxHealth;
+			if (savedHealth == 0)
+				savedHealth = playerSpacecraftCard.health;
+			SetSavedHealth(savedHealth);
+			int maxHealth = sp.GetHealth();
+			if (savedHealth < maxHealth)
 			{
-				int savedHealth = save.healthList[i];
-				if (savedHealth == -1)
-					savedHealth = spacecraftList[i].GetComponent<Health>().maxHealth;
-				SetSavedHealth(i, savedHealth);
-
-				if (i < spacecraftList.Count)
-				{
-					int maxHealth = spacecraftList[i].GetHealth();
-					int spawnDamage = savedHealth - maxHealth;
-					///Debug.Log("LoadGame spawn damage: " + spawnDamage);
-					spacecraftList[i].GetComponent<Health>().ModifyHealth(spawnDamage, null);
-				}
-			}
-
-			// enemy cards
-			int savedEnemies = save.enemyCardList.Count;
-			if (savedEnemies > 0)
-			{
-				for(int i = 0; i < savedEnemies; i++)
-				{
-					int cardIndex = save.enemyCardList[i];
-					GameObject enemyObj = Instantiate(npcCardLibrary[cardIndex].cardObjectPrefab, transform);
-					enemyObj.SetActive(false);
-					Spacecraft sp = enemyObj.GetComponent<Spacecraft>();
-					AddEnemy(sp);
-				}
+				int spawnDamage = savedHealth - maxHealth;
+				sp.GetComponent<Health>().ModifyHealth(spawnDamage, null);
 			}
 
 			// chevrons
 			chevrons = save.chevrons;
-			if (chevrons <= initialChevrons)
+			if (chevrons < initialChevrons)
 				chevrons = initialChevrons;
 
 			// tutorial
@@ -323,6 +245,10 @@ public class Game : MonoBehaviour
 
 			Debug.Log("Game Loaded");
 		}
+		else
+		{
+			Debug.Log("Load found no save data");
+		}
 	}
 
 	public void CloseTutorial()
@@ -343,6 +269,7 @@ public class Game : MonoBehaviour
 			GameObject spacecraftObject = Instantiate(card.cardObjectPrefab, null);
 			spacecraftObject.SetActive(false);
 			sp = spacecraftObject.GetComponent<Spacecraft>();
+			Debug.Log("Spawned player spacecraft");
 		}
 		return sp;
 	}
@@ -358,7 +285,6 @@ public class Game : MonoBehaviour
 
 	private Save CreateSaveGameObject()
 	{
-		Debug.Log("saving game...");
 		Save save = new Save();
 
 		// player name
@@ -369,74 +295,58 @@ public class Game : MonoBehaviour
 				playerName = "No Name";
 			save.playerName = player.playerName;
 		}
-		
-		// player cards
-		int numCards = selectedCardList.Count;
-		for (int i = 0; i < numCards; i++)
+
+		// player spacecraft card
+		if (playerSpacecraftCard == null)
+			playerSpacecraftCard = initialSpacecraftCards[0];
+		save.playerSpacecraftCard = playerSpacecraftCard.numericID;
+
+		// player health
+		SpacecraftEditor spacecraftEditor = FindObjectOfType<SpacecraftEditor>();
+		/// there's an issue here - spacecraft list is empty for some reason.
+		/// Workaround below
+		if ((spacecraftList != null) && (spacecraftList.Count > 0))
 		{
-			if (selectedCardList[i] != null)
+			Spacecraft liveSpacecraft = spacecraftList[0];
+			if (liveSpacecraft.isActiveAndEnabled)
 			{
-				int cardIndex = selectedCardList[i].numericID;
-				save.cardList.Add(cardLibrary[cardIndex].numericID);
+				savedHealth = liveSpacecraft.GetHealth();
+				if (savedHealth == -1)
+					savedHealth = liveSpacecraft.GetComponent<Health>().maxHealth;
+				save.playerHealth = savedHealth;
+			}
+			else if ((spacecraftEditor != null) || (campaign != null))
+			{
+				save.playerHealth = savedHealth;
 			}
 		}
-		if (save.cardList.Count == 0)
+		else if ((spacecraftEditor != null) || (campaign != null))
 		{
-			save.cardList.Add(initialSpacecraftCards[0].numericID);
+			if (savedHealth == 0)
+				savedHealth = playerSpacecraftCard.health;
+			save.playerHealth = savedHealth;
 		}
-
-		int numEnemies = enemySpacecraftList.Count;
-		if (numEnemies > 0)
+		else
 		{
-			for (int i = 0; i < numEnemies; i++)
+			spacecraftList = new List<Spacecraft>();
+			ObjectManager objManager = FindObjectOfType<ObjectManager>();
+			if (objManager != null)
 			{
-				if (i < enemyCardList.Count)
+				List<Spacecraft> allSp = objManager.GetSpacecraftList();
+				int numSp = allSp.Count;
+				for(int i = 0; i < numSp; i++)
 				{
-					save.enemyCardList.Add(enemyCardList[i].numericID);
-					///Debug.Log("Saved enemy card");
+					Spacecraft thisSp = allSp[i];
+					if (thisSp.GetAgent() != null && (thisSp.GetAgent().teamID == 0))
+						spacecraftList.Add(thisSp);
 				}
-			}
-		}
-
-		int numSpacecraft = selectedCardList.Count;
-		///Debug.Log("Saving " + numSpacecraft + " spacecraft healths");
-		if (numSpacecraft > 0)
-		{
-			for (int i = 0; i < numSpacecraft; i++)
-			{
-				FleetCreator fleetCreator = FindObjectOfType<FleetCreator>();
-				// live spacecraft
-				if (spacecraftList[i] != null)
-				{
-					if (spacecraftList[i].isActiveAndEnabled)
-					{
-						int spacecraftHealth = spacecraftList[i].GetComponent<Health>().GetHealth();
-						if (spacecraftHealth == -1)
-							spacecraftHealth = spacecraftList[i].GetComponent<Health>().maxHealth;
-						save.healthList.Add(spacecraftHealth);
-						///Debug.Log(spacecraftList[i].spacecraftName + " " + spacecraftHealth);
-					}
-					else if ((i < game.savedHealthList.Count)
-						&& ((fleetCreator != null) || (campaign != null)))
-					{
-						int hp = 0;
-						if (i < savedHealthList.Count)
-							hp = game.savedHealthList[i];
-
-						save.healthList.Add(hp);
-						///Debug.Log(spacecraftList[i].spacecraftName + " " + hp);
-					}
-				}
-				else
-				{
-					save.healthList.Add(0);
-					///Debug.Log(spacecraftList[i].spacecraftName + " " + 0);
-				}
+				if (spacecraftList.Count > 0)
+					save.playerHealth = spacecraftList[0].GetHealth();
 			}
 		}
 
 		// chevrons
-		if (chevrons <= 0)
+		if (chevrons < initialChevrons)
 			chevrons = initialChevrons;
 		save.chevrons = chevrons;
 
@@ -460,9 +370,7 @@ public class Game : MonoBehaviour
 			int numSp = allSpacecraft.Length;
 			for (int i = 0; i < numSp; i++)
 				Destroy(allSpacecraft[i]);
-
-			selectedCardList = new List<Card>();
-			savedHealthList = new List<int>();
+			
 			spacecraftList = new List<Spacecraft>();
 			enemyCardList = new List<Card>();
 			enemySpacecraftList = new List<Spacecraft>();
@@ -471,12 +379,16 @@ public class Game : MonoBehaviour
 			bGameTutorialClosed = false;
 
 			SaveGame();
-
-			///Debug.Log("save deleted");
+			LoadScene("FleetScene");
 		}
 		catch (Exception ex)
 		{
 			Debug.LogException(ex);
 		}
+	}
+
+	void OnApplicationQuit()
+	{
+		SaveGame();
 	}
 }

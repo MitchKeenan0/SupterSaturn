@@ -56,7 +56,7 @@ public class BattleFleet : MonoBehaviour
 
 				Card spCard = null;
 				if (teamID == 0)
-					spCard = game.GetSelectedCards()[i];
+					spCard = game.GetSelectedCard();
 				else
 					spCard = game.cardLibrary[Random.Range(0, game.npcCardLibrary.Length - 1)];
 				cardLoader.UploadCardToSpacecraft(spCard, sp);

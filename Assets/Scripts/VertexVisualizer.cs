@@ -50,7 +50,6 @@ public class VertexVisualizer : MonoBehaviour
 			{
 				Vector3 vertex = pl.GetVertexList()[i];
 				vertexList.Add(vertex);
-				Debug.Log("vertex " + vertex);
 			}
 		}
 
@@ -58,7 +57,7 @@ public class VertexVisualizer : MonoBehaviour
 		for (int i = 0; i < numVerts; i++)
 		{
 			LineRenderer line = SpawnLineRenderer();
-			Vector3 vertexPosition = vertexList[i] * 50f;
+			Vector3 vertexPosition = vertexList[i];
 			Vector3 vertexNormal = vertexPosition * 1.3f;
 			line.SetPosition(0, vertexPosition);
 			line.SetPosition(1, vertexNormal);
@@ -68,6 +67,7 @@ public class VertexVisualizer : MonoBehaviour
 	LineRenderer SpawnLineRenderer()
 	{
 		LineRenderer line = Instantiate(linePrefab, transform);
+		line.useWorldSpace = false;
 		lineList.Add(line);
 		return line;
 	}
@@ -83,16 +83,7 @@ public class VertexVisualizer : MonoBehaviour
 			{
 				lineList[lineIndex].enabled = false;
 				lineList[lineIndex].gameObject.SetActive(false);
-				Debug.Log("set line inactive");
 			}
-			else
-			{
-				Debug.Log("too few lines");
-			}
-		}
-		else
-		{
-			Debug.Log("no line");
 		}
 	}
 }

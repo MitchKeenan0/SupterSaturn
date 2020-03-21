@@ -29,9 +29,9 @@ public class CardRoster : MonoBehaviour
 			CreateFleetPanelSlot();
 
 		// load cards
-		List<Card> selectedCards = new List<Card>(game.GetSelectedCards());
-		if (selectedCards.Count == 0)
-			selectedCards = game.initialSpacecraftCards;
+		Card selectedCard = game.GetSelectedCard();
+		if (selectedCard == null)
+			selectedCard = game.initialSpacecraftCards[0];
 
 		// assign slots
 		CardRosterSlot[] cardSlotsArray = GetComponentsInChildren<CardRosterSlot>();
@@ -40,9 +40,8 @@ public class CardRoster : MonoBehaviour
 		{
 			CardRosterSlot panelSlot = cardSlotsArray[i];
 			Card spacecraftCard = null;
-
-			if ((i < selectedCards.Count) && (i < maxSlotsAvailable))
-				spacecraftCard = selectedCards[i];
+			if ((i < 1) && (i < maxSlotsAvailable))
+				spacecraftCard = selectedCard;
 			if (spacecraftCard != null)
 				panelSlot.SetSlot(spacecraftCard, i, false);
 			else
@@ -88,7 +87,7 @@ public class CardRoster : MonoBehaviour
 		{
 			int slotIndex = selectedSlot.transform.GetSiblingIndex();
 			selectedSlot.SetSlot(null, slotIndex, false);
-			game.SetSelectedCard(slotIndex, null);
+			game.SetSelectedCard(null);
 		}
 		selectedSlot = null;
 	}
@@ -102,7 +101,7 @@ public class CardRoster : MonoBehaviour
 			if (ps != null)
 				ps.SetSlot(null, i, false);
 		}
-		game.GetSelectedCards().Clear();
+		game.SetSelectedCard(null);
 		selectedSlot = null;
 	}
 }

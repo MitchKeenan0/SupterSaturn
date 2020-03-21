@@ -80,7 +80,8 @@ public class Planet : MonoBehaviour
 					int vertexIndex = vertexList.IndexOf(hitVertex);
 					if (colors.Length > vertexIndex)
 						colors[vertexIndex] = color;
-					scoreHud.PopupScore(transform.TransformPoint(hitVertex), 1, vertexList.Count);
+					if (scoreHud != null)
+						scoreHud.PopupScore(transform.TransformPoint(hitVertex), 1, vertexList.Count);
 					freshVertices.Remove(hitVertex);
 					if (vertexVisualizer != null)
 						vertexVisualizer.DisableLine(hitVertex);

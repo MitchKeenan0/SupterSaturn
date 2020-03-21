@@ -12,7 +12,7 @@ public class LocationManager : MonoBehaviour
 	public GameObject[] locationLibrary;
 
 	private Campaign campaign;
-	private FleetCreator fleetCreator;
+	private SpacecraftEditor spacecraftEditor;
 	private MainMenu menu;
 	private BattleOutcome battle;
 	private List<CampaignLocation> allLocations;
@@ -25,7 +25,7 @@ public class LocationManager : MonoBehaviour
 		allLocations = new List<CampaignLocation>();
 		route = new List<CampaignLocation>();
 		campaign = GetComponent<Campaign>();
-		fleetCreator = FindObjectOfType<FleetCreator>();
+		spacecraftEditor = FindObjectOfType<SpacecraftEditor>();
 		menu = FindObjectOfType<MainMenu>();
 		battle = FindObjectOfType<BattleOutcome>();
 	}

@@ -115,7 +115,7 @@ MonoBehaviour:
   speedMultiplier: 1
   bRandomRotationStart: 0
   bRandomSpeed: 0
-  worldPivot: 1
+  worldPivot: 0
 --- !u!135 &9048446475011085990
 SphereCollider:
   m_ObjectHideFlags: 0

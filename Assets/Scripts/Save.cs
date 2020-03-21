@@ -10,7 +10,6 @@ public class Save
 	public bool fleetTutorialClosed = false;
 	public bool gameTutorialClosed = false;
 
-	public List<int> cardList = new List<int>();
-	public List<int> healthList = new List<int>();
-	public List<int> enemyCardList = new List<int>();
+	public int playerSpacecraftCard = 0;
+	public int playerHealth = 0;
 }

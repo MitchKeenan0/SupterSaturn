@@ -42,7 +42,7 @@ public class ObjectiveTrigger : MonoBehaviour
 	{
 		if (rb != null)
 		{
-			rb.drag = 1.6f;
+			rb.drag = 5.0f;
 		}
 	}
 

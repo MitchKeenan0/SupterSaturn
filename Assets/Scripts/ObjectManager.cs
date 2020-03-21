@@ -26,6 +26,7 @@ public class ObjectManager : MonoBehaviour
 
 	void Start()
 	{
+		Debug.Log("ObjectManager Start");
 		game.LoadGame();
 		hud = FindObjectOfType<CraftIconHUD>();
 		battleOutcome = FindObjectOfType<BattleOutcome>();

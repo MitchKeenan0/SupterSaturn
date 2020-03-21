@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectiveName: Rescue Spacecraft
-  objectiveDesctription: Rescue the H.M.S. Jaddin
+  objectiveDescription: Rescue the spacecraft
   objectiveIcon: {fileID: 21300000, guid: 7be2f35512f214e438319ec42ffa8c71, type: 3}
   objectiveRating: 1
   principleObjectPrefabs:

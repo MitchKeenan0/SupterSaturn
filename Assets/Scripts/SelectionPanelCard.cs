@@ -13,7 +13,7 @@ public class SelectionPanelCard : MonoBehaviour, IPointerEnterHandler, IPointerE
 
 	private Tooltip tooltip;
 	private Card card;
-	private FleetCreator fleetCreator;
+	private SpacecraftEditor spacecraftEditor;
 	private Button button;
 
 	public Card GetCard() { return card; }
@@ -21,7 +21,7 @@ public class SelectionPanelCard : MonoBehaviour, IPointerEnterHandler, IPointerE
 	void Awake()
 	{
 		tooltip = GetComponent<Tooltip>();
-		fleetCreator = GetComponentInParent<FleetCreator>();
+		spacecraftEditor = GetComponentInParent<SpacecraftEditor>();
 		button = GetComponentInChildren<Button>();
 		button.onClick.AddListener(TaskOnClick);
 	}
@@ -51,20 +51,20 @@ public class SelectionPanelCard : MonoBehaviour, IPointerEnterHandler, IPointerE
 	public void OnPointerEnter(PointerEventData eventData)
 	{
 		int siblingIndex = transform.GetSiblingIndex();
-		fleetCreator.DemoSlotSprite(cardImage.sprite, siblingIndex);
+		spacecraftEditor.DemoSlotSprite(cardImage.sprite, siblingIndex);
 		tooltip.ShowTooltip(true);
 	}
 
 	public void OnPointerExit(PointerEventData eventData)
 	{
-		fleetCreator.DemoSlotSprite(null, 0);
+		spacecraftEditor.DemoSlotSprite(null, 0);
 		tooltip.ShowTooltip(false);
 	}
 
 	void TaskOnClick()
 	{
 		int siblingIndex = transform.GetSiblingIndex();
-		fleetCreator.SelectSpacecraftCard(siblingIndex);
+		spacecraftEditor.SelectSpacecraftCard(siblingIndex);
 	}
 
 	string GetRomanNumeral(int value)

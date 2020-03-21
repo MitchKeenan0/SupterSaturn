@@ -11,7 +11,7 @@ public class Campaign : MonoBehaviour
 	private Game game;
 	private Camera cameraMain;
 	private FleetHUD fleetHud;
-	private FleetCreator fleetCreator;
+	private SpacecraftEditor spacecraftEditor;
 	private CampaignBattle campaignBattle;
 	private LocationManager locationManager;
 	private NameLibrary nameLibrary;
@@ -45,7 +45,7 @@ public class Campaign : MonoBehaviour
 		locationList = new List<CampaignLocation>();
 		originLocations = new List<CampaignLocation>();
 		fleetHud = FindObjectOfType<FleetHUD>();
-		fleetCreator = FindObjectOfType<FleetCreator>();
+		spacecraftEditor = FindObjectOfType<SpacecraftEditor>();
 		campaignBattle = FindObjectOfType<CampaignBattle>();
 		locationManager = FindObjectOfType<LocationManager>();
 		cameraMain = Camera.main;

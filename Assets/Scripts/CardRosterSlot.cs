@@ -10,7 +10,7 @@ public class CardRosterSlot : MonoBehaviour, IDeselectHandler
 	public Text slotNameText;
 	public Text costText;
 
-	private FleetCreator fleetCreator;
+	private SpacecraftEditor spacecraftEditor;
 	private Game game;
 	private Button button;
 	private Sprite originalSprite;
@@ -35,7 +35,7 @@ public class CardRosterSlot : MonoBehaviour, IDeselectHandler
 
 	void Start()
 	{
-		fleetCreator = GetComponentInParent<FleetCreator>();
+		spacecraftEditor = GetComponentInParent<SpacecraftEditor>();
 		button = GetComponent<Button>();
 		button.onClick.AddListener(TaskOnClick);
 	}
@@ -43,12 +43,12 @@ public class CardRosterSlot : MonoBehaviour, IDeselectHandler
 	void TaskOnClick()
 	{
 		int myIndex = transform.GetSiblingIndex();
-		fleetCreator.SelectSlot(myIndex);
+		spacecraftEditor.SelectSlot(myIndex);
 	}
 
 	public void OnDeselect(BaseEventData data)
 	{
-		fleetCreator.DeselectSlot();
+		spacecraftEditor.DeselectSlot();
 		PreviewSlot(null, null, 0);
 	}
 
@@ -99,11 +99,11 @@ public class CardRosterSlot : MonoBehaviour, IDeselectHandler
 			originalSlotCost = slotCard.cost;
 
 			int maxHealth = slotCard.health;
-			int currentHealth = game.GetSavedHealth(index);
+			int currentHealth = game.GetSavedHealth();
 			if (newCard)
 			{
 				currentHealth = card.health;
-				game.SetSavedHealth(index, card.health);
+				game.SetSavedHealth(card.health);
 			}
 
 			if (currentHealth < 0)
@@ -125,12 +125,13 @@ public class CardRosterSlot : MonoBehaviour, IDeselectHandler
 			healthBar.enabled = false;
 		}
 
-		game.SetSelectedCard(index, card);
+		game.SetSelectedCard(card);
 
 		Spacecraft sp = null;
 		if (card != null)
 			sp = card.cardObjectPrefab.GetComponent<Spacecraft>();
-		game.SetSpacecraft(index, sp);
+
+		game.SetPlayerSpacecraft(sp);
 
 		SetSlotActive(card != null);
 	}

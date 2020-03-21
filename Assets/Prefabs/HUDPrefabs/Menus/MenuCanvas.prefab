@@ -374,7 +374,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2421846110081700291
 RectTransform:
   m_ObjectHideFlags: 0
@@ -956,6 +956,7 @@ GameObject:
   - component: {fileID: 8940093166553308635}
   - component: {fileID: 8940093166553308632}
   - component: {fileID: 8940093166553308636}
+  - component: {fileID: 95122936469232678}
   m_Layer: 5
   m_Name: MenuCanvas
   m_TagString: Untagged
@@ -1060,6 +1061,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameLoadingPanel: {fileID: 8940093166180530037}
   menuPanel: {fileID: 8940093166735130798}
+--- !u!225 &95122936469232678
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8940093166553308633}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &8940093166705724471
 GameObject:
   m_ObjectHideFlags: 0
@@ -1204,6 +1217,7 @@ GameObject:
   - component: {fileID: 8940093166735130785}
   - component: {fileID: 8940093166735130787}
   - component: {fileID: 8940093166735130786}
+  - component: {fileID: 5295654675460313159}
   m_Layer: 5
   m_Name: MenuPanel
   m_TagString: Untagged
@@ -1265,3 +1279,15 @@ MonoBehaviour:
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
+--- !u!225 &5295654675460313159
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8940093166735130798}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
