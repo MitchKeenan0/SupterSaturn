@@ -98,7 +98,7 @@ public class Planet : MonoBehaviour
 	public void SetScale(float sizeMagnitude)
 	{
 		transform.localScale = Vector3.one * sizeMagnitude;
-		GetComponent<SphereCollider>().radius = 0.5f;
+		GetComponent<SphereCollider>().radius = 0.47f;
 		planetSize = sizeMagnitude;
 	}
 }

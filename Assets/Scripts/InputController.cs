@@ -102,13 +102,15 @@ public class InputController : MonoBehaviour
 	{
 		bool bTurningOff = bStopped;
 		bStopped = !bStopped;
-
+		bool bEngineShutdown = false;
 		if (bStopped)
 		{
 			List<Spacecraft> selectedSpacecraft = mouseSelection.GetSelectedSpacecraft();
 			foreach (Spacecraft sp in selectedSpacecraft)
 			{
 				Autopilot autopilot = sp.GetComponent<Autopilot>();
+				if (autopilot.IsEngineActive())
+					bEngineShutdown = true;
 				autopilot.AllStop();
 			}
 		}
@@ -123,10 +125,25 @@ public class InputController : MonoBehaviour
 		}
 
 		if (bStopped)
-			UpdateStatusText("All stop");
+		{
+			if (bEngineShutdown)
+				UpdateStatusText("Main engine shutdown");
+			else
+				UpdateStatusText("All stop");
+		}
 		else
+		{
 			UpdateStatusText("Intertial stabilizers off");
-		ActivateButton(stopButton, bStopped, bTurningOff);
+		}
+
+		if (bEngineShutdown)
+		{
+			bTurningOff = false;
+			bStopped = false;
+		}
+
+		bool bActivated = bStopped || bEngineShutdown;
+		ActivateButton(stopButton, bActivated, bTurningOff);
 	}
 
 	public void NavigationMode(bool value)

@@ -37,6 +37,8 @@ public class Autopilot : MonoBehaviour
 
 	private IEnumerator engineCoroutine;
 
+	public bool IsEngineActive() { return bEngineActive; }
+
 	void Start()
     {
 		rb = GetComponent<Rigidbody>();
@@ -71,13 +73,23 @@ public class Autopilot : MonoBehaviour
 
 	public void AllStop()
 	{
-		bStopping = true;
+		if (bEngineActive)
+		{
+			StopCoroutine(engineCoroutine);
+			bEngineActive = false;
+			FaceVelocity(true);
+		}
+		else
+		{
+			bStopping = true;
+			FaceVelocity(false);
+			StopAllCoroutines();
+		}
+		
 		bExecutingMoveCommand = false;
 		spacecraft.MainEngines(0f);
 		spacecraft.Maneuver(Vector3.zero);
 		spacecraft.SideJets(Vector3.zero);
-		FaceVelocity(false);
-		StopAllCoroutines();
 	}
 
 	public void ReleaseBrakes()
