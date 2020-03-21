@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1850120577657389075}
   - component: {fileID: 1850120577657389074}
+  - component: {fileID: 7717369674064349446}
   m_Layer: 0
   m_Name: GameControl
   m_TagString: Untagged
@@ -55,5 +56,83 @@ MonoBehaviour:
   initialSpacecraftCards:
   - {fileID: 5883829961090761148, guid: f87ade3d4e2a75641a02aced5dc863f5, type: 3}
   initialChevrons: 200
-  ghostCampaignPrefab: {fileID: 4911098824289123668, guid: 98a239bf1a49efb44b0bdac877cc469d,
-    type: 3}
+--- !u!114 &7717369674064349446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1850120577657389084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06eb72ae022c4f543b79bc0d0b0afa67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fighterNames:
+  - Bauer
+  - Carrera
+  - Voltez
+  - Abbey
+  schoonerNames:
+  - Libra
+  - Calet
+  - Figurine
+  commonLocationNames:
+  - Obes
+  - Tatir
+  - Bando
+  - Sirius
+  - Vega
+  - Caliope
+  - Specta
+  - Maoa
+  - Iyu
+  - Blue Star
+  - Aax
+  uniqueLocationNames:
+  - Reccez
+  - Aqua Nebula
+  - Karaoke Nebula
+  - Randal's Cloud
+  - The Maelstrom
+  - Teh Garden
+  - Hydrogean
+  - Helix Nebula
+  - Sauna
+  - Guedes Giant
+  - Harrow
+  rareLocationNames:
+  - Family Fortress
+  - Edne
+  - Reasearch Base
+  - Nike
+  - HG-413
+  - Lost Temple
+  - Super Saturn
+  - Seed of the Stars
+  - Matrices of Or
+  - Father Star
+  - Never
+  - Empress
+  identityNames:
+  - Bauer
+  - Culture Viper
+  - Carrera
+  - Voltez
+  - Kara
+  - Abriette
+  - Tangerine
+  - Minerva
+  - Chandra
+  - Ali
+  - Mahdi
+  fleetNames:
+  - Rogue Navy
+  - Scerzaron
+  - Thief Cartel
+  - Herald Fleet
+  - Bodysnatchers
+  usedCommonLocations: 
+  usedUniqueLocations: 
+  usedRareLocations: 
+  usedIdentityNames: 

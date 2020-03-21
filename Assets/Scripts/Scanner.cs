@@ -64,8 +64,10 @@ public class Scanner : MonoBehaviour
 		currentRadius = 0f;
 		timeAtScan = Time.time;
 		pointSize = 0f;
-		spherePoints.SetPointSize(pointSize);
-		meshRenderer.material.SetFloat("_Opacity", originalAlpha);
+		if (spherePoints != null)
+			spherePoints.SetPointSize(pointSize);
+		if (meshRenderer != null)
+			meshRenderer.material.SetFloat("_Opacity", originalAlpha);
 
 		updateCoroutine = UpdateScan(updateInterval);
 		StartCoroutine(updateCoroutine);
@@ -75,7 +77,8 @@ public class Scanner : MonoBehaviour
 	{
 		while (true)
 		{
-			UpdateScan();
+			if (Time.timeSinceLevelLoad > 1f)
+				UpdateScan();
 			yield return new WaitForSeconds(waitTime);
 		}
 	}
@@ -87,9 +90,9 @@ public class Scanner : MonoBehaviour
 			|| (mySpacecraft == null))
 		{
 			UpdateScanRender();
-			if (!meshRenderer.enabled)
+			if ((meshRenderer != null) && !meshRenderer.enabled)
 				meshRenderer.enabled = true;
-			if (!spherePoints.enabled)
+			if ((spherePoints != null) && !spherePoints.enabled)
 				spherePoints.enabled = true;
 		}
 
@@ -110,15 +113,18 @@ public class Scanner : MonoBehaviour
 				Collider hit = hits[i];
 				if (hit.transform != gameObject.transform)
 				{
-					Spacecraft sp = hit.gameObject.GetComponent<Spacecraft>();
-					if ((sp != null) 
-						&& sp.IsAlive()
-						&& (sp.GetAgent().teamID != mySpacecraft.GetAgent().teamID)
-						&& mySpacecraft.GetAgent().LineOfSight(sp.transform.position, sp.transform)
-						&& (Vector3.Distance(sp.transform.position, transform.position) <= maxRadius))
+					if ((hit.gameObject.activeInHierarchy) && hit.gameObject.GetComponent<Spacecraft>())
 					{
-						targetList.Add(hit.gameObject);
-						sp.GetComponent<Spacecraft>().AddMarkValue(1);
+						Spacecraft sp = hit.gameObject.GetComponent<Spacecraft>();
+						if ((sp != null)
+							&& (sp.IsAlive())
+							&& (sp.GetAgent().teamID != mySpacecraft.GetAgent().teamID)
+							&& mySpacecraft.GetAgent().LineOfSight(sp.transform.position, sp.transform)
+							&& (Vector3.Distance(sp.transform.position, transform.position) <= maxRadius))
+						{
+							targetList.Add(hit.gameObject);
+							sp.GetComponent<Spacecraft>().AddMarkValue(1);
+						}
 					}
 
 					Planet pt = hit.gameObject.GetComponentInChildren<Planet>();
@@ -135,8 +141,11 @@ public class Scanner : MonoBehaviour
 	void UpdateScanRender()
 	{
 		float safeRadius = Mathf.Clamp(currentRadius, 0.01f, maxRadius);
-		scanRender.transform.localScale = Vector3.one * safeRadius * 2f;
-		scanRender.transform.rotation = Quaternion.identity;
+		if (scanRender != null)
+		{
+			scanRender.transform.localScale = Vector3.one * safeRadius * 2f;
+			scanRender.transform.rotation = Quaternion.identity;
+		}
 
 		if (mySpacecraft != null)
 		{
@@ -146,17 +155,21 @@ public class Scanner : MonoBehaviour
 
 		float percentOfLifetimeRemaining = 1f - (Time.time - timeAtScan) / scanInterval;
 		float alpha = Mathf.Clamp(originalAlpha * percentOfLifetimeRemaining, 0f, 1f);
-		meshRenderer.material.SetFloat("_Opacity", alpha);
+		if (meshRenderer != null)
+			meshRenderer.material.SetFloat("_Opacity", alpha);
 
 		float targetSize = 0.0f;
 		if (percentOfLifetimeRemaining > 0.75f)
 			targetSize = maxPointSize;
 		pointSize = Mathf.Lerp(pointSize, targetSize, Time.deltaTime * 5f);
-		spherePoints.SetPointSize(pointSize);
+		if (spherePoints != null)
+			spherePoints.SetPointSize(pointSize);
 	}
 
 	void ClearTargets()
 	{
+		if (targetList == null)
+			targetList = new List<GameObject>();
 		int numTargets = targetList.Count;
 		if (numTargets > 0)
 		{

@@ -70,7 +70,7 @@ public class BattleOutcome : MonoBehaviour
 		if (game != null)
 		{
 			int totalNewChevrons = playerScore + playerLost;
-			if (bPlayerWin == false)
+			if ((bPlayerWin == false) && (playerLost != 0))
 				totalNewChevrons /= playerLost;
 
 			game.UpdateChevronAccount(totalNewChevrons);

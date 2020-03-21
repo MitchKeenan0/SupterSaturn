@@ -10,6 +10,8 @@ public class ObjectiveType : MonoBehaviour
 	public Sprite objectiveIcon;
 	public int objectiveRating = 1;
 	public GameObject[] principleObjectPrefabs;
+	public bool bRandomPosition = true;
+	public float spawnRange = 150f;
 
 	private ObjectiveHUD objectiveHud;
 	private NameLibrary nameLibrary;
@@ -56,12 +58,25 @@ public class ObjectiveType : MonoBehaviour
 		int numObjects = principleObjectPrefabs.Length;
 		for(int i = 0; i < numObjects; i++)
 		{
-			GameObject po = Instantiate(principleObjectPrefabs[i], transform);
+			Vector3 spawnPosition = transform.position;
+			if (bRandomPosition)
+			{
+				Vector3 randomSpawnPosition = Random.onUnitSphere * spawnRange;
+				randomSpawnPosition.z = Mathf.Clamp(randomSpawnPosition.z, (spawnRange / 2), spawnRange);
+				spawnPosition = randomSpawnPosition;
+			}
+			GameObject po = Instantiate(principleObjectPrefabs[i], spawnPosition, Quaternion.identity);
+			po.transform.SetParent(transform);
 		}
 	}
 
 	public void Activate()
 	{
 		bSpawnOnLoad = true;
+	}
+
+	public void SetDescription(string value)
+	{
+		objectiveHud.objectiveText.text = value;
 	}
 }

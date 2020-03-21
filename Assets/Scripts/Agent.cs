@@ -45,6 +45,14 @@ public class Agent : MonoBehaviour
 		actionHud = FindObjectOfType<ActionCommandHUD>();
 	}
 
+	private void Start()
+	{
+		if ((teamID != 0) && (scanner != null))
+		{
+			scanner.BeginScanning();
+		}
+	}
+
 	void Update()
     {
 		if (isActiveAndEnabled)
@@ -165,13 +173,20 @@ public class Agent : MonoBehaviour
 
 	public bool LineOfSight(Vector3 target, Transform targetTrans)
 	{
-		bool result = false;
-		RaycastHit hit = raycastManager.CustomRaycast(transform.position, target - transform.position);
-		if (hit.transform == targetTrans)
+		if (this != null)
 		{
-			result = true;
+			bool result = false;
+			RaycastHit hit = raycastManager.CustomRaycast(transform.position, target - transform.position);
+			if (hit.transform == targetTrans)
+			{
+				result = true;
+			}
+			return result;
 		}
-		return result;
+		else
+		{
+			return false;
+		}
 	}
 
 	public void SetOffense(bool value)

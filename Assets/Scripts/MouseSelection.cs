@@ -60,7 +60,7 @@ public class MouseSelection : MonoBehaviour
 
 	void InitialSelection()
 	{
-		if ((teamHud.GetTeamList(0) != null) && (teamHud.GetTeamList(0)[0] != null))
+		if ((teamHud.GetTeamList(0) != null) && (teamHud.GetTeamList(0).Count > 0) && (teamHud.GetTeamList(0)[0] != null))
 		{
 			Spacecraft firstBoye = teamHud.GetTeamList(0)[0];
 			if (firstBoye != null)

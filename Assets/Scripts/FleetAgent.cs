@@ -87,7 +87,6 @@ public class FleetAgent : MonoBehaviour
 			if (randomIndex < numCards)
 			{
 				GameObject spacecraftObj = Instantiate(game.cardLibrary[randomIndex].cardObjectPrefab, transform);
-				spacecraftObj.SetActive(false);
 				Spacecraft sp = spacecraftObj.GetComponent<Spacecraft>();
 				spacecraftList.Add(sp);
 				game.SetEnemyCard(i, game.cardLibrary[randomIndex]);

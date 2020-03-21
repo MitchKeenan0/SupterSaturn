@@ -38,7 +38,7 @@ public class TeamFleetHUD : MonoBehaviour
 		objectManager = FindObjectOfType<ObjectManager>();
 		mouseSelection = FindObjectOfType<MouseSelection>();
 
-		loadWaitCoroutine = LoadWait(0.4f);
+		loadWaitCoroutine = LoadWait(0.3f);
 		StartCoroutine(loadWaitCoroutine);
     }
 

@@ -8,6 +8,8 @@ public class ObjectivePanel : MonoBehaviour
 	public Text objectiveText;
 	public Text distanceText;
 
+	private string objName = "";
+
 	void Start()
 	{
 		objectiveText.text = distanceText.text = "";
@@ -15,7 +17,9 @@ public class ObjectivePanel : MonoBehaviour
 
 	public void SetObjective(string value)
 	{
-		objectiveText.text = value;
+		objName = value;
+		objectiveText.text = objName;
+		Debug.Log("set panel text " + objectiveText.text);
 	}
 
 	public void SetDistance(float value)

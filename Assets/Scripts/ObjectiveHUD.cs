@@ -56,8 +56,6 @@ public class ObjectiveHUD : MonoBehaviour
 							objScreenPosition.y = Mathf.Clamp(objScreenPosition.y, 0f, Screen.height);
 							panel.transform.position = objScreenPosition;
 
-							panel.SetObjective(obj.objectiveName);
-
 							if (orbitController.GetAutopilot() != null)
 							{
 								float distanceToObj = Vector3.Distance(obj.transform.position, orbitController.GetAutopilot().transform.position);
@@ -99,5 +97,10 @@ public class ObjectiveHUD : MonoBehaviour
 		GameObject panelObj = Instantiate(objectivePanelPrefab, transform);
 		panel = panelObj.GetComponent<ObjectivePanel>();
 		return panel;
+	}
+
+	public void SetObjectiveName(string value)
+	{
+		objectiveText.text = value;
 	}
 }

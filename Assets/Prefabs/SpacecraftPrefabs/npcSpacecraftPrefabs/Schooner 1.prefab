@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 8961006568567198332}
   - component: {fileID: 5361519022797995276}
   m_Layer: 0
-  m_Name: Schooner
+  m_Name: Schooner 1
   m_TagString: Hull
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -85,7 +85,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a75516b1a08c8d64bb0d4c56925e4bd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teamID: 0
+  teamID: 1
   preferredEngagementDistance: 5
   bAttackPredictions: 1
 --- !u!114 &1389119047813023650

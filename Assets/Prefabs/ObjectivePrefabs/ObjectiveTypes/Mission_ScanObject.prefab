@@ -50,3 +50,5 @@ MonoBehaviour:
   principleObjectPrefabs:
   - {fileID: 5927431976903153282, guid: 2285e5fd28f329f419e96c08408ed8d5, type: 3}
   - {fileID: 9158545952295277926, guid: 41d252aadadf2e84c823c92045e089b0, type: 3}
+  bRandomPosition: 0
+  spawnRange: 0

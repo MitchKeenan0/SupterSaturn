@@ -26,11 +26,9 @@ public class ObjectManager : MonoBehaviour
 
 	void Start()
 	{
-		Debug.Log("ObjectManager Start");
 		game.LoadGame();
 		hud = FindObjectOfType<CraftIconHUD>();
 		battleOutcome = FindObjectOfType<BattleOutcome>();
-
 		loadWaitCoroutine = LoadWait(0.2f);
 		StartCoroutine(loadWaitCoroutine);
 	}
@@ -38,7 +36,6 @@ public class ObjectManager : MonoBehaviour
 	private IEnumerator LoadWait(float waitTime)
 	{
 		yield return new WaitForSeconds(waitTime);
-
 		InitSpacecraftList();
 		InitGravityList();
 		if (gameAgent != null)
