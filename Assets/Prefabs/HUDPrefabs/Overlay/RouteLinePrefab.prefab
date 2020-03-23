@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateInterval: 0.1
-  scaleFactor: 0.1
+  scaleFactor: 0.05
 --- !u!120 &1717023931117533250
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -88,13 +88,13 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.06
+    widthMultiplier: 0.3
     widthCurve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0.31158447
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -103,7 +103,7 @@ LineRenderer:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1
-        value: 1
+        value: 0.050720215
         inSlope: 0
         outSlope: 0
         tangentMode: 0

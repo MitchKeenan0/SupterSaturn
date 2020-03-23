@@ -158,7 +158,10 @@ public class InputController : MonoBehaviour
 		bNavigationMode = value;
 		List<Spacecraft> selectedSpacecraft = mouseSelection.GetSelectedSpacecraft();
 		foreach (Spacecraft sp in selectedSpacecraft)
-			sp.GetComponentInChildren<SpacecraftController>().SetActive(bNavigationMode);
+		{
+			if (sp != null)
+				sp.GetComponentInChildren<SpacecraftController>().SetActive(bNavigationMode);
+		}
 
 		if (bNavigationMode)
 			UpdateStatusText("Navigation mode");

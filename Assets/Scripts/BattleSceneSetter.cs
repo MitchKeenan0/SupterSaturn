@@ -11,6 +11,7 @@ public class BattleSceneSetter : MonoBehaviour
 
 	private Game game;
 	private GravitySystem gravitySystem;
+	private CelestialHUD celestialHud;
 	private IEnumerator loadWaitCoroutine;
 
     void Start()
@@ -21,6 +22,7 @@ public class BattleSceneSetter : MonoBehaviour
 			DestroyImmediate(existingScenes[i].gameObject);
 		game = FindObjectOfType<Game>();
 		gravitySystem = FindObjectOfType<GravitySystem>();
+		celestialHud = FindObjectOfType<CelestialHUD>();
 		loadWaitCoroutine = LoadWait(0.3f);
 		StartCoroutine(loadWaitCoroutine);
     }
@@ -48,6 +50,7 @@ public class BattleSceneSetter : MonoBehaviour
 			BattleScene bs = spawnObj.GetComponent<BattleScene>();
 			if (bs != null)
 				bs.InitScene();
+			celestialHud.InitCelestialHud();
 		}
 
 		if (gravitySystem != null)

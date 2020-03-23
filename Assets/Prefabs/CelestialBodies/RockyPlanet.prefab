@@ -142,6 +142,7 @@ GameObject:
   - component: {fileID: 3401129090991631764}
   - component: {fileID: 2195280497328947487}
   - component: {fileID: 6469468458821320962}
+  - component: {fileID: 679891907443359942}
   m_Layer: 0
   m_Name: RockyPlanet
   m_TagString: Untagged
@@ -192,7 +193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5712115b8c039dc4da688e77a7a2302b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  armLength: 50
+  armLength: 0
   planetTransform: {fileID: 5273469545884070276}
   offsetRotationScale: 25
 --- !u!114 &2195280497328947487
@@ -230,6 +231,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &679891907443359942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6143951963767822065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a45a68e7ae0ab64cb89a205a0578bfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  celestialBodyName: Rocky Planet
 --- !u!1 &6213774146651943447
 GameObject:
   m_ObjectHideFlags: 0

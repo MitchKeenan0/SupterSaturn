@@ -47,9 +47,20 @@ public class SpacecraftController : MonoBehaviour
 		yield return new WaitForSeconds(waitTime);
 		inputController.SetCameraTarget(spacecraft.transform);
 		inputController.Begin();
+		updateCoroutine = UpdateController(0.06f);
+		StartCoroutine(updateCoroutine);
 	}
 
-	void Update()
+	IEnumerator UpdateController(float interval)
+	{
+		while (true)
+		{
+			yield return new WaitForSeconds(interval);
+			UpdateSpacecraftController();
+		}
+	}
+
+	void UpdateSpacecraftController()
     {
 		if (bActive && (teamID == 0))
 		{
@@ -67,21 +78,21 @@ public class SpacecraftController : MonoBehaviour
 					/// hud target position
 					navigationHud.SetPosition(touchPosition);
 
-					/// burn duration normalized onscreen
+					/// normalized onscreen
 					Camera cameraMain = Camera.main;
 					Vector3 centerScreen = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
 					Vector3 onscreenDirection = new Vector3(touchPosition.x, touchPosition.y, 0f) - centerScreen;
+
+					/// burn duration
+					burnDuration = Mathf.Clamp(onscreenDirection.magnitude / 100f, 1f, 3f);
+					orbitController.SetBurnDuration(burnDuration);
+					navigationHud.SetBurnDuration(burnDuration);
 
 					Vector3 navigationTarget = (Quaternion.Euler(cameraMain.transform.eulerAngles) * (onscreenDirection * 0.3f));
 					navigationTarget += cameraMain.transform.forward * 100f;
 					Vector3 navigationVector = navigationTarget + spacecraft.transform.position;
 					directionVector = navigationVector;
 					orbitController.SetDirection(directionVector);
-
-					/// burn duration
-					burnDuration = Mathf.Clamp(onscreenDirection.magnitude / 100f, 1f, 3f);
-					orbitController.SetBurnDuration(burnDuration);
-					navigationHud.SetBurnDuration(burnDuration);
 
 					/// circular size for auto-orbit
 					float positionRange = spacecraft.transform.position.magnitude;
@@ -96,6 +107,7 @@ public class SpacecraftController : MonoBehaviour
 
 	public void StartTouch()
 	{
+		orbitController.SetUpdating(false);
 		directionVector = Vector3.zero;
 		bLining = true;
 		navigationHud.SetActive(true);
@@ -108,6 +120,7 @@ public class SpacecraftController : MonoBehaviour
 		autopilot.FireEngineBurn(burnDuration, true);
 		inputController.NavigationMode(false);
 		navigationHud.SetActive(false);
+		orbitController.SetUpdating(true);
 	}
 
 	public void SetActive(bool value)

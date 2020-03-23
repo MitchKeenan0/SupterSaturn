@@ -135,9 +135,9 @@ public class Autopilot : MonoBehaviour
 		{
 			ManeuverRotationTo(destination - rb.velocity);
 
-			Vector3 alignVector = (destination - spacecraft.transform.position);
+			Vector3 alignVector = ((destination - rb.velocity) - spacecraft.transform.position);
 			Vector3 myVelocity = rb.velocity;
-			Vector3 projectedVelocity = Vector3.ProjectOnPlane(myVelocity, alignVector.normalized);
+			Vector3 projectedVelocity = Vector3.ProjectOnPlane(myVelocity, spacecraft.transform.forward.normalized);
 			projectedVelocity.z = 0f;
 			spacecraft.SideJets(projectedVelocity * -1f);
 
@@ -169,15 +169,10 @@ public class Autopilot : MonoBehaviour
 		while (timeElapsed < durationTime)
 		{
 			timeElapsed += Time.deltaTime;
-			if ((rb.velocity.magnitude > 6f) &&
-				(Vector3.Dot(rb.velocity.normalized, (destination - spacecraft.transform.position).normalized) > 0.99f))
-			{
-				FaceVelocity(true);
-			}
 			yield return new WaitForSeconds(Time.deltaTime);
 		}
-		FaceVelocity(true);
 		spacecraft.MainEngines(0f);
+		FaceVelocity(true);
 		bEngineActive = false;
 	}
 }

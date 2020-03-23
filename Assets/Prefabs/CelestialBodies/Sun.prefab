@@ -247,10 +247,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6143951963767822069}
-  - component: {fileID: 6425712943823639733}
   - component: {fileID: 8303981145886502231}
   - component: {fileID: 6469468458821320962}
   - component: {fileID: 1467845370899959113}
+  - component: {fileID: 2541766758128869648}
   m_Layer: 0
   m_Name: Sun
   m_TagString: Untagged
@@ -277,21 +277,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6425712943823639733
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6143951963767822065}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 733c2f3cd36d3b34695e030c1fd32a04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bodyTransform: {fileID: 6143951963767822069}
-  radius: 30
-  strength: 0.1
 --- !u!135 &8303981145886502231
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -333,6 +318,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f9c8a7f32270e94895e2af2c5bc1316, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2541766758128869648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6143951963767822065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a45a68e7ae0ab64cb89a205a0578bfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  celestialBodyName: Sun
 --- !u!1001 &1945242098910589083
 PrefabInstance:
   m_ObjectHideFlags: 0
