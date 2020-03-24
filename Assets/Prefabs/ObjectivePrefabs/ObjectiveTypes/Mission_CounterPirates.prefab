@@ -51,3 +51,5 @@ MonoBehaviour:
   - {fileID: 1906621234774554819, guid: f57c5dac094a05d4e9d46e636ea0b483, type: 3}
   - {fileID: 1906621234774554819, guid: f57c5dac094a05d4e9d46e636ea0b483, type: 3}
   - {fileID: 1906621234774554819, guid: f57c5dac094a05d4e9d46e636ea0b483, type: 3}
+  bRandomPosition: 1
+  spawnRange: 1000

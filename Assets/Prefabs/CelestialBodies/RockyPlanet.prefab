@@ -97,6 +97,7 @@ MonoBehaviour:
   atmosphereMesh: {fileID: 6213774146651943447}
   maxSize: 1
   minSize: 0.1
+  bScannable: 1
 --- !u!114 &1806651087923316135
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179,8 +180,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bodyTransform: {fileID: 5273469545884070276}
-  radius: 500
-  strength: 100
+  radius: 1500
+  strength: 150
 --- !u!114 &3401129090991631764
 MonoBehaviour:
   m_ObjectHideFlags: 0

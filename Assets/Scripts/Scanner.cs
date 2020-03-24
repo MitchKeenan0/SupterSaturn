@@ -128,7 +128,7 @@ public class Scanner : MonoBehaviour
 					}
 
 					Planet pt = hit.gameObject.GetComponentInChildren<Planet>();
-					if (pt != null && (mySpacecraft != null))
+					if ((pt != null) && (mySpacecraft != null) && (pt.bScannable))
 					{
 						Color32 scanColor = new Color32(200, 200, 200, 255);
 						pt.GetScanned(mySpacecraft.transform.position, currentRadius, scanColor);

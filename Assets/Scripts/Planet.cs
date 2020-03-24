@@ -8,6 +8,7 @@ public class Planet : MonoBehaviour
 	public GameObject atmosphereMesh;
 	public float maxSize = 3f;
 	public float minSize = 0.3f;
+	public bool bScannable = false;
 
 	private Mesh mesh;
 	private ScoreHUD scoreHud;
@@ -98,7 +99,7 @@ public class Planet : MonoBehaviour
 	public void SetScale(float sizeMagnitude)
 	{
 		transform.localScale = Vector3.one * sizeMagnitude;
-		GetComponent<SphereCollider>().radius = 0.47f;
+		GetComponent<SphereCollider>().radius = 0.485f;
 		planetSize = sizeMagnitude;
 	}
 }

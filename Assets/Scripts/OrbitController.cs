@@ -47,9 +47,11 @@ public class OrbitController : MonoBehaviour
 
 	public void SetDirection(Vector3 inputVector)
 	{
+		if (bUpdating)
+			bUpdating = false;
 		if (autopilot != null)
 		{
-			SimulateTrajectory(inputVector);
+			SimulateTrajectory(inputVector, burnDuration);
 			RenderTrajectory();
 		}
 	}
@@ -72,13 +74,16 @@ public class OrbitController : MonoBehaviour
 	{
 		while (true)
 		{
-			SimulateTrajectory(rb.velocity);
-			RenderTrajectory();
+			if (rb.velocity.magnitude > 0f)
+			{
+				SimulateTrajectory(rb.velocity, 0f);
+				RenderTrajectory();
+			}
 			yield return new WaitForSeconds(interval);
 		}
 	}
 
-	void SimulateTrajectory(Vector3 heading)
+	void SimulateTrajectory(Vector3 heading, float duration)
 	{
 		ClearTrajectory();
 
@@ -88,20 +93,29 @@ public class OrbitController : MonoBehaviour
 		trajectoryList.Add(currentPosition);
 		if (heading.magnitude < 1f)
 			return;
+		bool bSimulateEnginePower = true;
+		if (duration == 0f)
+		{
+			duration = rb.velocity.magnitude;
+			bSimulateEnginePower = false;
+		}
 
 		float simulationTime = 0f;
 		float deltaTime = 0.1f;
 		Vector3 velocity = currentPosition + (rb.velocity * deltaTime);
 		Vector3 trajecto = spacecraft.transform.forward * deltaTime;
 		float enginePower = (spacecraft.mainEnginePower / rb.mass) * deltaTime;
-		while (simulationTime < burnDuration)
+		while (simulationTime < duration)
 		{
-			velocity += (trajecto * enginePower * deltaTime);
+			Vector3 frameVelocity = trajecto * (velocity.magnitude * deltaTime) * deltaTime;
+			if (bSimulateEnginePower)
+				frameVelocity = trajecto * enginePower * deltaTime;
+			velocity += frameVelocity;
 
 			if (gravityList.Count > 0)
 			{
 				foreach(Gravity gr in gravityList)
-					velocity += (gr.GetGravity(rb, currentPosition, rb.mass) * deltaTime) * deltaTime;
+					velocity += (gr.GetGravity(rb, currentPosition, rb.mass) * deltaTime) * deltaTime * 0.2f;
 			}
 
 			trajectoryList.Add(velocity);
@@ -127,7 +141,7 @@ public class OrbitController : MonoBehaviour
 				Vector3 lineStart = trajectoryList[i];
 				if (trajectoryList.Count > (i + 1))
 				{
-					Vector3 lineEnd = trajectoryList[i + 1];
+					Vector3 lineEnd = lineStart + ((trajectoryList[i + 1] - trajectoryList[i]) * 0.6f); ///trajectoryList[i + 1];
 					line.SetPosition(0, lineStart);
 					line.SetPosition(1, lineEnd);
 					line.enabled = true;
