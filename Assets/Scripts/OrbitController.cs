@@ -74,7 +74,7 @@ public class OrbitController : MonoBehaviour
 	{
 		while (true)
 		{
-			if (rb.velocity.magnitude > 0f)
+			if ((rb != null) && (rb.velocity.magnitude > 0f))
 			{
 				SimulateTrajectory(rb.velocity, 0f);
 				RenderTrajectory();
@@ -115,7 +115,7 @@ public class OrbitController : MonoBehaviour
 			if (gravityList.Count > 0)
 			{
 				foreach(Gravity gr in gravityList)
-					velocity += (gr.GetGravity(rb, currentPosition, rb.mass) * deltaTime) * deltaTime * 0.2f;
+					velocity += (gr.GetGravity(rb, currentPosition, rb.mass) * deltaTime) * deltaTime * 0.16f;
 			}
 
 			trajectoryList.Add(velocity);

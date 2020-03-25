@@ -6,6 +6,7 @@ public class Weapon : MonoBehaviour
 {
 	public float weaponSpeed = 1000f;
 	public float weaponAccuracy = 0.95f;
+	public int damage = 1;
 	public Transform munitionPrefab;
 	public ParticleSystem armingParticles;
 	public float prefireTime = 0.1f;

@@ -24,7 +24,7 @@ public class CardToSpacecraftLoader : MonoBehaviour
 		if (csp.GetComponent<Weapon>() && csp.GetComponent<Weapon>().munitionPrefab.GetComponent<Projectile>())
 		{
 			Weapon cspWeapon = csp.GetComponent<Weapon>();
-			cspWeapon.munitionPrefab.GetComponent<Projectile>().damage = card.damage;
+			cspWeapon.damage = card.damage;
 			cspWeapon.fireRate = card.rateOfFire;
 			cspWeapon.weaponSprite = card.weaponSprite;
 		}

@@ -19,6 +19,7 @@ public class Game : MonoBehaviour
 	private Campaign campaign;
 	private GameObject ghostCampaign;
 	private Card playerSpacecraftCard;
+	private Crew crew;
 	private List<Card> enemyCardList;
 	private List<Spacecraft> spacecraftList;
 	private List<Spacecraft> enemySpacecraftList;
@@ -49,12 +50,7 @@ public class Game : MonoBehaviour
 	}
 	void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
 	{
-		enemyCardList = new List<Card>();
-		spacecraftList = new List<Spacecraft>();
-		enemySpacecraftList = new List<Spacecraft>();
-		player = FindObjectOfType<Player>();
-		gameHud = FindObjectOfType<GameHUD>();
-		campaign = FindObjectOfType<Campaign>();
+		InitGame();
 	}
 
 	void Awake()
@@ -68,14 +64,19 @@ public class Game : MonoBehaviour
 		{
 			Destroy(gameObject);
 		}
+		InitGame();
+		Application.targetFrameRate = 30;
+	}
 
+	void InitGame()
+	{
 		enemyCardList = new List<Card>();
 		spacecraftList = new List<Spacecraft>();
 		enemySpacecraftList = new List<Spacecraft>();
 		player = FindObjectOfType<Player>();
 		gameHud = FindObjectOfType<GameHUD>();
 		campaign = FindObjectOfType<Campaign>();
-		Application.targetFrameRate = 30;
+		crew = FindObjectOfType<Crew>();
 	}
 
 	void Start()

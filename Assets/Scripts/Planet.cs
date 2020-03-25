@@ -42,7 +42,7 @@ public class Planet : MonoBehaviour
 
 		Vector3[] vertexArray = vertexList.ToArray();
 		Color32[] colors = new Color32[vertexArray.Length];
-		byte randoGreyscale = (byte)Random.Range(0, 255);
+		byte randoGreyscale = (byte)Random.Range(200, 255);
 		Color32 rando = new Color32(randoGreyscale, randoGreyscale, randoGreyscale, 255);
 		for (int i = 0; i < vertexArray.Length; i++)
 			colors[i] = rando;
@@ -81,11 +81,19 @@ public class Planet : MonoBehaviour
 					int vertexIndex = vertexList.IndexOf(hitVertex);
 					if (colors.Length > vertexIndex)
 						colors[vertexIndex] = color;
+
 					if (scoreHud != null)
-						scoreHud.PopupScore(transform.TransformPoint(hitVertex), 1, vertexList.Count);
-					freshVertices.Remove(hitVertex);
+					{
+						Vector3 vertexWorldPosition = transform.TransformPoint(hitVertex);
+						int vertexScore = Mathf.FloorToInt(300f / Vector3.Distance(position, vertexWorldPosition));
+						Debug.Log("score + " + vertexScore);
+						scoreHud.PopupScore(vertexWorldPosition, vertexScore, vertexList.Count);
+					}
+
 					if (vertexVisualizer != null)
 						vertexVisualizer.DisableLine(hitVertex);
+
+					freshVertices.Remove(hitVertex);
 				}
 			}
 			mesh.colors32 = colors;

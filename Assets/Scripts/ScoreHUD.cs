@@ -69,14 +69,14 @@ public class ScoreHUD : MonoBehaviour
 	{
 		ScorePopup newScorePanel = Instantiate(scorePopupPrefab, transform).GetComponent<ScorePopup>();
 		popupPanelList.Add(newScorePanel);
-		newScorePanel.SetActive(false, Vector3.zero);
+		newScorePanel.SetActive(false, 0, Vector3.zero);
 		return newScorePanel;
 	}
 
 	public void PopupScore(Vector3 worldPosition, int scoreValue, int maxValue)
 	{
 		ScorePopup scoreo = GetScorePanel();
-		scoreo.SetActive(true, worldPosition);
+		scoreo.SetActive(true, scoreValue, worldPosition);
 		Vector3 positionOnScreen = cameraMain.WorldToScreenPoint(worldPosition);
 		scoreo.transform.position = positionOnScreen;
 		UpdateScore(scoreValue, maxValue);

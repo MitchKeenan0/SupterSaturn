@@ -29,6 +29,7 @@ public class Autopilot : MonoBehaviour
 	private bool bEngineActive = false;
 	private bool bFaceVelocity = false;
 	private bool bStopping = false;
+	private bool bAligning = false;
 	private float timeAtLastMoveCommand = 0;
 	private float burnDuration = 0f;
 	private List<Vector3> routeVectors;
@@ -107,7 +108,9 @@ public class Autopilot : MonoBehaviour
 	public void FireEngineBurn(float duration, bool bAlign)
 	{
 		if (bEngineActive)
-			StopAllCoroutines();
+			StopCoroutine(engineCoroutine);
+		if (bAligning)
+			StopCoroutine(alignCoroutine);
 		burnDuration = duration;
 		if (bAlign)
 		{
@@ -129,6 +132,7 @@ public class Autopilot : MonoBehaviour
 	private IEnumerator alignCoroutine;
 	IEnumerator Align(float intervalTime)
 	{
+		bAligning = true;
 		float dot = 0f;
 		bool burn = false;
 		while (dot < 0.99f)
@@ -138,7 +142,7 @@ public class Autopilot : MonoBehaviour
 			Vector3 alignVector = ((destination - rb.velocity) - spacecraft.transform.position);
 			Vector3 myVelocity = rb.velocity;
 			Vector3 projectedVelocity = Vector3.ProjectOnPlane(myVelocity, spacecraft.transform.forward.normalized);
-			projectedVelocity.z = 0f;
+			projectedVelocity.z = Mathf.Clamp(projectedVelocity.z, -1f, 0f);
 			spacecraft.SideJets(projectedVelocity * -1f);
 
 			Vector3 myVector = rb.velocity;
@@ -157,6 +161,7 @@ public class Autopilot : MonoBehaviour
 		}
 
 		spacecraft.SideJets(Vector3.zero);
+		bAligning = false;
 	}
 
 	IEnumerator MainEngineBurn(float durationTime)

@@ -14,6 +14,7 @@ public class SpacecraftController : MonoBehaviour
 	private OrbitController orbitController;
 	private Camera cameraMain;
 	private NavigationHud navigationHud;
+	private Crew crew;
 	private Vector2 touchLineVector = Vector2.zero;
 	private Vector2 touchPosition = Vector2.zero;
 	private Vector3 directionVector = Vector3.zero;
@@ -38,6 +39,9 @@ public class SpacecraftController : MonoBehaviour
 		orbitController = FindObjectOfType<OrbitController>();
 		cameraMain = Camera.main;
 		navigationHud = FindObjectOfType<NavigationHud>();
+		crew = FindObjectOfType<Crew>();
+		if (crew != null)
+			crew.ImbueSpacecraft(spacecraft);
 		loadCoroutine = LoadWait(0.5f);
 		StartCoroutine(loadCoroutine);
     }
@@ -89,7 +93,7 @@ public class SpacecraftController : MonoBehaviour
 					navigationHud.SetBurnDuration(burnDuration);
 
 					Vector3 navigationTarget = (Quaternion.Euler(cameraMain.transform.eulerAngles) * (onscreenDirection * 0.3f));
-					navigationTarget += cameraMain.transform.forward * 100f;
+					navigationTarget += cameraMain.transform.forward * 500f;
 					Vector3 navigationVector = navigationTarget + spacecraft.transform.position;
 					directionVector = navigationVector;
 					orbitController.SetDirection(directionVector);
@@ -99,7 +103,7 @@ public class SpacecraftController : MonoBehaviour
 					orbitController.SetOrbitRange(positionRange);
 
 					/// visualize
-					autopilot.ManeuverRotationTo(directionVector - autopilot.gameObject.GetComponent<Rigidbody>().velocity);
+					autopilot.ManeuverRotationTo(directionVector);
 				}
 			}
 		}
@@ -117,7 +121,7 @@ public class SpacecraftController : MonoBehaviour
 	{
 		bLining = false;
 		autopilot.ManeuverRotationTo(directionVector - autopilot.gameObject.GetComponent<Rigidbody>().velocity);
-		autopilot.FireEngineBurn(burnDuration, true);
+		autopilot.FireEngineBurn(burnDuration, false);
 		inputController.NavigationMode(false);
 		navigationHud.SetActive(false);
 		orbitController.SetUpdating(true);

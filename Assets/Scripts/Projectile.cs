@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-	public int damage = 1;
 	public float hitboxScale = 1;
 	public float impactForce = 1f;
 	public Transform impactPrefab;
@@ -18,6 +17,7 @@ public class Projectile : MonoBehaviour
 	private float timeAtFired = 0f;
 	private float percentOfLifetime = 0f;
 	private float originalTrailWidth = 0f;
+	private int damage = 0;
 	private bool bHit = false;
 	private IEnumerator lifeTimeCoroutine;
 	private IEnumerator fadeAwayCoroutine;
@@ -40,6 +40,7 @@ public class Projectile : MonoBehaviour
 	public void ArmProjectile(Weapon ownerWeapon)
 	{
 		owner = ownerWeapon;
+		damage = ownerWeapon.damage;
 		timeAtFired = Time.time;
 		if (!raycastManager)
 			raycastManager = FindObjectOfType<RaycastManager>();
