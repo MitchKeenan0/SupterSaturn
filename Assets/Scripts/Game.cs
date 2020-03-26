@@ -309,7 +309,7 @@ public class Game : MonoBehaviour
 		if ((spacecraftList != null) && (spacecraftList.Count > 0))
 		{
 			Spacecraft liveSpacecraft = spacecraftList[0];
-			if (liveSpacecraft.isActiveAndEnabled)
+			if ((liveSpacecraft != null) && liveSpacecraft.isActiveAndEnabled)
 			{
 				savedHealth = liveSpacecraft.GetHealth();
 				if (savedHealth == -1)

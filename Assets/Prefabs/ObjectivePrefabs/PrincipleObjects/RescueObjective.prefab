@@ -264,8 +264,8 @@ MonoBehaviour:
   objectiveName: H.M.S. Jaddin
   objectiveRating: 1
   bRandomStartPosition: 1
-  startPositionRangeMax: 150
-  startPositionRangeMin: 50
+  startPositionRangeMax: 300
+  startPositionRangeMin: 150
 --- !u!54 &4323474977949863875
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -16,12 +16,12 @@ public class OrbitController : MonoBehaviour
 	private NavigationHud navigationHud;
 	private List<LineRenderer> lineList;
 	private List<Vector3> trajectoryList;
-	public List<Vector3> GetTrajectory() { return trajectoryList; }
 	private float planetRadius = 0f;
 	private float burnDuration = 0f;
 	private bool bUpdating = false;
 
 	public Autopilot GetAutopilot() { return autopilot; }
+	public List<Vector3> GetTrajectory() { return trajectoryList; }
 
 	private IEnumerator updateCoroutine;
 
@@ -32,6 +32,8 @@ public class OrbitController : MonoBehaviour
 		navigationHud = FindObjectOfType<NavigationHud>();
 		planet = FindObjectOfType<Planet>();
 		gravityTelemetry = FindObjectOfType<GravityTelemetryHUD>();
+		for (int i = 0; i < 100; i++)
+			SpawnTrajectoryLine();
 	}
 
 	public void SetAutopilot(Autopilot ap)
@@ -51,6 +53,7 @@ public class OrbitController : MonoBehaviour
 			bUpdating = false;
 		if (autopilot != null)
 		{
+			autopilot.FaceVelocity(false);
 			SimulateTrajectory(inputVector, burnDuration);
 			RenderTrajectory();
 		}
@@ -88,9 +91,6 @@ public class OrbitController : MonoBehaviour
 		ClearTrajectory();
 
 		Spacecraft spacecraft = autopilot.gameObject.GetComponent<Spacecraft>();
-		Vector3 currentPosition = spacecraft.transform.position;
-		List<Gravity> gravityList = gravityTelemetry.GetGravitiesAffecting(rb);
-		trajectoryList.Add(currentPosition);
 		if (heading.magnitude < 1f)
 			return;
 		bool bSimulateEnginePower = true;
@@ -102,24 +102,32 @@ public class OrbitController : MonoBehaviour
 
 		float simulationTime = 0f;
 		float deltaTime = 0.1f;
-		Vector3 velocity = currentPosition + (rb.velocity * deltaTime);
-		Vector3 trajecto = spacecraft.transform.forward * deltaTime;
-		float enginePower = (spacecraft.mainEnginePower / rb.mass) * deltaTime;
+		Vector3 currentPosition = spacecraft.transform.position;
+		Vector3 velocity = rb.velocity + currentPosition;
+		Vector3 deltaVelocity = rb.velocity;
+		Vector3 trajecto = Vector3.zero;
+		List<Gravity> gravityList = gravityTelemetry.GetGravitiesAffecting(rb);
+		trajectoryList.Add(velocity);
+
 		while (simulationTime < duration)
 		{
-			Vector3 frameVelocity = trajecto * (velocity.magnitude * deltaTime) * deltaTime;
+			trajecto = deltaVelocity;
 			if (bSimulateEnginePower)
-				frameVelocity = trajecto * enginePower * deltaTime;
-			velocity += frameVelocity;
+			{
+				float enginePower = (spacecraft.mainEnginePower / rb.mass) * deltaTime;
+				trajecto = spacecraft.transform.forward * enginePower * deltaTime;
+			}
 
 			if (gravityList.Count > 0)
 			{
-				foreach(Gravity gr in gravityList)
-					velocity += (gr.GetGravity(rb, currentPosition, rb.mass) * deltaTime) * deltaTime * 0.16f;
+				foreach (Gravity gr in gravityList)
+					trajecto += (gr.GetGravity(rb, currentPosition, rb.mass) * deltaTime);
 			}
 
+			velocity = currentPosition + trajecto;
+
 			trajectoryList.Add(velocity);
-			trajecto = (velocity - currentPosition).normalized;
+			deltaVelocity = trajecto;
 			currentPosition = velocity;
 			simulationTime += deltaTime;
 		}
@@ -135,16 +143,19 @@ public class OrbitController : MonoBehaviour
 				LineRenderer line = null;
 				if ((i < lineList.Count) && (lineList[i] != null))
 					line = lineList[i];
-				else
-					line = SpawnTrajectoryLine();
+				//else
+				//	line = SpawnTrajectoryLine();
 
-				Vector3 lineStart = trajectoryList[i];
-				if (trajectoryList.Count > (i + 1))
+				if (line != null)
 				{
-					Vector3 lineEnd = lineStart + ((trajectoryList[i + 1] - trajectoryList[i]) * 0.6f); ///trajectoryList[i + 1];
-					line.SetPosition(0, lineStart);
-					line.SetPosition(1, lineEnd);
-					line.enabled = true;
+					Vector3 lineStart = trajectoryList[i];
+					if (trajectoryList.Count > (i + 1))
+					{
+						Vector3 lineEnd = lineStart + ((trajectoryList[i + 1] - trajectoryList[i]) * 0.6f);
+						line.SetPosition(0, lineStart);
+						line.SetPosition(1, lineEnd);
+						line.enabled = true;
+					}
 				}
 			}
 		}
