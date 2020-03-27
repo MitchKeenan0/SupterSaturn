@@ -38,10 +38,16 @@ public class Spacecraft : MonoBehaviour
 	private TrailRenderer[] trailComponents;
 	private int numMarked = 0;
 	private float timeAtLastClick = 0f;
+	private bool bThrottle = false;
+	private float throttleVelocityTarget = 0f;
 
 	public Agent GetAgent() { return agent; }
-
 	public bool IsAlive() { return (health != null) && (health.GetHealth() >= 1); }
+	public void SetThrottle(float value)
+	{
+		bThrottle = (value != 1f);
+		throttleVelocityTarget = rb.velocity.magnitude * value;
+	}
 
 	public int GetHealth()
 	{
@@ -116,11 +122,19 @@ public class Spacecraft : MonoBehaviour
 				velocity += sideJetVector;
 
 			/// thrust
-			if (mainEnginesVector != Vector3.zero)
-				velocity += mainEnginesVector * mainEnginePower * Time.deltaTime;
-			
-			if (velocity != Vector3.zero)
-				rb.AddForce(velocity);
+			if (!bThrottle)
+			{
+				if (mainEnginesVector != Vector3.zero)
+					velocity += mainEnginesVector * mainEnginePower * Time.deltaTime;
+
+				if (velocity != Vector3.zero)
+					rb.AddForce(velocity);
+			}
+			else
+			{
+				if (rb.velocity.magnitude > throttleVelocityTarget)
+					Brake();
+			}
 		}
 	}
 
@@ -140,6 +154,7 @@ public class Spacecraft : MonoBehaviour
 
 	public void MainEngines(float driveDirection)
 	{
+		bThrottle = false;
 		mainEnginesVector = transform.forward * driveDirection;
 		var ps = thrustParticles.main;
 		var em = thrustParticles.emission;

@@ -9,17 +9,20 @@ public class SpacecraftController : MonoBehaviour
 
 	private Spacecraft spacecraft;
 	private Autopilot autopilot;
+	private Rigidbody rb;
 	private TouchLine touchLine;
 	private InputController inputController;
 	private OrbitController orbitController;
 	private Camera cameraMain;
 	private NavigationHud navigationHud;
+	private ThrottleHUD throttleHud;
 	private Crew crew;
 	private Vector2 touchLineVector = Vector2.zero;
 	private Vector2 touchPosition = Vector2.zero;
 	private Vector3 directionVector = Vector3.zero;
 	private bool bActive = false;
 	private bool bLining = false;
+	private bool bThrottleControlActive = false;
 	private int teamID = -1;
 	private float burnDuration = 0f;
 
@@ -34,11 +37,14 @@ public class SpacecraftController : MonoBehaviour
 		if (spacecraft.GetAgent() != null)
 			teamID = spacecraft.GetAgent().teamID;
 		autopilot = spacecraft.gameObject.GetComponent<Autopilot>();
+		rb = spacecraft.gameObject.GetComponent<Rigidbody>();
 		touchLine = FindObjectOfType<TouchLine>();
 		inputController = FindObjectOfType<InputController>();
 		orbitController = FindObjectOfType<OrbitController>();
 		cameraMain = Camera.main;
 		navigationHud = FindObjectOfType<NavigationHud>();
+		throttleHud = FindObjectOfType<ThrottleHUD>();
+		throttleHud.SetSpacecraft(spacecraft);
 		crew = FindObjectOfType<Crew>();
 		if (crew != null)
 			crew.ImbueSpacecraft(spacecraft);
@@ -61,6 +67,7 @@ public class SpacecraftController : MonoBehaviour
 		{
 			yield return new WaitForSeconds(interval);
 			UpdateSpacecraftController();
+			UpdateThrottleControl();
 		}
 	}
 
@@ -108,6 +115,23 @@ public class SpacecraftController : MonoBehaviour
 			}
 		}
 	}
+
+	void UpdateThrottleControl()
+	{
+		if (rb.velocity.magnitude > 1f)
+		{
+			if (!bThrottleControlActive)
+			{
+				throttleHud.SetThrottleControlActive(true);
+				bThrottleControlActive = true;
+			}
+		}
+		else if (bThrottleControlActive)
+		{
+			throttleHud.SetThrottleControlActive(false);
+			bThrottleControlActive = false;
+		}
+	} 
 
 	public void StartTouch()
 	{

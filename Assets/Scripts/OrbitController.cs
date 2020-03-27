@@ -104,17 +104,17 @@ public class OrbitController : MonoBehaviour
 		float deltaTime = 0.1f;
 		Vector3 currentPosition = spacecraft.transform.position;
 		Vector3 velocity = rb.velocity + currentPosition;
-		Vector3 deltaVelocity = rb.velocity;
+		Vector3 deltaVelocity = rb.velocity * deltaTime * 6;
 		Vector3 trajecto = Vector3.zero;
 		List<Gravity> gravityList = gravityTelemetry.GetGravitiesAffecting(rb);
-		trajectoryList.Add(velocity);
+		trajectoryList.Add(currentPosition);
 
 		while (simulationTime < duration)
 		{
 			trajecto = deltaVelocity;
 			if (bSimulateEnginePower)
 			{
-				float enginePower = (spacecraft.mainEnginePower / rb.mass) * deltaTime;
+				float enginePower = spacecraft.mainEnginePower * deltaTime;
 				trajecto = spacecraft.transform.forward * enginePower * deltaTime;
 			}
 

@@ -72,7 +72,7 @@ public class InputController : MonoBehaviour
 			FallbackCheck();
 	}
 
-	void UpdateStatusText(string value)
+	public void UpdateStatusText(string value)
 	{
 		statusText.text = value;
 	}
