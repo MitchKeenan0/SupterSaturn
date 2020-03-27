@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 6741370205227040507}
   - component: {fileID: 7440623813905814346}
   m_Layer: 0
-  m_Name: Superliner
+  m_Name: Superliner 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -164,7 +164,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   teamID: 0
-  preferredEngagementDistance: 10
   bAttackPredictions: 1
 --- !u!114 &1389119047813023650
 MonoBehaviour:
@@ -209,6 +208,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponSpeed: 1000
   weaponAccuracy: 10
+  damage: 1
   munitionPrefab: {fileID: 298334711150030353, guid: 207a3b16d330e8e4db11ab61331570d3,
     type: 3}
   armingParticles: {fileID: 8015741792548370538}
@@ -687,6 +687,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862238889529750561, guid: d668164fc514c794392cadc304f9585d,
+        type: 3}
+      propertyPath: bNPCControlled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d668164fc514c794392cadc304f9585d, type: 3}

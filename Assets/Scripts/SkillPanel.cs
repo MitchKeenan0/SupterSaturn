@@ -13,7 +13,6 @@ public class SkillPanel : MonoBehaviour
 
 	private List<Ability> myAbilityList;
 	private List<Spacecraft> spacecraftList;
-	private bool offense = false;
 
     void Start()
     {

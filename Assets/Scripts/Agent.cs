@@ -5,7 +5,6 @@ using UnityEngine;
 public class Agent : MonoBehaviour
 {
 	public int teamID = 0;
-	public float preferredEngagementDistance = 10f;
 	public bool bAttackPredictions = true;
 
 	private Spacecraft spacecraft;
@@ -19,7 +18,6 @@ public class Agent : MonoBehaviour
 	private SelectionSquad selectedSquad;
 	private ActionCommandHUD actionHud;
 	private Transform targetTransform = null;
-	private Transform followTransform = null;
 	private List<Spacecraft> spacecraftList;
 	private List<SpacecraftInformation> targetList;
 	private List<Prediction> predictionList;
@@ -136,8 +134,6 @@ public class Agent : MonoBehaviour
 	void SetTarget(Transform value)
 	{
 		targetTransform = value;
-		//if (autopilot != null)
-		//	autopilot.SetTarget(value);
 		if (value != null)
 		{
 			targetList.Add(value.gameObject.GetComponent<SpacecraftInformation>());

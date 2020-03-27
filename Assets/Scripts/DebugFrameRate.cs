@@ -5,18 +5,28 @@ using UnityEngine.UI;
 
 public class DebugFrameRate : MonoBehaviour
 {
+	public static DebugFrameRate debug;
+
 	private Text fpsText;
-	float fps = 0;
+	private float fps = 0;
     
     void Awake()
     {
+		if (debug == null)
+		{
+			DontDestroyOnLoad(gameObject);
+			debug = this;
+		}
+		else if (debug != this)
+		{
+			Destroy(gameObject);
+		}
 		fpsText = GetComponentInChildren<Text>();
-		DontDestroyOnLoad(transform.gameObject);
     }
 
     void Update()
     {
 		fps = 1f / Time.deltaTime;
-		fpsText.text = "PRE-ALPHA                FPS  " + fps.ToString("F0");
+		fpsText.text = "PRE-ALPHA | FPS  " + fps.ToString("F0");
     }
 }

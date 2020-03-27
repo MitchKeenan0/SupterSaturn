@@ -37,14 +37,14 @@ public class Selectable : MonoBehaviour
 				}
 			}
 
-			if (_isSelected && (gameObject.GetComponentInChildren<SpacecraftController>() != null))
-				orbitController.SetAutopilot(gameObject.GetComponent<Autopilot>());
+			spacecraftController = gameObject.GetComponentInChildren<SpacecraftController>();
+			if (_isSelected && (spacecraftController != null))
+				orbitController.SetAutopilot(spacecraftController.GetAutopilot());
 
 			if (!circle)
 				circle = gameObject.GetComponent<CircleRenderer>();
 			if (circle != null)
 			{
-				spacecraftController = gameObject.GetComponentInChildren<SpacecraftController>();
 				if (value)
 				{
 					circle.Open();

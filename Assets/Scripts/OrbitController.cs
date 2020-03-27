@@ -16,7 +16,6 @@ public class OrbitController : MonoBehaviour
 	private NavigationHud navigationHud;
 	private List<LineRenderer> lineList;
 	private List<Vector3> trajectoryList;
-	private float planetRadius = 0f;
 	private float burnDuration = 0f;
 	private bool bUpdating = false;
 

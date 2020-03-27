@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 2275826126715844726}
   - component: {fileID: 8961006568567198332}
   m_Layer: 0
-  m_Name: FluxLiner
+  m_Name: FluxLiner 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -164,7 +164,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   teamID: 0
-  preferredEngagementDistance: 5
   bAttackPredictions: 1
 --- !u!114 &1389119047813023650
 MonoBehaviour:
@@ -209,6 +208,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponSpeed: 250
   weaponAccuracy: 1
+  damage: 1
   munitionPrefab: {fileID: 4860601835048803221, guid: e562247ffe5ed3a48b3b9dd75686d074,
     type: 3}
   armingParticles: {fileID: 2259053088472580658, guid: c70e3152077d3d445907612dae5b1704,
@@ -773,6 +773,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862238889529750561, guid: d668164fc514c794392cadc304f9585d,
+        type: 3}
+      propertyPath: bNPCControlled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d668164fc514c794392cadc304f9585d, type: 3}

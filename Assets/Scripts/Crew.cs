@@ -8,7 +8,7 @@ public class Crew : MonoBehaviour
 	private int pilot = 1;
 	private int engine = 1;
 	private int power = 1;
-	private int levelGrade = 10;
+	///private int levelGrade = 10;
 
 	void Awake()
 	{

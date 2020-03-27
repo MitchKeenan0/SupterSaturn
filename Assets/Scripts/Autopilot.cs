@@ -25,12 +25,10 @@ public class Autopilot : MonoBehaviour
 	private Vector3 autoPilotStartPosition = Vector3.zero;
 	private Vector3 maneuverVector = Vector3.zero;
 	private Vector3 previousRouteVector = Vector3.zero;
-	private bool bExecutingMoveCommand = false;
 	private bool bEngineActive = false;
 	private bool bFaceVelocity = false;
 	private bool bStopping = false;
 	private bool bAligning = false;
-	private float timeAtLastMoveCommand = 0;
 	private float burnDuration = 0f;
 	private List<Vector3> routeVectors;
 	private Vector3 targetPosition = Vector3.zero;
@@ -87,7 +85,6 @@ public class Autopilot : MonoBehaviour
 			StopAllCoroutines();
 		}
 		
-		bExecutingMoveCommand = false;
 		spacecraft.MainEngines(0f);
 		spacecraft.Maneuver(Vector3.zero);
 		spacecraft.SideJets(Vector3.zero);
@@ -170,7 +167,7 @@ public class Autopilot : MonoBehaviour
 		float timeElapsed = 0f;
 		bEngineActive = true;
 		if (rb.velocity.magnitude < 1f)
-			FindObjectOfType<InputController>().AllStop();
+			FindObjectOfType<InputController>().AllStop(false);
 		while (timeElapsed < durationTime)
 		{
 			timeElapsed += Time.deltaTime;

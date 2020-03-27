@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
+	public static SoundManager sound;
+
 	public AudioClip buttonAffirmative;
 	public AudioClip buttonNegative;
 
@@ -11,7 +13,15 @@ public class SoundManager : MonoBehaviour
 
 	void Awake()
 	{
-		DontDestroyOnLoad(gameObject);
+		if (sound == null)
+		{
+			DontDestroyOnLoad(gameObject);
+			sound = this;
+		}
+		else if (sound != this)
+		{
+			Destroy(gameObject);
+		}
 		audioSource = GetComponent<AudioSource>();
 	}
 

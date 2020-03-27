@@ -322,7 +322,7 @@ public class Spacecraft : MonoBehaviour
 			if (ic != null)
 			{
 				if (!ic.IsStopped())
-					ic.AllStop();
+					ic.AllStop(true);
 			}
 			int randomScore = Random.Range(10, 50);
 			battleOutcome.AddScore(randomScore);

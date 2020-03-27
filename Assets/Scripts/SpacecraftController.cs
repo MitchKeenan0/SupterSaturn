@@ -6,6 +6,7 @@ public class SpacecraftController : MonoBehaviour
 {
 	public float sensitivity = 15f;
 	public float moveLineScale = 10f;
+	public bool bNPCControlled = false;
 
 	private Spacecraft spacecraft;
 	private Autopilot autopilot;
@@ -23,11 +24,14 @@ public class SpacecraftController : MonoBehaviour
 	private bool bActive = false;
 	private bool bLining = false;
 	private bool bThrottleControlActive = false;
+	public bool bUpdating = false;
 	private int teamID = -1;
 	private float burnDuration = 0f;
 
+	public Autopilot GetAutopilot() { return autopilot; }
+
 	private IEnumerator loadCoroutine;
-	private IEnumerator updateCoroutine;
+	//private IEnumerator updateCoroutine;
 
 	void Start()
     {
@@ -55,17 +59,30 @@ public class SpacecraftController : MonoBehaviour
 	IEnumerator LoadWait(float waitTime)
 	{
 		yield return new WaitForSeconds(waitTime);
-		inputController.SetCameraTarget(spacecraft.transform);
-		inputController.Begin();
-		updateCoroutine = UpdateController(0.06f);
-		StartCoroutine(updateCoroutine);
+		if (!bNPCControlled)
+		{
+			inputController.SetCameraTarget(spacecraft.transform);
+			inputController.Begin();
+			bUpdating = true;
+			//updateCoroutine = UpdateController(0.06f);
+			//StartCoroutine(updateCoroutine);
+		}
 	}
 
-	IEnumerator UpdateController(float interval)
+	//IEnumerator UpdateController(float interval)
+	//{
+	//	while (true)
+	//	{
+	//		yield return new WaitForSeconds(interval);
+	//		UpdateSpacecraftController();
+	//		UpdateThrottleControl();
+	//	}
+	//}
+
+	void Update()
 	{
-		while (true)
+		if (bUpdating)
 		{
-			yield return new WaitForSeconds(interval);
 			UpdateSpacecraftController();
 			UpdateThrottleControl();
 		}

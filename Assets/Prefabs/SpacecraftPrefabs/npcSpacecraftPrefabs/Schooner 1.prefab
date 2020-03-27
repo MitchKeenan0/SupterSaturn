@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1906621234774554818}
   - component: {fileID: 1906621234774554821}
+  - component: {fileID: 991072513682021021}
   - component: {fileID: 2482138470350234215}
   - component: {fileID: 1389119047813023650}
   - component: {fileID: 7892403271339429888}
@@ -73,6 +74,19 @@ MonoBehaviour:
   craftDiagram: {fileID: 21300000, guid: 7c280c71bce91a4448becdb221d9ff76, type: 3}
   iconScale: 25
   numericID: 1
+--- !u!114 &991072513682021021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1906621234774554819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 124d88d5017bb2c48be3ad33365d7fab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  updateInterval: 0.1
 --- !u!114 &2482138470350234215
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86,7 +100,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   teamID: 1
-  preferredEngagementDistance: 5
   bAttackPredictions: 1
 --- !u!114 &1389119047813023650
 MonoBehaviour:
@@ -131,6 +144,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponSpeed: 1000
   weaponAccuracy: 10
+  damage: 1
   munitionPrefab: {fileID: 298334711150030353, guid: 70345f5aeca2efd448dac5714d0187c8,
     type: 3}
   armingParticles: {fileID: 1333520053312347335}
@@ -917,6 +931,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5862238889529750561, guid: d668164fc514c794392cadc304f9585d,
+        type: 3}
+      propertyPath: bNPCControlled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d668164fc514c794392cadc304f9585d, type: 3}

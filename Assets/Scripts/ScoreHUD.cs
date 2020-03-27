@@ -45,7 +45,7 @@ public class ScoreHUD : MonoBehaviour
 		maxScore = maxValue;
 		score += value;
 		valueText.text = score.ToString() + " / " + maxScore.ToString();
-		if (score == maxScore)
+		if (score >= maxScore)
 			battleOutcome.BattleOver(true);
 	}
 

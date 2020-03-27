@@ -91,12 +91,20 @@ public class BattleOutcome : MonoBehaviour
 
 	public void Return()
 	{
-		ObjectiveType[] objs = FindObjectsOfType<ObjectiveType>();
-		int numObjs = objs.Length;
+		ObjectiveType[] objectives = FindObjectsOfType<ObjectiveType>();
+		int numObjs = objectives.Length;
 		for(int i = 0; i < numObjs; i++)
 		{
-			GameObject obj = objs[i].gameObject;
+			GameObject obj = objectives[i].gameObject;
 			Destroy(obj);
+		}
+
+		Scanner[] scanners = FindObjectsOfType<Scanner>();
+		int numScanners = scanners.Length;
+		for(int i = 0; i < numScanners; i++)
+		{
+			GameObject scn = scanners[i].gameObject;
+			Destroy(scn);
 		}
 		SceneManager.LoadScene("FleetScene");
 	}

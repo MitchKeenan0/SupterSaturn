@@ -93,15 +93,18 @@ public class InputController : MonoBehaviour
 
 	public void Begin()
 	{
-		AllStop();
+		AllStop(false);
 		CameraMode();
 		ActivateButton(stopButton, false, true);
+		Debug.Log("begun");
 	}
 
-	public void AllStop()
+	public void AllStop(bool bActuallyThough)
 	{
 		bool bTurningOff = bStopped;
 		bStopped = !bStopped;
+		if (bActuallyThough)
+			bStopped = true;
 		bool bEngineShutdown = false;
 		if (bStopped)
 		{

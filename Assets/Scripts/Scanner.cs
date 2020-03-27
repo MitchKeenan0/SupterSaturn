@@ -36,7 +36,6 @@ public class Scanner : MonoBehaviour
 		targetList = new List<GameObject>();
 		mySpacecraft = GetComponentInParent<Spacecraft>();
 		predictionHud = FindObjectOfType<TargetPredictionHUD>();
-
 		spherePoints = GetComponent<SpherePointDistribution>();
 		spherePoints.enabled = false;
 		spherePoints.transform.SetParent(null);
@@ -44,9 +43,6 @@ public class Scanner : MonoBehaviour
 		scanRender = meshRenderer.gameObject;
 		originalAlpha = meshRenderer.material.GetFloat("_Opacity");
 		meshRenderer.enabled = false;
-
-		//scanCoroutine = LoopingScanLaunch(scanInterval + scanRecoveryPeriod + Random.Range(-intervalDeviation, intervalDeviation));
-		//StartCoroutine(scanCoroutine);
 	}
 
 	private IEnumerator LoopingScanLaunch(float waitTime)
