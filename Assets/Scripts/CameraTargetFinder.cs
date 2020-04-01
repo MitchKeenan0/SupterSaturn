@@ -46,8 +46,8 @@ public class CameraTargetFinder : MonoBehaviour
 		bActive = value;
 		if (bActive)
 			TargetFind();
-		else
-			touchOrbit.ResetAnchor(true);
+		//else
+		//	touchOrbit.ResetAnchor(true);
 	}
 
 	public void SetTarget(Transform value)

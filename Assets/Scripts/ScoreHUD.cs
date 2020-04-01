@@ -27,7 +27,9 @@ public class ScoreHUD : MonoBehaviour
 
 	void Update()
 	{
-		if (popupPanelList != null && popupPanelList.Count > 0)
+		if (!cameraMain)
+			cameraMain = Camera.main;
+		if ((cameraMain != null) && (popupPanelList != null) && (popupPanelList.Count > 0))
 		{
 			foreach (ScorePopup sp in popupPanelList)
 			{
@@ -45,7 +47,9 @@ public class ScoreHUD : MonoBehaviour
 		maxScore = maxValue;
 		score += value;
 		valueText.text = score.ToString() + " / " + maxScore.ToString();
-		if (score >= maxScore)
+		if (!battleOutcome)
+			battleOutcome = FindObjectOfType<BattleOutcome>();
+		if ((battleOutcome != null) && (score >= maxScore))
 			battleOutcome.BattleOver(true);
 	}
 
@@ -71,6 +75,11 @@ public class ScoreHUD : MonoBehaviour
 		popupPanelList.Add(newScorePanel);
 		newScorePanel.SetActive(false, 0, Vector3.zero);
 		return newScorePanel;
+	}
+
+	public void InitScore(int max)
+	{
+		UpdateScore(0, max);
 	}
 
 	public void PopupScore(Vector3 worldPosition, int scoreValue, int maxValue)

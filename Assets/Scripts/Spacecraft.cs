@@ -83,8 +83,8 @@ public class Spacecraft : MonoBehaviour
 		angularVelocity = transform.eulerAngles;
 
 		SetAgentEnabled(bAgentStartsEnabled);
-		if (agent != null && (agent.teamID != 0))
-			SetRenderComponents(false);
+		//if (agent != null && (agent.teamID != 0))
+		//	SetRenderComponents(false);
 
 		if (thrustParticles != null)
 		{
@@ -223,14 +223,14 @@ public class Spacecraft : MonoBehaviour
 	public void AddMarkValue(int value)
 	{
 		numMarked += value;
-		if (numMarked > 0)
-		{
-			SetRenderComponents(true);
-		}
-		else if (agent.teamID != 0)
-		{
-			SetRenderComponents(false);
-		}
+		//if (numMarked > 0)
+		//{
+		//	SetRenderComponents(true);
+		//}
+		//else if (agent.teamID != 0)
+		//{
+		//	SetRenderComponents(false);
+		//}
 	}
 
 	public void SetRenderComponents(bool value)
@@ -264,7 +264,8 @@ public class Spacecraft : MonoBehaviour
 
 	public void SelectionHighlight(bool value)
 	{
-		cameraController.Highlight(value, this);
+		if (cameraController != null)
+			cameraController.Highlight(value, this);
 	}
 
 	public SpacecraftInformation GetSpacecraftInformation()
@@ -283,19 +284,21 @@ public class Spacecraft : MonoBehaviour
 	{
 		if (!spacecraftInformation)
 			spacecraftInformation = GetComponent<SpacecraftInformation>();
-		cameraController.SetMouseContext(true, this);
+		if (cameraController != null)
+			cameraController.SetMouseContext(true, this);
 	}
 
 	private void OnMouseExit()
 	{
-		cameraController.SetMouseContext(false, null);
+		if (cameraController != null)
+			cameraController.SetMouseContext(false, null);
 	}
 
 	private void OnMouseDown()
 	{
 		if ((Time.time - timeAtLastClick) >= 1f)
 			mouseSelection.UpdateSelection(GetComponent<Selectable>(), true);
-		else
+		else if (cameraController != null)
 			cameraController.SetOrbitTarget(transform);
 		timeAtLastClick = Time.time;
 	}

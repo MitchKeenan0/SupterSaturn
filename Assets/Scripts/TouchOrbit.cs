@@ -48,9 +48,9 @@ public class TouchOrbit : MonoBehaviour
 		Vector3 angles = transform.eulerAngles;
 		x = angles.y;
 		y = angles.x;
-		distance = distanceMax - distanceMin;
+		distance = distanceMax;
 		this.enabled = bActivated;
-		moveInput = new Vector3(-100f, -50f, 0f);
+		moveInput = new Vector3(-150f, -350f, 0f);
 	}
 
 	void Update()
@@ -154,5 +154,10 @@ public class TouchOrbit : MonoBehaviour
 	{
 		anchorTransform = value;
 		distance = distanceMax - distanceMin;
+	}
+
+	public void SetTarget(Transform target)
+	{
+
 	}
 }

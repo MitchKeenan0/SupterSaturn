@@ -21,6 +21,7 @@ public class ObjectiveListing : MonoBehaviour
 	{
 		ratingStarList = new List<GameObject>();
 		menu = FindObjectOfType<MainMenu>();
+		iconImage.preserveAspect = true;
 	}
 
 	public void SetObjective(ObjectiveType obj)
@@ -39,10 +40,13 @@ public class ObjectiveListing : MonoBehaviour
 	{
 		if (ratingStarList == null)
 			ratingStarList = new List<GameObject>();
-		for (int i = 0; i < value; i++)
+		if (ratingStarList.Count < value)
 		{
-			GameObject star = Instantiate(ratingStarPrefab, ratingPanel.transform);
-			ratingStarList.Add(star);
+			for (int i = 0; i < value; i++)
+			{
+				GameObject star = Instantiate(ratingStarPrefab, ratingPanel.transform);
+				ratingStarList.Add(star);
+			}
 		}
 	}
 

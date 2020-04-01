@@ -10,16 +10,20 @@ public class SkillPanelAbilityPanel : MonoBehaviour
 
 	private SkillPanel skillPanel;
 	private Button myButton;
+	private Image backgroundImage;
 
-    void Start()
+	void Awake()
     {
 		skillPanel = GetComponentInParent<SkillPanel>();
 		myButton = GetComponent<Button>();
+		backgroundImage = GetComponent<Image>();
     }
 
 	public void SetAbility(Ability ability)
 	{
 		abilityImage.sprite = ability.abilitySprite;
+		if (backgroundImage != null)
+			backgroundImage.sprite = ability.abilitySprite;
 		abilityText.text = ability.abilityName;
 		ability.BondToButton(myButton);
 	}

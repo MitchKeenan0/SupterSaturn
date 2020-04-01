@@ -164,17 +164,14 @@ public class Autopilot : MonoBehaviour
 	IEnumerator MainEngineBurn(float durationTime)
 	{
 		spacecraft.MainEngines(1f);
-		float timeElapsed = 0f;
 		bEngineActive = true;
 		if (rb.velocity.magnitude < 1f)
 			FindObjectOfType<InputController>().AllStop(false);
-		while (timeElapsed < durationTime)
-		{
-			timeElapsed += Time.deltaTime;
-			yield return new WaitForSeconds(Time.deltaTime);
-		}
+
+		yield return new WaitForSeconds(durationTime);
 		spacecraft.MainEngines(0f);
 		FaceVelocity(true);
 		bEngineActive = false;
+		FindObjectOfType<OrbitController>().SetUpdating(false);
 	}
 }

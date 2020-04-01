@@ -18,12 +18,13 @@ public class InputController : MonoBehaviour
 	private Camera cameraMain;
 	private CameraTargetFinder cameraTargetFinder;
 	private TouchOrbit touchOrbit;
+	private OrbitController orbitController;
 	private float originalCameraScale = 1f;
 	private bool bNavigationMode = false;
 	private bool bFreeCameraMode = false;
 	private bool bStopped = false;
 	private bool bScanning = false;
-	private int cameraMode = 0;
+	private int cameraMode = 1;
 	private int numCameraModes = 0;
 	private List<float> distanceModes;
 
@@ -40,8 +41,8 @@ public class InputController : MonoBehaviour
 		cameraMain = Camera.main;
 		cameraTargetFinder = FindObjectOfType<CameraTargetFinder>();
 		touchOrbit = FindObjectOfType<TouchOrbit>();
+		orbitController = FindObjectOfType<OrbitController>();
 		distanceModes.Add(touchOrbit.distanceMin);
-		distanceModes.Add(touchOrbit.distanceMax - touchOrbit.distanceMin);
 		distanceModes.Add(touchOrbit.distanceMax);
 		originalCameraScale = touchOrbit.GetInputScale();
 		statusText.text = "";
@@ -137,13 +138,18 @@ public class InputController : MonoBehaviour
 		else
 		{
 			UpdateStatusText("Intertial stabilizers off");
+			//orbitController.SetUpdating(true);
 		}
 
 		if (bEngineShutdown)
 		{
 			bTurningOff = false;
 			bStopped = false;
+			orbitController.SetUpdating(false);
 		}
+
+		if (bStopped && !bEngineShutdown)
+			orbitController.ClearTrajectory();
 
 		bool bActivated = bStopped || bEngineShutdown;
 		ActivateButton(stopButton, bActivated, bTurningOff);
@@ -188,6 +194,11 @@ public class InputController : MonoBehaviour
 				cameraMode = 0;
 			UpdateStatusText("Camera range " + dist + " km");
 		}
+	}
+
+	public void CameraPlanet()
+	{
+
 	}
 
 	public void Scan()

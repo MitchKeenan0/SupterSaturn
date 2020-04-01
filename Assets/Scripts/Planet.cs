@@ -82,16 +82,21 @@ public class Planet : MonoBehaviour
 					if (colors.Length > vertexIndex)
 						colors[vertexIndex] = color;
 
-					if (scoreHud != null)
-					{
-						Vector3 vertexWorldPosition = transform.TransformPoint(hitVertex);
-						int vertexScore = Mathf.FloorToInt(300f / Vector3.Distance(position, vertexWorldPosition));
-						Debug.Log("score + " + vertexScore);
-						scoreHud.PopupScore(vertexWorldPosition, vertexScore, vertexList.Count);
-					}
-
 					if (vertexVisualizer != null)
+					{
 						vertexVisualizer.DisableLine(hitVertex);
+						int maxScore = vertexVisualizer.GetNumVerticies();
+
+						List<Vector3> visList = new List<Vector3>();
+						visList = vertexVisualizer.GetVertexList();
+						if (visList.Contains(hitVertex) && (scoreHud != null))
+						{
+							Vector3 vertexWorldPosition = transform.TransformPoint(hitVertex);
+							int vertexScore = Mathf.FloorToInt(300f / Vector3.Distance(position, vertexWorldPosition));
+							Debug.Log("score + " + vertexScore);
+							scoreHud.PopupScore(vertexWorldPosition, vertexScore, maxScore);
+						}
+					}
 
 					freshVertices.Remove(hitVertex);
 				}

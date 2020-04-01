@@ -56,6 +56,16 @@ public class ObjectiveHUD : MonoBehaviour
 							objScreenPosition.y = Mathf.Clamp(objScreenPosition.y, 0f, Screen.height);
 							panel.transform.position = objScreenPosition;
 
+							ObjectiveDetailPanel detailPanel = panel.gameObject.GetComponentInChildren<ObjectiveDetailPanel>();
+							if (detailPanel != null)
+							{
+								float offset = detailPanel.offset * 2;
+								if (objScreenPosition.x >= (Screen.width - offset))
+									detailPanel.SetAlignment(-1);
+								if (objScreenPosition.x <= offset)
+									detailPanel.SetAlignment(1);
+							}
+
 							if (orbitController.GetAutopilot() != null)
 							{
 								float distanceToObj = Vector3.Distance(obj.transform.position, orbitController.GetAutopilot().transform.position);

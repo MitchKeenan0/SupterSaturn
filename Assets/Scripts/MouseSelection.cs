@@ -122,7 +122,7 @@ public class MouseSelection : MonoBehaviour
 				isSelecting = false;
 				List<Spacecraft> sps = GetSelectedSpacecraft();
 				selectionSquad.SetSquad(sps);
-				skillPanel.SetSpacecraftList(sps);
+				skillPanel.InitAbilities(sps);
 			}
 
 			if (selectionBox != null)

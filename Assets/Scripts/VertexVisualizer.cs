@@ -5,14 +5,20 @@ using UnityEngine;
 public class VertexVisualizer : MonoBehaviour
 {
 	public LineRenderer linePrefab;
+	public float vertexAccountPercentage = 0.3f;
 
+	private ScoreHUD scoreHud;
 	private List<Vector3> vertexList;
 	private List<LineRenderer> lineList;
 
 	private IEnumerator loadCoroutine;
 
+	public List<Vector3> GetVertexList() { return vertexList; }
+	public int GetNumVerticies() { return (vertexList != null) ? vertexList.Count : 0; }
+
     void Start()
     {
+		scoreHud = FindObjectOfType<ScoreHUD>();
 		loadCoroutine = LoadWait(0.6f);
 		StartCoroutine(loadCoroutine);
     }
@@ -21,6 +27,7 @@ public class VertexVisualizer : MonoBehaviour
 	{
 		yield return new WaitForSeconds(waitTime);
 		InitLines();
+		scoreHud.InitScore(vertexList.Count);
 	}
 
 	void InitLines()
@@ -48,8 +55,11 @@ public class VertexVisualizer : MonoBehaviour
 			transform.localScale = Vector3.one;
 			for(int i = 0; i < pl.GetVertexList().Count; i++)
 			{
-				Vector3 vertex = pl.GetVertexList()[i];
-				vertexList.Add(vertex);
+				if (Random.Range(0f, 1f) < vertexAccountPercentage)
+				{
+					Vector3 vertex = pl.GetVertexList()[i];
+					vertexList.Add(vertex);
+				}
 			}
 		}
 

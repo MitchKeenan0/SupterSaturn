@@ -11,6 +11,7 @@ public class Ability : MonoBehaviour
 	public float cooldown = 1f;
 	public Sprite abilitySprite;
 	public string abilityName = "";
+	public bool bTargeting = false;
 
 	private IEnumerator warmupCoroutine;
 	private IEnumerator durationCoroutine;

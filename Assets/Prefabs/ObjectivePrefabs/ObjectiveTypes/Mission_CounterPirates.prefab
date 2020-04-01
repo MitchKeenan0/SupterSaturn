@@ -43,7 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6030b363979f04c41b8ecf9623a34476, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectiveName: Counter Pirates
+  objectiveName: Counter
   objectiveDescription: Stop hostile spacecraft
   objectiveIcon: {fileID: 21300000, guid: 487e2037a2effda4ba2cada4733b2dea, type: 3}
   objectiveRating: 1

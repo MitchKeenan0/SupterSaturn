@@ -16,12 +16,15 @@ public class ObjectiveType : MonoBehaviour
 	private ObjectiveHUD objectiveHud;
 	private NameLibrary nameLibrary;
 	private bool bSpawnOnLoad = false;
+	private bool bLoaded = false;
 
 	void Awake()
 	{
 		DontDestroyOnLoad(gameObject);
 		objectiveHud = FindObjectOfType<ObjectiveHUD>();
 		nameLibrary = FindObjectOfType<NameLibrary>();
+		if (!bLoaded)
+			LoadObjective();
 	}
 
 	void OnEnable()
@@ -34,12 +37,13 @@ public class ObjectiveType : MonoBehaviour
 	}
 	void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
 	{
-		if (bSpawnOnLoad)
+		if (bSpawnOnLoad && !bLoaded)
 			LoadObjective();
 	}
 
 	public virtual void LoadObjective()
 	{
+		bLoaded = true;
 		SpawnPrincipleObjects();
 		objectiveHud = FindObjectOfType<ObjectiveHUD>();
 		if (objectiveHud != null)

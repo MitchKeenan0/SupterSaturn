@@ -43,12 +43,9 @@ public class Agent : MonoBehaviour
 		actionHud = FindObjectOfType<ActionCommandHUD>();
 	}
 
-	private void Start()
+	void Start()
 	{
-		if ((teamID != 0) && (scanner != null))
-		{
-			scanner.BeginScanning();
-		}
+		
 	}
 
 	void Update()
@@ -109,7 +106,10 @@ public class Agent : MonoBehaviour
 
 		if ((targetTransform == null) && bAttackPredictions)
 		{
-			predictionList = predictionHud.GetPredictions();
+			if (predictionList == null)
+				predictionList = new List<Prediction>();
+			if (predictionHud.GetPredictions() != null)
+				predictionList = predictionHud.GetPredictions();
 			if (predictionList != null)
 			{
 				int numPredictions = predictionList.Count;
@@ -158,6 +158,8 @@ public class Agent : MonoBehaviour
 
 	public void Scan()
 	{
+		if (!scanner)
+			GetComponentInChildren<Scanner>();
 		if (scanner != null)
 		{
 			if (!scanner.IsScanning())
@@ -171,18 +173,21 @@ public class Agent : MonoBehaviour
 	{
 		if (this != null)
 		{
-			bool result = false;
-			RaycastHit hit = raycastManager.CustomRaycast(transform.position, target - transform.position);
-			if (hit.transform == targetTrans)
+			if (!raycastManager)
+				raycastManager = FindObjectOfType<RaycastManager>();
+			if (raycastManager != null)
 			{
-				result = true;
+				bool result = false;
+				RaycastHit hit = raycastManager.CustomRaycast(transform.position, target - transform.position);
+				if (hit.transform == targetTrans)
+				{
+					result = true;
+				}
+				return result;
 			}
-			return result;
+			else { return false; }
 		}
-		else
-		{
-			return false;
-		}
+		else { return false; }
 	}
 
 	public void SetOffense(bool value)

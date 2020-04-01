@@ -45,8 +45,8 @@ Transform:
   - {fileID: 4775973853794907389}
   - {fileID: 2848868744532872494}
   - {fileID: 1727993211692459478}
-  - {fileID: 7276954474073493548}
   - {fileID: 1151079550836788156}
+  - {fileID: 7614469528155498242}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -63,16 +63,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bAgentStartsEnabled: 1
-  mainEnginePower: 1
-  turningPower: 0.5
-  maneuverPower: 0.2
+  mainEnginePower: 150
+  turningPower: 1
+  maneuverPower: 1
   spacecraftName: Schooner
   thrustParticles: {fileID: 2104020796097920098}
   destroyedParticlesPrefab: {fileID: 2766248710761914840, guid: 05469ee24ae991f41b944cbcf9f43ad0,
     type: 3}
-  craftIcon: {fileID: 21300000, guid: 7606e305b2c934f4099c294aaae99948, type: 3}
-  craftDiagram: {fileID: 21300000, guid: 7c280c71bce91a4448becdb221d9ff76, type: 3}
-  iconScale: 25
+  craftIcon: {fileID: 21300000, guid: f24171375f3c31649bc3ba5b54bcfca2, type: 3}
+  craftDiagram: {fileID: 21300000, guid: 0fc40ac0ebb0d5f4f98d570d33cbe1fc, type: 3}
+  iconScale: 0.6
   numericID: 1
 --- !u!114 &991072513682021021
 MonoBehaviour:
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   teamID: 1
-  bAttackPredictions: 1
+  bAttackPredictions: 0
 --- !u!114 &1389119047813023650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,9 +223,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1906621234774554819}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 1.5
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0.3
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 1
@@ -915,7 +915,7 @@ PrefabInstance:
     - target: {fileID: 5862238889529750560, guid: d668164fc514c794392cadc304f9585d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5862238889529750560, guid: d668164fc514c794392cadc304f9585d,
         type: 3}
@@ -1020,7 +1020,7 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 7159993893379400231}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &7302145989216648099
+--- !u!1001 &7495827260942093453
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -1070,7 +1070,7 @@ PrefabInstance:
     - target: {fileID: 120049750544886671, guid: 46ea2727372f81140af84135ce35cdcc,
         type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 120049750544886671, guid: 46ea2727372f81140af84135ce35cdcc,
         type: 3}
@@ -1089,9 +1089,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46ea2727372f81140af84135ce35cdcc, type: 3}
---- !u!4 &7276954474073493548 stripped
+--- !u!4 &7614469528155498242 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 120049750544886671, guid: 46ea2727372f81140af84135ce35cdcc,
     type: 3}
-  m_PrefabInstance: {fileID: 7302145989216648099}
+  m_PrefabInstance: {fileID: 7495827260942093453}
   m_PrefabAsset: {fileID: 0}

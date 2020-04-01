@@ -31,7 +31,6 @@ public class SpacecraftController : MonoBehaviour
 	public Autopilot GetAutopilot() { return autopilot; }
 
 	private IEnumerator loadCoroutine;
-	//private IEnumerator updateCoroutine;
 
 	void Start()
     {
@@ -48,7 +47,8 @@ public class SpacecraftController : MonoBehaviour
 		cameraMain = Camera.main;
 		navigationHud = FindObjectOfType<NavigationHud>();
 		throttleHud = FindObjectOfType<ThrottleHUD>();
-		throttleHud.SetSpacecraft(spacecraft);
+		if ((throttleHud != null) && !bNPCControlled)
+			throttleHud.SetSpacecraft(spacecraft);
 		crew = FindObjectOfType<Crew>();
 		if (crew != null)
 			crew.ImbueSpacecraft(spacecraft);
@@ -64,20 +64,8 @@ public class SpacecraftController : MonoBehaviour
 			inputController.SetCameraTarget(spacecraft.transform);
 			inputController.Begin();
 			bUpdating = true;
-			//updateCoroutine = UpdateController(0.06f);
-			//StartCoroutine(updateCoroutine);
 		}
 	}
-
-	//IEnumerator UpdateController(float interval)
-	//{
-	//	while (true)
-	//	{
-	//		yield return new WaitForSeconds(interval);
-	//		UpdateSpacecraftController();
-	//		UpdateThrottleControl();
-	//	}
-	//}
 
 	void Update()
 	{
@@ -112,7 +100,7 @@ public class SpacecraftController : MonoBehaviour
 					Vector3 onscreenDirection = new Vector3(touchPosition.x, touchPosition.y, 0f) - centerScreen;
 
 					/// burn duration
-					burnDuration = Mathf.Clamp(onscreenDirection.magnitude / 100f, 1f, 3f);
+					burnDuration = Mathf.Clamp(onscreenDirection.magnitude / 100f, 1f, 5f);
 					orbitController.SetBurnDuration(burnDuration);
 					navigationHud.SetBurnDuration(burnDuration);
 

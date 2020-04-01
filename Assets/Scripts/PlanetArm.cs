@@ -27,7 +27,7 @@ public class PlanetArm : MonoBehaviour
 			transform.rotation = Quaternion.Euler(offsetEuler);
 			if (circle != null)
 			{
-				circle.SetRadius(value * 2);
+				circle.SetRadius(value * armLength);
 				circle.UpdateCircleRender();
 			}
 		}

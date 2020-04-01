@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &79586355095157980
+--- !u!1 &6043831114386349534
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 79586355095157981}
-  - component: {fileID: 79586355095157982}
+  - component: {fileID: 6043831114386349505}
+  - component: {fileID: 6101347977358878669}
   m_Layer: 0
-  m_Name: Mission_ScanObject
+  m_Name: GravitonAbility
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &79586355095157981
+--- !u!4 &6043831114386349505
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 79586355095157980}
+  m_GameObject: {fileID: 6043831114386349534}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31,24 +31,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &79586355095157982
+--- !u!114 &6101347977358878669
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 79586355095157980}
+  m_GameObject: {fileID: 6043831114386349534}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6030b363979f04c41b8ecf9623a34476, type: 3}
+  m_Script: {fileID: 11500000, guid: 97e1f105dfd17344a9717a6f76689d42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectiveName: Scan Object
-  objectiveDescription: Survey the object
-  objectiveIcon: {fileID: 21300000, guid: fa3d10bd682e87d42bb4eafad9d4e73d, type: 3}
-  objectiveRating: 1
-  principleObjectPrefabs:
-  - {fileID: 5927431976903153282, guid: 2285e5fd28f329f419e96c08408ed8d5, type: 3}
-  - {fileID: 9158545952295277926, guid: 41d252aadadf2e84c823c92045e089b0, type: 3}
-  bRandomPosition: 0
-  spawnRange: 0
+  startEffectPrefab: {fileID: 4211655436488241348, guid: a2c25a10110d6f04a8d83940f0c0daed,
+    type: 3}
+  warmup: 0.1
+  duration: 0
+  cooldown: 1
+  abilitySprite: {fileID: 21300000, guid: 7be2f35512f214e438319ec42ffa8c71, type: 3}
+  abilityName: Graviton
+  bTargeting: 1

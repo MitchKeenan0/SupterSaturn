@@ -24,9 +24,14 @@ public class SkillPanel : MonoBehaviour
 	{
 		myAbilityList.Add(ability);
 		GameObject abPanel = Instantiate(abilityPanelPrefab, abilityPanel.transform);
+		SkillPanelAbilityPanel spap = abPanel.GetComponent<SkillPanelAbilityPanel>();
+		if (spap != null)
+		{
+			spap.SetAbility(ability);
+		}
 	}
 
-	public void SetSpacecraftList(List<Spacecraft> spl)
+	public void InitAbilities(List<Spacecraft> spl)
 	{
 		spacecraftList = spl;
 		skillPanel.SetActive(spacecraftList.Count > 0);

@@ -61,7 +61,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orbitAnchor: {fileID: 6167527401676555419}
-  distance: 0
+  distance: 200
   xSpeed: 1.5
   ySpeed: 1.5
   mousePanSpeed: 0.1
@@ -127,11 +127,11 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0, g: 0, b: 0.09433961, a: 0}
+  m_BackGroundColor: {r: 0.14901961, g: 0.011764707, b: 0.121568635, a: 0}
   m_projectionMatrixMode: 2
   m_GateFitMode: 2
   m_FOVAxisMode: 0
-  m_SensorSize: {x: 10, y: 10}
+  m_SensorSize: {x: 5.77, y: 10}
   m_LensShift: {x: 0, y: 0}
   m_FocalLength: 8.76
   m_NormalizedViewPortRect:
@@ -141,7 +141,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.01
-  far clip plane: 2000
+  far clip plane: 5000
   field of view: 59.433395
   orthographic: 0
   orthographic size: 5

@@ -8,7 +8,6 @@ public class Scanner : MonoBehaviour
 	public float intervalDeviation = 0.1f;
 	public float scanSpeed = 1f;
 	public float maxRadius = 1f;
-	public float updateInterval = 0.1f;
 	public float scanRecoveryPeriod = 0.5f;
 	public float maxPointSize = 1f;
 
@@ -16,7 +15,6 @@ public class Scanner : MonoBehaviour
 	private List<GameObject> targetList;
 	private GameObject scanRender;
 	private MeshRenderer meshRenderer;
-	private SpherePointDistribution spherePoints;
 	private Spacecraft mySpacecraft;
 	private TargetPredictionHUD predictionHud;
 	private IEnumerator scanCoroutine;
@@ -27,6 +25,7 @@ public class Scanner : MonoBehaviour
 	private float originalAlpha = 0;
 	private float pointSize = 0f;
 	private bool bScanning = false;
+	private bool bUpdating = false;
 
 	public GameObject[] GetTargets() { return targetList.ToArray(); }
 	public bool IsScanning() { return bScanning; }
@@ -36,9 +35,6 @@ public class Scanner : MonoBehaviour
 		targetList = new List<GameObject>();
 		mySpacecraft = GetComponentInParent<Spacecraft>();
 		predictionHud = FindObjectOfType<TargetPredictionHUD>();
-		spherePoints = GetComponent<SpherePointDistribution>();
-		spherePoints.enabled = false;
-		spherePoints.transform.SetParent(null);
 		meshRenderer = GetComponentInChildren<MeshRenderer>();
 		scanRender = meshRenderer.gameObject;
 		originalAlpha = meshRenderer.material.GetFloat("_Opacity");
@@ -60,36 +56,27 @@ public class Scanner : MonoBehaviour
 		currentRadius = 0f;
 		timeAtScan = Time.time;
 		pointSize = 0f;
-		if (spherePoints != null)
-			spherePoints.SetPointSize(pointSize);
+		if (scanRender != null)
+			scanRender.transform.localScale = Vector3.one * 0.1f;
 		if (meshRenderer != null)
 			meshRenderer.material.SetFloat("_Opacity", originalAlpha);
-
-		updateCoroutine = UpdateScan(updateInterval);
-		StartCoroutine(updateCoroutine);
+		bUpdating = true;
 	}
 
-	private IEnumerator UpdateScan(float waitTime)
+	void Update()
 	{
-		while (true)
-		{
-			if (Time.timeSinceLevelLoad > 1f)
-				UpdateScan();
-			yield return new WaitForSeconds(waitTime);
-		}
+		if (bUpdating && (Time.timeSinceLevelLoad > 1f))
+			UpdateScan();
 	}
 
 	void UpdateScan()
 	{
-		if (((mySpacecraft != null && mySpacecraft.GetAgent() != null)
-			&& (mySpacecraft.GetAgent().teamID == 0))
+		if (((mySpacecraft != null && mySpacecraft.GetAgent() != null))
 			|| (mySpacecraft == null))
 		{
 			UpdateScanRender();
 			if ((meshRenderer != null) && !meshRenderer.enabled)
 				meshRenderer.enabled = true;
-			if ((spherePoints != null) && !spherePoints.enabled)
-				spherePoints.enabled = true;
 		}
 
 		currentRadius += (scanSpeed * Time.deltaTime);
@@ -97,7 +84,7 @@ public class Scanner : MonoBehaviour
 		if (bScanFinished)
 		{
 			ClearTargets();
-			StopCoroutine(updateCoroutine);
+			bUpdating = false;
 			return;
 		}
 
@@ -143,23 +130,10 @@ public class Scanner : MonoBehaviour
 			scanRender.transform.rotation = Quaternion.identity;
 		}
 
-		if (mySpacecraft != null)
-		{
-			spherePoints.transform.position = mySpacecraft.transform.position;
-			spherePoints.UpdateSphere(Mathf.Sqrt(safeRadius) * 0.6f);
-		}
-
 		float percentOfLifetimeRemaining = 1f - (Time.time - timeAtScan) / scanInterval;
 		float alpha = Mathf.Clamp(originalAlpha * percentOfLifetimeRemaining, 0f, 1f);
 		if (meshRenderer != null)
 			meshRenderer.material.SetFloat("_Opacity", alpha);
-
-		float targetSize = 0.0f;
-		if (percentOfLifetimeRemaining > 0.75f)
-			targetSize = maxPointSize;
-		pointSize = Mathf.Lerp(pointSize, targetSize, Time.deltaTime * 5f);
-		if (spherePoints != null)
-			spherePoints.SetPointSize(pointSize);
 	}
 
 	void ClearTargets()
@@ -200,6 +174,7 @@ public class Scanner : MonoBehaviour
 
 	public void BeginScanning()
 	{
+		Debug.Log("begun Scanning");
 		bScanning = true;
 		scanCoroutine = LoopingScanLaunch(scanInterval + scanRecoveryPeriod + Random.Range(-intervalDeviation, intervalDeviation));
 		StartCoroutine(scanCoroutine);

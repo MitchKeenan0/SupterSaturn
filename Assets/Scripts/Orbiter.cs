@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class Orbiter : MonoBehaviour
 {
-	private Rigidbody rb;
-
-	// orbits around a "star" at the origin with fixed mass
 	public float starMass = 1000f;
+
+	private Rigidbody rb;
 
 	void Start()
     {

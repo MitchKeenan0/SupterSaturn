@@ -16,6 +16,7 @@ public class CraftIconHUD : MonoBehaviour
 	private List<Spacecraft> spacecraftList;
 	private List<Image> iconImageList;
 	private List<Image> healthBarList;
+	private bool bUpdating = false;
 
 	private IEnumerator loadWaitCoroutine;
 	private IEnumerator updateCoroutine;
@@ -44,15 +45,7 @@ public class CraftIconHUD : MonoBehaviour
 
 		updateCoroutine = UpdateIconHud(updateInterval);
 		StartCoroutine(updateCoroutine);
-	}
-
-	private IEnumerator UpdateIconHud(float intervalTime)
-	{
-		while(true)
-		{
-			yield return new WaitForSeconds(intervalTime);
-			UpdateCraftIcons();
-		}
+		//bUpdating = true;
 	}
 
 	void InitIconFleet()
@@ -73,6 +66,7 @@ public class CraftIconHUD : MonoBehaviour
 
 				Spacecraft sp = spacecraftList[i];
 				HealthBar healthBar = img.gameObject.GetComponentInChildren<HealthBar>();
+				healthBar.transform.localScale = Vector3.one * (1f / healthBar.GetComponent<RectTransform>().sizeDelta.x);
 				Health spacecraftHealth = sp.GetComponent<Health>();
 				healthBar.InitHeath(spacecraftHealth.maxHealth, spacecraftHealth.GetHealth());
 
@@ -122,6 +116,22 @@ public class CraftIconHUD : MonoBehaviour
 		return product;
 	}
 
+	private IEnumerator UpdateIconHud(float intervalTime)
+	{
+		while (true)
+		{
+			yield return new WaitForSeconds(intervalTime);
+			UpdateCraftIcons();
+		}
+	}
+
+	//void Update()
+	//{
+	//	if (bUpdating)
+	//		UpdateCraftIcons();
+	//	Debug.Log("delta time " + Time.deltaTime);
+	//}
+
 	void UpdateCraftIcons()
 	{
 		spacecraftList = objectManager.GetSpacecraftList();
@@ -135,31 +145,23 @@ public class CraftIconHUD : MonoBehaviour
 					if (sp.GetHUDIcon() != null)
 					{
 						Image img = sp.GetHUDIcon().GetComponent<Image>();
-						if ((sp.GetMarks() > 0) || (sp.GetAgent() && (sp.GetAgent().teamID == 0)))
+						if (img != null) /// (sp.GetMarks() > 0) || (sp.GetAgent() && (sp.GetAgent().teamID == 0)))
 						{
 							img.enabled = true;
 							if (!img.gameObject.activeInHierarchy)
 								img.gameObject.SetActive(true);
 							img.sprite = sp.craftIcon;
 							img.rectTransform.sizeDelta = Vector2.one * sp.iconScale;
-							Vector3 craftScreenPosition = cameraMain.WorldToScreenPoint(sp.transform.position);
-							Vector3 craftToScreen = (sp.transform.position - cameraMain.transform.position).normalized;
-							float dotToCraft = Vector3.Dot(cameraMain.transform.forward, craftToScreen);
-							if (dotToCraft > 0f)
-							{
-								craftScreenPosition.x = Mathf.Clamp(craftScreenPosition.x, 0f, Screen.width);
-								craftScreenPosition.y = Mathf.Clamp(craftScreenPosition.y, 0f, Screen.height);
-								img.transform.position = craftScreenPosition;
-							}
-							else
-							{
-								img.sprite = null;
-								img.gameObject.SetActive(false);
-							}
 
+							Vector3 worldPosition = sp.transform.position;
+							Vector3 craftToScreen = (sp.transform.position - cameraMain.transform.position).normalized;
+							Vector3 craftScreenPosition = worldPosition + (craftToScreen * 10);
+							
+							img.rectTransform.position = craftScreenPosition;
+							
 							Vector3 toCamera = cameraMain.transform.position - sp.transform.position;
 							Color iconColor = img.color;
-							iconColor.a = Mathf.Clamp(toCamera.magnitude * 0.01f, 0.01f, 0.9f);
+							iconColor.a = Mathf.Clamp(toCamera.magnitude * 0.01f, 0.01f, 0.55f);
 							img.color = iconColor;
 						}
 						else
@@ -167,6 +169,7 @@ public class CraftIconHUD : MonoBehaviour
 							img.enabled = false;
 							if (img.gameObject.activeInHierarchy)
 								img.gameObject.SetActive(false);
+							Debug.Log("disabled icon");
 						}
 					}
 				}

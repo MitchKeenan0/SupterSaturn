@@ -72,13 +72,38 @@ public class OrbitController : MonoBehaviour
 		bUpdating = value;
 	}
 
+	public void SetUpdatingForDuration(float value)
+	{
+		durationUpdateCoroutine = DurationUpdate(value);
+		StartCoroutine(durationUpdateCoroutine);
+	}
+
+	private IEnumerator durationUpdateCoroutine;
+	private IEnumerator DurationUpdate(float duration)
+	{
+		if (!bUpdating)
+		{
+			bUpdating = true;
+			updateCoroutine = UpdateOrbit(updateInterval);
+			StartCoroutine(updateCoroutine);
+		}
+
+		yield return new WaitForSeconds(duration);
+
+		if (bUpdating)
+		{
+			StopCoroutine(updateCoroutine);
+			bUpdating = false;
+		}
+	}
+
 	IEnumerator UpdateOrbit(float interval)
 	{
 		while (true)
 		{
 			if ((rb != null) && (rb.velocity.magnitude > 0f))
 			{
-				SimulateTrajectory(rb.velocity, 0f);
+				SimulateTrajectory(rb.velocity, -1f);
 				RenderTrajectory();
 			}
 			yield return new WaitForSeconds(interval);
@@ -93,7 +118,7 @@ public class OrbitController : MonoBehaviour
 		if (heading.magnitude < 1f)
 			return;
 		bool bSimulateEnginePower = true;
-		if (duration == 0f)
+		if (duration < 0f)
 		{
 			duration = rb.velocity.magnitude;
 			bSimulateEnginePower = false;
@@ -113,14 +138,18 @@ public class OrbitController : MonoBehaviour
 			trajecto = deltaVelocity;
 			if (bSimulateEnginePower)
 			{
-				float enginePower = spacecraft.mainEnginePower * deltaTime;
+				float spMass = spacecraft.GetComponent<Rigidbody>().mass;
+				float enginePower = (spacecraft.mainEnginePower / spMass);
 				trajecto = spacecraft.transform.forward * enginePower * deltaTime;
 			}
 
 			if (gravityList.Count > 0)
 			{
+				float simulatedGravity = 2.2f;
+				if (bSimulateEnginePower)
+					simulatedGravity *= spacecraft.mainEnginePower * deltaTime;
 				foreach (Gravity gr in gravityList)
-					trajecto += (gr.GetGravity(rb, currentPosition, rb.mass) * deltaTime);
+					trajecto += (gr.GetGravity(rb, currentPosition, rb.mass) * deltaTime) * simulatedGravity;
 			}
 
 			velocity = currentPosition + trajecto;
@@ -167,7 +196,7 @@ public class OrbitController : MonoBehaviour
 		return line;
 	}
 
-	void ClearTrajectory()
+	public void ClearTrajectory()
 	{
 		if (lineList.Count > 0)
 		{
