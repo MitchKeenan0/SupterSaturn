@@ -188,7 +188,7 @@ public class InputController : MonoBehaviour
 			cameraTargetFinder.SetActive(true);
 			float dist = distanceModes[cameraMode];
 			touchOrbit.SetDistance(dist);
-			cameraMain.focalLength = 1f / (Mathf.Sqrt(dist) * 0.1f) * 6f;
+			//cameraMain.focalLength = 1f / (Mathf.Sqrt(dist) * 0.1f) * 6f;
 			cameraMode++;
 			if (cameraMode >= numCameraModes)
 				cameraMode = 0;

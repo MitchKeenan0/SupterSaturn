@@ -55,7 +55,7 @@ public class BattleOutcome : MonoBehaviour
 		if (!scoreHud)
 			scoreHud = FindObjectOfType<ScoreHUD>();
 		if (scoreHud != null)
-			playerScore += (scoreHud.GetScore() / 10);
+			playerScore += scoreHud.GetScore();
 
 		scoreText.text = "+" + playerScore.ToString();
 		lostText.text = playerLost.ToString();

@@ -104,8 +104,8 @@ public class SpacecraftController : MonoBehaviour
 					orbitController.SetBurnDuration(burnDuration);
 					navigationHud.SetBurnDuration(burnDuration);
 
-					Vector3 navigationTarget = (Quaternion.Euler(cameraMain.transform.eulerAngles) * (onscreenDirection * 0.3f));
-					navigationTarget += cameraMain.transform.forward * 500f;
+					Vector3 navigationTarget = (Quaternion.Euler(cameraMain.transform.eulerAngles) * (onscreenDirection * 0.9f));
+					navigationTarget += cameraMain.transform.forward * 300f;
 					Vector3 navigationVector = navigationTarget + spacecraft.transform.position;
 					directionVector = navigationVector;
 					orbitController.SetDirection(directionVector);

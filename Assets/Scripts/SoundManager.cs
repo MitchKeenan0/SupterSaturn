@@ -27,11 +27,13 @@ public class SoundManager : MonoBehaviour
 
     public void AffirmativeButton()
 	{
-		audioSource.PlayOneShot(buttonAffirmative);
+		if (audioSource != null)
+			audioSource.PlayOneShot(buttonAffirmative);
 	}
 
 	public void NegativeButton()
 	{
-		audioSource.PlayOneShot(buttonNegative);
+		if (audioSource != null)
+			audioSource.PlayOneShot(buttonNegative);
 	}
 }

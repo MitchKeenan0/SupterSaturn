@@ -31,7 +31,7 @@ public class OrbitController : MonoBehaviour
 		navigationHud = FindObjectOfType<NavigationHud>();
 		planet = FindObjectOfType<Planet>();
 		gravityTelemetry = FindObjectOfType<GravityTelemetryHUD>();
-		for (int i = 0; i < 100; i++)
+		for (int i = 0; i < 1000; i++)
 			SpawnTrajectoryLine();
 	}
 
@@ -120,7 +120,7 @@ public class OrbitController : MonoBehaviour
 		bool bSimulateEnginePower = true;
 		if (duration < 0f)
 		{
-			duration = rb.velocity.magnitude;
+			duration = rb.velocity.magnitude * 6;
 			bSimulateEnginePower = false;
 		}
 
@@ -145,7 +145,7 @@ public class OrbitController : MonoBehaviour
 
 			if (gravityList.Count > 0)
 			{
-				float simulatedGravity = 2.2f;
+				float simulatedGravity = 2.23f;
 				if (bSimulateEnginePower)
 					simulatedGravity *= spacecraft.mainEnginePower * deltaTime;
 				foreach (Gravity gr in gravityList)

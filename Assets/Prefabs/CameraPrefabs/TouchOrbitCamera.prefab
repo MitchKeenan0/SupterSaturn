@@ -67,8 +67,8 @@ MonoBehaviour:
   mousePanSpeed: 0.1
   yMinLimit: -85
   yMaxLimit: 85
-  distanceMin: 30
-  distanceMax: 200
+  distanceMin: 15
+  distanceMax: 150
   moveSpeed: 1
   moveAcceleration: 5
   turnAcceleration: 10
@@ -131,9 +131,9 @@ Camera:
   m_projectionMatrixMode: 2
   m_GateFitMode: 2
   m_FOVAxisMode: 0
-  m_SensorSize: {x: 5.77, y: 10}
+  m_SensorSize: {x: 10.65, y: 10}
   m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 8.76
+  m_FocalLength: 2.95
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -142,7 +142,7 @@ Camera:
     height: 1
   near clip plane: 0.01
   far clip plane: 5000
-  field of view: 59.433395
+  field of view: 118.918785
   orthographic: 0
   orthographic size: 5
   m_Depth: -1

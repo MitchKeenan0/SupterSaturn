@@ -59,7 +59,7 @@ public class SolarSystem : BattleScene
 					biggestScale = planetSize;
 				}
 
-				int numMoons = Random.Range(0, Mathf.FloorToInt(planetSize / 10));
+				int numMoons = Random.Range(0, Mathf.FloorToInt(planetSize / 15));
 				if (numMoons > 0)
 				{
 					for (int j = 0; j < numMoons; j++)
