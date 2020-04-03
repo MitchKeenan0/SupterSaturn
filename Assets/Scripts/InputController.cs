@@ -54,7 +54,7 @@ public class InputController : MonoBehaviour
 		ActivateButton(scanButton, false, true);
 	}
 
-	void ActivateButton(Button button, bool value, bool finished)
+	public void ActivateButton(Button button, bool value, bool finished)
 	{
 		if (finished)
 			EventSystem.current.SetSelectedGameObject(null);
@@ -118,7 +118,7 @@ public class InputController : MonoBehaviour
 				autopilot.AllStop();
 			}
 		}
-		else
+		else if (mouseSelection.GetSelectedSpacecraft() != null)
 		{
 			List<Spacecraft> selectedSpacecraft = mouseSelection.GetSelectedSpacecraft();
 			foreach (Spacecraft sp in selectedSpacecraft)

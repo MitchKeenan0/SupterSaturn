@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class Ability : MonoBehaviour
 {
 	public GameObject startEffectPrefab;
+	public Button loopToggleButton;
 	public float warmup = 0.1f;
 	public float duration = 0.5f;
 	public float cooldown = 1f;
@@ -19,6 +20,7 @@ public class Ability : MonoBehaviour
 	private float activeTime = 0f;
 	private bool bActive = false;
 	private bool bCooling = false;
+	private bool bLooping = false;
 	private Button myButton;
 
 	public bool IsActive() { return bActive; }
@@ -33,6 +35,7 @@ public class Ability : MonoBehaviour
 	{
 		if (!bCooling && !bActive)
 		{
+			activeTime = 0f;
 			warmupCoroutine = AbilityWarmup(warmup);
 			StartCoroutine(warmupCoroutine);
 			if (myButton != null)
@@ -85,5 +88,12 @@ public class Ability : MonoBehaviour
 		bCooling = false;
 		if (myButton != null)
 			myButton.interactable = true;
+		if (bLooping)
+			StartAbility();
+	}
+
+	public void ToggleLooping()
+	{
+		bLooping = !bLooping;
 	}
 }

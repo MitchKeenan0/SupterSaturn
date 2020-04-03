@@ -27,8 +27,11 @@ public class AbilityBoost : Ability
 			autopilot.FireEngineBurn(duration, false);
 		orbitController.SetUpdatingForDuration(duration);
 
-		GameObject startEffect = Instantiate(startEffectPrefab, transform.position, transform.rotation);
-		Destroy(startEffect, 1f);
+		if (startEffectPrefab != null)
+		{
+			GameObject startEffect = Instantiate(startEffectPrefab, transform.position, transform.rotation);
+			Destroy(startEffect, 1f);
+		}
 	}
 
 	public override void UpdateAbility()

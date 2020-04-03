@@ -145,9 +145,9 @@ public class OrbitController : MonoBehaviour
 
 			if (gravityList.Count > 0)
 			{
-				float simulatedGravity = 2.23f;
+				float simulatedGravity = 2.3f;
 				if (bSimulateEnginePower)
-					simulatedGravity *= spacecraft.mainEnginePower * deltaTime;
+					simulatedGravity *= 6f;
 				foreach (Gravity gr in gravityList)
 					trajecto += (gr.GetGravity(rb, currentPosition, rb.mass) * deltaTime) * simulatedGravity;
 			}
@@ -171,8 +171,6 @@ public class OrbitController : MonoBehaviour
 				LineRenderer line = null;
 				if ((i < lineList.Count) && (lineList[i] != null))
 					line = lineList[i];
-				//else
-				//	line = SpawnTrajectoryLine();
 
 				if (line != null)
 				{
@@ -183,6 +181,11 @@ public class OrbitController : MonoBehaviour
 						line.SetPosition(0, lineStart);
 						line.SetPosition(1, lineEnd);
 						line.enabled = true;
+
+						float normal = Mathf.InverseLerp(0f, trajectoryCount, i);
+						float lineAlpha = Mathf.Lerp(0.6f, 0.06f, normal);
+						Color lineColor = new Color(lineAlpha, lineAlpha, lineAlpha);
+						line.startColor = line.endColor = lineColor;
 					}
 				}
 			}
