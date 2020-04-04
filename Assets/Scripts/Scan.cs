@@ -14,13 +14,16 @@ public class Scan : MonoBehaviour
         
     }
 
-	public virtual void SetOwningScanner(Transform owningScanner)
+	public virtual void InitScan(Transform owningScanner, Quaternion rotation, float lifeTime)
 	{
 		scannerTransform = owningScanner;
+		transform.rotation = rotation;
+		scanLifetime = lifeTime;
 	}
 
-	public void SetEnabled(bool value)
+	public virtual void SetEnabled(bool value)
 	{
-		GetComponent<Renderer>().enabled = value;
+		if (GetComponent<Renderer>() != null)
+			GetComponent<Renderer>().enabled = value;
 	}
 }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6043831114386349505}
   - component: {fileID: -1592107482819503041}
   m_Layer: 0
-  m_Name: ScannerAbility
+  m_Name: ScannerAbility_Ray
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,5 +51,5 @@ MonoBehaviour:
   abilitySprite: {fileID: 21300000, guid: fa3d10bd682e87d42bb4eafad9d4e73d, type: 3}
   abilityName: Scanner
   bTargeting: 1
-  scanObjectPrefab: {fileID: 3412625616344422772, guid: 88e390c0cc78c004d95fdc3fec68ff9c,
+  scanObjectPrefab: {fileID: -8771968458394331919, guid: 7481f97439404ce41a751d44b7ca0a5c,
     type: 3}

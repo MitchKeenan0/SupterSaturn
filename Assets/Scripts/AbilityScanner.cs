@@ -65,10 +65,10 @@ public class AbilityScanner : Ability
 
 		if (scan != null)
 		{
-			scan.SetOwningScanner(transform);
 			scan.transform.position = transform.position;
 			Vector3 toTarget = (targetVector - transform.position);
-			scan.transform.rotation = Quaternion.LookRotation(toTarget, Vector3.up);
+			Quaternion scanRotation = Quaternion.LookRotation(toTarget, Vector3.up);
+			scan.InitScan(transform, scanRotation, duration);
 			scan.SetEnabled(true);
 		}
 	}
@@ -77,10 +77,6 @@ public class AbilityScanner : Ability
 	{
 		base.UpdateAbility();
 
-		if (scan != null)
-		{
-			scan.transform.Translate(Vector3.forward * scan.scanSpeed * Time.deltaTime);
-		}
 	}
 
 	public override void EndAbility()
