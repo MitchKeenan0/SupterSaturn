@@ -11,6 +11,7 @@ public class RayLine : MonoBehaviour
 	private bool bHit = false;
 
 	public bool RayHit() { return bHit; }
+	public float RayExtent() { return Vector3.Distance(lineStart, lineEnd); }
 	public Vector3 GetHitPosition() { return hitPosition; }
 
     void Awake()
@@ -32,7 +33,14 @@ public class RayLine : MonoBehaviour
 				{
 					bHit = true;
 					hitPosition = hit.point;
-					///Debug.Log("scan ray hit " + hit.transform.gameObject.name);
+
+					Planet planet = hit.transform.gameObject.GetComponent<Planet>();
+					if (planet == null)
+						planet = hit.transform.GetComponentInChildren<Planet>();
+					if (planet != null)
+					{
+						planet.GetScanned(lineEnd, 21f, Color.white);
+					}
 				}
 			}
 		}
@@ -41,6 +49,7 @@ public class RayLine : MonoBehaviour
 	public void ResetRayLine()
 	{
 		bHit = false;
+		lineStart = lineEnd = transform.position;
 	}
 
 	public void SetRayLine(Vector3 start, Vector3 end)

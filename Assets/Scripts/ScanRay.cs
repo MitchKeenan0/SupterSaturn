@@ -17,6 +17,7 @@ public class ScanRay : Scan
 	private float timeAtScan = 0f;
 	private float timeElapsed = 0f;
 	private bool bUpdating = false;
+	private IEnumerator coneSpreadCoroutine;
 
     void Awake()
     {
@@ -37,30 +38,50 @@ public class ScanRay : Scan
 
 			int lineCount = lineList.Count;
 			int spreadCount = raySpreadList.Count;
-			if (lineCount == spreadCount)
+			if ((lineCount > 0) && (spreadCount > 0))
 			{
 				for(int i = 0; i < lineCount; i++)
 				{
-					Vector3 origin = transform.position;
-					RayLine line = lineList[i];
-					if (timeElapsed < (scanLifetime * 0.6f))
+					if (((lineList.Count > i) && (lineList[i] != null))
+						&& (rayLerpList.Count > i) && (rayLerpList[i] != null))
 					{
-						if (!line.RayHit())
+						Vector3 origin = transform.position;
+						RayLine line = lineList[i];
+
+						if (timeElapsed < (scanLifetime * 0.8f))
 						{
-							Vector3 lerp = rayLerpList[i];
-							Vector3 spread = raySpreadList[i];
-							lerp = Vector3.MoveTowards(lerp, spread, Time.deltaTime * raySpeed);
-							rayLerpList[i] = lerp;
-							line.SetRayLine(origin, lerp);
+							if (!line.RayHit() && (line.RayExtent() < rayRange))
+							{
+								Vector3 lerp = rayLerpList[i];
+								Vector3 spread = raySpreadList[i];
+								lerp = Vector3.MoveTowards(lerp, spread, Time.deltaTime * raySpeed);
+								rayLerpList[i] = lerp;
+								line.SetRayLine(origin, lerp);
+							}
+							else
+							{
+								raySpreadList[i] = GetSpreadVector(i);
+								rayLerpList[i] = transform.position;
+								line.ResetRayLine();
+							}
 						}
-					}
-					else
-					{
-						Vector3 lerp = tailLerpList[i];
-						Vector3 head = rayLerpList[i];
-						lerp = Vector3.MoveTowards(lerp, head, Time.deltaTime * raySpeed);
-						tailLerpList[i] = lerp;
-						line.SetRayLine(lerp, Vector3.zero);
+						else
+						{
+							if (timeElapsed >= scanLifetime)
+							{
+								RetractLines();
+								bUpdating = false;
+								return;
+							}
+							else
+							{
+								Vector3 lerp = tailLerpList[i];
+								Vector3 head = rayLerpList[i];
+								lerp = Vector3.MoveTowards(lerp, head, Time.deltaTime * raySpeed);
+								tailLerpList[i] = lerp;
+								line.SetRayLine(lerp, Vector3.zero);
+							}
+						}
 					}
 				}
 			}
@@ -95,18 +116,48 @@ public class ScanRay : Scan
 
 	void ArrangeRayCone()
 	{
-		for(int i = 0; i < rayLineCount; i++)
+		coneSpreadCoroutine = ConeSpread(0.06f);
+		StartCoroutine(coneSpreadCoroutine);
+	}
+
+	private IEnumerator ConeSpread(float interval)
+	{
+		int index = 0;
+		while (index < rayLineCount)
 		{
-			Vector3 lineStart = transform.position;
+			GetSpreadVector(index);
+			index++;
+			yield return new WaitForSeconds(interval);
+		}
+	}
+
+	Vector3 GetSpreadVector(int index)
+	{
+		/// origin
+		Vector3 lineStart = transform.position;
+
+		if (rayLerpList.Count > index)
+			rayLerpList[index] = lineStart;
+		else
 			rayLerpList.Add(lineStart);
+
+		if (tailLerpList.Count > index)
+			tailLerpList[index] = lineStart;
+		else
 			tailLerpList.Add(lineStart);
 
-			Vector3 ray = transform.forward * rayRange;
-			Vector3 spread = Random.insideUnitCircle.normalized * raySpread;
-			spread = Vector3.ProjectOnPlane(spread, ray);
-			Vector3 lineEnd = lineStart + (ray + spread);
+		/// direction
+		Vector3 ray = transform.forward * rayRange;
+		Vector3 spread = Random.onUnitSphere * raySpread;
+		spread = Vector3.ProjectOnPlane(spread, ray);
+		Vector3 lineEnd = lineStart + (ray + spread);
+
+		if (raySpreadList.Count > index)
+			raySpreadList[index] = lineEnd;
+		else
 			raySpreadList.Add(lineEnd);
-		}
+
+		return lineEnd;
 	}
 
 	void RetractLines()

@@ -10,7 +10,6 @@ public class InputController : MonoBehaviour
 	public Button navigationModeButton;
 	public Button cameraModeButton;
 	public Button stopButton;
-	public Button scanButton;
 	public Color standbyColor;
 	public Color activeColor;
 
@@ -23,7 +22,6 @@ public class InputController : MonoBehaviour
 	private bool bNavigationMode = false;
 	private bool bFreeCameraMode = false;
 	private bool bStopped = false;
-	private bool bScanning = false;
 	private int cameraMode = 1;
 	private int numCameraModes = 0;
 	private List<float> distanceModes;
@@ -51,7 +49,6 @@ public class InputController : MonoBehaviour
 		ActivateButton(navigationModeButton, false, true);
 		ActivateButton(cameraModeButton, false, true);
 		ActivateButton(stopButton, false, true);
-		ActivateButton(scanButton, false, true);
 	}
 
 	public void ActivateButton(Button button, bool value, bool finished)
@@ -97,7 +94,6 @@ public class InputController : MonoBehaviour
 		AllStop(false);
 		CameraMode();
 		ActivateButton(stopButton, false, true);
-		Debug.Log("begun");
 	}
 
 	public void AllStop(bool bActuallyThough)
@@ -199,20 +195,6 @@ public class InputController : MonoBehaviour
 	public void CameraPlanet()
 	{
 
-	}
-
-	public void Scan()
-	{
-		bool bFinished = bScanning;
-		bScanning = !bScanning;
-		List<Spacecraft> selectedSpacecraft = mouseSelection.GetSelectedSpacecraft();
-		foreach (Spacecraft sp in selectedSpacecraft)
-		{
-			if (sp.GetAgent() != null)
-				sp.GetAgent().Scan();
-			UpdateStatusText("Scanner " + (bScanning ? "on" : "off"));
-		}
-		ActivateButton(scanButton, bScanning, bFinished);
 	}
 
 	public void EnableCameraControl(bool value)

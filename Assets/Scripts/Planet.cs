@@ -58,18 +58,20 @@ public class Planet : MonoBehaviour
 			Vector3 vertex = transform.TransformPoint(ve);
 			if (Vector3.Distance(position, vertex) <= range)
 			{
-				RaycastHit hit = raycastManager.CustomLinecast(position, vertex);
-				if (hit.transform != null)
-				{
-					if (Vector3.Distance(hit.point, vertex) < 9f)
-						hitVerts.Add(ve);
-				}
+				//RaycastHit hit = raycastManager.CustomLinecast(position, vertex);
+				//if (hit.transform != null)
+				//{
+				//	if (Vector3.Distance(hit.point, vertex) <= range)
+				//		hitVerts.Add(ve);
+				//}
+				if (freshVertices.Contains(ve))
+					hitVerts.Add(ve);
 			}
 		}
 
-		Color32[] colors = new Color32[vertexList.Count];
 		if (hitVerts.Count > 0)
 		{
+			Color32[] colors = new Color32[vertexList.Count];
 			for (int i = 0; i < colors.Length; i++)
 				colors[i] = mesh.colors[i];
 			Vector3[] hitArray = hitVerts.ToArray();
@@ -92,7 +94,7 @@ public class Planet : MonoBehaviour
 						if (visList.Contains(hitVertex) && (scoreHud != null))
 						{
 							Vector3 vertexWorldPosition = transform.TransformPoint(hitVertex);
-							int vertexScore = Mathf.FloorToInt(300f / Vector3.Distance(position, vertexWorldPosition));
+							int vertexScore = Mathf.FloorToInt(range / Vector3.Distance(position, vertexWorldPosition));
 							Debug.Log("score + " + vertexScore);
 							scoreHud.PopupScore(vertexWorldPosition, vertexScore, maxScore);
 						}

@@ -46,8 +46,8 @@ MonoBehaviour:
   startEffectPrefab: {fileID: 0}
   loopToggleButton: {fileID: 0}
   warmup: 0.1
-  duration: 2
-  cooldown: 1
+  duration: 0.75
+  cooldown: 0.5
   abilitySprite: {fileID: 21300000, guid: fa3d10bd682e87d42bb4eafad9d4e73d, type: 3}
   abilityName: Scanner
   bTargeting: 1

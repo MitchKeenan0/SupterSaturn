@@ -50,8 +50,8 @@ MonoBehaviour:
     type: 3}
   rayLineCount: 25
   rayRange: 500
-  raySpread: 100
-  raySpeed: 500
+  raySpread: 50
+  raySpeed: 1000
 --- !u!1 &5145164364138951353
 GameObject:
   m_ObjectHideFlags: 0

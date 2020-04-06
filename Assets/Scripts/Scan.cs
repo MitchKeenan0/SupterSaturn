@@ -19,6 +19,7 @@ public class Scan : MonoBehaviour
 		scannerTransform = owningScanner;
 		transform.rotation = rotation;
 		scanLifetime = lifeTime;
+		transform.parent = owningScanner;
 	}
 
 	public virtual void SetEnabled(bool value)
