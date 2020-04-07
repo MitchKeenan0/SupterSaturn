@@ -71,6 +71,7 @@ public class HealthBar : MonoBehaviour
 		GameObject unit = Instantiate(healthUnitPrefab, healthBar.transform);
 		Vector2 unitScale = unit.GetComponent<RectTransform>().sizeDelta;
 		unitScale.x = width;
+		unitScale.y = width * 1.62f;
 		unit.GetComponent<RectTransform>().sizeDelta = unitScale;
 		healthUnitList.Add(unit);
 	}

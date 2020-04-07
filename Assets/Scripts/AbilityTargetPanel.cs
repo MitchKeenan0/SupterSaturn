@@ -5,15 +5,31 @@ using UnityEngine.UI;
 
 public class AbilityTargetPanel : MonoBehaviour
 {
-	public GameObject targetObject = null;
+	private AbilityTargetingHUD abilityTargeting;
+	private Transform targetTransform;
+	private CanvasGroup canvasGroup;
 
-    void Start()
+    void Awake()
     {
-        
+		canvasGroup = GetComponent<CanvasGroup>();
+		abilityTargeting = FindObjectOfType<AbilityTargetingHUD>();
     }
 
-	public void SetTargetObject(GameObject value)
+	public void LoadTarget(Transform value)
 	{
-		targetObject = value;
+		targetTransform = value;
+	}
+
+	public void TargetSelected()
+	{
+		abilityTargeting.SelectTarget(targetTransform);
+	}
+
+	public void SetEnabled(bool value)
+	{
+		canvasGroup.alpha = (value ? 1f : 0f);
+		canvasGroup.blocksRaycasts = value;
+		canvasGroup.interactable = value;
+		Debug.Log("set enabled " + value);
 	}
 }

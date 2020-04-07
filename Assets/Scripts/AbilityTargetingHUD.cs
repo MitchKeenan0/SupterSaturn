@@ -8,15 +8,21 @@ public class AbilityTargetingHUD : MonoBehaviour
 	public GameObject targetPanelPrefab;
 	public GameObject spatialTargetPanel;
 
+	private Spacecraft spacecraft;
+	private ObjectManager objectManager;
 	private Camera cameraMain;
 	private RaycastManager raycastManager;
 	private Animator animator;
+	private Transform targetTransform = null;
 	private List<AbilityTargetPanel> targetPanelList;
+	private List<Spacecraft> spacecraftList;
 	private bool bActive = false;
 
     void Start()
     {
 		targetPanelList = new List<AbilityTargetPanel>();
+		spacecraftList = new List<Spacecraft>();
+		objectManager = FindObjectOfType<ObjectManager>();
 		animator = GetComponent<Animator>();
 		cameraMain = Camera.main;
 		raycastManager = FindObjectOfType<RaycastManager>();
@@ -24,29 +30,80 @@ public class AbilityTargetingHUD : MonoBehaviour
 			spatialTargetPanel.SetActive(false);
 	}
 
-    void Update()
-    {
-		if (bActive)
-		{
-			UpdateTargets();
-		}
-    }
-
-	void UpdateTargets()
-	{
-		int numTargets = targetPanelList.Count;
-		for(int i = 0; i < numTargets; i++)
-		{
-
-		}
-	}
-
-	GameObject SpawnTargetPanel()
+	GameObject SpawnTargetPanel(Transform tr)
 	{
 		GameObject panel = Instantiate(targetPanelPrefab, transform);
 		AbilityTargetPanel atp = panel.GetComponent<AbilityTargetPanel>();
+		atp.LoadTarget(tr);
 		targetPanelList.Add(atp);
 		return panel;
+	}
+
+	public void SetActive(bool value, Spacecraft sp)
+	{
+		bActive = value;
+		spacecraft = sp;
+		targetTransform = null;
+	}
+
+	public Transform DirectTargeting()
+	{
+		Transform target = null;
+		int objCount = 0;
+		if (objectManager.GetSpacecraftList() != null)
+			objCount = objectManager.GetSpacecraftList().Count;
+
+		if (objCount > 0)
+		{
+			List<Spacecraft> objList = new List<Spacecraft>();
+			objList = objectManager.GetSpacecraftList();
+			if (spacecraftList.Count < objCount)
+			{
+				for (int i = 1; i < objCount + 1; i++)
+				{
+					if (i > spacecraftList.Count)
+					{
+						Spacecraft sp = objList[i - 1];
+						if (sp != spacecraft)
+						{
+							SpawnTargetPanel(sp.transform);
+							spacecraftList.Add(objList[i - 1]);
+						}
+					}
+				}
+			}
+		}
+
+		if (targetTransform != null)
+		{
+			target = targetTransform;
+		}
+		else
+		{
+			int numTargets = targetPanelList.Count;
+			for (int i = 0; i < numTargets; i++)
+			{
+				if ((spacecraftList.Count > i) && (spacecraftList[i] != null))
+				{
+					AbilityTargetPanel atp = targetPanelList[i];
+					Spacecraft sp = spacecraftList[i];
+					Vector3 screenPosition = cameraMain.WorldToScreenPoint(sp.transform.position);
+					atp.transform.position = screenPosition;
+					atp.SetEnabled(true);
+				}
+			}
+		}
+
+		return target;
+	}
+
+	public void SelectTarget(Transform target)
+	{
+		if (target != null)
+		{
+			targetTransform = target;
+			ClearTargets();
+		}
 	}
 
 	public Vector3 SpatialTargeting(Transform originTransform)
@@ -62,7 +119,8 @@ public class AbilityTargetingHUD : MonoBehaviour
 				for(int i = 0; i < hits.Length; i++)
 				{
 					RaycastHit hit = hits[i];
-					if ((hit.transform != null) && (hit.transform.gameObject != originTransform.gameObject))
+					if ((hit.transform != null) && (hit.transform.gameObject != originTransform.gameObject)
+						&& (!originTransform.IsChildOf(hit.transform)))
 					{
 						targetVector = hit.point;
 						if (spatialTargetPanel != null)
@@ -77,6 +135,17 @@ public class AbilityTargetingHUD : MonoBehaviour
 		}
 		
 		return targetVector;
+	}
+
+	void ClearTargets()
+	{
+		int numTargets = targetPanelList.Count;
+		for (int i = 0; i < numTargets; i++)
+		{
+			AbilityTargetPanel atp = targetPanelList[i];
+			atp.SetEnabled(false);
+			Debug.Log("clear target panel");
+		}
 	}
 
 	private IEnumerator spatialTargetCoroutine;

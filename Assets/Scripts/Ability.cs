@@ -25,6 +25,7 @@ public class Ability : MonoBehaviour
 
 	public bool IsActive() { return bActive; }
 	public bool IsCooling() { return bCooling; }
+	public GameObject GetUIObject() { return myButton.gameObject; }
 
 	public void BondToButton(Button button)
 	{
@@ -64,6 +65,12 @@ public class Ability : MonoBehaviour
 		bActive = true;
 		durationCoroutine = AbilityDuration(Time.deltaTime);
 		StartCoroutine(durationCoroutine);
+
+		SkillPanelAbilityPanel spap = GetUIObject().GetComponent<SkillPanelAbilityPanel>();
+		if (spap != null)
+		{
+			spap.BeginCooldown();
+		}
 	}
 
 	private IEnumerator AbilityDuration(float updateInterval)

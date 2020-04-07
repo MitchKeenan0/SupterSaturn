@@ -174,7 +174,6 @@ public class Scanner : MonoBehaviour
 
 	public void BeginScanning()
 	{
-		Debug.Log("begun Scanning");
 		bScanning = true;
 		scanCoroutine = LoopingScanLaunch(scanInterval + scanRecoveryPeriod + Random.Range(-intervalDeviation, intervalDeviation));
 		StartCoroutine(scanCoroutine);

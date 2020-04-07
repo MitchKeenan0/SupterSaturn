@@ -31,7 +31,7 @@ public class OrbitController : MonoBehaviour
 		navigationHud = FindObjectOfType<NavigationHud>();
 		planet = FindObjectOfType<Planet>();
 		gravityTelemetry = FindObjectOfType<GravityTelemetryHUD>();
-		for (int i = 0; i < 1000; i++)
+		for (int i = 0; i < 300; i++)
 			SpawnTrajectoryLine();
 	}
 
@@ -166,7 +166,7 @@ public class OrbitController : MonoBehaviour
 		int trajectoryCount = trajectoryList.Count;
 		if (trajectoryCount > 0)
 		{
-			for(int i = 0; i < trajectoryCount; i++)
+			for(int i = 0; i < trajectoryCount; i += 3)
 			{
 				LineRenderer line = null;
 				if ((i < lineList.Count) && (lineList[i] != null))
@@ -175,17 +175,25 @@ public class OrbitController : MonoBehaviour
 				if (line != null)
 				{
 					Vector3 lineStart = trajectoryList[i];
-					if (trajectoryList.Count > (i + 1))
+					if (trajectoryList.Count > (i + 2))
 					{
-						Vector3 lineEnd = lineStart + ((trajectoryList[i + 1] - trajectoryList[i]) * 0.6f);
+						Vector3 lineEnd = lineStart + ((trajectoryList[i + 2] - trajectoryList[i]) * 0.6f);
 						line.SetPosition(0, lineStart);
 						line.SetPosition(1, lineEnd);
 						line.enabled = true;
 
 						float normal = Mathf.InverseLerp(0f, trajectoryCount, i);
-						float lineAlpha = Mathf.Lerp(0.6f, 0.06f, normal);
-						Color lineColor = new Color(lineAlpha, lineAlpha, lineAlpha);
-						line.startColor = line.endColor = lineColor;
+						float lineAlpha = Mathf.Lerp(0.9f, 0.06f, Mathf.Sqrt(normal));
+						Color lineColor = new Color(0f, lineAlpha, 0f);
+						Color start = lineColor * 0.8f;
+						start.a = 1f;
+						line.startColor = start;
+						line.endColor = lineColor;
+
+						if (Physics.Linecast(lineStart, lineEnd))
+						{
+							return;
+						}
 					}
 				}
 			}

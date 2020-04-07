@@ -296,10 +296,13 @@ public class Spacecraft : MonoBehaviour
 
 	private void OnMouseDown()
 	{
-		if ((Time.time - timeAtLastClick) >= 1f)
-			mouseSelection.UpdateSelection(GetComponent<Selectable>(), true);
-		else if (cameraController != null)
-			cameraController.SetOrbitTarget(transform);
+		if (mouseSelection != null)
+		{
+			if ((Time.time - timeAtLastClick) >= 1f)
+				mouseSelection.UpdateSelection(GetComponent<Selectable>(), true);
+			else if (cameraController != null)
+				cameraController.SetOrbitTarget(transform);
+		}
 		timeAtLastClick = Time.time;
 	}
 

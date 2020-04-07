@@ -43,9 +43,9 @@ public class CraftIconHUD : MonoBehaviour
 
 		InitIconFleet();
 
-		updateCoroutine = UpdateIconHud(updateInterval);
-		StartCoroutine(updateCoroutine);
-		//bUpdating = true;
+		//updateCoroutine = UpdateIconHud(updateInterval);
+		//StartCoroutine(updateCoroutine);
+		bUpdating = true;
 	}
 
 	void InitIconFleet()
@@ -116,21 +116,21 @@ public class CraftIconHUD : MonoBehaviour
 		return product;
 	}
 
-	private IEnumerator UpdateIconHud(float intervalTime)
-	{
-		while (true)
-		{
-			yield return new WaitForSeconds(intervalTime);
-			UpdateCraftIcons();
-		}
-	}
-
-	//void Update()
+	//private IEnumerator UpdateIconHud(float intervalTime)
 	//{
-	//	if (bUpdating)
+	//	while (true)
+	//	{
+	//		yield return new WaitForSeconds(intervalTime);
 	//		UpdateCraftIcons();
-	//	Debug.Log("delta time " + Time.deltaTime);
+	//	}
 	//}
+
+	void LateUpdate()
+	{
+		if (bUpdating)
+			UpdateCraftIcons();
+		///Debug.Log("delta time " + Time.deltaTime);
+	}
 
 	void UpdateCraftIcons()
 	{
@@ -150,13 +150,13 @@ public class CraftIconHUD : MonoBehaviour
 							img.enabled = true;
 							if (!img.gameObject.activeInHierarchy)
 								img.gameObject.SetActive(true);
-							img.sprite = sp.craftIcon;
+							if (img.sprite != sp.craftIcon)
+								img.sprite = sp.craftIcon;
 							img.rectTransform.sizeDelta = Vector2.one * sp.iconScale;
 
 							Vector3 worldPosition = sp.transform.position;
 							Vector3 craftToScreen = (sp.transform.position - cameraMain.transform.position).normalized;
-							Vector3 craftScreenPosition = worldPosition + (craftToScreen * 10);
-							
+							Vector3 craftScreenPosition = worldPosition;/// + (craftToScreen * 10);
 							img.rectTransform.position = craftScreenPosition;
 							
 							Vector3 toCamera = cameraMain.transform.position - sp.transform.position;

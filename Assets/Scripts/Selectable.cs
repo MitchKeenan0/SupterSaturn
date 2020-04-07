@@ -33,6 +33,8 @@ public class Selectable : MonoBehaviour
 				{
 					List<Spacecraft> spList = new List<Spacecraft>();
 					spList.Add(sp);
+					if (!skillPanel)
+						skillPanel = FindObjectOfType<SkillPanel>();
 					skillPanel.InitAbilities(spList);
 				}
 			}

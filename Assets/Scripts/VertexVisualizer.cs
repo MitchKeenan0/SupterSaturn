@@ -47,6 +47,7 @@ public class VertexVisualizer : MonoBehaviour
 				break;
 			}
 		}
+
 		if (pl != null)
 		{
 			transform.parent = pl.planetMesh.transform;

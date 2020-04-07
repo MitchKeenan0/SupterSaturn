@@ -5,12 +5,19 @@ using UnityEngine;
 public class RayLine : MonoBehaviour
 {
 	private LineRenderer line;
+	private Transform originTransform;
 	private Vector3 lineStart = Vector3.zero;
 	private Vector3 lineEnd = Vector3.zero;
 	private Vector3 hitPosition = Vector3.zero;
+	private Vector3 rayVector = Vector3.zero;
+	private float raySpeed = 1f;
 	private bool bHit = false;
+	private bool bEnabled = false;
+	private bool bFinished = false;
 
+	public bool IsEnabled() { return bEnabled; }
 	public bool RayHit() { return bHit; }
+	public bool LineFinished() { return bHit && bFinished; }
 	public float RayExtent() { return Vector3.Distance(lineStart, lineEnd); }
 	public Vector3 GetHitPosition() { return hitPosition; }
 
@@ -39,16 +46,42 @@ public class RayLine : MonoBehaviour
 						planet = hit.transform.GetComponentInChildren<Planet>();
 					if (planet != null)
 					{
-						planet.GetScanned(lineEnd, 21f, Color.white);
+						planet.GetScanned(lineEnd, 30f, Color.white);
 					}
 				}
 			}
 		}
 	}
 
+	public void SetLineFromTransform(Transform origin, Vector3 lineVector, float speed)
+	{
+		ResetRayLine();
+		originTransform = origin;
+		rayVector = lineVector;
+		raySpeed = speed;
+		transform.rotation = Quaternion.LookRotation(rayVector, Vector3.up);
+	}
+
+	public void UpdateRayLine()
+	{
+		if (!bHit && (RayExtent() < rayVector.magnitude))
+		{
+			lineEnd = Vector3.MoveTowards(lineEnd, rayVector, Time.deltaTime * raySpeed);
+			lineStart = originTransform.position;
+		}
+		else
+		{
+			lineStart = Vector3.MoveTowards(lineStart, lineEnd, Time.deltaTime * raySpeed);
+			if (Vector3.Distance(lineStart, lineEnd) <= 1f)
+				bFinished = true;
+		}
+		SetRayLine(lineStart, lineEnd);
+	}
+
 	public void ResetRayLine()
 	{
 		bHit = false;
+		bFinished = false;
 		lineStart = lineEnd = transform.position;
 	}
 
@@ -66,5 +99,15 @@ public class RayLine : MonoBehaviour
 		}
 		if (!bHit)
 			CheckRayHit();
+	}
+
+	public void Finishing()
+	{
+		bHit = true;
+	}
+
+	public void SetEnabled(bool value)
+	{
+		bEnabled = value;
 	}
 }

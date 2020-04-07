@@ -45,9 +45,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startEffectPrefab: {fileID: 4211655436488241348, guid: a2c25a10110d6f04a8d83940f0c0daed,
     type: 3}
+  loopToggleButton: {fileID: 0}
   warmup: 0.1
-  duration: 0
+  duration: 99
   cooldown: 1
   abilitySprite: {fileID: 21300000, guid: 7be2f35512f214e438319ec42ffa8c71, type: 3}
   abilityName: Graviton
   bTargeting: 1
+  beamPrefab: {fileID: 8704943197957450991, guid: b81e1d2225bea0b4c9e63973baa94c8a,
+    type: 3}

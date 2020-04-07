@@ -86,7 +86,7 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 0}
-  m_PlaneDistance: 5000
+  m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -151,4 +151,4 @@ MonoBehaviour:
   iconPrefab: {fileID: 5691855316100906280, guid: 031b28d923822f24a83017d96ed26027,
     type: 3}
   healthBarScale: {x: 30, y: 3, z: 0}
-  updateInterval: 0.03
+  updateInterval: 0.033

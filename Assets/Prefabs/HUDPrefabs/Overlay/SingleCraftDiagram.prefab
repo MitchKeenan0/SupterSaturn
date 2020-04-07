@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.60784316}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.60784316}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -565,7 +565,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 64.6, y: 0}
+  m_AnchoredPosition: {x: 15, y: -61}
   m_SizeDelta: {x: 200, y: 60}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &7172734810943416283
@@ -603,7 +603,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 1
     m_MaxSize: 45
-    m_Alignment: 5
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -798,7 +798,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -69, y: -15}
   m_SizeDelta: {x: 170, y: 60}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &657067650724296851
@@ -889,7 +889,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 440, y: 200}
+  m_SizeDelta: {x: 300, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8414041077212620060
 CanvasRenderer:
@@ -913,13 +913,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.39215687}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 196145889ce7b9b4f9d257b0fa6779ce, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0fc40ac0ebb0d5f4f98d570d33cbe1fc, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -1060,7 +1060,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.39215687}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.39215687}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1151,7 +1151,7 @@ PrefabInstance:
     - target: {fileID: 6785409112978446241, guid: 527619ea8755abb4d9666f4fab8cc9d3,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -5
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 6785409112978446241, guid: 527619ea8755abb4d9666f4fab8cc9d3,
         type: 3}
@@ -1166,7 +1166,7 @@ PrefabInstance:
     - target: {fileID: 6785409112978446241, guid: 527619ea8755abb4d9666f4fab8cc9d3,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 10
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6785409112978446241, guid: 527619ea8755abb4d9666f4fab8cc9d3,
         type: 3}
@@ -1203,15 +1203,36 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 162
       objectReference: {fileID: 0}
+    - target: {fileID: 9186299919429241126, guid: 527619ea8755abb4d9666f4fab8cc9d3,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9186299919429241126, guid: 527619ea8755abb4d9666f4fab8cc9d3,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -8
+      objectReference: {fileID: 0}
     - target: {fileID: 8448700853434337031, guid: 527619ea8755abb4d9666f4fab8cc9d3,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -5
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 8448700853434337031, guid: 527619ea8755abb4d9666f4fab8cc9d3,
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3481202102552816858, guid: 527619ea8755abb4d9666f4fab8cc9d3,
+        type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 3c4286ecb6a45574e8a9bd24f4991868,
+        type: 3}
+    - target: {fileID: 3481202102552816858, guid: 527619ea8755abb4d9666f4fab8cc9d3,
+        type: 3}
+      propertyPath: m_FontData.m_FontStyle
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 527619ea8755abb4d9666f4fab8cc9d3, type: 3}

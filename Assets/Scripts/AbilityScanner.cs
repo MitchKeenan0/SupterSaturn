@@ -84,5 +84,6 @@ public class AbilityScanner : Ability
 		base.EndAbility();
 		scan.transform.position = transform.position;
 		scan.SetEnabled(false);
+		targetVector = Vector3.zero;
 	}
 }

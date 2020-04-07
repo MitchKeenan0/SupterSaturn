@@ -148,11 +148,14 @@ public class Agent : MonoBehaviour
 
 	void NotifyTeamOfTarget(Transform value)
 	{
-		List<Spacecraft> teamSpacecraftList = teamFleetHUD.GetTeamList(teamID);
-		foreach (Spacecraft sp in teamSpacecraftList)
+		if ((teamFleetHUD != null) && (teamFleetHUD.GetTeamList(teamID) != null))
 		{
-			if (sp != null)
-				sp.GetAgent().SuggestTarget(value);
+			List<Spacecraft> teamSpacecraftList = teamFleetHUD.GetTeamList(teamID);
+			foreach (Spacecraft sp in teamSpacecraftList)
+			{
+				if (sp != null)
+					sp.GetAgent().SuggestTarget(value);
+			}
 		}
 	}
 
