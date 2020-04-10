@@ -76,12 +76,12 @@ public class Autopilot : MonoBehaviour
 		{
 			StopCoroutine(engineCoroutine);
 			bEngineActive = false;
-			FaceVelocity(true);
+			///FaceVelocity(true);
 		}
 		else
 		{
 			bStopping = true;
-			FaceVelocity(false);
+			///FaceVelocity(false);
 			StopAllCoroutines();
 		}
 		
@@ -170,7 +170,7 @@ public class Autopilot : MonoBehaviour
 
 		yield return new WaitForSeconds(durationTime);
 		spacecraft.MainEngines(0f);
-		FaceVelocity(true);
+		//FaceVelocity(true);
 		bEngineActive = false;
 		FindObjectOfType<OrbitController>().SetUpdating(false);
 	}

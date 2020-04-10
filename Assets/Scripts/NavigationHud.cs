@@ -13,7 +13,7 @@ public class NavigationHud : MonoBehaviour
 
     void Start()
     {
-		burnTargetPanel.gameObject.SetActive(false);
+		burnTargetPanel.SetActive(false);
     }
 
 	public void SetActive(bool value)

@@ -23,7 +23,7 @@ public class Scanner : MonoBehaviour
 	private float currentRadius = 0f;
 	private float timeAtScan = 0f;
 	private float originalAlpha = 0;
-	private float pointSize = 0f;
+	///private float pointSize = 0f;
 	private bool bScanning = false;
 	private bool bUpdating = false;
 
@@ -55,7 +55,7 @@ public class Scanner : MonoBehaviour
 		ClearTargets();
 		currentRadius = 0f;
 		timeAtScan = Time.time;
-		pointSize = 0f;
+		///pointSize = 0f;
 		if (scanRender != null)
 			scanRender.transform.localScale = Vector3.one * 0.1f;
 		if (meshRenderer != null)

@@ -13,11 +13,12 @@ public class InputController : MonoBehaviour
 	public Color standbyColor;
 	public Color activeColor;
 
-	private MouseSelection mouseSelection;
+	private Game game;
 	private Camera cameraMain;
 	private CameraTargetFinder cameraTargetFinder;
 	private TouchOrbit touchOrbit;
 	private OrbitController orbitController;
+	private Spacecraft spacecraft = null;
 	private float originalCameraScale = 1f;
 	private bool bNavigationMode = false;
 	private bool bFreeCameraMode = false;
@@ -35,7 +36,7 @@ public class InputController : MonoBehaviour
 
 	void Start()
 	{
-		mouseSelection = FindObjectOfType<MouseSelection>();
+		game = FindObjectOfType<Game>();
 		cameraMain = Camera.main;
 		cameraTargetFinder = FindObjectOfType<CameraTargetFinder>();
 		touchOrbit = FindObjectOfType<TouchOrbit>();
@@ -81,7 +82,7 @@ public class InputController : MonoBehaviour
 			EnableCameraControl(true);
 	}
 
-	void SetDiminishedCameraMode(bool value)
+	void SetFineCameraInput(bool value)
 	{
 		if (value)
 			touchOrbit.SetInputScale(originalCameraScale * 0.2f);
@@ -103,23 +104,20 @@ public class InputController : MonoBehaviour
 		if (bActuallyThough)
 			bStopped = true;
 		bool bEngineShutdown = false;
-		if (bStopped)
+		if (game.GetSpacecraftList() != null)
 		{
-			List<Spacecraft> selectedSpacecraft = mouseSelection.GetSelectedSpacecraft();
-			foreach (Spacecraft sp in selectedSpacecraft)
+			if (bStopped)
 			{
-				Autopilot autopilot = sp.GetComponent<Autopilot>();
+				spacecraft = game.GetSpacecraftList()[0];
+				Autopilot autopilot = spacecraft.GetComponent<Autopilot>();
 				if (autopilot.IsEngineActive())
 					bEngineShutdown = true;
 				autopilot.AllStop();
 			}
-		}
-		else if (mouseSelection.GetSelectedSpacecraft() != null)
-		{
-			List<Spacecraft> selectedSpacecraft = mouseSelection.GetSelectedSpacecraft();
-			foreach (Spacecraft sp in selectedSpacecraft)
+			else
 			{
-				Autopilot autopilot = sp.GetComponent<Autopilot>();
+				spacecraft = game.GetSpacecraftList()[0];
+				Autopilot autopilot = spacecraft.GetComponent<Autopilot>();
 				autopilot.ReleaseBrakes();
 			}
 		}
@@ -159,14 +157,12 @@ public class InputController : MonoBehaviour
 		if (bTurningOff)
 			value = false;
 
-		SetDiminishedCameraMode(!bTurningOff);
+		SetFineCameraInput(!bTurningOff);
 		bNavigationMode = value;
-		List<Spacecraft> selectedSpacecraft = mouseSelection.GetSelectedSpacecraft();
-		foreach (Spacecraft sp in selectedSpacecraft)
-		{
-			if (sp != null)
-				sp.GetComponentInChildren<SpacecraftController>().SetActive(bNavigationMode);
-		}
+		if (spacecraft == null)
+			spacecraft = game.GetSpacecraftList()[0];
+		if (spacecraft != null)
+			spacecraft.GetComponentInChildren<SpacecraftController>().SetActive(bNavigationMode);
 
 		if (bNavigationMode)
 			UpdateStatusText("Navigation mode");
@@ -200,6 +196,8 @@ public class InputController : MonoBehaviour
 	public void EnableCameraControl(bool value)
 	{
 		bFreeCameraMode = value;
+		if (!touchOrbit)
+			touchOrbit = FindObjectOfType<TouchOrbit>();
 		touchOrbit.SetActive(bFreeCameraMode);
 		UpdateStatusText("Free camera " + (value ? ("on") : ("off")));
 	}

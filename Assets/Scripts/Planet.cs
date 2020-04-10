@@ -95,7 +95,6 @@ public class Planet : MonoBehaviour
 						{
 							Vector3 vertexWorldPosition = transform.TransformPoint(hitVertex);
 							int vertexScore = Mathf.FloorToInt(range / Vector3.Distance(position, vertexWorldPosition));
-							Debug.Log("score + " + vertexScore);
 							scoreHud.PopupScore(vertexWorldPosition, vertexScore, maxScore);
 						}
 					}

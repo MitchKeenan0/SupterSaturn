@@ -8,23 +8,45 @@ public class Letterbox : MonoBehaviour
 	public bool bPortraitEnabled = true;
 	public bool bLandscapeEnabled = false;
 
+	private bool bUpdating = false;
 	private bool bPortrait = false;
 	private bool bVignetteEnabled = false;
 
+	private IEnumerator loadCoroutine;
+
     void Start()
     {
-		//ReadScreenOrientation();
+		loadCoroutine = LoadLetterbox(0.2f);
+		StartCoroutine(loadCoroutine);
     }
 
     void Update()
     {
-		ReadScreenOrientation();
-		ProcessNables();
+		if (bUpdating)
+		{
+			ReadScreenOrientation();
+			ProcessNables();
+		}
     }
+
+	private IEnumerator LoadLetterbox(float duration)
+	{
+		yield return new WaitForSeconds(duration);
+		ReadScreenOrientation();
+		if (Screen.width > Screen.height)
+			bPortrait = false;
+		ProcessNables();
+		bUpdating = true;
+	}
 
 	void ReadScreenOrientation()
 	{
 		if (Input.deviceOrientation == DeviceOrientation.Portrait)
+		{
+			bPortrait = true;
+			return;
+		}
+		if (Input.deviceOrientation == DeviceOrientation.PortraitUpsideDown)
 		{
 			bPortrait = true;
 			return;
@@ -37,11 +59,6 @@ public class Letterbox : MonoBehaviour
 		if (Input.deviceOrientation == DeviceOrientation.LandscapeRight)
 		{
 			bPortrait = false;
-			return;
-		}
-		if (Input.deviceOrientation == DeviceOrientation.PortraitUpsideDown)
-		{
-			bPortrait = true;
 			return;
 		}
 	}
@@ -57,8 +74,7 @@ public class Letterbox : MonoBehaviour
 			}
 			else
 			{
-				if (bVignetteEnabled)
-					SetVignetteEnabled(false);
+				SetVignetteEnabled(false);
 			}
 		}
 		else
@@ -70,8 +86,7 @@ public class Letterbox : MonoBehaviour
 			}
 			else
 			{
-				if (bVignetteEnabled)
-					SetVignetteEnabled(false);
+				SetVignetteEnabled(false);
 			}
 		}
 	}
@@ -80,6 +95,5 @@ public class Letterbox : MonoBehaviour
 	{
 		barsCanvasGroup.alpha = value ? 1f : 0f;
 		bVignetteEnabled = value;
-		Debug.Log("set vignette " + value + " " + Time.time.ToString("F1"));
 	}
 }

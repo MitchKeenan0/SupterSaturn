@@ -6,24 +6,24 @@ using UnityEngine.UI;
 
 public class PointerMask : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-	private MouseSelection mouseSelection;
+	///private MouseSelection mouseSelection;
 	private Button button;
 
 	void Start()
 	{
-		mouseSelection = FindObjectOfType<MouseSelection>();
+		///mouseSelection = FindObjectOfType<MouseSelection>();
 		button = GetComponent<Button>();
 		//button.onClick.AddListener(TaskOnClick);
 	}
 
 	public void OnPointerEnter(PointerEventData eventData)
 	{
-		mouseSelection.SetEnabled(false);
+		///mouseSelection.SetEnabled(false);
 	}
 
 	public void OnPointerExit(PointerEventData eventData)
 	{
-		mouseSelection.SetEnabled(true);
+		///mouseSelection.SetEnabled(true);
 	}
 
 	//void TaskOnClick()

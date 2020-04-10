@@ -2,25 +2,37 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AbilityGraviton : Ability
+public class AbilityEtnite : Ability
 {
-	public GravitonBeam beamPrefab;
+	public EtniteBeam beamPrefab;
 	public float beamSpeed = 1000f;
+	public float baseOutput = 1f;
+	public float chargeRate = 1f;
+	public float maxCharge = 9999f;
 
-	private AbilityTargetingHUD abilityTargeting;
-	private GravitonBeam beam;
+	private EtniteBeam beam = null;
+	private AbilityTargetingHUD abilityTargeting = null;
 	private Spacecraft spacecraft = null;
 	private Transform targetTransform = null;
+	private Vector3 trackTargetVector = Vector3.zero;
 	private bool bUpdating = false;
+	private bool bCharging = false;
+	private float charge = 0f;
 
 	void Start()
-	{
-		abilityTargeting = FindObjectOfType<AbilityTargetingHUD>();
+    {
 		spacecraft = GetComponentInParent<Spacecraft>();
-	}
+		abilityTargeting = FindObjectOfType<AbilityTargetingHUD>();
+		trackTargetVector = transform.forward;
+    }
 
 	void Update()
 	{
+		if (bCharging)
+		{
+			charge += Time.deltaTime * chargeRate;
+		}
+
 		if (bUpdating)
 		{
 			if (targetTransform == null)
@@ -29,7 +41,7 @@ public class AbilityGraviton : Ability
 			}
 			else
 			{
-				LaunchGraviton();
+				LaunchEtnite();
 				bUpdating = false;
 			}
 		}
@@ -38,6 +50,7 @@ public class AbilityGraviton : Ability
 	public override void StartAbility()
 	{
 		bUpdating = true;
+		bCharging = true;
 
 		abilityTargeting.SetActive(true, spacecraft);
 
@@ -48,7 +61,7 @@ public class AbilityGraviton : Ability
 		}
 	}
 
-	void LaunchGraviton()
+	void LaunchEtnite()
 	{
 		base.StartAbility();
 	}
@@ -67,6 +80,7 @@ public class AbilityGraviton : Ability
 
 		if ((beam != null) && (targetTransform != null))
 		{
+			beam.SetChargeEnergy(charge);
 			beam.SetEnabled(true);
 			beam.SetTarget(targetTransform);
 			beam.SetLinePositions(transform.position, transform.position, 0f);

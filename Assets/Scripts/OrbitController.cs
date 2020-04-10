@@ -38,7 +38,8 @@ public class OrbitController : MonoBehaviour
 	public void SetAutopilot(Autopilot ap)
 	{
 		autopilot = ap;
-		rb = autopilot.gameObject.GetComponent<Rigidbody>();
+		if (autopilot != null)
+			rb = autopilot.gameObject.GetComponent<Rigidbody>();
 	}
 
 	public void SetBurnDuration(float value)
@@ -52,7 +53,7 @@ public class OrbitController : MonoBehaviour
 			bUpdating = false;
 		if (autopilot != null)
 		{
-			autopilot.FaceVelocity(false);
+			///autopilot.FaceVelocity(false);
 			SimulateTrajectory(inputVector, burnDuration);
 			RenderTrajectory();
 		}

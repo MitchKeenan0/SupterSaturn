@@ -46,7 +46,7 @@ public class Weapon : MonoBehaviour
 				targetVelocity = targetTransform.GetComponent<Rigidbody>().velocity;
 
 			float distToTarget = Vector3.Distance(targetPosition, transform.position + targetVelocity);
-			float random = Random.Range(55f, 60f);
+			float random = Random.Range(0f, 1f);
 			float predictionScalar = (distToTarget / weaponSpeed) * random;
 			Vector3 targetAtVelocity = targetPosition + (targetVelocity * predictionScalar);
 			Vector3 accuracyVector = Random.onUnitSphere * (0.1f / weaponAccuracy) * distToTarget * 0.05f;
@@ -54,7 +54,7 @@ public class Weapon : MonoBehaviour
 
 			munition.transform.rotation = Quaternion.LookRotation(fireVector, Vector3.up);
 			Rigidbody munitionRb = munition.GetComponent<Rigidbody>();
-			munitionRb.AddForce(munition.forward * weaponSpeed);
+			munitionRb.AddForce(munition.forward * weaponSpeed, ForceMode.Impulse);
 			projectile.ArmProjectile(this);
 		}
 

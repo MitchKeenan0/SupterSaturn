@@ -252,9 +252,18 @@ public class Agent : MonoBehaviour
 
 	public void AgentSpacecraftDestroyed()
 	{
-		predictionHud.SetPrediction(spacecraft, Vector3.zero, Vector3.zero, 0f);
-		teamFleetHUD.SpacecraftDestroyed(spacecraft);
-		objectManager.SpacecraftDestroyed(spacecraft);
+		if (!spacecraft)
+			spacecraft = GetComponent<Spacecraft>();
+		if (spacecraft != null)
+		{
+			if (predictionHud != null)
+				predictionHud.SetPrediction(spacecraft, Vector3.zero, Vector3.zero, 0f);
+			teamFleetHUD = FindObjectOfType<TeamFleetHUD>();
+			teamFleetHUD.SpacecraftDestroyed(spacecraft);
+			objectManager = FindObjectOfType<ObjectManager>();
+			objectManager.SpacecraftDestroyed(spacecraft);
+		}
+		scanner.StopScanning();
 		this.enabled = false;
 	}
 }

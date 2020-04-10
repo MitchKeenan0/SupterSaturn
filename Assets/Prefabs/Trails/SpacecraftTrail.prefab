@@ -69,7 +69,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 5
+  m_Time: 30
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.1
@@ -78,7 +78,7 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0
+        value: 1
         inSlope: 0.10837439
         outSlope: 0.10837439
         tangentMode: 0
@@ -86,40 +86,22 @@ TrailRenderer:
         inWeight: 0.33333334
         outWeight: 1
       - serializedVersion: 3
-        time: 0.30431432
-        value: 1
-        inSlope: 1.4079247
-        outSlope: 1.4079247
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.9331083
-      - serializedVersion: 3
-        time: 0.4334976
-        value: 0.16321439
-        inSlope: -1.1059078
-        outSlope: -1.1059078
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.1313673
-        outWeight: 0.17038721
-      - serializedVersion: 3
         time: 1
-        value: 0
-        inSlope: -1.5923793
-        outSlope: -1.5923793
+        value: 1
+        inSlope: -0.026566427
+        outSlope: -0.026566427
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.11682472
+        inWeight: 0.26139826
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 0.9019608}
-      key1: {r: 1, g: 1, b: 1, a: 0.19607843}
-      key2: {r: 0, g: 0, b: 0, a: 0.19607843}
+      key0: {r: 1, g: 1, b: 1, a: 0}
+      key1: {r: 1, g: 1, b: 1, a: 1}
+      key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
@@ -134,8 +116,8 @@ TrailRenderer:
       ctime6: 0
       ctime7: 0
       atime0: 0
-      atime1: 6554
-      atime2: 39321
+      atime1: 10486
+      atime2: 65535
       atime3: 65535
       atime4: 0
       atime5: 0
@@ -143,7 +125,7 @@ TrailRenderer:
       atime7: 0
       m_Mode: 0
       m_NumColorKeys: 2
-      m_NumAlphaKeys: 4
+      m_NumAlphaKeys: 3
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0

@@ -38,6 +38,7 @@ public class CardRosterSlot : MonoBehaviour, IDeselectHandler
 		spacecraftEditor = GetComponentInParent<SpacecraftEditor>();
 		button = GetComponent<Button>();
 		button.onClick.AddListener(TaskOnClick);
+		slotImage.preserveAspect = true;
 	}
 
 	void TaskOnClick()

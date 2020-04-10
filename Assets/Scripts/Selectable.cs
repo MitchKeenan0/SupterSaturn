@@ -41,7 +41,16 @@ public class Selectable : MonoBehaviour
 
 			spacecraftController = gameObject.GetComponentInChildren<SpacecraftController>();
 			if (_isSelected && (spacecraftController != null))
-				orbitController.SetAutopilot(spacecraftController.GetAutopilot());
+			{
+				if (spacecraftController.GetAutopilot() != null)
+					orbitController.SetAutopilot(spacecraftController.GetAutopilot());
+				else
+					Debug.Log("no autopilot");
+			}
+			else
+			{
+				Debug.Log("no controller");
+			}
 
 			if (!circle)
 				circle = gameObject.GetComponent<CircleRenderer>();

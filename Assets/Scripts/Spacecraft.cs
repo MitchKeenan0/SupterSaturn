@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Spacecraft : MonoBehaviour
 {
@@ -178,14 +179,17 @@ public class Spacecraft : MonoBehaviour
 
 	public void SpacecraftKnockedOut(Transform responsibleTransform)
 	{
-		if (agent.teamID == 0)
+		if ((battleOutcome != null) && (health != null))
 		{
-			FindObjectOfType<TouchOrbit>().SetActive(false);
-			battleOutcome.AddLost(health.maxHealth);
-		}
-		else
-		{
-			battleOutcome.AddScore(health.maxHealth);
+			if (agent.teamID == 0)
+			{
+				FindObjectOfType<TouchOrbit>().SetActive(false);
+				battleOutcome.AddLost(health.maxHealth);
+			}
+			else
+			{
+				battleOutcome.AddScore(health.maxHealth);
+			}
 		}
 
 		GridVisualizer grid = GetComponentInChildren<GridVisualizer>();
@@ -264,8 +268,12 @@ public class Spacecraft : MonoBehaviour
 
 	public void SelectionHighlight(bool value)
 	{
-		if (cameraController != null)
-			cameraController.Highlight(value, this);
+		if (GetHUDIcon() != null)
+		{
+			Image img = GetHUDIcon().GetComponent<Image>();
+			if (img != null)
+				img.color = value ? Color.green : Color.grey;
+		}
 	}
 
 	public SpacecraftInformation GetSpacecraftInformation()

@@ -2,44 +2,40 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GravitonBeam : MonoBehaviour
+public class GravitonBeam : Beam
 {
-	private LineRenderer line;
-	private Transform owningTransform;
-	private Transform targetTransform;
-
-    void Awake()
-    {
-		line = GetComponent<LineRenderer>();
-    }
-
-	public void SetEnabled(bool value)
-	{
-		if (!line)
-			line = GetComponent<LineRenderer>();
-		line.enabled = value;
-	}
-
-	public void SetLinePositions(Vector3 start, Vector3 end)
-	{
-		if (!line)
-			line = GetComponent<LineRenderer>();
-		line.SetPosition(0, start);
-		line.SetPosition(1, end);
-	}
-
-	public void UpdateGravitonBeam()
+	void Start()
 	{
 
 	}
 
-	public void SetOwner(Transform value)
+	public override void SetEnabled(bool value)
 	{
-		owningTransform = value;
+		base.SetEnabled(value);
+
 	}
 
-	public void SetTarget(Transform value)
+	public override void SetTarget(Transform value)
 	{
-		targetTransform = value;
+		base.SetTarget(value);
+
+	}
+
+	public override void SetOwner(Transform value)
+	{
+		base.SetOwner(value);
+
+	}
+
+	public override void SetLinePositions(Vector3 start, Vector3 end, float speed)
+	{
+		base.SetLinePositions(start, end, speed);
+
+	}
+
+	public override void UpdateBeam()
+	{
+		base.UpdateBeam();
+
 	}
 }

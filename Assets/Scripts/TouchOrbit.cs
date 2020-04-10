@@ -50,7 +50,7 @@ public class TouchOrbit : MonoBehaviour
 		y = angles.x;
 		distance = distanceMax;
 		this.enabled = bActivated;
-		moveInput = new Vector3(-150f, -350f, 0f);
+		moveInput = new Vector3(-150f, -150f, 0f);
 	}
 
 	void Update()

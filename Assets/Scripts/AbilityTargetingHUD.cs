@@ -87,9 +87,12 @@ public class AbilityTargetingHUD : MonoBehaviour
 				{
 					AbilityTargetPanel atp = targetPanelList[i];
 					Spacecraft sp = spacecraftList[i];
-					Vector3 screenPosition = cameraMain.WorldToScreenPoint(sp.transform.position);
-					atp.transform.position = screenPosition;
-					atp.SetEnabled(true);
+					if (sp.IsAlive())
+					{
+						Vector3 screenPosition = cameraMain.WorldToScreenPoint(sp.transform.position);
+						atp.transform.position = screenPosition;
+						atp.SetEnabled(true);
+					}
 				}
 			}
 		}

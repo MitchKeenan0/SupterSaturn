@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6043831114386349505}
-  - component: {fileID: 6101347977358878669}
+  - component: {fileID: -6546834749430054639}
   m_Layer: 0
-  m_Name: GravitonAbility
+  m_Name: EtniteAbility
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,7 +31,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6101347977358878669
+--- !u!114 &-6546834749430054639
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -40,18 +40,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 6043831114386349534}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97e1f105dfd17344a9717a6f76689d42, type: 3}
+  m_Script: {fileID: 11500000, guid: b4c999219fa0cba479a5cb733662aff5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startEffectPrefab: {fileID: 4211655436488241348, guid: a2c25a10110d6f04a8d83940f0c0daed,
-    type: 3}
+  startEffectPrefab: {fileID: 0}
   loopToggleButton: {fileID: 0}
   warmup: 0.1
-  duration: 99
+  duration: 0.5
   cooldown: 1
-  abilitySprite: {fileID: 21300000, guid: 7be2f35512f214e438319ec42ffa8c71, type: 3}
-  abilityName: Graviton
+  abilitySprite: {fileID: 21300000, guid: 5fd179ff24212164da6c21cc4b93d918, type: 3}
+  abilityName: Etnite Battery
   bTargeting: 1
-  beamPrefab: {fileID: 6816421504709400606, guid: b81e1d2225bea0b4c9e63973baa94c8a,
+  beamPrefab: {fileID: 2937536701860654266, guid: 21b2b678c3f3f01479f3f66bed8181b7,
     type: 3}
   beamSpeed: 1000
+  baseOutput: 1
+  chargeRate: 1
+  maxCharge: 9999

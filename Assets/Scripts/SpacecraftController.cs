@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SpacecraftController : MonoBehaviour
 {
@@ -24,6 +25,8 @@ public class SpacecraftController : MonoBehaviour
 	private bool bActive = false;
 	private bool bLining = false;
 	private bool bThrottleControlActive = false;
+	private bool bStartTouchDelay = false;
+	private bool bEndTouchDelay = false;
 	public bool bUpdating = false;
 	private int teamID = -1;
 	private float burnDuration = 0f;
@@ -52,6 +55,10 @@ public class SpacecraftController : MonoBehaviour
 		crew = FindObjectOfType<Crew>();
 		if (crew != null)
 			crew.ImbueSpacecraft(spacecraft);
+		Selectable s = spacecraft.GetComponent<Selectable>();
+		if ((s != null) && !bNPCControlled)
+			s.isSelected = true;
+
 		loadCoroutine = LoadWait(0.5f);
 		StartCoroutine(loadCoroutine);
     }
@@ -64,6 +71,9 @@ public class SpacecraftController : MonoBehaviour
 			inputController.SetCameraTarget(spacecraft.transform);
 			inputController.Begin();
 			bUpdating = true;
+			Image img = spacecraft.GetHUDIcon().GetComponent<Image>();
+			if (img != null)
+				img.color = Color.green;
 		}
 	}
 
@@ -140,24 +150,62 @@ public class SpacecraftController : MonoBehaviour
 
 	public void StartTouch()
 	{
+		///startTouchCoroutine = StartTouchDelay(0.2f);
+		StartCoroutine("StartTouchDelay");
+	}
+
+	private IEnumerator startTouchCoroutine;
+	private IEnumerator StartTouchDelay()
+	{
+		bStartTouchDelay = true;
+		yield return new WaitForSeconds(0.2f);
 		orbitController.SetUpdating(false);
 		directionVector = Vector3.zero;
 		bLining = true;
 		navigationHud.SetActive(true);
+		bStartTouchDelay = false;
 	}
 
 	public void EndTouch()
 	{
+		///endTouchCoroutine = EndTouchDelay();
+		StartCoroutine("EndTouchDelay");
+	}
+
+	private IEnumerator endTouchCoroutine;
+	private IEnumerator EndTouchDelay()
+	{
 		bLining = false;
+		bEndTouchDelay = true;
+		yield return new WaitForSeconds(0.2f);
 		autopilot.ManeuverRotationTo(directionVector - autopilot.gameObject.GetComponent<Rigidbody>().velocity);
 		autopilot.FireEngineBurn(burnDuration, false);
 		inputController.NavigationMode(false);
 		navigationHud.SetActive(false);
 		orbitController.SetUpdating(true);
+		bEndTouchDelay = false;
 	}
 
 	public void SetActive(bool value)
 	{
 		bActive = value;
+		if (!value)
+			CancelNavCommand();
+	}
+
+	public void CancelNavCommand()
+	{
+		if (bStartTouchDelay)
+		{
+			StopCoroutine("StartTouchDelay");
+			//bStartTouchDelay = false;
+		}
+		if (bEndTouchDelay)
+		{
+			StopCoroutine("EndTouchDelay");
+			//bEndTouchDelay = false;
+		}
+		navigationHud.SetActive(false);
+		//orbitController.ClearTrajectory();
 	}
 }
