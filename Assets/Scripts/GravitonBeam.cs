@@ -30,7 +30,20 @@ public class GravitonBeam : Beam
 	public override void SetLinePositions(Vector3 start, Vector3 end, float speed)
 	{
 		base.SetLinePositions(start, end, speed);
-
+		Vector3 lineEndPosition = line.GetPosition(1);
+		if (targetTransform != null)
+		{
+			float beamDistToTarget = Vector3.Distance(lineEndPosition, targetTransform.position);
+			if (beamDistToTarget <= 10f)
+			{
+				Rigidbody targetRb = targetTransform.gameObject.GetComponent<Rigidbody>();
+				if (targetRb != null)
+				{
+					Vector3 kineticNeutralizeVector = -10 * targetRb.velocity;
+					targetRb.AddForce(kineticNeutralizeVector);
+				}
+			}
+		}
 	}
 
 	public override void UpdateBeam()

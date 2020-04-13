@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 9158545952295277924}
   - component: {fileID: 9158545952295277927}
   - component: {fileID: 9158545952295277923}
+  - component: {fileID: 4949641466305471780}
   m_Layer: 5
   m_Name: ScoreCanvas
   m_TagString: Untagged
@@ -115,6 +116,32 @@ MonoBehaviour:
   scorePopupPrefab: {fileID: 3054333886255029679, guid: cd5b5717935995e4baed828e78a2b463,
     type: 3}
   valueText: {fileID: 9158545952781083572}
+--- !u!114 &4949641466305471780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9158545952295277926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 047a4eb021afe8f4ea2a335615fe58e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  intervalForCombo: 0.5
+  comboTierColors:
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 1, g: 0.16509432, b: 0.34844613, a: 1}
+  - {r: 0, g: 0.6862745, b: 1, a: 1}
+  - {r: 1, g: 1, b: 0, a: 1}
+  - {r: 0, g: 1, b: 0, a: 1}
+  - {r: 0.81883156, g: 0.18823528, b: 0.8509804, a: 1}
+  - {r: 1, g: 0, b: 0.53075266, a: 1}
+  - {r: 0, g: 0.7626438, b: 1, a: 1}
+  - {r: 0, g: 0.53735757, b: 1, a: 1}
+  - {r: 0.0047169924, g: 0.2584165, b: 1, a: 1}
+  - {r: 0.7412851, g: 0.3066038, b: 1, a: 1}
+  - {r: 1, g: 0, b: 0.76640606, a: 1}
 --- !u!1 &9158545952781083574
 GameObject:
   m_ObjectHideFlags: 0
@@ -173,7 +200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5849056, g: 0.5849056, b: 0.78431374, a: 1}
+  m_Color: {r: 0.5882353, g: 0.5882353, b: 0.78431374, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -187,13 +214,13 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 5
     m_MaxSize: 50
-    m_Alignment: 3
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 146 / 354
+  m_Text: 0 / 83
 --- !u!1 &9158545953593624233
 GameObject:
   m_ObjectHideFlags: 0
@@ -288,8 +315,8 @@ MonoBehaviour:
     m_Right: 30
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 3
-  m_Spacing: 25
+  m_ChildAlignment: 4
+  m_Spacing: 0
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0

@@ -60,6 +60,6 @@ MonoBehaviour:
   mainEnginePower: 100
   turningPower: 1
   maneuverPower: 1
-  mass: 1.5
+  mass: 1
   linearDrag: 0
   angularDrag: 0.3

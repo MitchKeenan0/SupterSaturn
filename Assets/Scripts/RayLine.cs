@@ -46,7 +46,7 @@ public class RayLine : MonoBehaviour
 						planet = hit.transform.GetComponentInChildren<Planet>();
 					if (planet != null)
 					{
-						planet.GetScanned(lineEnd, 30f, Color.white);
+						planet.GetScanned(lineEnd, 30f, Color.blue);
 					}
 				}
 			}

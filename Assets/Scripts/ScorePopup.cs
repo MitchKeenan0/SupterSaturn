@@ -12,9 +12,10 @@ public class ScorePopup : MonoBehaviour
 
 	private IEnumerator lifetimeCoroutine;
 
-    public void SetActive(bool value, int score, Vector3 pos)
+    public void SetActive(bool value, int score, Vector3 pos, Color col)
 	{
 		valueText.text = ("+" + score.ToString());
+		valueText.color = col;
 		valueText.enabled = value;
 		bActive = value;
 		if (bActive)
@@ -39,6 +40,6 @@ public class ScorePopup : MonoBehaviour
 			int size = Mathf.FloorToInt(popupScaleCurve.Evaluate(time) * 80);
 			valueText.fontSize = size;
 		}
-		SetActive(false, 0, Vector3.zero);
+		SetActive(false, 0, Vector3.zero, Color.white);
 	}
 }

@@ -75,19 +75,21 @@ public class OrbitController : MonoBehaviour
 
 	public void SetUpdatingForDuration(float value)
 	{
-		durationUpdateCoroutine = DurationUpdate(value);
-		StartCoroutine(durationUpdateCoroutine);
+		if (!bUpdating)
+		{
+			durationUpdateCoroutine = DurationUpdate(value);
+			StartCoroutine(durationUpdateCoroutine);
+		}
 	}
 
 	private IEnumerator durationUpdateCoroutine;
 	private IEnumerator DurationUpdate(float duration)
 	{
-		if (!bUpdating)
-		{
-			bUpdating = true;
-			updateCoroutine = UpdateOrbit(updateInterval);
-			StartCoroutine(updateCoroutine);
-		}
+		if (bUpdating)
+			StopCoroutine(updateCoroutine);
+		bUpdating = true;
+		updateCoroutine = UpdateOrbit(updateInterval);
+		StartCoroutine(updateCoroutine);
 
 		yield return new WaitForSeconds(duration);
 
@@ -127,6 +129,8 @@ public class OrbitController : MonoBehaviour
 
 		float simulationTime = 0f;
 		float deltaTime = 0.1f;
+		float spMass = spacecraft.GetComponent<Rigidbody>().mass;
+		float enginePower = (spacecraft.mainEnginePower / spMass);
 		Vector3 currentPosition = spacecraft.transform.position;
 		Vector3 velocity = rb.velocity + currentPosition;
 		Vector3 deltaVelocity = rb.velocity * deltaTime * 6;
@@ -138,17 +142,13 @@ public class OrbitController : MonoBehaviour
 		{
 			trajecto = deltaVelocity;
 			if (bSimulateEnginePower)
-			{
-				float spMass = spacecraft.GetComponent<Rigidbody>().mass;
-				float enginePower = (spacecraft.mainEnginePower / spMass);
 				trajecto = spacecraft.transform.forward * enginePower * deltaTime;
-			}
 
 			if (gravityList.Count > 0)
 			{
-				float simulatedGravity = 2.3f;
+				float simulatedGravity = 3.33f;
 				if (bSimulateEnginePower)
-					simulatedGravity *= 6f;
+					simulatedGravity *= enginePower * deltaTime * duration;
 				foreach (Gravity gr in gravityList)
 					trajecto += (gr.GetGravity(rb, currentPosition, rb.mass) * deltaTime) * simulatedGravity;
 			}
@@ -167,7 +167,7 @@ public class OrbitController : MonoBehaviour
 		int trajectoryCount = trajectoryList.Count;
 		if (trajectoryCount > 0)
 		{
-			for(int i = 0; i < trajectoryCount; i += 3)
+			for(int i = 0; i < trajectoryCount; i += 2)
 			{
 				LineRenderer line = null;
 				if ((i < lineList.Count) && (lineList[i] != null))
@@ -178,7 +178,7 @@ public class OrbitController : MonoBehaviour
 					Vector3 lineStart = trajectoryList[i];
 					if (trajectoryList.Count > (i + 2))
 					{
-						Vector3 lineEnd = lineStart + ((trajectoryList[i + 2] - trajectoryList[i]) * 0.6f);
+						Vector3 lineEnd = lineStart + ((trajectoryList[i + 1] - trajectoryList[i]) * 0.6f);
 						line.SetPosition(0, lineStart);
 						line.SetPosition(1, lineEnd);
 						line.enabled = true;

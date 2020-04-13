@@ -19,6 +19,8 @@ public class InputController : MonoBehaviour
 	private TouchOrbit touchOrbit;
 	private OrbitController orbitController;
 	private Spacecraft spacecraft = null;
+	private ContextHeader contextHeader;
+	private SkillPanel skillPanel;
 	private float originalCameraScale = 1f;
 	private bool bNavigationMode = false;
 	private bool bFreeCameraMode = false;
@@ -41,6 +43,8 @@ public class InputController : MonoBehaviour
 		cameraTargetFinder = FindObjectOfType<CameraTargetFinder>();
 		touchOrbit = FindObjectOfType<TouchOrbit>();
 		orbitController = FindObjectOfType<OrbitController>();
+		contextHeader = FindObjectOfType<ContextHeader>();
+		skillPanel = FindObjectOfType<SkillPanel>();
 		distanceModes.Add(touchOrbit.distanceMin);
 		distanceModes.Add(touchOrbit.distanceMax);
 		originalCameraScale = touchOrbit.GetInputScale();
@@ -67,7 +71,9 @@ public class InputController : MonoBehaviour
 		buttonColorBlock.selectedColor = color;
 		button.colors = buttonColorBlock;
 
-		if (!value)
+		if (value)
+			skillPanel.CancelAll();
+		else
 			FallbackCheck();
 	}
 
@@ -85,7 +91,7 @@ public class InputController : MonoBehaviour
 	void SetFineCameraInput(bool value)
 	{
 		if (value)
-			touchOrbit.SetInputScale(originalCameraScale * 0.2f);
+			touchOrbit.SetInputScale(originalCameraScale * 0.6f);
 		else
 			touchOrbit.SetInputScale(originalCameraScale);
 	}
@@ -165,9 +171,16 @@ public class InputController : MonoBehaviour
 			spacecraft.GetComponentInChildren<SpacecraftController>().SetActive(bNavigationMode);
 
 		if (bNavigationMode)
+		{
 			UpdateStatusText("Navigation mode");
+			contextHeader.SetContextHeader("Navigation awaiting input");
+		}
 		else
+		{
 			UpdateStatusText("");
+			contextHeader.SetContextHeader("");
+		}
+
 		ActivateButton(navigationModeButton, bNavigationMode, bTurningOff);
 	}
 

@@ -56,4 +56,4 @@ MonoBehaviour:
   beamSpeed: 1000
   baseOutput: 1
   chargeRate: 1
-  maxCharge: 9999
+  maxCharge: 5

@@ -86,4 +86,10 @@ public class AbilityScanner : Ability
 		scan.SetEnabled(false);
 		targetVector = Vector3.zero;
 	}
+
+	public override void CancelAbility()
+	{
+		base.CancelAbility();
+		bUpdating = false;
+	}
 }

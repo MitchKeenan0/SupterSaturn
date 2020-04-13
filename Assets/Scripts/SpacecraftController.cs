@@ -110,7 +110,7 @@ public class SpacecraftController : MonoBehaviour
 					Vector3 onscreenDirection = new Vector3(touchPosition.x, touchPosition.y, 0f) - centerScreen;
 
 					/// burn duration
-					burnDuration = Mathf.Clamp(onscreenDirection.magnitude / 100f, 1f, 5f);
+					burnDuration = 2.5f; //Mathf.Clamp(onscreenDirection.magnitude / 100f, 1f, 5f);
 					orbitController.SetBurnDuration(burnDuration);
 					navigationHud.SetBurnDuration(burnDuration);
 

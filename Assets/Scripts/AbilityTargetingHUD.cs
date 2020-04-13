@@ -147,7 +147,6 @@ public class AbilityTargetingHUD : MonoBehaviour
 		{
 			AbilityTargetPanel atp = targetPanelList[i];
 			atp.SetEnabled(false);
-			Debug.Log("clear target panel");
 		}
 	}
 

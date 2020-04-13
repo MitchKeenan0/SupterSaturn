@@ -25,7 +25,7 @@ public class Ability : MonoBehaviour
 
 	public bool IsActive() { return bActive; }
 	public bool IsCooling() { return bCooling; }
-	public GameObject GetUIObject() { return myButton.gameObject; }
+	public GameObject GetUIObject() { return (myButton != null) ? myButton.gameObject : null; }
 
 	public void BondToButton(Button button)
 	{
@@ -71,6 +71,14 @@ public class Ability : MonoBehaviour
 		{
 			spap.BeginCooldown();
 		}
+	}
+
+	public virtual void CancelAbility()
+	{
+		bActive = false;
+		StopAllCoroutines();
+		activeTime = 0f;
+		myButton.interactable = true;
 	}
 
 	private IEnumerator AbilityDuration(float updateInterval)

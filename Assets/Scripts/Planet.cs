@@ -94,8 +94,7 @@ public class Planet : MonoBehaviour
 						if (visList.Contains(hitVertex) && (scoreHud != null))
 						{
 							Vector3 vertexWorldPosition = transform.TransformPoint(hitVertex);
-							int vertexScore = Mathf.FloorToInt(range / Vector3.Distance(position, vertexWorldPosition));
-							scoreHud.PopupScore(vertexWorldPosition, vertexScore, maxScore);
+							scoreHud.PopupScore(vertexWorldPosition, 1, maxScore);
 						}
 					}
 

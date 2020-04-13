@@ -30,6 +30,5 @@ public class AbilityTargetPanel : MonoBehaviour
 		canvasGroup.alpha = (value ? 1f : 0f);
 		canvasGroup.blocksRaycasts = value;
 		canvasGroup.interactable = value;
-		Debug.Log("set enabled " + value);
 	}
 }

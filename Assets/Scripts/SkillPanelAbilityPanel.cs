@@ -10,6 +10,9 @@ public class SkillPanelAbilityPanel : MonoBehaviour
 	public Button loopButton;
 	public RectTransform cooldownPanel;
 	public RectTransform cooldownBar;
+	public RectTransform chargePanel;
+	public RectTransform chargeBar;
+	public Text chargeText;
 	public float cooldownUpdateInterval = 0.3f;
 
 	private SkillPanel skillPanel;
@@ -19,10 +22,13 @@ public class SkillPanelAbilityPanel : MonoBehaviour
 	private Image backgroundImage;
 	private Rotator loopRotator;
 	private CanvasGroup cooldownCanvasGroup;
+	private CanvasGroup chargeCanvasGroup;
 	private bool bLooping = false;
 	private bool bCooldownFinished = false;
 	private float cooldownBarMaxSize = 0f;
 	private float cooldownBarHeight = 1f;
+	private float chargeBarMaxSize = 0f;
+	private float chargeBarHeight = 1f;
 	private IEnumerator cooldownCoroutine;
 
 	void Awake()
@@ -34,11 +40,18 @@ public class SkillPanelAbilityPanel : MonoBehaviour
 		inputController.ActivateButton(loopButton, false, true);
 		loopRotator = loopButton.gameObject.GetComponent<Rotator>();
 		loopRotator.speedMultiplier = 0f;
+
+		cooldownCanvasGroup = cooldownPanel.GetComponent<CanvasGroup>();
+		cooldownCanvasGroup.alpha = 0f;
 		cooldownBarMaxSize = cooldownPanel.sizeDelta.x;
 		cooldownBarHeight = cooldownBar.sizeDelta.y;
 		cooldownBar.sizeDelta = new Vector2(0f, cooldownBarHeight);
-		cooldownCanvasGroup = cooldownPanel.GetComponent<CanvasGroup>();
-		cooldownCanvasGroup.alpha = 0;
+
+		chargeCanvasGroup = chargePanel.GetComponent<CanvasGroup>();
+		chargeCanvasGroup.alpha = 0f;
+		chargeBarMaxSize = chargePanel.sizeDelta.x;
+		chargeBarHeight = chargeBar.sizeDelta.y;
+		chargeBar.sizeDelta = new Vector2(0f, cooldownBarHeight);
 	}
 
 	public void SetAbility(Ability ab)
@@ -62,6 +75,15 @@ public class SkillPanelAbilityPanel : MonoBehaviour
 	{
 		cooldownCoroutine = Cooldown(cooldownUpdateInterval);
 		StartCoroutine(cooldownCoroutine);
+	}
+
+	public void SetUIChargePercent(float percent)
+	{
+		float percentium = Mathf.Clamp(percent, 0f, 1f);
+		float chargeBarSizeX = Mathf.Clamp((chargeBarMaxSize * percent), 0f, chargeBarMaxSize);
+		chargeBar.sizeDelta = new Vector2(chargeBarSizeX, chargeBarHeight);
+		chargeCanvasGroup.alpha = (percent > 0f) ? 1f : 0f;
+		chargeText.text = (percent * 100f).ToString("F0") + "%";
 	}
 
 	public void Loop()

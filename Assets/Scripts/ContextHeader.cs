@@ -6,6 +6,11 @@ using UnityEngine.UI;
 public class ContextHeader : MonoBehaviour
 {
 	public Text contextText;
+	public float textWriterInterval = 0.2f;
+
+	private string context;
+	private int textCharCount = 0;
+	private IEnumerator typeCoroutine;
 
     void Start()
     {
@@ -14,6 +19,23 @@ public class ContextHeader : MonoBehaviour
 
 	public void SetContextHeader(string value)
 	{
-		contextText.text = value;
+		context = value;
+		textCharCount = value.Length;
+		typeCoroutine = TextWriter(textWriterInterval);
+		StartCoroutine(typeCoroutine);
+	}
+
+	private IEnumerator TextWriter(float interval)
+	{
+		contextText.text = "";
+		int i = 0;
+		string write = "";
+		while (i < textCharCount)
+		{
+			write += context[i];
+			contextText.text = write;
+			yield return new WaitForSeconds(interval);
+			i++;
+		}
 	}
 }

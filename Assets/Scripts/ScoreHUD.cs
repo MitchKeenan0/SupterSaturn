@@ -8,6 +8,7 @@ public class ScoreHUD : MonoBehaviour
 	public GameObject scorePopupPrefab;
 	public Text valueText;
 
+	private ScoreComboManager comboManager;
 	private Camera cameraMain;
 	private BattleOutcome battleOutcome;
 	private int score = 0;
@@ -19,6 +20,7 @@ public class ScoreHUD : MonoBehaviour
 	{
 		popupPanelList = new List<ScorePopup>();
 		battleOutcome = FindObjectOfType<BattleOutcome>();
+		comboManager = FindObjectOfType<ScoreComboManager>();
 		cameraMain = Camera.main;
 		for (int i = 0; i < expectedPopupLoad; i++)
 			SpawnPopup();
@@ -73,7 +75,7 @@ public class ScoreHUD : MonoBehaviour
 	{
 		ScorePopup newScorePanel = Instantiate(scorePopupPrefab, transform).GetComponent<ScorePopup>();
 		popupPanelList.Add(newScorePanel);
-		newScorePanel.SetActive(false, 0, Vector3.zero);
+		newScorePanel.SetActive(false, 0, Vector3.zero, Color.white);
 		return newScorePanel;
 	}
 
@@ -85,10 +87,12 @@ public class ScoreHUD : MonoBehaviour
 	public void PopupScore(Vector3 worldPosition, int scoreValue, int maxValue)
 	{
 		ScorePopup scoreo = GetScorePanel();
-		scoreo.SetActive(true, scoreValue, worldPosition);
+		int comboScore = comboManager.Score(scoreValue);
+		Color comboColor = comboManager.GetTierColor();
+		scoreo.SetActive(true, comboScore, worldPosition, comboColor);
 		Vector3 positionOnScreen = cameraMain.WorldToScreenPoint(worldPosition);
 		scoreo.transform.position = positionOnScreen;
-		UpdateScore(scoreValue, maxValue);
+		UpdateScore(comboScore, maxValue);
 	}
 
 	public int GetScore() { return score; }

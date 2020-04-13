@@ -6,6 +6,7 @@ public class VertexVisualizer : MonoBehaviour
 {
 	public LineRenderer linePrefab;
 	public float vertexAccountPercentage = 0.3f;
+	public float lineExtentScale = 2f;
 
 	private ScoreHUD scoreHud;
 	private List<Vector3> vertexList;
@@ -69,7 +70,7 @@ public class VertexVisualizer : MonoBehaviour
 		{
 			LineRenderer line = SpawnLineRenderer();
 			Vector3 vertexPosition = vertexList[i];
-			Vector3 vertexNormal = vertexPosition * 1.3f;
+			Vector3 vertexNormal = vertexPosition * lineExtentScale;
 			line.SetPosition(0, vertexPosition);
 			line.SetPosition(1, vertexNormal);
 		}

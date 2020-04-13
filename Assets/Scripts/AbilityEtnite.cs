@@ -8,11 +8,12 @@ public class AbilityEtnite : Ability
 	public float beamSpeed = 1000f;
 	public float baseOutput = 1f;
 	public float chargeRate = 1f;
-	public float maxCharge = 9999f;
+	public float maxCharge = 5f;
 
 	private EtniteBeam beam = null;
 	private AbilityTargetingHUD abilityTargeting = null;
 	private Spacecraft spacecraft = null;
+	private SkillPanelAbilityPanel myAbilityPanel;
 	private Transform targetTransform = null;
 	private Vector3 trackTargetVector = Vector3.zero;
 	private bool bUpdating = false;
@@ -24,13 +25,17 @@ public class AbilityEtnite : Ability
 		spacecraft = GetComponentInParent<Spacecraft>();
 		abilityTargeting = FindObjectOfType<AbilityTargetingHUD>();
 		trackTargetVector = transform.forward;
-    }
+		if (GetUIObject() != null)
+			myAbilityPanel = GetUIObject().GetComponent<SkillPanelAbilityPanel>();
+	}
 
 	void Update()
 	{
 		if (bCharging)
 		{
 			charge += Time.deltaTime * chargeRate;
+			charge = Mathf.Clamp(charge, 0f, maxCharge);
+			UpdateChargeUI(charge);
 		}
 
 		if (bUpdating)
@@ -43,6 +48,7 @@ public class AbilityEtnite : Ability
 			{
 				LaunchEtnite();
 				bUpdating = false;
+				bCharging = false;
 			}
 		}
 	}
@@ -66,6 +72,17 @@ public class AbilityEtnite : Ability
 		base.StartAbility();
 	}
 
+	void UpdateChargeUI(float value)
+	{
+		if (!myAbilityPanel && (GetUIObject() != null))
+			myAbilityPanel = GetUIObject().GetComponent<SkillPanelAbilityPanel>();
+		if (myAbilityPanel != null)
+		{
+			float percentOfCharge = charge / maxCharge;
+			myAbilityPanel.SetUIChargePercent(percentOfCharge);
+		}
+	}
+
 	public override void FireAbility()
 	{
 		base.FireAbility();
@@ -77,7 +94,6 @@ public class AbilityEtnite : Ability
 			beam = Instantiate(beamPrefab, transform);
 			beam.SetOwner(transform);
 		}
-
 		if ((beam != null) && (targetTransform != null))
 		{
 			beam.SetChargeEnergy(charge);
@@ -85,6 +101,9 @@ public class AbilityEtnite : Ability
 			beam.SetTarget(targetTransform);
 			beam.SetLinePositions(transform.position, transform.position, 0f);
 		}
+
+		charge = 0f;
+		UpdateChargeUI(0f);
 	}
 
 	public override void UpdateAbility()
@@ -101,6 +120,8 @@ public class AbilityEtnite : Ability
 	{
 		base.EndAbility();
 
+		bUpdating = false;
+		bCharging = false;
 		targetTransform = null;
 		if (beam != null)
 			beam.SetEnabled(false);

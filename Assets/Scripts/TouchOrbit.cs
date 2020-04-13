@@ -122,6 +122,7 @@ public class TouchOrbit : MonoBehaviour
 				y -= ly;
 			}
 
+			y = Mathf.Clamp(y, -85f, 85f);
 			rotation *= Quaternion.Euler(y, x, 0);
 			Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
 			position = (rotation * negDistance) + anchorTransform.position;
