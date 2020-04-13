@@ -19,7 +19,7 @@ public class PageSystem : MonoBehaviour
 
 	private List<CanvasGroup> canvasGroups;
 
-    void Start()
+    void Awake()
     {
 		canvasGroups = new List<CanvasGroup>();
 

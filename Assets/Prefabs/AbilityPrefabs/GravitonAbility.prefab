@@ -51,6 +51,7 @@ MonoBehaviour:
   cooldown: 1
   abilitySprite: {fileID: 21300000, guid: 7be2f35512f214e438319ec42ffa8c71, type: 3}
   abilityName: Graviton
+  abilityColor: {r: 0, g: 0.3233118, b: 1, a: 1}
   bTargeting: 1
   beamPrefab: {fileID: 6816421504709400606, guid: b81e1d2225bea0b4c9e63973baa94c8a,
     type: 3}

@@ -62,7 +62,7 @@ MonoBehaviour:
     m_Right: 50
     m_Top: 0
     m_Bottom: 50
-  m_ChildAlignment: 0
+  m_ChildAlignment: 6
   m_StartCorner: 2
   m_StartAxis: 0
   m_CellSize: {x: 160, y: 160}

@@ -50,6 +50,7 @@ MonoBehaviour:
   cooldown: 1
   abilitySprite: {fileID: 21300000, guid: 5fd179ff24212164da6c21cc4b93d918, type: 3}
   abilityName: Etnite Battery
+  abilityColor: {r: 1, g: 0, b: 0, a: 1}
   bTargeting: 1
   beamPrefab: {fileID: 2937536701860654266, guid: 21b2b678c3f3f01479f3f66bed8181b7,
     type: 3}

@@ -184,17 +184,17 @@ public class OrbitController : MonoBehaviour
 						line.enabled = true;
 
 						float normal = Mathf.InverseLerp(0f, trajectoryCount, i);
-						float lineAlpha = Mathf.Lerp(0.9f, 0.06f, Mathf.Sqrt(normal));
+						float lineAlpha = Mathf.Lerp(0.9f, 0.6f, Mathf.Sqrt(normal));
 						Color lineColor = new Color(0f, lineAlpha, 0f);
 						Color start = lineColor * 0.8f;
 						start.a = 1f;
 						line.startColor = start;
 						line.endColor = lineColor;
 
-						if (Physics.Linecast(lineStart, lineEnd))
-						{
-							return;
-						}
+						//if (Physics.Linecast(lineStart, lineEnd))
+						//{
+						//	return;
+						//}
 					}
 				}
 			}

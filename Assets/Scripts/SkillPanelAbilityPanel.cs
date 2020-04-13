@@ -23,6 +23,7 @@ public class SkillPanelAbilityPanel : MonoBehaviour
 	private Rotator loopRotator;
 	private CanvasGroup cooldownCanvasGroup;
 	private CanvasGroup chargeCanvasGroup;
+	private Color abilityColor;
 	private bool bLooping = false;
 	private bool bCooldownFinished = false;
 	private float cooldownBarMaxSize = 0f;
@@ -61,6 +62,11 @@ public class SkillPanelAbilityPanel : MonoBehaviour
 		if (backgroundImage != null)
 			backgroundImage.sprite = ab.abilitySprite;
 		abilityText.text = ab.abilityName;
+		abilityColor = ab.abilityColor;
+		//Color backgroundColor = abilityColor * 0.8f;
+		//backgroundColor.a = 1f;
+		backgroundImage.color = abilityColor; 
+		abilityImage.color = abilityColor;
 		ab.BondToButton(myButton);
 	}
 

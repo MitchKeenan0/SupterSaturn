@@ -56,6 +56,13 @@ public class InputController : MonoBehaviour
 		ActivateButton(stopButton, false, true);
 	}
 
+	public void Begin()
+	{
+		AllStop(false);
+		CameraMode();
+		ActivateButton(stopButton, false, true);
+	}
+
 	public void ActivateButton(Button button, bool value, bool finished)
 	{
 		if (finished)
@@ -71,9 +78,9 @@ public class InputController : MonoBehaviour
 		buttonColorBlock.selectedColor = color;
 		button.colors = buttonColorBlock;
 
-		if (value)
-			skillPanel.CancelAll();
-		else
+		//if (value)
+			//skillPanel.CancelAll();
+		if (!value)
 			FallbackCheck();
 	}
 
@@ -94,13 +101,6 @@ public class InputController : MonoBehaviour
 			touchOrbit.SetInputScale(originalCameraScale * 0.6f);
 		else
 			touchOrbit.SetInputScale(originalCameraScale);
-	}
-
-	public void Begin()
-	{
-		AllStop(false);
-		CameraMode();
-		ActivateButton(stopButton, false, true);
 	}
 
 	public void AllStop(bool bActuallyThough)
@@ -163,7 +163,7 @@ public class InputController : MonoBehaviour
 		if (bTurningOff)
 			value = false;
 
-		SetFineCameraInput(!bTurningOff);
+		//SetFineCameraInput(!bTurningOff);
 		bNavigationMode = value;
 		if (spacecraft == null)
 			spacecraft = game.GetSpacecraftList()[0];

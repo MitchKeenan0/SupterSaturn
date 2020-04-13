@@ -10,30 +10,30 @@ public class SafetyHUD : MonoBehaviour
 	private OrbitController orbitController;
 	private RaycastManager raycastManager;
 	private Camera cameraMain;
-	private IEnumerator updateCoroutine;
 	private List<Vector3> trajectoryList;
+	//private IEnumerator updateCoroutine;
 
-    void Start()
+	void Start()
     {
 		collisionWarningPanel.SetActive(false);
 		trajectoryList = new List<Vector3>();
 		orbitController = FindObjectOfType<OrbitController>();
 		raycastManager = FindObjectOfType<RaycastManager>();
 		cameraMain = Camera.main;
-		updateCoroutine = UpdateSafetyHud(updateInterval);
-		StartCoroutine(updateCoroutine);
+		//updateCoroutine = UpdateSafetyHud(updateInterval);
+		//StartCoroutine(updateCoroutine);
 	}
 
-	IEnumerator UpdateSafetyHud(float interval)
-	{
-		while (true)
-		{
-			CheckTrajectoryCollision();
-			yield return new WaitForSeconds(interval);
-		}
-	}
+	//IEnumerator UpdateSafetyHud(float interval)
+	//{
+	//	while (true)
+	//	{
+	//		CheckTrajectoryCollision();
+	//		yield return new WaitForSeconds(interval);
+	//	}
+	//}
 
-	void CheckTrajectoryCollision()
+	public void CheckTrajectoryCollision()
 	{
 		trajectoryList.Clear();
 		foreach (Vector3 vector in orbitController.GetTrajectory())
