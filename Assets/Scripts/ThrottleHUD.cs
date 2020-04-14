@@ -35,6 +35,6 @@ public class ThrottleHUD : MonoBehaviour
 	{
 		spacecraft.SetThrottle(percent);
 		inputController.UpdateStatusText("Throttle " + percent * 100 + "%");
-		orbitController.SetUpdatingForDuration(1.6f);
+		orbitController.SetUpdatingForDuration(1.0f);
 	}
 }

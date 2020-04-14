@@ -22,8 +22,6 @@ public class OrbitController : MonoBehaviour
 	public Autopilot GetAutopilot() { return autopilot; }
 	public List<Vector3> GetTrajectory() { return trajectoryList; }
 
-	private IEnumerator updateCoroutine;
-
 	void Awake()
     {
 		lineList = new List<LineRenderer>();
@@ -49,8 +47,7 @@ public class OrbitController : MonoBehaviour
 
 	public void SetDirection(Vector3 inputVector)
 	{
-		if (bUpdating)
-			bUpdating = false;
+		bUpdating = false;
 		if (autopilot != null)
 		{
 			///autopilot.FaceVelocity(false);
@@ -61,55 +58,32 @@ public class OrbitController : MonoBehaviour
 
 	public void SetUpdating(bool value)
 	{
-		if (value && !bUpdating)
-		{
-			updateCoroutine = UpdateOrbit(updateInterval);
-			StartCoroutine(updateCoroutine);
-		}
-		else if (bUpdating)
-		{
-			StopCoroutine(updateCoroutine);
-		}
 		bUpdating = value;
 	}
 
 	public void SetUpdatingForDuration(float value)
 	{
-		if (!bUpdating)
-		{
-			durationUpdateCoroutine = DurationUpdate(value);
-			StartCoroutine(durationUpdateCoroutine);
-		}
+		durationUpdateCoroutine = DurationUpdate(value);
+		StartCoroutine(durationUpdateCoroutine);
 	}
 
 	private IEnumerator durationUpdateCoroutine;
 	private IEnumerator DurationUpdate(float duration)
 	{
-		if (bUpdating)
-			StopCoroutine(updateCoroutine);
 		bUpdating = true;
-		updateCoroutine = UpdateOrbit(updateInterval);
-		StartCoroutine(updateCoroutine);
-
 		yield return new WaitForSeconds(duration);
-
-		if (bUpdating)
-		{
-			StopCoroutine(updateCoroutine);
-			bUpdating = false;
-		}
+		bUpdating = false;
 	}
 
-	IEnumerator UpdateOrbit(float interval)
+	void Update()
 	{
-		while (true)
+		if (bUpdating)
 		{
 			if ((rb != null) && (rb.velocity.magnitude > 0f))
 			{
 				SimulateTrajectory(rb.velocity, -1f);
 				RenderTrajectory();
 			}
-			yield return new WaitForSeconds(interval);
 		}
 	}
 
@@ -118,23 +92,19 @@ public class OrbitController : MonoBehaviour
 		ClearTrajectory();
 
 		Spacecraft spacecraft = autopilot.gameObject.GetComponent<Spacecraft>();
-		if (heading.magnitude < 1f)
-			return;
 		bool bSimulateEnginePower = true;
-		if (duration < 0f)
+		if (duration <= 0f)
 		{
-			duration = rb.velocity.magnitude * 6;
+			duration = Mathf.Clamp(rb.velocity.magnitude * 10, 1f, 30f);
 			bSimulateEnginePower = false;
 		}
 
 		float simulationTime = 0f;
 		float deltaTime = 0.1f;
-		float spMass = spacecraft.GetComponent<Rigidbody>().mass;
-		float enginePower = (spacecraft.mainEnginePower / spMass);
 		Vector3 currentPosition = spacecraft.transform.position;
-		Vector3 velocity = rb.velocity + currentPosition;
-		Vector3 deltaVelocity = rb.velocity * deltaTime * 6;
+		Vector3 deltaVelocity = rb.velocity;
 		Vector3 trajecto = Vector3.zero;
+		Vector3 velocity = Vector3.zero;
 		List<Gravity> gravityList = gravityTelemetry.GetGravitiesAffecting(rb);
 		trajectoryList.Add(currentPosition);
 
@@ -142,21 +112,19 @@ public class OrbitController : MonoBehaviour
 		{
 			trajecto = deltaVelocity;
 			if (bSimulateEnginePower)
-				trajecto = spacecraft.transform.forward * enginePower * deltaTime;
+				trajecto += spacecraft.transform.forward * (1f / deltaTime);
 
-			if (gravityList.Count > 0)
+			int numGravs = gravityList.Count;
+			for (int i = 0; i < numGravs; i++)
 			{
-				float simulatedGravity = 3.33f;
-				if (bSimulateEnginePower)
-					simulatedGravity *= enginePower * deltaTime * duration;
-				foreach (Gravity gr in gravityList)
-					trajecto += (gr.GetGravity(rb, currentPosition, rb.mass) * deltaTime) * simulatedGravity;
+				Gravity gr = gravityList[i];
+				trajecto += gr.GetGravity(rb, currentPosition, rb.mass);
 			}
 
 			velocity = currentPosition + trajecto;
 
 			trajectoryList.Add(velocity);
-			deltaVelocity = trajecto;
+			deltaVelocity = (velocity - currentPosition);
 			currentPosition = velocity;
 			simulationTime += deltaTime;
 		}
@@ -165,36 +133,35 @@ public class OrbitController : MonoBehaviour
 	void RenderTrajectory()
 	{
 		int trajectoryCount = trajectoryList.Count;
-		if (trajectoryCount > 0)
+		for (int i = 0; i < trajectoryCount; i++)
 		{
-			for(int i = 0; i < trajectoryCount; i += 2)
+			LineRenderer line = null;
+			if ((i < lineList.Count) && (lineList[i] != null))
 			{
-				LineRenderer line = null;
-				if ((i < lineList.Count) && (lineList[i] != null))
-					line = lineList[i];
+				line = lineList[i];
+			}
 
-				if (line != null)
+			if (line != null)
+			{
+				Vector3 lineStart = trajectoryList[i];
+				if (trajectoryList.Count > (i + 1))
 				{
-					Vector3 lineStart = trajectoryList[i];
-					if (trajectoryList.Count > (i + 2))
+					Vector3 lineEnd = lineStart + ((trajectoryList[i + 1] - trajectoryList[i]) * 0.6f);
+					line.SetPosition(0, lineStart);
+					line.SetPosition(1, lineEnd);
+					line.enabled = true;
+
+					float normal = Mathf.InverseLerp(0f, trajectoryCount, i);
+					float lineAlpha = Mathf.Lerp(0.9f, 0.6f, Mathf.Sqrt(normal));
+					Color lineColor = new Color(0f, lineAlpha, 0f);
+					Color start = lineColor * 0.8f;
+					start.a = 1f;
+					line.startColor = start;
+					line.endColor = lineColor;
+
+					if (Physics.Linecast(lineStart, lineEnd))
 					{
-						Vector3 lineEnd = lineStart + ((trajectoryList[i + 1] - trajectoryList[i]) * 0.6f);
-						line.SetPosition(0, lineStart);
-						line.SetPosition(1, lineEnd);
-						line.enabled = true;
-
-						float normal = Mathf.InverseLerp(0f, trajectoryCount, i);
-						float lineAlpha = Mathf.Lerp(0.9f, 0.6f, Mathf.Sqrt(normal));
-						Color lineColor = new Color(0f, lineAlpha, 0f);
-						Color start = lineColor * 0.8f;
-						start.a = 1f;
-						line.startColor = start;
-						line.endColor = lineColor;
-
-						//if (Physics.Linecast(lineStart, lineEnd))
-						//{
-						//	return;
-						//}
+						return;
 					}
 				}
 			}
@@ -214,7 +181,6 @@ public class OrbitController : MonoBehaviour
 		{
 			foreach(LineRenderer lr in lineList)
 			{
-				lr.enabled = false;
 				lr.transform.localPosition = Vector3.zero;
 			}
 		}
@@ -225,6 +191,7 @@ public class OrbitController : MonoBehaviour
 			for (int i = 0; i < numVectors; i++)
 				trajectoryList[i] = Vector3.zero;
 		}
+
 		trajectoryList.Clear();
 	}
 

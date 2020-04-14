@@ -45,4 +45,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trajectoryLinePrefab: {fileID: 1717023931117533250, guid: a0d7b5bd218da6b4eadfe346386d1715,
     type: 3}
-  orbitRange: 1
+  updateInterval: 0.5

@@ -44,11 +44,6 @@ public class Spacecraft : MonoBehaviour
 
 	public Agent GetAgent() { return agent; }
 	public bool IsAlive() { return (health != null) && (health.GetHealth() >= 1); }
-	public void SetThrottle(float value)
-	{
-		bThrottle = (value != 1f);
-		throttleVelocityTarget = rb.velocity.magnitude * value;
-	}
 
 	public int GetHealth()
 	{
@@ -137,6 +132,21 @@ public class Spacecraft : MonoBehaviour
 					Brake();
 			}
 		}
+	}
+
+	public void SetThrottle(float value)
+	{
+		throttleVelocityTarget = rb.velocity.magnitude * value;
+		throttleCoroutine = ThrottleForDuration(1f);
+		StartCoroutine(throttleCoroutine);
+	}
+
+	private IEnumerator throttleCoroutine;
+	private IEnumerator ThrottleForDuration(float waitTime)
+	{
+		bThrottle = true;
+		yield return new WaitForSeconds(waitTime);
+		bThrottle = false;
 	}
 
 	public void Maneuver(Vector3 targetDirection)

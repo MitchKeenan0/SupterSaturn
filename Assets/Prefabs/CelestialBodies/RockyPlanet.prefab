@@ -181,7 +181,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bodyTransform: {fileID: 5273469545884070276}
   radius: 1500
-  strength: 150
+  strength: 1000
 --- !u!114 &3401129090991631764
 MonoBehaviour:
   m_ObjectHideFlags: 0

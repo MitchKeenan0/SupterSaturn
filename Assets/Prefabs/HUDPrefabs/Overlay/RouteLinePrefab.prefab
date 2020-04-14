@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 695536d93d2eab24a9e9a196aae2ce38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  updateInterval: 0.1
+  updateInterval: 0.5
   scaleFactor: 0.05
 --- !u!120 &1717023931117533250
 LineRenderer:

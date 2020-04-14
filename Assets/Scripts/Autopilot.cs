@@ -170,7 +170,6 @@ public class Autopilot : MonoBehaviour
 
 		yield return new WaitForSeconds(durationTime);
 		spacecraft.MainEngines(0f);
-		//FaceVelocity(true);
 		bEngineActive = false;
 		FindObjectOfType<OrbitController>().SetUpdating(false);
 	}
