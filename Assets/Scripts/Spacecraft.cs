@@ -16,6 +16,8 @@ public class Spacecraft : MonoBehaviour
 	public Sprite craftDiagram;
 	public float iconScale = 1f;
 	public int numericID = 0;
+	public GameObject realBody;
+	public GameObject bigGhostBody;
 
 	private Rigidbody rb;
 	private Agent agent;
@@ -245,6 +247,12 @@ public class Spacecraft : MonoBehaviour
 		//{
 		//	SetRenderComponents(false);
 		//}
+	}
+
+	public void SetBigGhostMode(bool value)
+	{
+		realBody.GetComponent<Renderer>().enabled = !value;
+		bigGhostBody.GetComponent<Renderer>().enabled = value;
 	}
 
 	public void SetRenderComponents(bool value)

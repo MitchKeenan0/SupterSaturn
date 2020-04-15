@@ -149,7 +149,7 @@ public class InputController : MonoBehaviour
 		}
 
 		if (bStopped && !bEngineShutdown)
-			orbitController.ClearTrajectory();
+			orbitController.KillOrbit();
 
 		bool bActivated = bStopped || bEngineShutdown;
 		ActivateButton(stopButton, bActivated, bTurningOff);
@@ -162,8 +162,7 @@ public class InputController : MonoBehaviour
 			bTurningOff = true;
 		if (bTurningOff)
 			value = false;
-
-		//SetFineCameraInput(!bTurningOff);
+		
 		bNavigationMode = value;
 		if (spacecraft == null)
 			spacecraft = game.GetSpacecraftList()[0];
@@ -192,8 +191,10 @@ public class InputController : MonoBehaviour
 		{
 			cameraTargetFinder.SetActive(true);
 			float dist = distanceModes[cameraMode];
+			bool bFar = (cameraMode == 0) ? false : true;
+			spacecraft.SetBigGhostMode(bFar);
 			touchOrbit.SetDistance(dist);
-			//cameraMain.focalLength = 1f / (Mathf.Sqrt(dist) * 0.1f) * 6f;
+			///cameraMain.focalLength = 1f / (Mathf.Sqrt(dist) * 0.1f) * 6f;
 			cameraMode++;
 			if (cameraMode >= numCameraModes)
 				cameraMode = 0;

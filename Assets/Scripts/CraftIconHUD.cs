@@ -8,7 +8,6 @@ public class CraftIconHUD : MonoBehaviour
 	public GameObject iconParent;
 	public GameObject iconPrefab;
 	public Vector3 healthBarScale;
-	public float updateInterval = 0.2f;
 
 	private Camera cameraMain;
 	private ObjectManager objectManager;
@@ -19,7 +18,6 @@ public class CraftIconHUD : MonoBehaviour
 	private bool bUpdating = false;
 
 	private IEnumerator loadWaitCoroutine;
-	private IEnumerator updateCoroutine;
 
 	void Awake()
 	{
@@ -40,11 +38,7 @@ public class CraftIconHUD : MonoBehaviour
 	private IEnumerator LoadWait(float waitTime)
 	{
 		yield return new WaitForSeconds(waitTime);
-
 		InitIconFleet();
-
-		//updateCoroutine = UpdateIconHud(updateInterval);
-		//StartCoroutine(updateCoroutine);
 		bUpdating = true;
 	}
 
@@ -52,7 +46,6 @@ public class CraftIconHUD : MonoBehaviour
 	{
 		spacecraftList = objectManager.GetSpacecraftList();
 		int numCrafts = spacecraftList.Count;
-		///Debug.Log("craft icon hud reading list " + numCrafts);
 
 		for (int i = 0; i < numCrafts; i++)
 		{
@@ -116,20 +109,12 @@ public class CraftIconHUD : MonoBehaviour
 		return product;
 	}
 
-	//private IEnumerator UpdateIconHud(float intervalTime)
-	//{
-	//	while (true)
-	//	{
-	//		yield return new WaitForSeconds(intervalTime);
-	//		UpdateCraftIcons();
-	//	}
-	//}
-
 	void LateUpdate()
 	{
 		if (bUpdating)
+		{
 			UpdateCraftIcons();
-		///Debug.Log("delta time " + Time.deltaTime);
+		}
 	}
 
 	void UpdateCraftIcons()
@@ -145,7 +130,7 @@ public class CraftIconHUD : MonoBehaviour
 					if (sp.GetHUDIcon() != null)
 					{
 						Image img = sp.GetHUDIcon().GetComponent<Image>();
-						if (img != null) /// (sp.GetMarks() > 0) || (sp.GetAgent() && (sp.GetAgent().teamID == 0)))
+						if (img != null)
 						{
 							img.enabled = true;
 							if (!img.gameObject.activeInHierarchy)
@@ -155,8 +140,7 @@ public class CraftIconHUD : MonoBehaviour
 							img.rectTransform.sizeDelta = Vector2.one * sp.iconScale;
 
 							Vector3 worldPosition = sp.transform.position;
-							Vector3 craftToScreen = (sp.transform.position - cameraMain.transform.position).normalized;
-							Vector3 craftScreenPosition = worldPosition;/// + (craftToScreen * 10);
+							Vector3 craftScreenPosition = worldPosition;
 							img.rectTransform.position = craftScreenPosition;
 							
 							Vector3 toCamera = cameraMain.transform.position - sp.transform.position;
@@ -169,7 +153,6 @@ public class CraftIconHUD : MonoBehaviour
 							img.enabled = false;
 							if (img.gameObject.activeInHierarchy)
 								img.gameObject.SetActive(false);
-							Debug.Log("disabled icon");
 						}
 					}
 				}

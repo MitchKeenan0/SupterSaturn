@@ -180,6 +180,8 @@ MonoBehaviour:
   craftDiagram: {fileID: 21300000, guid: 0fc40ac0ebb0d5f4f98d570d33cbe1fc, type: 3}
   iconScale: 0.15
   numericID: 1
+  realBody: {fileID: 7517603745946648432}
+  bigGhostBody: {fileID: 3934699318235451753}
 --- !u!114 &2482138470350234215
 MonoBehaviour:
   m_ObjectHideFlags: 0

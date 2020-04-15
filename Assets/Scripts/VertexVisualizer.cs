@@ -28,7 +28,8 @@ public class VertexVisualizer : MonoBehaviour
 	{
 		yield return new WaitForSeconds(waitTime);
 		InitLines();
-		scoreHud.InitScore(vertexList.Count);
+		if (scoreHud != null)
+			scoreHud.InitScore(vertexList.Count);
 	}
 
 	void InitLines()
@@ -36,24 +37,12 @@ public class VertexVisualizer : MonoBehaviour
 		lineList = new List<LineRenderer>();
 		vertexList = new List<Vector3>();
 
-		Planet pl = null;
-		Planet[] planets = FindObjectsOfType<Planet>();
-		int numPlanets = planets.Length;
-		for(int i = 0; i < numPlanets; i++)
-		{
-			Planet pp = planets[i];
-			if (pp.CompareTag("Planet"))
-			{
-				pl = pp;
-				break;
-			}
-		}
-
+		Planet pl = transform.GetComponentInParent<Planet>();
 		if (pl != null)
 		{
-			transform.parent = pl.planetMesh.transform;
-			transform.transform.position = Vector3.zero;
-			transform.transform.rotation = pl.planetMesh.transform.rotation;
+			//transform.parent = pl.planetMesh.transform;
+			transform.localPosition = Vector3.zero;
+			transform.rotation = pl.planetMesh.transform.rotation;
 			transform.localScale = Vector3.one;
 			for(int i = 0; i < pl.GetVertexList().Count; i++)
 			{

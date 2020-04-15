@@ -59,7 +59,7 @@ public class SolarSystem : BattleScene
 					biggestScale = planetSize;
 				}
 
-				int numMoons = Random.Range(0, Mathf.FloorToInt(planetSize / 15));
+				int numMoons = Random.Range(1, 10);
 				if (numMoons > 0)
 				{
 					for (int j = 0; j < numMoons; j++)
@@ -72,8 +72,10 @@ public class SolarSystem : BattleScene
 						Planet moonPlanet = spawnedMoon.GetComponentInChildren<Planet>();
 						if (moonPlanet != null)
 						{
-							moonPlanet.SetScale(planetSize * Random.Range(0.02f, 0.2f));
+							float moonSize = planetSize * Random.Range(0.5f, 1f);
+							moonPlanet.SetScale(moonSize);
 						}
+						spawnedMoon.transform.localRotation = Quaternion.Euler(Random.Range(-30f, 30f), Random.Range(-30f, 30f), Random.Range(-30f, 30f));
 						i++;
 					}
 				}

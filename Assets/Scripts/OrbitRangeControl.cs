@@ -14,14 +14,4 @@ public class OrbitRangeControl : MonoBehaviour
 		inputController = FindObjectOfType<InputController>();
 		orbitController = FindObjectOfType<OrbitController>();
     }
-
-	public void Increase()
-	{
-		orbitController.ModifyOrbitRange(rangeIncrement);
-	}
-
-	public void Decrease()
-	{
-		orbitController.ModifyOrbitRange(-rangeIncrement);
-	}
 }

@@ -29,7 +29,6 @@ public class ScoreComboManager : MonoBehaviour
 		}
 		comboScore = currentComboValue;
 		timeAtLastScore = Time.time;
-		Debug.Log("combo " + comboScore);
 		return comboScore;
 	}
 

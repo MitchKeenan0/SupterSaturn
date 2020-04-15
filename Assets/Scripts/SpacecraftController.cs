@@ -32,7 +32,7 @@ public class SpacecraftController : MonoBehaviour
 	private float burnDuration = 0f;
 
 	public Autopilot GetAutopilot() { return autopilot; }
-
+	public Spacecraft GetSpacecraft() { return spacecraft; }
 	private IEnumerator loadCoroutine;
 
 	void Start()
@@ -119,10 +119,6 @@ public class SpacecraftController : MonoBehaviour
 					Vector3 navigationVector = navigationTarget + spacecraft.transform.position;
 					directionVector = navigationVector;
 					orbitController.SetDirection(directionVector);
-
-					/// circular size for auto-orbit
-					float positionRange = spacecraft.transform.position.magnitude;
-					orbitController.SetOrbitRange(positionRange);
 
 					/// visualize
 					autopilot.ManeuverRotationTo(directionVector);

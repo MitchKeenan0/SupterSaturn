@@ -5,12 +5,11 @@ using UnityEngine;
 public class CelestialHUD : MonoBehaviour
 {
 	public GameObject panelPrefab;
-	public float updateInterval = 0.1f;
 
 	private Camera cameraMain;
 	private List<CelestialBody> celestialBodyList;
-	private List<RectTransform> panelList; 
-	private IEnumerator updateCoroutine;
+	private List<RectTransform> panelList;
+	private bool bUpdating = false;
 
     void Awake()
     {
@@ -33,14 +32,13 @@ public class CelestialHUD : MonoBehaviour
 					SpawnPanel(celestials[i]);
 				}
 			}
-			updateCoroutine = UpdateCelestialHud(updateInterval);
-			StartCoroutine(updateCoroutine);
+			bUpdating = true;
 		}
 	}
 
-	IEnumerator UpdateCelestialHud(float interval)
+	void Update()
 	{
-		while (true)
+		if (bUpdating)
 		{
 			int cels = celestialBodyList.Count;
 			for(int i = 0; i < cels; i++)
@@ -59,7 +57,6 @@ public class CelestialHUD : MonoBehaviour
 						rt.transform.position = celestialScreenPosition;
 				}
 			}
-			yield return new WaitForSeconds(interval);
 		}
 	}
 

@@ -64,13 +64,13 @@ MonoBehaviour:
   distance: 200
   xSpeed: 1.5
   ySpeed: 1.5
-  mousePanSpeed: 0.1
+  mousePanSpeed: 0.6
   yMinLimit: -85
   yMaxLimit: 85
   distanceMin: 15
-  distanceMax: 150
-  moveSpeed: 1
-  moveAcceleration: 5
+  distanceMax: 300
+  moveSpeed: 1.6
+  moveAcceleration: 10
   turnAcceleration: 10
 --- !u!114 &8112959024247920879
 MonoBehaviour:

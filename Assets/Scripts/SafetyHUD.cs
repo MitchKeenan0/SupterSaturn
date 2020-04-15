@@ -11,7 +11,8 @@ public class SafetyHUD : MonoBehaviour
 	private RaycastManager raycastManager;
 	private Camera cameraMain;
 	private List<Vector3> trajectoryList;
-	//private IEnumerator updateCoroutine;
+	private IEnumerator updateCoroutine;
+	private bool bTrajectoryHit = false;
 
 	void Start()
     {
@@ -20,20 +21,20 @@ public class SafetyHUD : MonoBehaviour
 		orbitController = FindObjectOfType<OrbitController>();
 		raycastManager = FindObjectOfType<RaycastManager>();
 		cameraMain = Camera.main;
-		//updateCoroutine = UpdateSafetyHud(updateInterval);
-		//StartCoroutine(updateCoroutine);
+		updateCoroutine = UpdateSafetyHud(updateInterval);
+		StartCoroutine(updateCoroutine);
 	}
 
-	//IEnumerator UpdateSafetyHud(float interval)
-	//{
-	//	while (true)
-	//	{
-	//		CheckTrajectoryCollision();
-	//		yield return new WaitForSeconds(interval);
-	//	}
-	//}
+	IEnumerator UpdateSafetyHud(float interval)
+	{
+		while (true)
+		{
+			CheckTrajectoryCollision();
+			yield return new WaitForSeconds(interval);
+		}
+	}
 
-	public void CheckTrajectoryCollision()
+	void CheckTrajectoryCollision()
 	{
 		trajectoryList.Clear();
 		foreach (Vector3 vector in orbitController.GetTrajectory())
@@ -43,7 +44,7 @@ public class SafetyHUD : MonoBehaviour
 		int numVectors = trajectoryList.Count;
 		for (int i = 0; i < numVectors; i++)
 		{
-			if (trajectoryList.Count > (i + 1))
+			if (!bHit && (numVectors > (i + 1)))
 			{
 				Vector3 lineStart = trajectoryList[i];
 				Vector3 lineEnd = lineStart + (trajectoryList[i + 1] - trajectoryList[i]);
@@ -61,13 +62,19 @@ public class SafetyHUD : MonoBehaviour
 							if (cwp != null)
 								cwp.SetDistance(Vector3.Distance(cameraMain.transform.position, hit.point));
 							bHit = true;
+							orbitController.SetClampedLength(i);
+							orbitController.ClearPartialTrajectory(i);
 						}
 					}
 				}
 			}
 		}
 
-		if (!bHit)
+		bTrajectoryHit = bHit;
+		if (!bTrajectoryHit)
+		{
 			collisionWarningPanel.SetActive(false);
+			orbitController.SetClampedLength(0);
+		}
 	}
 }

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4959694117585039113}
   - component: {fileID: 2391241199244011756}
+  - component: {fileID: 1913815445287578296}
   m_Layer: 0
   m_Name: SpacecraftTrail
   m_TagString: Untagged
@@ -72,7 +73,7 @@ TrailRenderer:
   m_Time: 30
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.1
+    widthMultiplier: 0.4
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -135,3 +136,16 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 1
+--- !u!114 &1913815445287578296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 446199614240786559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 642f57b1079c43c4eb1b3898cd1627e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  updateInterval: 0.1

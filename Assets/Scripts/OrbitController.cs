@@ -5,6 +5,7 @@ using UnityEngine;
 public class OrbitController : MonoBehaviour
 {
 	public LineRenderer trajectoryLinePrefab;
+	public int maxLineCount = 250;
 	public float updateInterval = 0.1f;
 
 	private Autopilot autopilot;
@@ -18,9 +19,11 @@ public class OrbitController : MonoBehaviour
 	private List<Vector3> trajectoryList;
 	private float burnDuration = 0f;
 	private bool bUpdating = false;
+	private int trajectoryClampedLength = 0;
 
 	public Autopilot GetAutopilot() { return autopilot; }
 	public List<Vector3> GetTrajectory() { return trajectoryList; }
+	public void SetClampedLength(int value) { trajectoryClampedLength = (value != 0) ? value : maxLineCount; }
 
 	void Awake()
     {
@@ -29,7 +32,8 @@ public class OrbitController : MonoBehaviour
 		navigationHud = FindObjectOfType<NavigationHud>();
 		planet = FindObjectOfType<Planet>();
 		gravityTelemetry = FindObjectOfType<GravityTelemetryHUD>();
-		for (int i = 0; i < 300; i++)
+		trajectoryClampedLength = maxLineCount;
+		for (int i = 0; i < maxLineCount; i++)
 			SpawnTrajectoryLine();
 	}
 
@@ -95,7 +99,7 @@ public class OrbitController : MonoBehaviour
 		bool bSimulateEnginePower = true;
 		if (duration <= 0f)
 		{
-			duration = Mathf.Clamp(rb.velocity.magnitude * 10, 1f, 30f);
+			duration = Mathf.Clamp(rb.velocity.magnitude * 0.6f, 0.6f, 30f);
 			bSimulateEnginePower = false;
 		}
 
@@ -141,7 +145,7 @@ public class OrbitController : MonoBehaviour
 				line = lineList[i];
 			}
 
-			if (line != null)
+			if ((i < trajectoryClampedLength) && (line != null))
 			{
 				Vector3 lineStart = trajectoryList[i];
 				if (trajectoryList.Count > (i + 1))
@@ -150,6 +154,7 @@ public class OrbitController : MonoBehaviour
 					line.SetPosition(0, lineStart);
 					line.SetPosition(1, lineEnd);
 					line.enabled = true;
+					line.gameObject.SetActive(true);
 
 					float normal = Mathf.InverseLerp(0f, trajectoryCount, i);
 					float lineAlpha = Mathf.Lerp(0.9f, 0.6f, Mathf.Sqrt(normal));
@@ -158,12 +163,15 @@ public class OrbitController : MonoBehaviour
 					start.a = 1f;
 					line.startColor = start;
 					line.endColor = lineColor;
-
-					if (Physics.Linecast(lineStart, lineEnd))
-					{
-						return;
-					}
 				}
+			}
+			else if (line != null)
+			{
+				line.SetPosition(0, Vector3.zero);
+				line.SetPosition(1, Vector3.zero);
+				line.enabled = false;
+				line.gameObject.SetActive(false);
+				//Debug.Log("set inactive");
 			}
 		}
 	}
@@ -195,13 +203,26 @@ public class OrbitController : MonoBehaviour
 		trajectoryList.Clear();
 	}
 
-	public void SetOrbitRange(float value)
+	public void ClearPartialTrajectory(int startingFromIndex)
 	{
-		//
+		int numLines = lineList.Count;
+		for(int i = startingFromIndex; i < numLines; i++)
+		{
+			if ((numLines > i) && (lineList[i] != null))
+			{
+				LineRenderer lr = lineList[i];
+				lr.transform.localPosition = Vector3.zero;
+				lr.enabled = false;
+			}
+		}
 	}
 
-	public void ModifyOrbitRange(float increment)
+	public void KillOrbit()
 	{
-		//
+		StopAllCoroutines();
+		bUpdating = false;
+		SetClampedLength(0);
+		ClearTrajectory();
+		ClearPartialTrajectory(0);
 	}
 }

@@ -9,6 +9,8 @@ public class Planet : MonoBehaviour
 	public float maxSize = 3f;
 	public float minSize = 0.3f;
 	public bool bScannable = false;
+	public float colliderScale = 0.5f;
+	public float vertexRangeScale = 1f;
 
 	private Mesh mesh;
 	private ScoreHUD scoreHud;
@@ -30,7 +32,7 @@ public class Planet : MonoBehaviour
 	{
 		raycastManager = FindObjectOfType<RaycastManager>();
 		scoreHud = FindObjectOfType<ScoreHUD>();
-		mesh = GetComponent<MeshFilter>().mesh;
+		mesh = GetComponentInChildren<MeshFilter>().mesh;
 		vertexVisualizer = FindObjectOfType<VertexVisualizer>();
 		vertexList = new List<Vector3>();
 		freshVertices = new List<Vector3>();
@@ -51,19 +53,12 @@ public class Planet : MonoBehaviour
 
 	public void GetScanned(Vector3 position, float range, Color32 color)
 	{
-		/// vertex hit detection
 		List<Vector3> hitVerts = new List<Vector3>();
 		foreach(Vector3 ve in vertexList)
 		{
 			Vector3 vertex = transform.TransformPoint(ve);
-			if (Vector3.Distance(position, vertex) <= range)
+			if (Vector3.Distance(position, vertex) <= (range * vertexRangeScale))
 			{
-				//RaycastHit hit = raycastManager.CustomLinecast(position, vertex);
-				//if (hit.transform != null)
-				//{
-				//	if (Vector3.Distance(hit.point, vertex) <= range)
-				//		hitVerts.Add(ve);
-				//}
 				if (freshVertices.Contains(ve))
 					hitVerts.Add(ve);
 			}
@@ -112,7 +107,7 @@ public class Planet : MonoBehaviour
 	public void SetScale(float sizeMagnitude)
 	{
 		transform.localScale = Vector3.one * sizeMagnitude;
-		GetComponent<SphereCollider>().radius = 0.485f;
+		GetComponent<SphereCollider>().radius = colliderScale;
 		planetSize = sizeMagnitude;
 	}
 }
