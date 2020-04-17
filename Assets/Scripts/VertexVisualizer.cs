@@ -29,7 +29,7 @@ public class VertexVisualizer : MonoBehaviour
 		yield return new WaitForSeconds(waitTime);
 		InitLines();
 		if (scoreHud != null)
-			scoreHud.InitScore(vertexList.Count);
+			scoreHud.UpdateMaxScore(vertexList.Count);
 	}
 
 	void InitLines()

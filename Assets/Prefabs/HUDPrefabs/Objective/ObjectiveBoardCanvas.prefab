@@ -338,11 +338,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ba8031902be5c84d96f2c3885d88d6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectiveTypeList:
+  objectiveTypeArray:
   - {fileID: 79586355095157982, guid: aea140f524ca85e4f9bd83cb9dc481df, type: 3}
   - {fileID: 9098356191930498205, guid: 4b4ac84e0edb7aa489427b8abcbfaae0, type: 3}
   - {fileID: 7972658946372764943, guid: 7619626ef85a5474b9bdead87e497042, type: 3}
-  - {fileID: 4052713573119922064, guid: f4deceade1753304ba0af888bf64555b, type: 3}
   objectiveListingPrefab: {fileID: 5628390652875000128, guid: 523aa93081570b4448a0cda0ac49761f,
     type: 3}
   listingPanel: {fileID: 5727653774763651232}

@@ -184,8 +184,8 @@ public class Spacecraft : MonoBehaviour
 
 	public void Brake()
 	{
-		float brakingScalar = Mathf.Clamp(rb.velocity.magnitude, 1f, 100f);
-		Vector3 brakingVelocity = Vector3.MoveTowards(rb.velocity, Vector3.zero, Time.fixedDeltaTime * (mainEnginePower / 50f) * brakingScalar);
+		float brakingScalar = Mathf.Clamp(Mathf.Sqrt(rb.velocity.magnitude), 1f, 100f);
+		Vector3 brakingVelocity = Vector3.MoveTowards(rb.velocity, Vector3.zero, Time.fixedDeltaTime * (mainEnginePower * 0.02f) * brakingScalar);
 		rb.velocity = brakingVelocity;
 	}
 
@@ -253,6 +253,12 @@ public class Spacecraft : MonoBehaviour
 	{
 		realBody.GetComponent<Renderer>().enabled = !value;
 		bigGhostBody.GetComponent<Renderer>().enabled = value;
+		if (bigGhostBody.transform.childCount > 0)
+		{
+			Renderer[] bigGhostRenders = bigGhostBody.GetComponentsInChildren<Renderer>();
+			for(int i = 0; i < bigGhostRenders.Length; i++)
+				bigGhostRenders[i].enabled = value;
+		}
 	}
 
 	public void SetRenderComponents(bool value)

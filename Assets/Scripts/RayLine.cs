@@ -14,12 +14,14 @@ public class RayLine : MonoBehaviour
 	private bool bHit = false;
 	private bool bEnabled = false;
 	private bool bFinished = false;
+	private int scanVertsHit = 0;
 
 	public bool IsEnabled() { return bEnabled; }
 	public bool RayHit() { return bHit; }
 	public bool LineFinished() { return bHit && bFinished; }
 	public float RayExtent() { return Vector3.Distance(lineStart, lineEnd); }
 	public Vector3 GetHitPosition() { return hitPosition; }
+	public int GetScanHits() { return scanVertsHit; }
 
     void Awake()
     {
@@ -28,7 +30,7 @@ public class RayLine : MonoBehaviour
 
 	void CheckRayHit()
 	{
-		Vector3 rayVector = lineEnd - lineStart;
+		Vector3 rayVector = (lineEnd - lineStart);
 		float distance = Vector3.Distance(lineStart, lineEnd);
 		RaycastHit[] hits = Physics.RaycastAll(lineStart, rayVector, distance);
 		if (hits.Length > 0)
@@ -46,7 +48,9 @@ public class RayLine : MonoBehaviour
 						planet = hit.transform.GetComponentInChildren<Planet>();
 					if (planet != null)
 					{
-						planet.GetScanned(lineEnd, 30f, Color.blue);
+						int hitVerts = planet.GetScanned(hit.point, 25f, Color.cyan);
+						if (hitVerts > 0)
+							scanVertsHit += hitVerts;
 					}
 				}
 			}
@@ -82,6 +86,7 @@ public class RayLine : MonoBehaviour
 	{
 		bHit = false;
 		bFinished = false;
+		scanVertsHit = 0;
 		lineStart = lineEnd = transform.position;
 	}
 

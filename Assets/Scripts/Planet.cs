@@ -32,8 +32,8 @@ public class Planet : MonoBehaviour
 	{
 		raycastManager = FindObjectOfType<RaycastManager>();
 		scoreHud = FindObjectOfType<ScoreHUD>();
-		mesh = GetComponentInChildren<MeshFilter>().mesh;
-		vertexVisualizer = FindObjectOfType<VertexVisualizer>();
+		mesh = planetMesh.GetComponent<MeshFilter>().mesh;
+		vertexVisualizer = GetComponentInChildren<VertexVisualizer>();
 		vertexList = new List<Vector3>();
 		freshVertices = new List<Vector3>();
 		foreach (Vector3 ve in mesh.vertices)
@@ -51,8 +51,9 @@ public class Planet : MonoBehaviour
 		mesh.colors32 = colors;
 	}
 
-	public void GetScanned(Vector3 position, float range, Color32 color)
+	public int GetScanned(Vector3 position, float range, Color32 color)
 	{
+		int numHitVerts = 0;
 		List<Vector3> hitVerts = new List<Vector3>();
 		foreach(Vector3 ve in vertexList)
 		{
@@ -64,32 +65,34 @@ public class Planet : MonoBehaviour
 			}
 		}
 
-		if (hitVerts.Count > 0)
+		int numHits = hitVerts.Count;
+		if (numHits > 0)
 		{
+			// Store original colors
 			Color32[] colors = new Color32[vertexList.Count];
 			for (int i = 0; i < colors.Length; i++)
 				colors[i] = mesh.colors[i];
-			Vector3[] hitArray = hitVerts.ToArray();
-			for (int j = 0; j < hitArray.Length; j++)
+
+			for (int j = 0; j < numHits; j++)
 			{
-				Vector3 hitVertex = hitArray[j];
+				Vector3 hitVertex = hitVerts[j];
 				if (vertexList.Contains(hitVertex) && freshVertices.Contains(hitVertex))
 				{
-					int vertexIndex = vertexList.IndexOf(hitVertex);
-					if (colors.Length > vertexIndex)
-						colors[vertexIndex] = color;
-
 					if (vertexVisualizer != null)
 					{
-						vertexVisualizer.DisableLine(hitVertex);
-						int maxScore = vertexVisualizer.GetNumVerticies();
-
 						List<Vector3> visList = new List<Vector3>();
 						visList = vertexVisualizer.GetVertexList();
-						if (visList.Contains(hitVertex) && (scoreHud != null))
+						if (visList.Contains(hitVertex))
 						{
+							vertexVisualizer.DisableLine(hitVertex);
+							int maxScore = vertexVisualizer.GetNumVerticies();
 							Vector3 vertexWorldPosition = transform.TransformPoint(hitVertex);
-							scoreHud.PopupScore(vertexWorldPosition, 1, maxScore);
+							if (scoreHud != null)
+								scoreHud.PopupScore(vertexWorldPosition, 1, maxScore);
+							int vertexIndex = vertexList.IndexOf(hitVertex);
+							if (colors.Length > vertexIndex)
+								colors[vertexIndex] = color;
+							numHitVerts++;
 						}
 					}
 
@@ -102,6 +105,8 @@ public class Planet : MonoBehaviour
 		Vector3[] verts = vertexList.ToArray();
 		mesh.vertices = verts;
 		mesh.RecalculateBounds();
+
+		return numHitVerts;
 	}
 
 	public void SetScale(float sizeMagnitude)

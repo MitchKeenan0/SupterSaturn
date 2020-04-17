@@ -55,37 +55,26 @@ public class TouchOrbit : MonoBehaviour
 
 	void Update()
 	{
-		MoveInput();
+		UpdateTouchControl();
 	}
 
-	void MoveInput()
+	void UpdateTouchControl()
 	{
 		if (Input.touchCount > 0)
 		{
+			// move input
 			if (Input.touchCount == 1)
 			{
 				Touch touch = Input.GetTouch(0);
 				moveInput = touch.deltaPosition;
-
 				if (moveInput != Vector3.zero)
 				{
 					inputX = moveInput.x;
 					inputZ = moveInput.y;
-
-					Vector3 rawMove = (
-						(cameraMain.transform.right * inputX)
-						+ (cameraMain.transform.forward * inputZ)
-						).normalized * moveSpeed;
-
-					// normalized to anchor surface
-					Vector3 orbitNormal = (Vector3.zero - cameraMain.transform.position).normalized;
-					rawMove = Vector3.ProjectOnPlane(rawMove, orbitNormal);
-
-					// move interply
-					moveVector = Vector3.Lerp(moveVector, rawMove, Time.deltaTime * moveAcceleration * 0.1f);
-					moveVector = Vector3.ClampMagnitude(moveVector, moveSpeed);
 				}
 			}
+
+			// camera distance scoping
 			else if (Input.touchCount == 2)
 			{
 				Vector3 deltaOne = Input.GetTouch(0).position;
@@ -110,7 +99,7 @@ public class TouchOrbit : MonoBehaviour
 	void LateUpdate()
 	{
 		Quaternion rotation = Quaternion.identity;
-		Vector3 position = Vector3.zero;
+		Vector3 position = orbitAnchor.transform.position;
 
 		if (anchorTransform != null)
 		{
@@ -129,7 +118,7 @@ public class TouchOrbit : MonoBehaviour
 		}
 
 		transform.rotation = rotation;
-		transform.position = Vector3.Lerp(transform.position, position + moveVector, Time.deltaTime * moveAcceleration);
+		transform.position = Vector3.MoveTowards(transform.position, position + moveVector, Time.deltaTime * moveAcceleration * moveSpeed);
 	}
 
 	public void ResetAnchor(bool overrideDistance)

@@ -135,12 +135,13 @@ public class Autopilot : MonoBehaviour
 		while (dot < 0.99f)
 		{
 			ManeuverRotationTo(destination - rb.velocity);
+			spacecraft.Brake();
 
 			Vector3 alignVector = ((destination - rb.velocity) - spacecraft.transform.position);
-			Vector3 myVelocity = rb.velocity;
-			Vector3 projectedVelocity = Vector3.ProjectOnPlane(myVelocity, spacecraft.transform.forward.normalized);
-			projectedVelocity.z = Mathf.Clamp(projectedVelocity.z, -1f, 0f);
-			spacecraft.SideJets(projectedVelocity * -1f);
+			//Vector3 myVelocity = rb.velocity;
+			//Vector3 projectedVelocity = Vector3.ProjectOnPlane(myVelocity, spacecraft.transform.forward.normalized);
+			//projectedVelocity.z = Mathf.Clamp(projectedVelocity.z, -1f, 0f);
+			//spacecraft.SideJets(projectedVelocity * -1f);
 
 			Vector3 myVector = rb.velocity;
 			if (myVector.magnitude < 1f)

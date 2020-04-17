@@ -7,18 +7,26 @@ public class ScoreHUD : MonoBehaviour
 {
 	public GameObject scorePopupPrefab;
 	public Text valueText;
+	public GameObject scoreContextPanel;
+	public float contextDuration = 1.5f;
 
 	private ScoreComboManager comboManager;
 	private Camera cameraMain;
 	private BattleOutcome battleOutcome;
+	private CanvasGroup scoreContextCG;
+	private Text scoreContextText;
 	private int score = 0;
 	private int maxScore = 0;
 	private int expectedPopupLoad = 40;
 	private List<ScorePopup> popupPanelList;
+	private IEnumerator scoreContextCoroutine;
 
 	void Start()
 	{
 		popupPanelList = new List<ScorePopup>();
+		scoreContextCG = scoreContextPanel.GetComponent<CanvasGroup>();
+		scoreContextCG.alpha = 0f;
+		scoreContextText = scoreContextPanel.GetComponentInChildren<Text>();
 		battleOutcome = FindObjectOfType<BattleOutcome>();
 		comboManager = FindObjectOfType<ScoreComboManager>();
 		cameraMain = Camera.main;
@@ -79,9 +87,10 @@ public class ScoreHUD : MonoBehaviour
 		return newScorePanel;
 	}
 
-	public void InitScore(int max)
+	public void UpdateMaxScore(int max)
 	{
-		UpdateScore(0, max);
+		maxScore += max;
+		UpdateScore(0, maxScore);
 	}
 
 	public void PopupScore(Vector3 worldPosition, int scoreValue, int maxValue)
@@ -96,4 +105,19 @@ public class ScoreHUD : MonoBehaviour
 	}
 
 	public int GetScore() { return score; }
+
+	public void ToastContext(string context)
+	{
+		scoreContextText.text = context;
+		scoreContextCoroutine = ContextToast(contextDuration);
+		StartCoroutine(scoreContextCoroutine);
+	}
+
+	private IEnumerator ContextToast(float duration)
+	{
+		scoreContextCG.alpha = 1f;
+		yield return new WaitForSeconds(duration);
+		scoreContextText.text = "";
+		scoreContextCG.alpha = 0f;
+	}
 }

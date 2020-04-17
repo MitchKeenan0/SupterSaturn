@@ -8,20 +8,26 @@ public class AbilityScanner : Ability
 
 	private ContextHeader contextHeader;
 	private AbilityTargetingHUD abilityTargeting;
-	private bool bUpdating = false;
-	private Vector3 targetVector = Vector3.zero;
 	private Scan scan;
+	private ScoreHUD scoreHud;
+	private Vector3 targetVector = Vector3.zero;
+	private bool bUpdating = false;
+	private bool bScannerHit = false;
+	private int hits = 0;
 
-    void Start()
+	void Start()
     {
 		contextHeader = FindObjectOfType<ContextHeader>();
 		abilityTargeting = FindObjectOfType<AbilityTargetingHUD>();
+		scoreHud = FindObjectOfType<ScoreHUD>();
     }
 
 	public override void StartAbility()
 	{
 		targetVector = Vector3.zero;
+		bScannerHit = false;
 		bUpdating = true;
+		hits = 0;
 		if (!contextHeader)
 			contextHeader = FindObjectOfType<ContextHeader>();
 		if (contextHeader != null)
@@ -47,7 +53,15 @@ public class AbilityScanner : Ability
 	void LaunchScan()
 	{
 		base.StartAbility();
+	}
 
+	public void Hit(int value)
+	{
+		if (!bScannerHit)
+		{
+			bScannerHit = true;
+			hits = value;
+		}
 	}
 
 	public override void FireAbility()
@@ -68,7 +82,7 @@ public class AbilityScanner : Ability
 			scan.transform.position = transform.position;
 			Vector3 toTarget = (targetVector - transform.position);
 			Quaternion scanRotation = Quaternion.LookRotation(toTarget, Vector3.up);
-			scan.InitScan(transform, scanRotation, duration);
+			scan.InitScan(this, scanRotation, duration);
 			scan.SetEnabled(true);
 		}
 	}
@@ -76,7 +90,7 @@ public class AbilityScanner : Ability
 	public override void UpdateAbility()
 	{
 		base.UpdateAbility();
-
+		
 	}
 
 	public override void EndAbility()
@@ -85,6 +99,26 @@ public class AbilityScanner : Ability
 		scan.transform.position = transform.position;
 		scan.SetEnabled(false);
 		targetVector = Vector3.zero;
+		if (scoreHud != null)
+		{
+			if (!bScannerHit)
+				scoreHud.ToastContext("-- Out of Range --");
+			else
+			{
+				if (hits == 0)
+					scoreHud.ToastContext("-- No Hit --");
+				else
+					scoreHud.ToastContext("Scan Hit +" + Factorial(hits));
+			}
+		}
+	}
+
+	int Factorial(int value)
+	{
+		int final = 0;
+		for(int i = 0; i < value; i++)
+			final += (i + 1);
+		return final;
 	}
 
 	public override void CancelAbility()

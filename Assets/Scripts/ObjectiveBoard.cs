@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class ObjectiveBoard : MonoBehaviour
 {
-	public ObjectiveType[] objectiveTypeList;
+	public ObjectiveType[] objectiveTypeArray;
 	public GameObject objectiveListingPrefab;
 	public GameObject listingPanel;
 	public GameObject theWholeThing;
@@ -30,10 +30,13 @@ public class ObjectiveBoard : MonoBehaviour
 			while (!bTypeSet && (counter < 100))
 			{
 				counter++;
-				int randomType = Random.Range(1, objectiveTypeList.Length) - 1;
-				type = objectiveTypeList[randomType];
-
-				bTypeSet = true;
+				int randomType = Random.Range(1, objectiveTypeArray.Length) - 1;
+				if (randomType < objectiveTypeArray.Length)
+				{
+					type = objectiveTypeArray[randomType];
+					if (type != null)
+						bTypeSet = true;
+				}
 			}
 			if (type != null)
 				listing.SetObjective(type);
@@ -70,8 +73,8 @@ public class ObjectiveBoard : MonoBehaviour
 			while (!bTypeSet && (counter < 100))
 			{
 				counter++;
-				int randomType = Random.Range(1, objectiveTypeList.Length) - 1;
-				type = objectiveTypeList[randomType];
+				int randomType = Random.Range(1, objectiveTypeArray.Length) - 1;
+				type = objectiveTypeArray[randomType];
 				bTypeSet = true;
 			}
 			if (type != null)

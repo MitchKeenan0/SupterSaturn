@@ -244,7 +244,7 @@ public class Game : MonoBehaviour
 				}
 			}
 
-			Debug.Log("Game Loaded");
+			///Debug.Log("Game Loaded");
 		}
 		else
 		{
@@ -270,7 +270,7 @@ public class Game : MonoBehaviour
 			GameObject spacecraftObject = Instantiate(card.cardObjectPrefab, null);
 			spacecraftObject.SetActive(false);
 			sp = spacecraftObject.GetComponent<Spacecraft>();
-			Debug.Log("Spawned player spacecraft");
+			///Debug.Log("Spawned player spacecraft");
 		}
 		return sp;
 	}
@@ -355,7 +355,7 @@ public class Game : MonoBehaviour
 		save.fleetTutorialClosed = bFleetTutorialClosed;
 		save.gameTutorialClosed = bGameTutorialClosed;
 
-		Debug.Log("game saved");
+		///Debug.Log("game saved");
 
 		return save;
 	}

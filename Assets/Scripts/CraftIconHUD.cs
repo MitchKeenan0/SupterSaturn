@@ -141,7 +141,7 @@ public class CraftIconHUD : MonoBehaviour
 
 							Vector3 worldPosition = sp.transform.position;
 							Vector3 craftScreenPosition = worldPosition;
-							img.rectTransform.position = craftScreenPosition;
+							img.rectTransform.position = Vector3.MoveTowards(img.rectTransform.position, craftScreenPosition, Time.deltaTime * 1f);
 							
 							Vector3 toCamera = cameraMain.transform.position - sp.transform.position;
 							Color iconColor = img.color;

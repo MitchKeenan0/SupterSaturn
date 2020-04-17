@@ -315,7 +315,7 @@ PrefabInstance:
     - target: {fileID: 5927431976903153280, guid: 2285e5fd28f329f419e96c08408ed8d5,
         type: 3}
       propertyPath: vertexAccountPercentage
-      value: 0.1
+      value: 0.06
       objectReference: {fileID: 0}
     - target: {fileID: 5927431976903153280, guid: 2285e5fd28f329f419e96c08408ed8d5,
         type: 3}

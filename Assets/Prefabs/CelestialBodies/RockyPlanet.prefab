@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3221379657793794119}
   - component: {fileID: 5506278598495289780}
   - component: {fileID: 3460194156538900431}
-  - component: {fileID: 4712818775331169094}
   - component: {fileID: 4597052887287454994}
   m_Layer: 0
   m_Name: PlanetSphere
@@ -80,25 +79,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &4712818775331169094
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2283283701920987462}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40b3f8e52d954ce4c8d89069b4abdfeb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  xForceDirection: 0
-  yForceDirection: 1
-  zForceDirection: 0
-  speedMultiplier: 1
-  bRandomRotationStart: 0
-  bRandomSpeed: 0
-  worldPivot: 0
 --- !u!135 &4597052887287454994
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -123,6 +103,7 @@ GameObject:
   - component: {fileID: 5273469545884070276}
   - component: {fileID: 5793207203075320276}
   - component: {fileID: 9048446475011085990}
+  - component: {fileID: 5292048789345196688}
   m_Layer: 0
   m_Name: PlanetMesh
   m_TagString: Planet
@@ -178,6 +159,25 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 13
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5292048789345196688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4766638517062956649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40b3f8e52d954ce4c8d89069b4abdfeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  xForceDirection: 0
+  yForceDirection: 1
+  zForceDirection: 0
+  speedMultiplier: 1
+  bRandomRotationStart: 0
+  bRandomSpeed: 0
+  worldPivot: 0
 --- !u!1 &6143951963767822065
 GameObject:
   m_ObjectHideFlags: 0
@@ -226,8 +226,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 733c2f3cd36d3b34695e030c1fd32a04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bodyTransform: {fileID: 5273469545884070276}
-  radius: 1500
+  bodyTransform: {fileID: 3221379657793794119}
+  radius: 9999
   strength: 1000
 --- !u!114 &3401129090991631764
 MonoBehaviour:
@@ -242,7 +242,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   armLength: 0
-  planetTransform: {fileID: 5273469545884070276}
+  planetTransform: {fileID: 3221379657793794119}
   offsetRotationScale: 25
 --- !u!54 &6469468458821320962
 Rigidbody:
@@ -776,6 +776,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5927431976903153280, guid: 2285e5fd28f329f419e96c08408ed8d5,
+        type: 3}
+      propertyPath: vertexAccountPercentage
+      value: 0.06
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2285e5fd28f329f419e96c08408ed8d5, type: 3}

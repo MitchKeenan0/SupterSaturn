@@ -67,11 +67,11 @@ MonoBehaviour:
   mousePanSpeed: 0.6
   yMinLimit: -85
   yMaxLimit: 85
-  distanceMin: 15
-  distanceMax: 300
-  moveSpeed: 1.6
-  moveAcceleration: 10
-  turnAcceleration: 10
+  distanceMin: 10
+  distanceMax: 750
+  moveSpeed: 100
+  moveAcceleration: 20
+  turnAcceleration: 100
 --- !u!114 &8112959024247920879
 MonoBehaviour:
   m_ObjectHideFlags: 0

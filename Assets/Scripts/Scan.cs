@@ -7,19 +7,20 @@ public class Scan : MonoBehaviour
 	public float scanSpeed = 10f;
 	public float scanLifetime = 2f;
 
-	private Transform scannerTransform;
+	private AbilityScanner scanner;
+	public AbilityScanner GetScanner() { return scanner; }
 	
     void Start()
     {
         
     }
 
-	public virtual void InitScan(Transform owningScanner, Quaternion rotation, float lifeTime)
+	public virtual void InitScan(AbilityScanner owningScanner, Quaternion rotation, float lifeTime)
 	{
-		scannerTransform = owningScanner;
+		scanner = owningScanner;
 		transform.rotation = rotation;
 		scanLifetime = lifeTime;
-		transform.parent = owningScanner;
+		transform.parent = owningScanner.transform;
 	}
 
 	public virtual void SetEnabled(bool value)

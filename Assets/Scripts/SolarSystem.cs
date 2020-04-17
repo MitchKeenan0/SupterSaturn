@@ -66,9 +66,9 @@ public class SolarSystem : BattleScene
 					{
 						int randomMoonIndex = Random.Range(0, moonPrefabs.Length - 1);
 						GameObject spawnedMoon = Instantiate(moonPrefabs[randomMoonIndex], planet.planetMesh.transform.position, Quaternion.identity);
-						spawnedMoon.transform.SetParent(planet.planetMesh.transform);
+						spawnedMoon.transform.SetParent(planet.transform);
 						if (spawnedMoon.GetComponent<PlanetArm>())
-							spawnedMoon.GetComponent<PlanetArm>().SetLength((j + 1) * distanceScale * Random.Range(0.1f, 0.3f));
+							spawnedMoon.GetComponent<PlanetArm>().SetLength((j + 1) * distanceScale * Random.Range(0.6f, 1.6f));
 						Planet moonPlanet = spawnedMoon.GetComponentInChildren<Planet>();
 						if (moonPlanet != null)
 						{

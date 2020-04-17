@@ -6,6 +6,7 @@ public class SpacecraftOrientationHud : MonoBehaviour
 {
 	public Transform bowMarker;
 	public Transform crossMarker;
+	public LineRenderer crossLine;
 	public float horizonDistance = 1500f;
 	public float loadDelay = 0.2f;
 
@@ -15,7 +16,8 @@ public class SpacecraftOrientationHud : MonoBehaviour
 	private CanvasGroup crossCG;
 	private IEnumerator loadCoroutine;
 	private IEnumerator looper;
-	Vector3 bowHorizonVector = Vector3.zero;
+	private Vector3 bowHorizonVector = Vector3.zero;
+	private bool bUpdating = false;
 
 	void Start()
 	{
@@ -30,16 +32,20 @@ public class SpacecraftOrientationHud : MonoBehaviour
 	private IEnumerator LoadDelay(float waitTime)
 	{
 		yield return new WaitForSeconds(waitTime);
-		if (game == null)
-			game = FindObjectOfType<Game>();
-		if (game != null)
-			spacecraft = game.GetSpacecraftList()[0];
+		GetReferences();
 	}
 
 	void Update()
     {
-		UpdateBowHorizon();
-		CheckHorizonHit();
+		if (bUpdating)
+		{
+			UpdateBowHorizon();
+			CheckHorizonHit();
+		}
+		else
+		{
+			GetReferences();
+		}
     }
 
 	void UpdateBowHorizon()
@@ -72,14 +78,41 @@ public class SpacecraftOrientationHud : MonoBehaviour
 			RaycastHit hit = hits[i];
 			if ((hit.transform != null) && (hit.transform != spacecraft.transform))
 			{
-				Vector3 hitScreenPosition = cameraMain.WorldToScreenPoint(hit.point);
-				crossMarker.transform.position = hitScreenPosition;
-				if (crossCG.alpha != 1f)
-					crossCG.alpha = 1f;
+				DrawCross(hit.point);
 				bHit = true;
 			}
 		}
 		if (!bHit && (crossCG.alpha != 0f))
-			crossCG.alpha = 0f;
+			DisableCross();
+	}
+
+	public void DrawCross(Vector3 crossPoint)
+	{
+		Vector3 hitScreenPosition = cameraMain.WorldToScreenPoint(crossPoint);
+		crossMarker.transform.position = hitScreenPosition;
+		if (crossCG.alpha != 1f)
+			crossCG.alpha = 1f;
+		crossLine.enabled = true;
+		crossLine.SetPosition(0, spacecraft.transform.position);
+		crossLine.SetPosition(1, crossPoint);
+	}
+
+	void DisableCross()
+	{
+		crossCG.alpha = 0f;
+		crossLine.enabled = false;
+	}
+
+	void GetReferences()
+	{
+		if (game == null)
+			game = FindObjectOfType<Game>();
+		if (game != null)
+		{
+			if ((game.GetSpacecraftList() != null) && (game.GetSpacecraftList().Count > 0))
+				spacecraft = game.GetSpacecraftList()[0];
+		}
+		if (spacecraft != null)
+			bUpdating = true;
 	}
 }

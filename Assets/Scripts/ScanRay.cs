@@ -28,7 +28,6 @@ public class ScanRay : Scan
 		if (bUpdating)
 		{
 			timeElapsed += Time.deltaTime;
-
 			int lineCount = lineList.Count;
 			for (int i = 0; i < lineCount; i++)
 			{
@@ -41,15 +40,17 @@ public class ScanRay : Scan
 							line.Finishing();
 						else if (line.LineFinished())
 							GetSpreadVector(i);
-
 						line.UpdateRayLine();
 					}
+
+					if (line.RayHit())
+						GetScanner().Hit(line.GetScanHits());
 				}
 			}
 		}
 	}
 
-	public override void InitScan(Transform owningScanner, Quaternion rotation, float lifeTime)
+	public override void InitScan(AbilityScanner owningScanner, Quaternion rotation, float lifeTime)
 	{
 		base.InitScan(owningScanner, rotation, lifeTime);
 
