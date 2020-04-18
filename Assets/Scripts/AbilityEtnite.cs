@@ -126,4 +126,12 @@ public class AbilityEtnite : Ability
 		if (beam != null)
 			beam.SetEnabled(false);
 	}
+
+	public override void CancelAbility()
+	{
+		base.CancelAbility();
+		EndAbility();
+		if (myAbilityPanel != null)
+			myAbilityPanel.SetUIChargePercent(0f);
+	}
 }

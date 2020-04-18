@@ -343,7 +343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 047a4eb021afe8f4ea2a335615fe58e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  intervalForCombo: 0.5
+  intervalForCombo: 2
   comboTierColors:
   - {r: 1, g: 1, b: 1, a: 1}
   - {r: 1, g: 1, b: 1, a: 1}

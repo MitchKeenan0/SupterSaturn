@@ -36,7 +36,7 @@ public class ScanRay : Scan
 					RayLine line = lineList[i];
 					if (line.IsEnabled())
 					{
-						if (timeElapsed >= (scanLifetime * 0.5f))
+						if (timeElapsed >= (scanLifetime * 0.9f))
 							line.Finishing();
 						else if (line.LineFinished())
 							GetSpreadVector(i);
@@ -106,7 +106,7 @@ public class ScanRay : Scan
 		Vector3 lineStart = transform.position;
 
 		/// direction
-		Vector3 ray = transform.forward * rayRange;
+		Vector3 ray = transform.forward * (rayRange * scanLifetime);
 		Vector3 spread = Random.onUnitSphere * raySpread;
 		spread = Vector3.ProjectOnPlane(spread, ray);
 		Vector3 lineEnd = lineStart + (ray + spread);

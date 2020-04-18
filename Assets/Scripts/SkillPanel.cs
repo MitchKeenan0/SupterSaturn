@@ -76,6 +76,12 @@ public class SkillPanel : MonoBehaviour
 			myAbilityList[abilityIndex].StartAbility();
 	}
 
+	public void DeactivateAbility(int abilityIndex)
+	{
+		if (myAbilityList[abilityIndex] != null)
+			myAbilityList[abilityIndex].CancelAbility();
+	}
+
 	public void CancelAll()
 	{
 		foreach (Ability ab in myAbilityList)

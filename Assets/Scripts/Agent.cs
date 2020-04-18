@@ -263,7 +263,8 @@ public class Agent : MonoBehaviour
 			objectManager = FindObjectOfType<ObjectManager>();
 			objectManager.SpacecraftDestroyed(spacecraft);
 		}
-		scanner.StopScanning();
+		if (scanner != null)
+			scanner.StopScanning();
 		this.enabled = false;
 	}
 }

@@ -23,7 +23,7 @@ public class Planet : MonoBehaviour
 	public float GetSize() { return planetSize; }
 	public List<Vector3> GetVertexList() { return vertexList; }
 
-	void Awake()
+	void Start()
     {
 		InitPlanet();
 	}

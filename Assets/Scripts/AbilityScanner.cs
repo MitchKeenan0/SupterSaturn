@@ -125,5 +125,7 @@ public class AbilityScanner : Ability
 	{
 		base.CancelAbility();
 		bUpdating = false;
+		if (contextHeader != null)
+			contextHeader.SetContextHeader("");
 	}
 }

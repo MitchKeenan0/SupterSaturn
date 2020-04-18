@@ -23,6 +23,7 @@ public class Ability : MonoBehaviour
 	private bool bCooling = false;
 	private bool bLooping = false;
 	private Button myButton;
+	private SkillPanelAbilityPanel myPanel;
 
 	public bool IsActive() { return bActive; }
 	public bool IsCooling() { return bCooling; }
@@ -31,6 +32,7 @@ public class Ability : MonoBehaviour
 	public void BondToButton(Button button)
 	{
 		myButton = button;
+		myPanel = button.GetComponent<SkillPanelAbilityPanel>();
 	}
 
 	public virtual void StartAbility()
@@ -52,7 +54,7 @@ public class Ability : MonoBehaviour
 
 	public virtual void EndAbility()
 	{
-
+		myPanel.Deactivate();
 	}
 
 	private IEnumerator AbilityWarmup(float warmTime)

@@ -38,10 +38,12 @@ public class RayLine : MonoBehaviour
 			for (int i = 0; i < hits.Length; i++)
 			{
 				RaycastHit hit = hits[i];
-				if (!hit.collider.isTrigger)
+				Transform mySpacecraftTransform = originTransform.GetComponent<ScanRay>().GetScanner().transform.parent.transform;
+				if (!hit.collider.isTrigger && (hit.transform != mySpacecraftTransform))
 				{
 					bHit = true;
 					hitPosition = hit.point;
+					Debug.Log("ray line hit " + hit.transform.name);
 
 					Planet planet = hit.transform.gameObject.GetComponent<Planet>();
 					if (planet == null)

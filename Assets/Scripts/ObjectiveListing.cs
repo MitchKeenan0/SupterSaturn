@@ -6,9 +6,11 @@ using UnityEngine.UI;
 public class ObjectiveListing : MonoBehaviour
 {
 	public Text nameText;
-	public Image iconImage;
 	public GameObject ratingPanel;
 	public GameObject ratingStarPrefab;
+	public Transform primaryT;
+	public Transform secondaryT;
+	public Transform salientT;
 
 	private ObjectiveType objectiveType;
 	private MainMenu menu;
@@ -21,7 +23,6 @@ public class ObjectiveListing : MonoBehaviour
 	{
 		ratingStarList = new List<GameObject>();
 		menu = FindObjectOfType<MainMenu>();
-		iconImage.preserveAspect = true;
 	}
 
 	public void SetObjective(ObjectiveType obj)
@@ -32,8 +33,62 @@ public class ObjectiveListing : MonoBehaviour
 		objectiveRating = objectiveType.objectiveRating;
 
 		nameText.text = objectiveName;
-		iconImage.sprite = objectiveIcon;
 		FillRatings(objectiveRating);
+	}
+
+	public void SetSurroundings(List<ObjectiveSurroundingsIcon> iconList)
+	{
+		int listCount = iconList.Count;
+		List<ObjectiveSurroundingsIcon> secondaryIcons = new List<ObjectiveSurroundingsIcon>();
+		List<ObjectiveSurroundingsIcon> rareSecondaries = new List<ObjectiveSurroundingsIcon>();
+		for(int i = 0; i < listCount; i++)
+		{
+			ObjectiveSurroundingsIcon osi = iconList[i];
+			if (i == 0)
+			{
+				osi.transform.SetParent(primaryT);
+			}
+			else
+			{
+				if (osi.bSecondary)
+				{
+					if (osi.rarity < 1f)
+						rareSecondaries.Add(osi);
+					else
+						secondaryIcons.Add(osi);
+				}
+				else
+				{
+					if (osi.bSalient)
+						osi.transform.SetParent(salientT);
+					else
+						osi.transform.SetParent(secondaryT);
+				}
+			}
+			osi.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+		}
+
+		if (secondaryIcons.Count > 0)
+		{
+			for (int j = 0; j < secondaryIcons.Count; j++)
+			{
+				ObjectiveSurroundingsIcon sosi = secondaryIcons[j];
+				sosi.transform.SetParent(secondaryT);
+				sosi.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+			}
+			secondaryIcons.Clear();
+		}
+
+		if (rareSecondaries.Count > 0)
+		{
+			for (int j = 0; j < rareSecondaries.Count; j++)
+			{
+				ObjectiveSurroundingsIcon rosi = rareSecondaries[j];
+				rosi.transform.SetParent(secondaryT);
+				rosi.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+			}
+			rareSecondaries.Clear();
+		}
 	}
 
 	void FillRatings(int value)

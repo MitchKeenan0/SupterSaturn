@@ -24,6 +24,7 @@ public class SkillPanelAbilityPanel : MonoBehaviour
 	private CanvasGroup cooldownCanvasGroup;
 	private CanvasGroup chargeCanvasGroup;
 	private Color abilityColor;
+	private bool bActivated = false;
 	private bool bLooping = false;
 	private bool bCooldownFinished = false;
 	private float cooldownBarMaxSize = 0f;
@@ -72,9 +73,20 @@ public class SkillPanelAbilityPanel : MonoBehaviour
 
 	public void Activate()
 	{
+		bActivated = !bActivated;
 		int siblingIndex = transform.GetSiblingIndex();
 		if (skillPanel != null)
-			skillPanel.ActivateAbility(siblingIndex);
+		{
+			if (bActivated)
+				skillPanel.ActivateAbility(siblingIndex);
+			else
+				skillPanel.DeactivateAbility(siblingIndex);
+		}
+	}
+
+	public void Deactivate()
+	{
+		bActivated = false;
 	}
 
 	public void BeginCooldown()
@@ -90,6 +102,8 @@ public class SkillPanelAbilityPanel : MonoBehaviour
 		chargeBar.sizeDelta = new Vector2(chargeBarSizeX, chargeBarHeight);
 		chargeCanvasGroup.alpha = (percent > 0f) ? 1f : 0f;
 		chargeText.text = (percent * 100f).ToString("F0") + "%";
+		if (percent <= 0f)
+			chargeCanvasGroup.alpha = 0f;
 	}
 
 	public void Loop()
@@ -100,6 +114,11 @@ public class SkillPanelAbilityPanel : MonoBehaviour
 			ability.ToggleLooping();
 		loopRotator.speedMultiplier = 1f;
 		inputController.ActivateButton(loopButton, bLooping, bTurningOff);
+		if (bLooping)
+		{
+			int siblingIndex = transform.GetSiblingIndex();
+			skillPanel.ActivateAbility(siblingIndex);
+		}
 	}
 
 	private IEnumerator Cooldown(float interval)

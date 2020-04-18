@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ContextHeader : MonoBehaviour
 {
 	public Text contextText;
-	public float textWriterInterval = 0.2f;
+	public float textWriterInterval = 0.01f;
 
 	private string context;
 	private int textCharCount = 0;

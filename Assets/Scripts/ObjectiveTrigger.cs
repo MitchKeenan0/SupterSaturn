@@ -51,8 +51,11 @@ public class ObjectiveTrigger : MonoBehaviour
 		if (collision.gameObject.GetComponentInChildren<Planet>())
 		{
 			bDestroyed = true;
-			outcome.AddLost(objectiveRating * 10);
-			outcome.BattleOver(false);
+			if (outcome != null)
+			{
+				outcome.AddLost(objectiveRating * 10);
+				outcome.BattleOver(false);
+			}
 		}
 	}
 }

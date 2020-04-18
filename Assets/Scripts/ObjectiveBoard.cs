@@ -10,11 +10,13 @@ public class ObjectiveBoard : MonoBehaviour
 	public GameObject listingPanel;
 	public GameObject theWholeThing;
 
+	private ObjectiveSurroundings surroundings;
 	private List<ObjectiveListing> objectiveList;
 
 	void Start()
     {
 		objectiveList = new List<ObjectiveListing>();
+		surroundings = GetComponent<ObjectiveSurroundings>();
 		InitListingBoard();
 		SetActive(false);
 	}
@@ -38,8 +40,16 @@ public class ObjectiveBoard : MonoBehaviour
 						bTypeSet = true;
 				}
 			}
+
 			if (type != null)
+			{
 				listing.SetObjective(type);
+
+				surroundings.CreateSurroundings(type.objectiveRating);
+				List<ObjectiveSurroundingsIcon> osiList = new List<ObjectiveSurroundingsIcon>();
+				osiList = surroundings.GetSurroundings();
+				listing.SetSurroundings(osiList);
+			}
 		}
 	}
 
