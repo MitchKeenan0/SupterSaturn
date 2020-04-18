@@ -56,6 +56,8 @@ MonoBehaviour:
   bSecondary: 0
   bSalient: 1
   rarity: 1
+  objectiveElementPrefab: {fileID: 8332184736459955384, guid: ffb1daddb048ed84a9ca3d6f240a01c9,
+    type: 3}
 --- !u!222 &4630113130540308482
 CanvasRenderer:
   m_ObjectHideFlags: 0

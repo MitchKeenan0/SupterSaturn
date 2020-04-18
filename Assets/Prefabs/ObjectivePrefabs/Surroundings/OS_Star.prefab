@@ -55,6 +55,9 @@ MonoBehaviour:
   iconColor: {r: 1, g: 1, b: 1, a: 1}
   bSecondary: 0
   bSalient: 0
+  rarity: 1
+  objectiveElementPrefab: {fileID: 6809871022616646804, guid: ff04259acb461394a89850210bb5ff21,
+    type: 3}
 --- !u!222 &8765713393070993614
 CanvasRenderer:
   m_ObjectHideFlags: 0

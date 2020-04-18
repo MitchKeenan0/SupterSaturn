@@ -9,22 +9,22 @@ public class ObjectiveType : MonoBehaviour
 	public string objectiveDescription = "";
 	public Sprite objectiveIcon;
 	public int objectiveRating = 1;
-	public GameObject[] principleObjectPrefabs;
-	public bool bRandomPosition = true;
-	public float spawnRange = 150f;
 
 	private ObjectiveHUD objectiveHud;
 	private NameLibrary nameLibrary;
-	private bool bSpawnOnLoad = false;
+	private bool bSpawnOnLoad = true;
 	private bool bLoaded = false;
+	private List<GameObject> elementPrefabList;
 
 	void Awake()
 	{
 		DontDestroyOnLoad(gameObject);
+		//
+		elementPrefabList = new List<GameObject>();
 		objectiveHud = FindObjectOfType<ObjectiveHUD>();
 		nameLibrary = FindObjectOfType<NameLibrary>();
-		if (!bLoaded)
-			LoadObjective();
+		//if (!bLoaded)
+		//	LoadObjective();
 	}
 
 	void OnEnable()
@@ -39,6 +39,19 @@ public class ObjectiveType : MonoBehaviour
 	{
 		if (bSpawnOnLoad && !bLoaded)
 			LoadObjective();
+	}
+
+	public virtual void SetElements(List<ObjectiveElement> elementList)
+	{
+		elementPrefabList.Clear();
+		List<GameObject> elementGameObjectPrefabList = new List<GameObject>();
+		foreach(ObjectiveElement oe in elementList)
+		{
+			if (oe.elementPrefab != null)
+				elementGameObjectPrefabList.Add(oe.elementPrefab);
+		}
+		if (elementGameObjectPrefabList.Count > 0)
+			elementPrefabList = elementGameObjectPrefabList;
 	}
 
 	public virtual void LoadObjective()
@@ -59,18 +72,11 @@ public class ObjectiveType : MonoBehaviour
 
 	public virtual void SpawnPrincipleObjects()
 	{
-		int numObjects = principleObjectPrefabs.Length;
+		int numObjects = elementPrefabList.Count;
 		for(int i = 0; i < numObjects; i++)
 		{
-			Vector3 spawnPosition = transform.position;
-			if (bRandomPosition)
-			{
-				Vector3 randomSpawnPosition = Random.onUnitSphere * spawnRange;
-				randomSpawnPosition.z = Mathf.Clamp(randomSpawnPosition.z, (spawnRange / 2), spawnRange);
-				spawnPosition = randomSpawnPosition;
-			}
-			GameObject po = Instantiate(principleObjectPrefabs[i], spawnPosition, Quaternion.identity);
-			po.transform.SetParent(transform);
+			GameObject ep = Instantiate(elementPrefabList[i]);
+			ep.transform.SetParent(transform);
 		}
 	}
 

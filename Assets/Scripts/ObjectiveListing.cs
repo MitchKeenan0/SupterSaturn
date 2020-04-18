@@ -18,10 +18,13 @@ public class ObjectiveListing : MonoBehaviour
 	private Sprite objectiveIcon;
 	private int objectiveRating = 1;
 	private List<GameObject> ratingStarList;
+	private List<ObjectiveElement> surroundingsElementList;
 
 	void Awake()
 	{
 		ratingStarList = new List<GameObject>();
+		if (surroundingsElementList == null)
+			surroundingsElementList = new List<ObjectiveElement>();
 		menu = FindObjectOfType<MainMenu>();
 	}
 
@@ -41,9 +44,15 @@ public class ObjectiveListing : MonoBehaviour
 		int listCount = iconList.Count;
 		List<ObjectiveSurroundingsIcon> secondaryIcons = new List<ObjectiveSurroundingsIcon>();
 		List<ObjectiveSurroundingsIcon> rareSecondaries = new List<ObjectiveSurroundingsIcon>();
-		for(int i = 0; i < listCount; i++)
+		if (surroundingsElementList == null)
+			surroundingsElementList = new List<ObjectiveElement>();
+
+		/// initial sorting
+		for (int i = 0; i < listCount; i++)
 		{
 			ObjectiveSurroundingsIcon osi = iconList[i];
+			surroundingsElementList.Add(osi.objectiveElementPrefab);
+
 			if (i == 0)
 			{
 				osi.transform.SetParent(primaryT);
@@ -68,6 +77,7 @@ public class ObjectiveListing : MonoBehaviour
 			osi.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
 		}
 
+		/// normal secondaries
 		if (secondaryIcons.Count > 0)
 		{
 			for (int j = 0; j < secondaryIcons.Count; j++)
@@ -79,6 +89,7 @@ public class ObjectiveListing : MonoBehaviour
 			secondaryIcons.Clear();
 		}
 
+		/// rare secondaries
 		if (rareSecondaries.Count > 0)
 		{
 			for (int j = 0; j < rareSecondaries.Count; j++)
@@ -108,7 +119,11 @@ public class ObjectiveListing : MonoBehaviour
 	public void SelectObjective()
 	{
 		ObjectiveType spawnedObjective = Instantiate(objectiveType, null);
-		spawnedObjective.Activate();
-		menu.StartGame();
+		if (surroundingsElementList.Count > 0)
+		{
+			spawnedObjective.SetElements(surroundingsElementList);
+			spawnedObjective.Activate();
+			menu.StartGame();
+		}
 	}
 }

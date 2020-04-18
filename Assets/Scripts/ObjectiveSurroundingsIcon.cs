@@ -11,10 +11,12 @@ public class ObjectiveSurroundingsIcon : MonoBehaviour
 	public bool bSecondary = false;
 	public bool bSalient = false;
 	public float rarity = 1f;
+	public ObjectiveElement objectiveElementPrefab;
 
+	private ObjectiveElement element;
 	private Image iconImage;
 
-    void Awake()
+	void Awake()
     {
 		iconImage = GetComponent<Image>();
     }
