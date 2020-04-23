@@ -17,11 +17,11 @@ public class Planet : MonoBehaviour
 	private RaycastManager raycastManager;
 	private VertexVisualizer vertexVisualizer;
 	private List<Vector3> vertexList;
-	private List<Vector3> freshVertices;
 	private float planetSize = 1f;
 
 	public float GetSize() { return planetSize; }
 	public List<Vector3> GetVertexList() { return vertexList; }
+	private List<GameObject> moonList;
 
 	void Start()
     {
@@ -35,12 +35,8 @@ public class Planet : MonoBehaviour
 		mesh = planetMesh.GetComponent<MeshFilter>().mesh;
 		vertexVisualizer = GetComponentInChildren<VertexVisualizer>();
 		vertexList = new List<Vector3>();
-		freshVertices = new List<Vector3>();
 		foreach (Vector3 ve in mesh.vertices)
-		{
 			vertexList.Add(ve);
-			freshVertices.Add(ve);
-		}
 
 		Vector3[] vertexArray = vertexList.ToArray();
 		Color32[] colors = new Color32[vertexArray.Length];
@@ -53,60 +49,38 @@ public class Planet : MonoBehaviour
 
 	public int GetScanned(Vector3 position, float range, Color32 color)
 	{
-		int numHitVerts = 0;
-		List<Vector3> hitVerts = new List<Vector3>();
+		// Store original colors
+		Color32[] colors = new Color32[vertexList.Count];
+		for (int i = 0; i < colors.Length; i++)
+			colors[i] = mesh.colors[i];
+
+		int hits = 0;
 		foreach(Vector3 ve in vertexList)
 		{
 			Vector3 vertex = transform.TransformPoint(ve);
 			if (Vector3.Distance(position, vertex) <= (range * vertexRangeScale))
 			{
-				if (freshVertices.Contains(ve))
-					hitVerts.Add(ve);
-			}
-		}
-
-		int numHits = hitVerts.Count;
-		if (numHits > 0)
-		{
-			// Store original colors
-			Color32[] colors = new Color32[vertexList.Count];
-			for (int i = 0; i < colors.Length; i++)
-				colors[i] = mesh.colors[i];
-
-			for (int j = 0; j < numHits; j++)
-			{
-				Vector3 hitVertex = hitVerts[j];
-				if (vertexList.Contains(hitVertex) && freshVertices.Contains(hitVertex))
+				Vector3 hitVertex = ve;
+				if (vertexList.Contains(hitVertex) && (vertexVisualizer != null))
 				{
-					if (vertexVisualizer != null)
+					List<Vector3> visList = new List<Vector3>();
+					visList = vertexVisualizer.GetVertexList();
+					if (visList.Contains(hitVertex))
 					{
-						List<Vector3> visList = new List<Vector3>();
-						visList = vertexVisualizer.GetVertexList();
-						if (visList.Contains(hitVertex))
-						{
-							vertexVisualizer.DisableLine(hitVertex);
-							int maxScore = vertexVisualizer.GetNumVerticies();
-							Vector3 vertexWorldPosition = transform.TransformPoint(hitVertex);
-							if (scoreHud != null)
-								scoreHud.PopupScore(vertexWorldPosition, 1, maxScore);
-							int vertexIndex = vertexList.IndexOf(hitVertex);
-							if (colors.Length > vertexIndex)
-								colors[vertexIndex] = color;
-							numHitVerts++;
-						}
+						int vertexIndex = vertexList.IndexOf(hitVertex);
+						if (colors.Length > vertexIndex)
+							colors[vertexIndex] = color;
 					}
-
-					freshVertices.Remove(hitVertex);
 				}
 			}
-			mesh.colors32 = colors;
 		}
 
+		mesh.colors32 = colors;
 		Vector3[] verts = vertexList.ToArray();
 		mesh.vertices = verts;
 		mesh.RecalculateBounds();
 
-		return numHitVerts;
+		return hits;
 	}
 
 	public void SetScale(float sizeMagnitude)

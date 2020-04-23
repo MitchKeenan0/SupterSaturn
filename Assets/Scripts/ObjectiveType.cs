@@ -14,13 +14,13 @@ public class ObjectiveType : MonoBehaviour
 	private NameLibrary nameLibrary;
 	private bool bSpawnOnLoad = true;
 	private bool bLoaded = false;
-	private List<GameObject> elementPrefabList;
+	private List<ObjectiveElement> objectiveElementList;
 
 	void Awake()
 	{
 		DontDestroyOnLoad(gameObject);
 		//
-		elementPrefabList = new List<GameObject>();
+		objectiveElementList = new List<ObjectiveElement>();
 		objectiveHud = FindObjectOfType<ObjectiveHUD>();
 		nameLibrary = FindObjectOfType<NameLibrary>();
 		//if (!bLoaded)
@@ -43,15 +43,15 @@ public class ObjectiveType : MonoBehaviour
 
 	public virtual void SetElements(List<ObjectiveElement> elementList)
 	{
-		elementPrefabList.Clear();
-		List<GameObject> elementGameObjectPrefabList = new List<GameObject>();
+		objectiveElementList.Clear();
+		List<ObjectiveElement> elementGameObjectPrefabList = new List<ObjectiveElement>();
 		foreach(ObjectiveElement oe in elementList)
 		{
 			if (oe.elementPrefab != null)
-				elementGameObjectPrefabList.Add(oe.elementPrefab);
+				elementGameObjectPrefabList.Add(oe);
 		}
 		if (elementGameObjectPrefabList.Count > 0)
-			elementPrefabList = elementGameObjectPrefabList;
+			objectiveElementList = elementGameObjectPrefabList;
 	}
 
 	public virtual void LoadObjective()
@@ -72,11 +72,12 @@ public class ObjectiveType : MonoBehaviour
 
 	public virtual void SpawnPrincipleObjects()
 	{
-		int numObjects = elementPrefabList.Count;
+		int numObjects = objectiveElementList.Count;
 		for(int i = 0; i < numObjects; i++)
 		{
-			GameObject ep = Instantiate(elementPrefabList[i]);
-			ep.transform.SetParent(transform);
+			ObjectiveElement oe = Instantiate(objectiveElementList[i]);
+			//oe.transform.SetParent(transform);
+			oe.Init();
 		}
 	}
 

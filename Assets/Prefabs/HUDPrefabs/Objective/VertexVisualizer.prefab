@@ -43,7 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3651d61aa7f3444a3fc1ce5e600de2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  linePrefab: {fileID: 8451888326293782256, guid: 78cd46bc55791ab449d1002269a28c59,
+  scanColliderPrefab: {fileID: 1855211054250735132, guid: 78cd46bc55791ab449d1002269a28c59,
     type: 3}
   vertexAccountPercentage: 0.3
   lineExtentScale: 1.2

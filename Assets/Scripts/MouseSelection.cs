@@ -117,13 +117,13 @@ public class MouseSelection : MonoBehaviour
 				return;
 
 			//We finished our selection box when the key is released
-			if (Input.GetMouseButtonUp(0))
-			{
-				isSelecting = false;
-				List<Spacecraft> sps = GetSelectedSpacecraft();
-				selectionSquad.SetSquad(sps);
-				skillPanel.InitAbilities(sps);
-			}
+			//if (Input.GetMouseButtonUp(0))
+			//{
+			//	isSelecting = false;
+			//	List<Spacecraft> sps = GetSelectedSpacecraft();
+			//	selectionSquad.SetSquad(sps);
+			//	skillPanel.InitAbilities(sps);
+			//}
 
 			if (selectionBox != null)
 				selectionBox.gameObject.SetActive(isSelecting);

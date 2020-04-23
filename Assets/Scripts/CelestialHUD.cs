@@ -54,7 +54,10 @@ public class CelestialHUD : MonoBehaviour
 					}
 					Vector3 celestialScreenPosition = cameraMain.WorldToScreenPoint(celestialBodyPosition);
 					if (celestialScreenPosition.z > 0)
+					{
+						celestialScreenPosition.z = 0f;
 						rt.transform.position = celestialScreenPosition;
+					}
 				}
 			}
 		}

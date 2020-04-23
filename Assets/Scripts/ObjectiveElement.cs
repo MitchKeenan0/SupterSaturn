@@ -6,17 +6,19 @@ public class ObjectiveElement : MonoBehaviour
 {
 	public GameObject elementPrefab;
 
-	private GameObject element;
+	public GameObject GetElement() { return elementObject; }
+	private GameObject elementObject;
 
     void Start()
     {
-        
+		
     }
 
 	public virtual void Init()
 	{
-		GameObject spawnElement = Instantiate(elementPrefab, transform);
-		element = spawnElement;
+		GameObject spawnElement = Instantiate(elementPrefab);
+		elementObject = spawnElement;
+		elementObject.SetActive(false);
 	}
 
 	public virtual void UpdateElement()

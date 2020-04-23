@@ -25,6 +25,7 @@ public class InputController : MonoBehaviour
 	private bool bNavigationMode = false;
 	private bool bFreeCameraMode = false;
 	private bool bStopped = false;
+	private bool bCameraScope = false;
 	private int cameraMode = 0;
 	private int numCameraModes = 0;
 	private List<float> distanceModes;
@@ -58,7 +59,7 @@ public class InputController : MonoBehaviour
 
 	public void Begin()
 	{
-		AllStop(false);
+		//AllStop(false);
 		CameraMode();
 		ActivateButton(stopButton, false, true);
 	}
@@ -161,7 +162,14 @@ public class InputController : MonoBehaviour
 		if (value == false)
 			bTurningOff = true;
 		if (bTurningOff)
+		{
 			value = false;
+			SpacecraftController sc = spacecraft.GetComponentInChildren<SpacecraftController>();
+			bool controllerActive = sc.IsActive();
+			sc.CancelNavCommand();
+			spacecraft.GetComponent<Autopilot>().FireEngineBurn(99f, false);
+			orbitController.SetUpdating(true);
+		}
 		
 		bNavigationMode = value;
 		if (spacecraft == null)
@@ -189,6 +197,7 @@ public class InputController : MonoBehaviour
 
 		if (numCameraModes > 0)
 		{
+			spacecraft = game.GetSpacecraftList()[0];
 			cameraTargetFinder.SetActive(true);
 			float dist = distanceModes[cameraMode];
 			bool bFar = (cameraMode == 0) ? false : true;
@@ -202,9 +211,10 @@ public class InputController : MonoBehaviour
 		}
 	}
 
-	public void CameraPlanet()
+	public void CameraScope()
 	{
-
+		bCameraScope = !bCameraScope;
+		touchOrbit.SetScoped(bCameraScope);
 	}
 
 	public void EnableCameraControl(bool value)
@@ -219,5 +229,10 @@ public class InputController : MonoBehaviour
 	public void SetCameraTarget(Transform target)
 	{
 		cameraTargetFinder.SetTarget(target);
+	}
+
+	public void SetNavigationInput(bool value)
+	{
+		spacecraft.GetComponentInChildren<SpacecraftController>().SetInputting(value);
 	}
 }

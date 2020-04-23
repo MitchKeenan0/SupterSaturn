@@ -48,11 +48,11 @@ public class ConstantSizer : MonoBehaviour
 		}
 		else if (line != null)
 		{
-			float firstPointDistance = Vector3.Distance(line.GetPosition(0), cameraPosition);
-			float secondPointDistance = Vector3.Distance(line.GetPosition(1), cameraPosition);
+			float firstPointDistance = Vector3.Distance(transform.position + line.GetPosition(0), cameraPosition);
+			float secondPointDistance = Vector3.Distance(transform.position + line.GetPosition(1), cameraPosition);
 			if (firstPointDistance <= secondPointDistance)
 				distToCamera = firstPointDistance;
-			else if (secondPointDistance < firstPointDistance)
+			else
 				distToCamera = secondPointDistance;
 
 			line.widthMultiplier = naturalWidth * distToCamera * scaleFactor;

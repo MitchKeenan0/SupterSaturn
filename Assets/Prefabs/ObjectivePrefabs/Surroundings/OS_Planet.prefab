@@ -50,8 +50,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18332868e9bf28a44a9daa2dcb93d151, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: f5e17f7869f69ab4aa8ca7cf178ff4a7, type: 3}
-  iconScale: 100
+  icon: {fileID: 21300000, guid: a475d8eaa71ce864bbf3620b37af76d0, type: 3}
+  iconScale: 150
   iconColor: {r: 1, g: 1, b: 1, a: 1}
   bSecondary: 0
   bSalient: 0

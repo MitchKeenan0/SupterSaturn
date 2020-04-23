@@ -7,6 +7,7 @@ public class GravitySystem : MonoBehaviour
 	public float updateInterval = 0.1f;
 
 	private List<Gravity> gravityList;
+	private IEnumerator loadCoroutine;
 	private IEnumerator surroundingCheckCoroutine;
 	private List<List<Rigidbody>> rbMasterList;
 
@@ -16,9 +17,17 @@ public class GravitySystem : MonoBehaviour
 	{
 		gravityList = new List<Gravity>();
 		rbMasterList = new List<List<Rigidbody>>();
+		loadCoroutine = LoadWait(0.3f);
+		StartCoroutine(loadCoroutine);
 	}
 
-	public void InitGravitySystem()
+	private IEnumerator LoadWait(float waitTime)
+	{
+		yield return new WaitForSeconds(waitTime);
+		InitGravitySystem();
+	}
+
+	void InitGravitySystem()
 	{
 		if (gravityList == null)
 			gravityList = new List<Gravity>();
@@ -59,17 +68,17 @@ public class GravitySystem : MonoBehaviour
 		if ((gravityIndex < gravityList.Count) && (gravityList[gravityIndex] != null))
 		{
 			gravity = gravityList[gravityIndex];
-			Collider[] nears = Physics.OverlapSphere(gravity.bodyTransform.position, gravity.radius);
-			int numNears = nears.Length;
+			Rigidbody[] nearRbs = FindObjectsOfType<Rigidbody>();
+			int numNears = nearRbs.Length;
 			for (int i = 0; i < numNears; i++)
 			{
-				if (nears[i] != null)
+				if (nearRbs[i] != null)
 				{
-					Rigidbody r = nears[i].gameObject.GetComponent<Rigidbody>();
-					if (r != null)
+					Rigidbody r = nearRbs[i];
+					if ((Vector3.Distance(gravity.bodyTransform.position, r.position) < gravity.radius)
+						&& (!rbList.Contains(r)))
 					{
-						if (!rbList.Contains(r))
-							rbList.Add(r);
+						rbList.Add(r);
 					}
 				}
 			}
@@ -92,9 +101,9 @@ public class GravitySystem : MonoBehaviour
 					}
 				}
 			}
-
-			gravity.SetRbList(rbList);
 		}
+
+		gravity.SetRbList(rbList);
 	}
 
 	List<Rigidbody> CreateRbList()

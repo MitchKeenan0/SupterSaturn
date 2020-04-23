@@ -130,7 +130,8 @@ public class CraftIconHUD : MonoBehaviour
 					if (sp.GetHUDIcon() != null)
 					{
 						Image img = sp.GetHUDIcon().GetComponent<Image>();
-						if (img != null)
+						float distToSpacecraft = Vector3.Distance(cameraMain.transform.position, sp.transform.position);
+						if ((img != null) && (distToSpacecraft < 999f))
 						{
 							img.enabled = true;
 							if (!img.gameObject.activeInHierarchy)

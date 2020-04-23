@@ -14,7 +14,7 @@ public class SkillPanel : MonoBehaviour
 	private List<Ability> myAbilityList;
 	private List<Spacecraft> spacecraftList;
 
-    void Start()
+    void Awake()
     {
 		myAbilityList = new List<Ability>();
 		spacecraftList = new List<Spacecraft>();
@@ -43,6 +43,8 @@ public class SkillPanel : MonoBehaviour
 			int numAbilities = spAbilities.Length;
 			if (spAbilities.Length > 0)
 			{
+				if (myAbilityList == null)
+					myAbilityList = new List<Ability>();
 				if (myAbilityList.Count > 0)
 				{
 					for(int i = 0; i < numAbilities; i++)

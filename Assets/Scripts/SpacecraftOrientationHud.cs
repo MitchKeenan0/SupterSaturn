@@ -25,6 +25,7 @@ public class SpacecraftOrientationHud : MonoBehaviour
 		cameraMain = FindObjectOfType<Camera>();
 		crossCG = crossMarker.GetComponent<CanvasGroup>();
 		crossCG.alpha = 0f;
+		bowMarker.gameObject.SetActive(false);
 		loadCoroutine = LoadDelay(loadDelay);
 		StartCoroutine(loadCoroutine);
 	}
@@ -39,7 +40,7 @@ public class SpacecraftOrientationHud : MonoBehaviour
     {
 		if (bUpdating)
 		{
-			UpdateBowHorizon();
+			//UpdateBowHorizon();
 			CheckHorizonHit();
 		}
 		else

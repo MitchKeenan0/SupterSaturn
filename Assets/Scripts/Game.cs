@@ -137,6 +137,7 @@ public class Game : MonoBehaviour
 			spacecraftList[0] = sp;
 		else
 			spacecraftList.Add(sp);
+		sp.HotStart();
 	}
 
 	public void SetSavedHealth(int value)

@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class VertexVisualizer : MonoBehaviour
 {
-	public LineRenderer linePrefab;
+	public ScanCollider scanColliderPrefab;
 	public float vertexAccountPercentage = 0.3f;
 	public float lineExtentScale = 2f;
 
 	private ScoreHUD scoreHud;
 	private List<Vector3> vertexList;
-	private List<LineRenderer> lineList;
+	private List<ScanCollider> scanColliderList;
 
 	private IEnumerator loadCoroutine;
 
@@ -34,7 +34,7 @@ public class VertexVisualizer : MonoBehaviour
 
 	void InitLines()
 	{
-		lineList = new List<LineRenderer>();
+		scanColliderList = new List<ScanCollider>();
 		vertexList = new List<Vector3>();
 
 		Planet pl = transform.GetComponentInParent<Planet>();
@@ -60,30 +60,35 @@ public class VertexVisualizer : MonoBehaviour
 			LineRenderer line = SpawnLineRenderer();
 			Vector3 vertexPosition = vertexList[i];
 			Vector3 vertexNormal = vertexPosition * lineExtentScale;
+			line.transform.position = transform.position + vertexPosition;
 			line.SetPosition(0, vertexPosition);
 			line.SetPosition(1, vertexNormal);
+			SphereCollider sc = line.gameObject.GetComponent<SphereCollider>();
+			sc.center = vertexPosition;
 		}
 	}
 
 	LineRenderer SpawnLineRenderer()
 	{
-		LineRenderer line = Instantiate(linePrefab, transform);
+		ScanCollider sc = Instantiate(scanColliderPrefab, transform);
+		LineRenderer line = sc.GetComponent<LineRenderer>();
 		line.useWorldSpace = false;
-		lineList.Add(line);
+		scanColliderList.Add(sc);
 		return line;
 	}
 
 	public void DisableLine(Vector3 vertexPosition)
 	{
+		Vector3 local = transform.TransformPoint(vertexPosition);
 		if (vertexList.Contains(vertexPosition))
 		{
-			if (lineList == null)
-				lineList = new List<LineRenderer>();
+			if (scanColliderList == null)
+				scanColliderList = new List<ScanCollider>();
 			int lineIndex = vertexList.IndexOf(vertexPosition);
-			if (lineList.Count > lineIndex)
+			if (scanColliderList.Count > lineIndex)
 			{
-				lineList[lineIndex].enabled = false;
-				lineList[lineIndex].gameObject.SetActive(false);
+				scanColliderList[lineIndex].enabled = false;
+				scanColliderList[lineIndex].gameObject.SetActive(false);
 			}
 		}
 	}

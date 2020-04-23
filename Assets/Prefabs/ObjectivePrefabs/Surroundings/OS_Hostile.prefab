@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 9ad515a6747591845bf98b518c5c5abf, type: 3}
-  iconScale: 50
+  iconScale: 60
   iconColor: {r: 1, g: 0.21226418, b: 0.21226418, a: 1}
   bSecondary: 0
   bSalient: 1

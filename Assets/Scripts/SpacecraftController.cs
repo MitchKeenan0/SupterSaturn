@@ -28,11 +28,14 @@ public class SpacecraftController : MonoBehaviour
 	private bool bStartTouchDelay = false;
 	private bool bEndTouchDelay = false;
 	public bool bUpdating = false;
+	private bool bInputting = false;
+	private bool bUpdateNavigationTarget = false;
 	private int teamID = -1;
 	private float burnDuration = 0f;
 
 	public Autopilot GetAutopilot() { return autopilot; }
 	public Spacecraft GetSpacecraft() { return spacecraft; }
+	public bool IsActive() { return bActive; }
 	private IEnumerator loadCoroutine;
 
 	void Start()
@@ -81,8 +84,14 @@ public class SpacecraftController : MonoBehaviour
 	{
 		if (bUpdating)
 		{
-			UpdateSpacecraftController();
 			UpdateThrottleControl();
+			if (bInputting)
+				UpdateSpacecraftController();
+		}
+		if (bUpdateNavigationTarget)
+		{
+			Vector3 targetScreenPosition = cameraMain.WorldToScreenPoint(directionVector);
+			navigationHud.SetPosition(targetScreenPosition);
 		}
 	}
 
@@ -90,9 +99,9 @@ public class SpacecraftController : MonoBehaviour
     {
 		if (bActive && (teamID == 0))
 		{
-			if (touchLine.IsTouching() && !bLining)
+			if (!bStartTouchDelay && touchLine.IsTouching() && !bLining)
 				StartTouch();
-			else if (!touchLine.IsTouching() && bLining)
+			else if (!bEndTouchDelay && !touchLine.IsTouching() && bLining)
 				EndTouch();
 
 			if (bLining)
@@ -110,12 +119,12 @@ public class SpacecraftController : MonoBehaviour
 					Vector3 onscreenDirection = new Vector3(touchPosition.x, touchPosition.y, 0f) - centerScreen;
 
 					/// burn duration
-					burnDuration = 2.5f; //Mathf.Clamp(onscreenDirection.magnitude / 100f, 1f, 5f);
+					burnDuration = 5f; //Mathf.Clamp(onscreenDirection.magnitude / 100f, 1f, 5f);
 					orbitController.SetBurnDuration(burnDuration);
 					navigationHud.SetBurnDuration(burnDuration);
 
 					Vector3 navigationTarget = (Quaternion.Euler(cameraMain.transform.eulerAngles) * (onscreenDirection * 0.9f));
-					navigationTarget += cameraMain.transform.forward * 300f;
+					navigationTarget += cameraMain.transform.forward * 900f;
 					Vector3 navigationVector = navigationTarget + spacecraft.transform.position;
 					directionVector = navigationVector;
 					orbitController.SetDirection(directionVector);
@@ -144,27 +153,37 @@ public class SpacecraftController : MonoBehaviour
 		}
 	} 
 
-	public void StartTouch()
+	void StartTouch()
 	{
-		///startTouchCoroutine = StartTouchDelay(0.2f);
-		StartCoroutine("StartTouchDelay");
+		Debug.Log("start touch");
+		bStartTouchDelay = true;
+		startTouchCoroutine = StartTouchDelay(0.5f);
+		StartCoroutine(startTouchCoroutine);
 	}
 
 	private IEnumerator startTouchCoroutine;
-	private IEnumerator StartTouchDelay()
+	private IEnumerator StartTouchDelay(float waitTime)
 	{
-		bStartTouchDelay = true;
-		yield return new WaitForSeconds(0.2f);
-		orbitController.SetUpdating(false);
-		directionVector = Vector3.zero;
-		bLining = true;
-		navigationHud.SetActive(true);
-		bStartTouchDelay = false;
+		yield return new WaitForSeconds(waitTime);
+		if (bStartTouchDelay)
+		{
+			bUpdateNavigationTarget = false;
+			directionVector = Vector3.zero;
+			bLining = true;
+			navigationHud.SetActive(true);
+			bStartTouchDelay = false;
+			bInputting = true;
+			Debug.Log("bLining = true");
+		}
+		else
+		{
+			Debug.Log("cancelled");
+		}
 	}
 
-	public void EndTouch()
+	void EndTouch()
 	{
-		///endTouchCoroutine = EndTouchDelay();
+		bEndTouchDelay = true;
 		StartCoroutine("EndTouchDelay");
 	}
 
@@ -172,19 +191,17 @@ public class SpacecraftController : MonoBehaviour
 	private IEnumerator EndTouchDelay()
 	{
 		bLining = false;
-		bEndTouchDelay = true;
 		yield return new WaitForSeconds(0.2f);
 		autopilot.ManeuverRotationTo(directionVector - autopilot.gameObject.GetComponent<Rigidbody>().velocity);
-		autopilot.FireEngineBurn(burnDuration, false);
-		inputController.NavigationMode(false);
-		navigationHud.SetActive(false);
-		orbitController.SetUpdating(true);
+		bInputting = false;
 		bEndTouchDelay = false;
+		bUpdateNavigationTarget = true;
 	}
 
 	public void SetActive(bool value)
 	{
 		bActive = value;
+		bInputting = value;
 		if (!value)
 			CancelNavCommand();
 	}
@@ -194,14 +211,20 @@ public class SpacecraftController : MonoBehaviour
 		if (bStartTouchDelay)
 		{
 			StopCoroutine("StartTouchDelay");
-			//bStartTouchDelay = false;
+			bStartTouchDelay = false;
 		}
 		if (bEndTouchDelay)
 		{
 			StopCoroutine("EndTouchDelay");
-			//bEndTouchDelay = false;
+			bEndTouchDelay = false;
 		}
+		bLining = false;
 		navigationHud.SetActive(false);
-		//orbitController.ClearTrajectory();
+		Debug.Log("canceled nav command");
+	}
+
+	public void SetInputting(bool value)
+	{
+		bInputting = value;
 	}
 }

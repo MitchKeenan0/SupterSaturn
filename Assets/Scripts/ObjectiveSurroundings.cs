@@ -91,7 +91,7 @@ public class ObjectiveSurroundings : MonoBehaviour
 
 	void InitSalients(int rating)
 	{
-		int numSalients = Random.Range(0, salientObjectCountFactor);
+		int numSalients = Random.Range(0, salientObjectCountFactor + 1);
 		for(int i = 0; i < numSalients; i++)
 		{
 			int salients = salientObjects.Length;

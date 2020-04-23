@@ -11,12 +11,20 @@ public class ScorePopup : MonoBehaviour
 	public Vector3 position = Vector3.zero;
 
 	private IEnumerator lifetimeCoroutine;
+	private CanvasGroup canvasGroup;
+
+	void Awake()
+	{
+		canvasGroup = GetComponent<CanvasGroup>();
+		canvasGroup.alpha = 0f;
+	}
 
     public void SetActive(bool value, int score, Vector3 pos, Color col)
 	{
 		valueText.text = ("+" + score.ToString());
 		valueText.color = col;
 		valueText.enabled = value;
+		canvasGroup.alpha = value ? 1f : 0f;
 		bActive = value;
 		if (bActive)
 		{

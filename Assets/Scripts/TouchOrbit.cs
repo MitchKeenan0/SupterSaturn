@@ -50,7 +50,7 @@ public class TouchOrbit : MonoBehaviour
 		y = angles.x;
 		distance = distanceMax;
 		this.enabled = bActivated;
-		moveInput = new Vector3(-150f, -150f, 0f);
+		//moveInput = new Vector3(-150f, -150f, 0f);
 	}
 
 	void Update()
@@ -144,6 +144,12 @@ public class TouchOrbit : MonoBehaviour
 	{
 		anchorTransform = value;
 		distance = distanceMax - distanceMin;
+	}
+
+	public void SetScoped(bool value)
+	{
+		float focal = value ? 24.78f : 8.26f;
+		cameraMain.focalLength = focal;
 	}
 
 	public void SetTarget(Transform target)

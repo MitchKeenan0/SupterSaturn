@@ -150,7 +150,7 @@ Transform:
   m_GameObject: {fileID: 4766638517062956649}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6143951963767822069}
   m_RootOrder: 0
@@ -251,6 +251,8 @@ GameObject:
   - component: {fileID: 6469468458821320962}
   - component: {fileID: 1467845370899959113}
   - component: {fileID: 2541766758128869648}
+  - component: {fileID: 7924593223162341276}
+  - component: {fileID: 5154599227304929318}
   m_Layer: 0
   m_Name: Sun
   m_TagString: Untagged
@@ -287,7 +289,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 5.1
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &6469468458821320962
 Rigidbody:
@@ -330,6 +332,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   celestialBodyName: Sun
+--- !u!114 &7924593223162341276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6143951963767822065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 733c2f3cd36d3b34695e030c1fd32a04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bodyTransform: {fileID: 5273469545884070276}
+  radius: 9000
+  strength: 9000
+--- !u!114 &5154599227304929318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6143951963767822065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 857cfaecf5c662e468feb3e75eb8f702, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  planetMesh: {fileID: 4766638517062956649}
+  atmosphereMesh: {fileID: 0}
+  maxSize: 3
+  minSize: 0.3
+  bScannable: 0
+  colliderScale: 0.5
+  vertexRangeScale: 1
 --- !u!1001 &1945242098910589083
 PrefabInstance:
   m_ObjectHideFlags: 0

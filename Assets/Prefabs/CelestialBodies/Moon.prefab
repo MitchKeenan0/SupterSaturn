@@ -145,6 +145,7 @@ GameObject:
   - component: {fileID: 2385305642852186100}
   - component: {fileID: 7925452251586000607}
   - component: {fileID: 415070425766339163}
+  - component: {fileID: 7807784826040742018}
   m_Layer: 0
   m_Name: Moon
   m_TagString: Untagged
@@ -230,6 +231,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 268d9b17815068446a95003e6ad34908, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7807784826040742018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6143951963767822065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 733c2f3cd36d3b34695e030c1fd32a04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bodyTransform: {fileID: 5273469545884070276}
+  radius: 9000
+  strength: 50
 --- !u!1001 &2086175424082342736
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -320,7 +336,7 @@ PrefabInstance:
     - target: {fileID: 5927431976903153280, guid: 2285e5fd28f329f419e96c08408ed8d5,
         type: 3}
       propertyPath: lineExtentScale
-      value: 5
+      value: 1.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2285e5fd28f329f419e96c08408ed8d5, type: 3}

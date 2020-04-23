@@ -46,7 +46,7 @@ public class TeamFleetHUD : MonoBehaviour
 	{
 		yield return new WaitForSeconds(waitTime);
 		InitTeamFleet();
-		updateCoroutine = UpdateTimer(0.1f);
+		updateCoroutine = UpdateTimer(0.3f);
 		StartCoroutine(updateCoroutine);
 	}
 
@@ -75,7 +75,7 @@ public class TeamFleetHUD : MonoBehaviour
 						tfd.SetClass(sp.spacecraftName);
 						tfd.SetName("");
 						float speed = 60 * sp.GetComponent<Rigidbody>().velocity.magnitude;
-						string speedText = speed.ToString("F1");
+						string speedText = speed.ToString("F0");
 						tfd.SetSpeed(speedText);
 					}
 				}

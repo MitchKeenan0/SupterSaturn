@@ -48,13 +48,16 @@ public class ObjectiveTrigger : MonoBehaviour
 
 	private void OnCollisionEnter(Collision collision)
 	{
-		if (collision.gameObject.GetComponentInChildren<Planet>())
+		if (Time.time > 5f)
 		{
-			bDestroyed = true;
-			if (outcome != null)
+			if (collision.gameObject.GetComponentInChildren<Planet>())
 			{
-				outcome.AddLost(objectiveRating * 10);
-				outcome.BattleOver(false);
+				bDestroyed = true;
+				if (outcome != null)
+				{
+					outcome.AddLost(objectiveRating * 10);
+					outcome.BattleOver(false);
+				}
 			}
 		}
 	}

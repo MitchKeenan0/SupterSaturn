@@ -44,6 +44,7 @@ public class ObjectManager : MonoBehaviour
 
 	void InitSpacecraftList()
 	{
+		spacecraftList.Clear();
 		Spacecraft[] allSpacecraft = FindObjectsOfType<Spacecraft>();
 		foreach (Spacecraft sp in allSpacecraft)
 			spacecraftList.Add(sp);
@@ -78,10 +79,13 @@ public class ObjectManager : MonoBehaviour
 			}
 		}
 
-		if (numTeam == 0)
-			battleOutcome.BattleOver(false);
-		else if (numEnemy == 0)
-			battleOutcome.BattleOver(true);
+		if (Time.timeSinceLevelLoad > 5f)
+		{
+			if (numTeam == 0)
+				battleOutcome.BattleOver(false);
+			else if (numEnemy == 0)
+				battleOutcome.BattleOver(true);
+		}
 	}
 
 	public void SpacecraftDestroyed(Spacecraft value)

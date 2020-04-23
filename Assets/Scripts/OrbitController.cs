@@ -15,6 +15,7 @@ public class OrbitController : MonoBehaviour
 	private Vector3 inputVector = Vector3.zero;
 	
 	private NavigationHud navigationHud;
+	private Camera cameraMain;
 	private List<LineRenderer> lineList;
 	private List<Vector3> trajectoryList;
 	private float burnDuration = 0f;
@@ -32,6 +33,7 @@ public class OrbitController : MonoBehaviour
 		navigationHud = FindObjectOfType<NavigationHud>();
 		planet = FindObjectOfType<Planet>();
 		gravityTelemetry = FindObjectOfType<GravityTelemetryHUD>();
+		cameraMain = Camera.main;
 		trajectoryClampedLength = maxLineCount;
 		for (int i = 0; i < maxLineCount; i++)
 			SpawnTrajectoryLine();
@@ -74,9 +76,10 @@ public class OrbitController : MonoBehaviour
 	private IEnumerator durationUpdateCoroutine;
 	private IEnumerator DurationUpdate(float duration)
 	{
+		bool previous = bUpdating;
 		bUpdating = true;
 		yield return new WaitForSeconds(duration);
-		bUpdating = false;
+		bUpdating = previous;
 	}
 
 	void Update()
@@ -99,7 +102,7 @@ public class OrbitController : MonoBehaviour
 		bool bSimulateEnginePower = true;
 		if (duration <= 0f)
 		{
-			duration = Mathf.Clamp(rb.velocity.magnitude * 0.6f, 0.6f, 30f);
+			duration = Mathf.Clamp(rb.velocity.magnitude, 0.6f, 30f);
 			bSimulateEnginePower = false;
 		}
 
@@ -109,14 +112,15 @@ public class OrbitController : MonoBehaviour
 		Vector3 deltaVelocity = rb.velocity;
 		Vector3 trajecto = Vector3.zero;
 		Vector3 velocity = Vector3.zero;
-		List<Gravity> gravityList = gravityTelemetry.GetGravitiesAffecting(rb);
+		List<Gravity> gravityList = new List<Gravity>();
+		gravityList = gravityTelemetry.GetGravitiesAffecting(rb);
 		trajectoryList.Add(currentPosition);
 
 		while (simulationTime < duration)
 		{
 			trajecto = deltaVelocity;
 			if (bSimulateEnginePower)
-				trajecto += spacecraft.transform.forward * (1f / deltaTime);
+				trajecto += spacecraft.transform.forward * (spacecraft.mainEnginePower * deltaTime);
 
 			int numGravs = gravityList.Count;
 			for (int i = 0; i < numGravs; i++)
@@ -158,7 +162,10 @@ public class OrbitController : MonoBehaviour
 
 					float normal = Mathf.InverseLerp(0f, trajectoryCount, i);
 					float lineAlpha = Mathf.Lerp(0.9f, 0.6f, Mathf.Sqrt(normal));
-					Color lineColor = new Color(0f, lineAlpha, 0f);
+					Color lineColor = new Color(lineAlpha, lineAlpha, lineAlpha);
+					float velocity = rb.velocity.magnitude * 0.01f;
+					lineColor.g = Mathf.Clamp(lineColor.g - velocity, 0f, 1f);
+					lineColor.b = Mathf.Clamp(lineColor.b - velocity, 0f, 1f);
 					Color start = lineColor * 0.8f;
 					start.a = 1f;
 					line.startColor = start;
@@ -190,6 +197,8 @@ public class OrbitController : MonoBehaviour
 			foreach(LineRenderer lr in lineList)
 			{
 				lr.transform.localPosition = Vector3.zero;
+				lr.enabled = false;
+				//lr.gameObject.SetActive(false);
 			}
 		}
 

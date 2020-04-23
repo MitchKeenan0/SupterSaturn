@@ -68,8 +68,8 @@ MonoBehaviour:
   yMinLimit: -85
   yMaxLimit: 85
   distanceMin: 10
-  distanceMax: 750
-  moveSpeed: 100
+  distanceMax: 100
+  moveSpeed: 10
   moveAcceleration: 20
   turnAcceleration: 100
 --- !u!114 &8112959024247920879
@@ -127,7 +127,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
+  m_BackGroundColor: {r: 0.13725491, g: 0.13725491, b: 0, a: 1}
   m_projectionMatrixMode: 2
   m_GateFitMode: 2
   m_FOVAxisMode: 0

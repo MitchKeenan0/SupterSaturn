@@ -8,12 +8,14 @@ public class NavigationHud : MonoBehaviour
 	public GameObject burnTargetPanel;
 	public Text burnDurationText;
 
+	private InputController inputController;
 	private float burnDuration = 0f;
 	private bool bActive = false;
 
     void Start()
     {
 		burnTargetPanel.SetActive(false);
+		inputController = FindObjectOfType<InputController>();
     }
 
 	public void SetActive(bool value)
@@ -34,5 +36,15 @@ public class NavigationHud : MonoBehaviour
 			burnDuration = value;
 			burnDurationText.text = burnDuration.ToString("F1");
 		}
+	}
+
+	public void NavigationButtonPressed()
+	{
+		inputController.SetNavigationInput(true);
+	}
+
+	public void NavigationButtonReleased()
+	{
+		inputController.SetNavigationInput(false);
 	}
 }

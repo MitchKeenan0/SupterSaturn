@@ -26,7 +26,7 @@ public class Selectable : MonoBehaviour
 			_isSelected = value;
 
 			Spacecraft sp = GetComponent<Spacecraft>();
-			if (sp != null)
+			if (sp != null && (!GetComponent<NPCSpacecraft>()))
 			{
 				sp.SelectionHighlight(isSelected);
 				if (_isSelected)

@@ -50,12 +50,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18332868e9bf28a44a9daa2dcb93d151, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: a52225ffdda26ed4ca9220cc7e0f80f6, type: 3}
-  iconScale: 30
-  iconColor: {r: 0.82745105, g: 0.82745105, b: 0.82745105, a: 1}
+  icon: {fileID: 21300000, guid: 3c36ddc8ba940fb41b9fcd9b15a55f92, type: 3}
+  iconScale: 60
+  iconColor: {r: 0, g: 0.7696705, b: 1, a: 1}
   bSecondary: 1
   bSalient: 0
-  rarity: 1
+  rarity: 0.9
   objectiveElementPrefab: {fileID: 8008317614743619888, guid: f32b639b2c2ac1d4e85c76c6fc3b2b03,
     type: 3}
 --- !u!222 &205833114839518062

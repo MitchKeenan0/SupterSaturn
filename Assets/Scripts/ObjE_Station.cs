@@ -8,7 +8,7 @@ public class ObjE_Station : ObjectiveElement
 
 	void Start()
 	{
-
+		
 	}
 
 	public override void Init()

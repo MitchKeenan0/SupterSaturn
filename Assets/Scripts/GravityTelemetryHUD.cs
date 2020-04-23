@@ -32,12 +32,18 @@ public class GravityTelemetryHUD : MonoBehaviour
 			for(int i = 0; i < numGravities; i++)
 				UpdateTelemetry(i);
 		}
+		else
+		{
+			InitGravities();
+		}
 	}
 
 	private IEnumerator LoadWait(float waitTime)
 	{
 		yield return new WaitForSeconds(waitTime);
-		InitGravities();
+		bool bGotAlready = ((gravityList != null) && (gravityList.Count > 0));
+		if (!bGotAlready)
+			InitGravities();
 	}
 
 	void InitGravities()
@@ -45,8 +51,11 @@ public class GravityTelemetryHUD : MonoBehaviour
 		Gravity[] allGravities = FindObjectsOfType<Gravity>();
 		foreach (Gravity g in allGravities)
 		{
-			gravityList.Add(g);
-			CreateLineList();
+			if (!gravityList.Contains(g))
+			{
+				gravityList.Add(g);
+				CreateLineList();
+			}
 		}
 	}
 
@@ -121,15 +130,14 @@ public class GravityTelemetryHUD : MonoBehaviour
 	public List<Gravity> GetGravitiesAffecting(Rigidbody rb)
 	{
 		List<Gravity> gravities = new List<Gravity>();
-		if (gravityList.Count > 0)
+		if ((gravityList == null) || (gravityList.Count <= 0))
+			InitGravities();
+		foreach (Gravity grav in gravityList)
 		{
-			foreach(Gravity grav in gravityList)
+			if ((grav.GetRbList() != null) && (grav.GetRbList().Count > 0))
 			{
-				if ((grav.GetRbList() != null) && (grav.GetRbList().Count > 0))
-				{
-					if (grav.GetRbList().Contains(rb))
-						gravities.Add(grav);
-				}
+				if (grav.GetRbList().Contains(rb))
+					gravities.Add(grav);
 			}
 		}
 		return gravities;

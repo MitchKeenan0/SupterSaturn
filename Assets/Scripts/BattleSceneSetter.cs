@@ -53,7 +53,7 @@ public class BattleSceneSetter : MonoBehaviour
 			celestialHud.InitCelestialHud();
 		}
 
-		if (gravitySystem != null)
-			gravitySystem.InitGravitySystem();
+		//if (gravitySystem != null)
+		//	gravitySystem.InitGravitySystem();
 	}
 }

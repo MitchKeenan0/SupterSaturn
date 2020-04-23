@@ -51,10 +51,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 1f7d24c6570814c47a2bd47d44063605, type: 3}
-  iconScale: 50
+  iconScale: 60
   iconColor: {r: 1, g: 1, b: 1, a: 1}
-  bSecondary: 1
-  bSalient: 0
+  bSecondary: 0
+  bSalient: 1
   rarity: 0.9
   objectiveElementPrefab: {fileID: 8449927192792120974, guid: bf36022a947d1d348a8c345ff78d78a4,
     type: 3}

@@ -36,9 +36,7 @@ public class ScanRay : Scan
 					RayLine line = lineList[i];
 					if (line.IsEnabled())
 					{
-						if (timeElapsed >= (scanLifetime * 0.9f))
-							line.Finishing();
-						else if (line.LineFinished())
+						if (line.LineFinished())
 							GetSpreadVector(i);
 						line.UpdateRayLine();
 					}
@@ -47,6 +45,8 @@ public class ScanRay : Scan
 						GetScanner().Hit(line.GetScanHits());
 				}
 			}
+			if (timeElapsed >= scanLifetime)
+				RetractLines();
 		}
 	}
 
@@ -69,8 +69,8 @@ public class ScanRay : Scan
 		}
 		else 
 		{
-			if (bArrangingCone)
-				StopCoroutine(coneSpreadCoroutine);
+			StopAllCoroutines();
+			bArrangingCone = false;
 			RetractLines();
 		}
 	}
@@ -83,7 +83,7 @@ public class ScanRay : Scan
 
 	void ArrangeRayCone()
 	{
-		coneSpreadCoroutine = ConeSpread(0.05f);
+		coneSpreadCoroutine = ConeSpread(0.01f);
 		StartCoroutine(coneSpreadCoroutine);
 	}
 
@@ -91,7 +91,7 @@ public class ScanRay : Scan
 	{
 		bArrangingCone = true;
 		int i = 0;
-		while (i < rayLineCount)
+		while (bArrangingCone && (i < rayLineCount))
 		{
 			GetSpreadVector(i);
 			i++;
@@ -114,7 +114,7 @@ public class ScanRay : Scan
 		if ((lineList.Count > index) && (lineList[index] != null))
 		{
 			RayLine line = lineList[index];
-			line.SetLineFromTransform(transform, lineEnd, raySpeed);
+			line.SetLineFromTransform(transform, lineEnd, raySpeed * scanLifetime);
 			line.SetEnabled(true);
 		}
 
@@ -127,8 +127,6 @@ public class ScanRay : Scan
 		for(int i = 0; i < numLines; i++)
 		{
 			RayLine rayLine = lineList[i];
-			rayLine.SetRayLine(transform.position, transform.position);
-			rayLine.ResetRayLine();
 			rayLine.SetEnabled(false);
 		}
 	}

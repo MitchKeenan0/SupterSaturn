@@ -13,6 +13,7 @@ public class AbilityScanner : Ability
 	private Vector3 targetVector = Vector3.zero;
 	private bool bUpdating = false;
 	private bool bScannerHit = false;
+	private bool bWaiting = false;
 	private int hits = 0;
 
 	void Start()
@@ -28,6 +29,8 @@ public class AbilityScanner : Ability
 		bScannerHit = false;
 		bUpdating = true;
 		hits = 0;
+		if (Input.touchCount > 0)
+			bWaiting = true;
 		if (!contextHeader)
 			contextHeader = FindObjectOfType<ContextHeader>();
 		if (contextHeader != null)
@@ -38,14 +41,21 @@ public class AbilityScanner : Ability
 	{
 		if (bUpdating)
 		{
-			if (targetVector == Vector3.zero)
+			if (!bWaiting)
 			{
-				targetVector = abilityTargeting.SpatialTargeting(transform);
+				if (targetVector == Vector3.zero)
+				{
+					targetVector = abilityTargeting.SpatialTargeting(transform);
+				}
+				else
+				{
+					bUpdating = false;
+					LaunchScan();
+				}
 			}
-			else
+			else if (Input.touchCount == 0)
 			{
-				bUpdating = false;
-				LaunchScan();
+				bWaiting = false;
 			}
 		}
 	}
@@ -53,6 +63,7 @@ public class AbilityScanner : Ability
 	void LaunchScan()
 	{
 		base.StartAbility();
+		bWaiting = false;
 	}
 
 	public void Hit(int value)

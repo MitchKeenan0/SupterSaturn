@@ -45,3 +45,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementPrefab: {fileID: 6143951963767822065, guid: 201de21e95c46dc4592455929e971dff,
     type: 3}
+  sizeMinimum: 50
+  sizeMaximum: 150
+  distanceScale: 3

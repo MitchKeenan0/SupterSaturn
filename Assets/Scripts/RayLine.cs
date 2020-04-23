@@ -19,7 +19,7 @@ public class RayLine : MonoBehaviour
 	public bool IsEnabled() { return bEnabled; }
 	public bool RayHit() { return bHit; }
 	public bool LineFinished() { return bHit && bFinished; }
-	public float RayExtent() { return Vector3.Distance(lineStart, lineEnd); }
+	public float RayExtent() { return Vector3.Distance(lineEnd, transform.position); }
 	public Vector3 GetHitPosition() { return hitPosition; }
 	public int GetScanHits() { return scanVertsHit; }
 
@@ -39,20 +39,16 @@ public class RayLine : MonoBehaviour
 			{
 				RaycastHit hit = hits[i];
 				Transform mySpacecraftTransform = originTransform.GetComponent<ScanRay>().GetScanner().transform.parent.transform;
-				if (!hit.collider.isTrigger && (hit.transform != mySpacecraftTransform))
+				if (hit.transform != mySpacecraftTransform)
 				{
 					bHit = true;
 					hitPosition = hit.point;
-					Debug.Log("ray line hit " + hit.transform.name);
 
-					Planet planet = hit.transform.gameObject.GetComponent<Planet>();
-					if (planet == null)
-						planet = hit.transform.GetComponentInChildren<Planet>();
-					if (planet != null)
+					ScanCollider sc = hit.transform.GetComponent<ScanCollider>();
+					if (sc != null)
 					{
-						int hitVerts = planet.GetScanned(hit.point, 25f, Color.cyan);
-						if (hitVerts > 0)
-							scanVertsHit += hitVerts;
+						sc.Hit();
+						scanVertsHit++;
 					}
 				}
 			}
@@ -73,13 +69,17 @@ public class RayLine : MonoBehaviour
 		if (!bHit && (RayExtent() < rayVector.magnitude))
 		{
 			lineEnd = Vector3.MoveTowards(lineEnd, rayVector, Time.deltaTime * raySpeed);
-			lineStart = originTransform.position;
 		}
-		else
+		
+		if (RayExtent() > (Time.deltaTime * raySpeed) * 6f)
 		{
 			lineStart = Vector3.MoveTowards(lineStart, lineEnd, Time.deltaTime * raySpeed);
 			if (Vector3.Distance(lineStart, lineEnd) <= 1f)
 				bFinished = true;
+		}
+		else
+		{
+			lineStart = transform.position;
 		}
 		SetRayLine(lineStart, lineEnd);
 	}
@@ -90,6 +90,7 @@ public class RayLine : MonoBehaviour
 		bFinished = false;
 		scanVertsHit = 0;
 		lineStart = lineEnd = transform.position;
+		line.enabled = false;
 	}
 
 	public void SetRayLine(Vector3 start, Vector3 end)
@@ -103,18 +104,16 @@ public class RayLine : MonoBehaviour
 		{
 			line.SetPosition(1, end);
 			lineEnd = end;
+			line.enabled = true;
 		}
 		if (!bHit)
 			CheckRayHit();
 	}
 
-	public void Finishing()
-	{
-		bHit = true;
-	}
-
 	public void SetEnabled(bool value)
 	{
 		bEnabled = value;
+		if (!value)
+			ResetRayLine();
 	}
 }

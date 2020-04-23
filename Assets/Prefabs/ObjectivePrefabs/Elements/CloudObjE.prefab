@@ -45,3 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementPrefab: {fileID: 6619415201969779897, guid: 761ac2cc8e528a9418f74218ecddb10f,
     type: 3}
+  cloudChildren: 10
+  cloudSpread: 500
+  spawnRangeMinimum: 1000
+  spawnRangeMaximum: 2000

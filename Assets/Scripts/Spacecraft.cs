@@ -185,7 +185,7 @@ public class Spacecraft : MonoBehaviour
 	public void Brake()
 	{
 		float brakingScalar = Mathf.Clamp(Mathf.Sqrt(rb.velocity.magnitude), 1f, 100f);
-		Vector3 brakingVelocity = Vector3.MoveTowards(rb.velocity, Vector3.zero, Time.fixedDeltaTime * (mainEnginePower * 0.02f) * brakingScalar);
+		Vector3 brakingVelocity = Vector3.MoveTowards(rb.velocity, Vector3.zero, Time.fixedDeltaTime * (mainEnginePower * 0.1f) * brakingScalar);
 		rb.velocity = brakingVelocity;
 	}
 
@@ -251,7 +251,8 @@ public class Spacecraft : MonoBehaviour
 
 	public void SetBigGhostMode(bool value)
 	{
-		realBody.GetComponent<Renderer>().enabled = !value;
+		if (realBody != null)
+			realBody.GetComponent<Renderer>().enabled = !value;
 		bigGhostBody.GetComponent<Renderer>().enabled = value;
 		if (bigGhostBody.transform.childCount > 0)
 		{
@@ -366,5 +367,13 @@ public class Spacecraft : MonoBehaviour
 			battleOutcome.AddScore(randomScore);
 			battleOutcome.BattleOver(true);
 		}
+	}
+
+	public void HotStart()
+	{
+		if (!rb)
+			rb = GetComponent<Rigidbody>();
+		transform.position = new Vector3(-500f, 500f, -500f);
+		rb.velocity = (transform.forward * (mainEnginePower * mainEnginePower));
 	}
 }
