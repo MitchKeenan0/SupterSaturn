@@ -161,11 +161,11 @@ RectTransform:
   m_Father: {fileID: 6654412416305798592}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 100}
-  m_SizeDelta: {x: -30, y: -800}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -300}
+  m_SizeDelta: {x: 1100, y: 2000}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &5727653774763651237
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -396,10 +396,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   primarySystemObjects:
   - {fileID: 9144373088868220479, guid: 69925be8e0b27ea428fe0a7d36fca1bc, type: 3}
+  - {fileID: 9144373088868220479, guid: d8384832d5e53304d8067c56cfcad4dc, type: 3}
+  - {fileID: 9144373088868220479, guid: 5dcb28059913b934c84ada4cd06e0ea4, type: 3}
   - {fileID: 9144373088868220479, guid: aeed42b19a0c3db43a70ec1f382f1aa8, type: 3}
+  - {fileID: 9144373088868220479, guid: 42ec6a9d67813f9498baaa51777b7515, type: 3}
+  - {fileID: 9144373088868220479, guid: aacc6438dc46baa46b1a06c442cc0724, type: 3}
   moonObjects:
   - {fileID: 9144373088868220479, guid: ae9597f40e5d7304cb458323fa305beb, type: 3}
-  moonObjectCountFactor: 2
+  moonObjectCountFactor: 3
   secondarySystemObjects:
   - {fileID: 9144373088868220479, guid: b647e7df7985768408db7ccd99499044, type: 3}
   secondaryObjectCountFactor: 3
@@ -654,7 +658,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 500, y: 100}
+  m_SizeDelta: {x: 1000, y: 100}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &8119431995268902279
 CanvasRenderer:
@@ -697,7 +701,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: signal board
+  m_Text: Scanning Gigs
 --- !u!1 &8590799837818018076
 GameObject:
   m_ObjectHideFlags: 0

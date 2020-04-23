@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4766638517062956649
+--- !u!1 &2487342662974237812
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,12 +8,10 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5273469545884070276}
-  - component: {fileID: 6778420731978736680}
-  - component: {fileID: 5415455423628363378}
-  - component: {fileID: 8371953186669852029}
-  - component: {fileID: 1806651087923316135}
-  - component: {fileID: 1826234183034170674}
+  - component: {fileID: 7406564265720279327}
+  - component: {fileID: 4962090435490977110}
+  - component: {fileID: 6565891689667525313}
+  - component: {fileID: 7474554765121666416}
   m_Layer: 0
   m_Name: MoonMesh
   m_TagString: Untagged
@@ -21,36 +19,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5273469545884070276
+--- !u!4 &7406564265720279327
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4766638517062956649}
+  m_GameObject: {fileID: 2487342662974237812}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5670562465185359315}
-  m_Father: {fileID: 6143951963767822069}
+  m_Father: {fileID: 5273469545884070276}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &6778420731978736680
+--- !u!33 &4962090435490977110
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4766638517062956649}
+  m_GameObject: {fileID: 2487342662974237812}
   m_Mesh: {fileID: 289301614986012343, guid: 61118baadb0c8994db4ad266ebb742b0, type: 3}
---- !u!23 &5415455423628363378
+--- !u!23 &6565891689667525313
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4766638517062956649}
+  m_GameObject: {fileID: 2487342662974237812}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -61,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6b89b81905d893041a6dc86bcc6e6fcf, type: 2}
+  - {fileID: 2100000, guid: 256d902107a18ff43bd007faa34410d1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -81,6 +79,52 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!135 &7474554765121666416
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2487342662974237812}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.48
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &4766638517062956649
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5273469545884070276}
+  - component: {fileID: 8371953186669852029}
+  - component: {fileID: 1806651087923316135}
+  m_Layer: 0
+  m_Name: MoonAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5273469545884070276
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4766638517062956649}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 7406564265720279327}
+  m_Father: {fileID: 6143951963767822069}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8371953186669852029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93,7 +137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 857cfaecf5c662e468feb3e75eb8f702, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  planetMesh: {fileID: 4766638517062956649}
+  planetMesh: {fileID: 2487342662974237812}
   atmosphereMesh: {fileID: 0}
   maxSize: 3
   minSize: 2
@@ -119,19 +163,6 @@ MonoBehaviour:
   bRandomRotationStart: 0
   bRandomSpeed: 0
   worldPivot: 0
---- !u!135 &1826234183034170674
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4766638517062956649}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6143951963767822065
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,11 +172,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6143951963767822069}
-  - component: {fileID: 6469468458821320962}
+  - component: {fileID: 7807784826040742018}
   - component: {fileID: 2385305642852186100}
   - component: {fileID: 7925452251586000607}
-  - component: {fileID: 415070425766339163}
-  - component: {fileID: 7807784826040742018}
+  - component: {fileID: 8823509295734374542}
+  - component: {fileID: 6469468458821320962}
   m_Layer: 0
   m_Name: Moon
   m_TagString: Untagged
@@ -169,22 +200,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &6469468458821320962
-Rigidbody:
+--- !u!114 &7807784826040742018
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6143951963767822065}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 733c2f3cd36d3b34695e030c1fd32a04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bodyTransform: {fileID: 5273469545884070276}
+  radius: 9999
+  strength: 50
 --- !u!114 &2385305642852186100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,7 +249,7 @@ MonoBehaviour:
   bRandomRotationStart: 1
   bRandomSpeed: 1
   worldPivot: 0
---- !u!114 &415070425766339163
+--- !u!114 &8823509295734374542
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -228,30 +258,32 @@ MonoBehaviour:
   m_GameObject: {fileID: 6143951963767822065}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 268d9b17815068446a95003e6ad34908, type: 3}
+  m_Script: {fileID: 11500000, guid: 1a45a68e7ae0ab64cb89a205a0578bfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7807784826040742018
-MonoBehaviour:
+  celestialBodyName: Moon
+--- !u!54 &6469468458821320962
+Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6143951963767822065}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 733c2f3cd36d3b34695e030c1fd32a04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bodyTransform: {fileID: 5273469545884070276}
-  radius: 9000
-  strength: 50
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &2086175424082342736
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 5273469545884070276}
+    m_TransformParent: {fileID: 7406564265720279327}
     m_Modifications:
     - target: {fileID: 5927431976903153282, guid: 2285e5fd28f329f419e96c08408ed8d5,
         type: 3}
@@ -331,7 +363,7 @@ PrefabInstance:
     - target: {fileID: 5927431976903153280, guid: 2285e5fd28f329f419e96c08408ed8d5,
         type: 3}
       propertyPath: vertexAccountPercentage
-      value: 0.06
+      value: 0.55
       objectReference: {fileID: 0}
     - target: {fileID: 5927431976903153280, guid: 2285e5fd28f329f419e96c08408ed8d5,
         type: 3}

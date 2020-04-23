@@ -4809,7 +4809,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2283283701920987462}
-  m_Mesh: {fileID: -5495902117074765545, guid: 0b82e1cb73fe578458123ab6ce6855fd, type: 3}
+  m_Mesh: {fileID: 289301614986012343, guid: 61118baadb0c8994db4ad266ebb742b0, type: 3}
 --- !u!23 &3460194156538900431
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4858,7 +4858,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 13
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4766638517062956649
 GameObject:
@@ -4870,10 +4870,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5273469545884070276}
   - component: {fileID: 5793207203075320276}
-  - component: {fileID: 9048446475011085990}
   - component: {fileID: 5292048789345196688}
   m_Layer: 0
-  m_Name: PlanetMesh
+  m_Name: PlanetAnchor
   m_TagString: Planet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4912,21 +4911,8 @@ MonoBehaviour:
   maxSize: 1
   minSize: 0.1
   bScannable: 1
-  colliderScale: 13
+  colliderScale: 0.5
   vertexRangeScale: 1
---- !u!135 &9048446475011085990
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4766638517062956649}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &5292048789345196688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4957,8 +4943,8 @@ GameObject:
   - component: {fileID: 6143951963767822069}
   - component: {fileID: 6855365645715729029}
   - component: {fileID: 3401129090991631764}
-  - component: {fileID: 6469468458821320962}
   - component: {fileID: 679891907443359942}
+  - component: {fileID: 6469468458821320962}
   m_Layer: 0
   m_Name: RockyPlanet
   m_TagString: Untagged
@@ -4995,7 +4981,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bodyTransform: {fileID: 3221379657793794119}
-  radius: 9000
+  radius: 9999
   strength: 100
 --- !u!114 &3401129090991631764
 MonoBehaviour:
@@ -5012,6 +4998,19 @@ MonoBehaviour:
   armLength: 0
   planetTransform: {fileID: 3221379657793794119}
   offsetRotationScale: 25
+--- !u!114 &679891907443359942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6143951963767822065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a45a68e7ae0ab64cb89a205a0578bfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  celestialBodyName: Rocky Planet
 --- !u!54 &6469468458821320962
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5028,19 +5027,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &679891907443359942
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6143951963767822065}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a45a68e7ae0ab64cb89a205a0578bfe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  celestialBodyName: Rocky Planet
 --- !u!1 &6213774146651943447
 GameObject:
   m_ObjectHideFlags: 0
@@ -5548,12 +5534,12 @@ PrefabInstance:
     - target: {fileID: 5927431976903153280, guid: 2285e5fd28f329f419e96c08408ed8d5,
         type: 3}
       propertyPath: vertexAccountPercentage
-      value: 0.1
+      value: 0.88
       objectReference: {fileID: 0}
     - target: {fileID: 5927431976903153280, guid: 2285e5fd28f329f419e96c08408ed8d5,
         type: 3}
       propertyPath: lineExtentScale
-      value: 0.9
+      value: 1.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2285e5fd28f329f419e96c08408ed8d5, type: 3}

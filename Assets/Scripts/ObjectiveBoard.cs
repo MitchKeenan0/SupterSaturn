@@ -9,6 +9,7 @@ public class ObjectiveBoard : MonoBehaviour
 	public GameObject objectiveListingPrefab;
 	public GameObject listingPanel;
 	public GameObject theWholeThing;
+	public int listingCount = 3;
 
 	private ObjectiveSurroundings surroundings;
 	private List<ObjectiveListing> objectiveList;
@@ -23,7 +24,7 @@ public class ObjectiveBoard : MonoBehaviour
 
 	void InitListingBoard()
 	{
-		for(int i = 0; i < 5; i++)
+		for(int i = 0; i < listingCount; i++)
 		{
 			ObjectiveListing listing = SpawnListing();
 			ObjectiveType type = null;

@@ -61,7 +61,7 @@ public class VertexVisualizer : MonoBehaviour
 			Vector3 vertexPosition = vertexList[i];
 			Vector3 vertexNormal = vertexPosition * lineExtentScale;
 			line.transform.position = transform.position + vertexPosition;
-			line.SetPosition(0, vertexPosition);
+			line.SetPosition(0, (vertexPosition * (lineExtentScale * 0.95f)));
 			line.SetPosition(1, vertexNormal);
 			SphereCollider sc = line.gameObject.GetComponent<SphereCollider>();
 			sc.center = vertexPosition;

@@ -44,7 +44,7 @@ public class Gravity : MonoBehaviour
 				Rigidbody r = rbList[i];
 				if ((r != null) && (!r.isKinematic))
 				{
-					r.AddForce(GetGravity(r, r.position, r.mass));
+					r.AddForce(GetGravity(r, r.position, r.mass) * Time.deltaTime, ForceMode.Impulse);
 				}
 			}
 		}

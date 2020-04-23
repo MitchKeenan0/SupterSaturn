@@ -196,6 +196,8 @@ public class SpacecraftController : MonoBehaviour
 		bInputting = false;
 		bEndTouchDelay = false;
 		bUpdateNavigationTarget = true;
+		inputController.SetNavigationButtonMode(1);
+		inputController.DeactivateButtonIndex(0, false, false);
 	}
 
 	public void SetActive(bool value)

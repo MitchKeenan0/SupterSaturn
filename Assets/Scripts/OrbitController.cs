@@ -20,6 +20,7 @@ public class OrbitController : MonoBehaviour
 	private List<Vector3> trajectoryList;
 	private float burnDuration = 0f;
 	private bool bUpdating = false;
+	private bool bBackgroundUpdating = false;
 	private int trajectoryClampedLength = 0;
 
 	public Autopilot GetAutopilot() { return autopilot; }
@@ -54,6 +55,9 @@ public class OrbitController : MonoBehaviour
 	public void SetDirection(Vector3 inputVector)
 	{
 		bUpdating = false;
+		if (bBackgroundUpdating)
+			StopCoroutine(backgroundCoroutine);
+		bBackgroundUpdating = false;
 		if (autopilot != null)
 		{
 			///autopilot.FaceVelocity(false);
@@ -79,7 +83,10 @@ public class OrbitController : MonoBehaviour
 		bool previous = bUpdating;
 		bUpdating = true;
 		yield return new WaitForSeconds(duration);
-		bUpdating = previous;
+		if (!previous)
+			DelayStop(0.2f);
+		else
+			bUpdating = previous;
 	}
 
 	void Update()
@@ -163,7 +170,7 @@ public class OrbitController : MonoBehaviour
 					float normal = Mathf.InverseLerp(0f, trajectoryCount, i);
 					float lineAlpha = Mathf.Lerp(0.9f, 0.6f, Mathf.Sqrt(normal));
 					Color lineColor = new Color(lineAlpha, lineAlpha, lineAlpha);
-					float velocity = rb.velocity.magnitude * 0.01f;
+					float velocity = rb.velocity.magnitude * 0.1f;
 					lineColor.g = Mathf.Clamp(lineColor.g - velocity, 0f, 1f);
 					lineColor.b = Mathf.Clamp(lineColor.b - velocity, 0f, 1f);
 					Color start = lineColor * 0.8f;
@@ -233,5 +240,35 @@ public class OrbitController : MonoBehaviour
 		SetClampedLength(0);
 		ClearTrajectory();
 		ClearPartialTrajectory(0);
+	}
+
+	private IEnumerator delayStopCoroutine;
+	public void DelayStop(float waitTime)
+	{
+		delayStopCoroutine = StopDelay(waitTime);
+		StartCoroutine(delayStopCoroutine);
+	}
+	public IEnumerator StopDelay(float waitTime)
+	{
+		yield return new WaitForSeconds(waitTime);
+		SetUpdating(false);
+		if (!bBackgroundUpdating)
+		{
+			bBackgroundUpdating = true;
+			backgroundCoroutine = BackgroundUpdate(2f);
+			StartCoroutine(backgroundCoroutine);
+		}
+	}
+
+	private IEnumerator backgroundCoroutine;
+	private IEnumerator BackgroundUpdate(float interval)
+	{
+		while (bBackgroundUpdating)
+		{
+			yield return new WaitForSeconds(interval);
+			SimulateTrajectory(rb.velocity, -1f);
+			RenderTrajectory();
+			Debug.Log("background update at " + Time.time.ToString("F1"));
+		}
 	}
 }

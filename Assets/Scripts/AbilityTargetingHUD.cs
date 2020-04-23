@@ -162,7 +162,7 @@ public class AbilityTargetingHUD : MonoBehaviour
 		{
 			timeElapsed += Time.deltaTime;
 			Vector3 targetScreenPosition = cameraMain.WorldToScreenPoint(targetVector);
-			targetScreenPosition.z = 0f;
+			targetScreenPosition.z = cameraMain.transform.position.z + 10;
 			spatialTargetPanel.transform.position = targetScreenPosition;
 			yield return new WaitForSeconds(Time.deltaTime);
 		}

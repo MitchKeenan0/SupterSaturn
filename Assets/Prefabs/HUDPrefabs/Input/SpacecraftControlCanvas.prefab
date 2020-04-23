@@ -867,6 +867,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statusText: {fileID: 6157324115670987319}
+  navigationButtonSprites:
+  - {fileID: 21300000, guid: db3a2fed68c7f324faf1d419db094a15, type: 3}
+  - {fileID: 21300000, guid: c305427e83dabf54dad74c66c937a7ec, type: 3}
+  - {fileID: 21300000, guid: fbc4b43315fba1d4fa5dc6448859398b, type: 3}
   navigationModeButton: {fileID: 5231100291422787007}
   cameraModeButton: {fileID: 8717609755138699635}
   stopButton: {fileID: 1860613075532517287}

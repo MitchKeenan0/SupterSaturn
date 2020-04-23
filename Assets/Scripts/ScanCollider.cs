@@ -12,6 +12,7 @@ public class ScanCollider : MonoBehaviour
 
     void Awake()
     {
+		transform.localScale = Vector3.one;
 		visualizer = transform.parent.GetComponent<VertexVisualizer>();
 		colorBlend = GetComponent<ColorBlend>();
 		hitParticles = GetComponentInChildren<ParticleSystem>();
@@ -26,6 +27,8 @@ public class ScanCollider : MonoBehaviour
 		{
 			LineRenderer line = GetComponent<LineRenderer>();
 			Vector3 vertexPosition = transform.TransformPoint(line.GetPosition(0));
+			line.enabled = false;
+
 			visualizer.DisableLine(vertexPosition);
 			int maxScore = visualizer.GetNumVerticies();
 			if (!scoreHud)

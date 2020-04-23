@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class InputController : MonoBehaviour
 {
 	public Text statusText;
+	public Sprite[] navigationButtonSprites; /// 0-none/idle 1-ignite 2-shutdown
 	public Button navigationModeButton;
 	public Button cameraModeButton;
 	public Button stopButton;
@@ -21,6 +22,7 @@ public class InputController : MonoBehaviour
 	private Spacecraft spacecraft = null;
 	private ContextHeader contextHeader;
 	private SkillPanel skillPanel;
+	private Image navButtonImage;
 	private float originalCameraScale = 1f;
 	private bool bNavigationMode = false;
 	private bool bFreeCameraMode = false;
@@ -51,6 +53,8 @@ public class InputController : MonoBehaviour
 		originalCameraScale = touchOrbit.GetInputScale();
 		statusText.text = "";
 		numCameraModes = distanceModes.Count;
+		navButtonImage = navigationModeButton.GetComponent<Image>();
+		navButtonImage.preserveAspect = true;
 
 		ActivateButton(navigationModeButton, false, true);
 		ActivateButton(cameraModeButton, false, true);
@@ -62,6 +66,24 @@ public class InputController : MonoBehaviour
 		//AllStop(false);
 		CameraMode();
 		ActivateButton(stopButton, false, true);
+	}
+
+	public void DeactivateButtonIndex(int index, bool value, bool bFinished)
+	{
+		Button button = null;
+		switch(index)
+		{
+			case 0: button = navigationModeButton;
+				break;
+			case 1: button = cameraModeButton;
+				break;
+			case 2: button = stopButton;
+				break;
+			default:
+				break;
+		}
+		if (button != null)
+			ActivateButton(button, value, bFinished);
 	}
 
 	public void ActivateButton(Button button, bool value, bool finished)
@@ -102,6 +124,11 @@ public class InputController : MonoBehaviour
 			touchOrbit.SetInputScale(originalCameraScale * 0.6f);
 		else
 			touchOrbit.SetInputScale(originalCameraScale);
+	}
+
+	public void SetNavigationButtonMode(int navModeIndex)
+	{
+		navButtonImage.sprite = navigationButtonSprites[navModeIndex];
 	}
 
 	public void AllStop(bool bActuallyThough)
@@ -146,7 +173,7 @@ public class InputController : MonoBehaviour
 		{
 			bTurningOff = false;
 			bStopped = false;
-			orbitController.SetUpdating(false);
+			orbitController.DelayStop(0.2f);
 		}
 
 		if (bStopped && !bEngineShutdown)
@@ -169,6 +196,7 @@ public class InputController : MonoBehaviour
 			sc.CancelNavCommand();
 			spacecraft.GetComponent<Autopilot>().FireEngineBurn(99f, false);
 			orbitController.SetUpdating(true);
+			SetNavigationButtonMode(2);
 		}
 		
 		bNavigationMode = value;
@@ -181,6 +209,7 @@ public class InputController : MonoBehaviour
 		{
 			UpdateStatusText("Navigation mode");
 			contextHeader.SetContextHeader("Navigation awaiting input");
+			SetNavigationButtonMode(0);
 		}
 		else
 		{

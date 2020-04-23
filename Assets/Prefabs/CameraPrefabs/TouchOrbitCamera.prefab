@@ -67,7 +67,7 @@ MonoBehaviour:
   mousePanSpeed: 0.6
   yMinLimit: -85
   yMaxLimit: 85
-  distanceMin: 10
+  distanceMin: 6
   distanceMax: 100
   moveSpeed: 10
   moveAcceleration: 20
