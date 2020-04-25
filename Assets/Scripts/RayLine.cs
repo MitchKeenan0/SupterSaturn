@@ -14,6 +14,7 @@ public class RayLine : MonoBehaviour
 	private bool bHit = false;
 	private bool bEnabled = false;
 	private bool bFinished = false;
+	private bool bScanningActive = false;
 	private int scanVertsHit = 0;
 
 	public bool IsEnabled() { return bEnabled; }
@@ -22,6 +23,7 @@ public class RayLine : MonoBehaviour
 	public float RayExtent() { return Vector3.Distance(lineEnd, transform.position); }
 	public Vector3 GetHitPosition() { return hitPosition; }
 	public int GetScanHits() { return scanVertsHit; }
+	public void ClearHits() { scanVertsHit = 0; }
 
     void Awake()
     {
@@ -71,7 +73,7 @@ public class RayLine : MonoBehaviour
 			lineEnd = Vector3.MoveTowards(lineEnd, rayVector, Time.deltaTime * raySpeed);
 		}
 		
-		if (RayExtent() > (Time.deltaTime * raySpeed) * 6f)
+		if (bHit || (RayExtent() > (Time.deltaTime * raySpeed) * 3f))
 		{
 			lineStart = Vector3.MoveTowards(lineStart, lineEnd, Time.deltaTime * raySpeed);
 			if (Vector3.Distance(lineStart, lineEnd) <= 1f)
@@ -81,6 +83,7 @@ public class RayLine : MonoBehaviour
 		{
 			lineStart = transform.position;
 		}
+
 		SetRayLine(lineStart, lineEnd);
 	}
 
@@ -113,7 +116,9 @@ public class RayLine : MonoBehaviour
 	public void SetEnabled(bool value)
 	{
 		bEnabled = value;
-		if (!value)
+		if (bEnabled)
+			bScanningActive = true;
+		else
 			ResetRayLine();
 	}
 }

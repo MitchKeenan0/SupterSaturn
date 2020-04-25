@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5117297370871504369}
-  - component: {fileID: 8366291670125759232}
+  - component: {fileID: 327896235886616984}
   - component: {fileID: 5117297370871504374}
   m_Layer: 0
   m_Name: TelemetryLine
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8366291670125759232
+--- !u!114 &327896235886616984
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,8 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 695536d93d2eab24a9e9a196aae2ce38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  updateInterval: 0.1
-  scaleFactor: 1
+  scaleFactor: 0.05
 --- !u!120 &5117297370871504374
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -88,7 +87,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.2
+    widthMultiplier: 0.1
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -106,8 +105,8 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 0.031644695, b: 0, a: 1}
-      key1: {r: 1, g: 0.031644695, b: 0, a: 1}
+      key0: {r: 0.105882354, g: 0.46666667, b: 1, a: 1}
+      key1: {r: 0.10588236, g: 0.4666667, b: 1, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -134,7 +133,7 @@ LineRenderer:
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0
-    numCapVertices: 0
+    numCapVertices: 1
     alignment: 0
     textureMode: 0
     shadowBias: 0.5

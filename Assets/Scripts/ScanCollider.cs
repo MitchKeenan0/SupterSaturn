@@ -8,6 +8,7 @@ public class ScanCollider : MonoBehaviour
 	private ParticleSystem hitParticles;
 	private ScoreHUD scoreHud;
 	private ColorBlend colorBlend;
+	private LineRenderer line;
 	private bool bHit = false;
 
     void Awake()
@@ -17,15 +18,14 @@ public class ScanCollider : MonoBehaviour
 		colorBlend = GetComponent<ColorBlend>();
 		hitParticles = GetComponentInChildren<ParticleSystem>();
 		scoreHud = FindObjectOfType<ScoreHUD>();
-		//var em = hitParticles.emission;
-		//em.enabled = false;
-    }
+		line = GetComponent<LineRenderer>();
+		
+	}
 
 	public void Hit()
 	{
 		if (!bHit)
 		{
-			LineRenderer line = GetComponent<LineRenderer>();
 			Vector3 vertexPosition = transform.TransformPoint(line.GetPosition(0));
 			line.enabled = false;
 
@@ -37,7 +37,7 @@ public class ScanCollider : MonoBehaviour
 				scoreHud.PopupScore(vertexPosition, 1, maxScore);
 
 			hitParticles.transform.position = vertexPosition;
-			Vector3 lineDirection = (vertexPosition - Vector3.zero).normalized;
+			Vector3 lineDirection = (transform.TransformPoint(line.GetPosition(1)) - vertexPosition).normalized;
 			hitParticles.transform.rotation = Quaternion.LookRotation(lineDirection);
 			Color c = colorBlend.MyColor();
 			var ma = hitParticles.main;

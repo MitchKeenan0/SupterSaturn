@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 733637985974023896}
   - component: {fileID: 733637985974023879}
   m_Layer: 0
-  m_Name: PlanetObjE
+  m_Name: LifeRichPlanetObjE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,7 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f62a273e672c2348a4cc1394fec8703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementPrefab: {fileID: 6143951963767822065, guid: 1ae4cf93a875f9f44a8899d6602416f4,
+  elementPrefab: {fileID: 6143951963767822065, guid: 745ef2e166655b74abade51f3373615f,
     type: 3}
   planetMinSize: 300
   planetMaxSize: 500

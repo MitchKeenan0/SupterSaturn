@@ -6299,6 +6299,11 @@ PrefabInstance:
       propertyPath: m_BlocksRaycasts
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2275304799975179246, guid: dd80a295cb7874a45a2ccbe75ad2b99f,
+        type: 3}
+      propertyPath: m_Alpha
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dd80a295cb7874a45a2ccbe75ad2b99f, type: 3}
 --- !u!1001 &1990610423

@@ -118,7 +118,7 @@ public class TouchOrbit : MonoBehaviour
 		}
 
 		transform.rotation = rotation;
-		transform.position = Vector3.MoveTowards(transform.position, position + moveVector, Time.deltaTime * moveAcceleration * moveSpeed);
+		transform.position = position; ///Vector3.MoveTowards(transform.position, position + moveVector, Time.deltaTime * moveAcceleration * moveSpeed);
 	}
 
 	public void ResetAnchor(bool overrideDistance)

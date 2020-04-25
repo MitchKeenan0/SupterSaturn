@@ -49,16 +49,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
-  cycleInterval: 0.2
-  intervalDeviation: 0.05
+  cycleInterval: 6
+  intervalDeviation: 3
   startColor: {r: 1, g: 1, b: 1, a: 1}
   colorArray:
-  - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 1, g: 1, b: 0, a: 1}
-  - {r: 0, g: 1, b: 0, a: 1}
-  - {r: 0, g: 1, b: 1, a: 1}
+  - {r: 0.8509804, g: 0.23078728, b: 0, a: 1}
+  - {r: 0.7921569, g: 0.68578094, b: 0, a: 1}
+  - {r: 0, g: 0.6792453, b: 0, a: 1}
+  - {r: 0, g: 0.48823532, b: 0.7830189, a: 1}
   - {r: 0, g: 0, b: 1, a: 1}
-  - {r: 1, g: 0, b: 1, a: 1}
+  - {r: 0.7075472, g: 0, b: 0.7075472, a: 1}
 --- !u!114 &1855211054250735132
 MonoBehaviour:
   m_ObjectHideFlags: 0

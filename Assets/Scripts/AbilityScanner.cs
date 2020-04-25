@@ -68,11 +68,8 @@ public class AbilityScanner : Ability
 
 	public void Hit(int value)
 	{
-		if (!bScannerHit)
-		{
-			bScannerHit = true;
-			hits = value;
-		}
+		bScannerHit = true;
+		hits += value;
 	}
 
 	public override void FireAbility()
@@ -119,7 +116,7 @@ public class AbilityScanner : Ability
 				if (hits == 0)
 					scoreHud.ToastContext("-- No Hit --");
 				else
-					scoreHud.ToastContext("Scan Hit +" + Factorial(hits));
+					scoreHud.ToastContext("Scan Hit +" + hits); ///Factorial(hits));
 			}
 		}
 	}

@@ -95,9 +95,7 @@ public class GravityTelemetryHUD : MonoBehaviour
 						Color lineColor = line.startColor;
 						lineColor.a = 1f / lineDistance;
 						line.startColor = line.endColor = lineColor;
-
-						if (!line.gameObject.activeInHierarchy)
-							line.gameObject.SetActive(true);
+						line.enabled = true;
 					}
 				}
 			}
@@ -109,7 +107,7 @@ public class GravityTelemetryHUD : MonoBehaviour
 	void ClearLines(List<LineRenderer> list)
 	{
 		for (int i = 0; i < list.Count; i++)
-			list[i].gameObject.SetActive(false);
+			list[i].enabled = false;
 	}
 
 	LineRenderer CreateTelemetryLine(List<LineRenderer> list)

@@ -47,8 +47,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68278e60c69e0d84c9938837ad4fa2f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialMin: -0.05
-  initialMax: 0.05
+  initialMin: -0.1
+  initialMax: 0.1
 --- !u!33 &5506278598495289780
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -74,7 +74,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 256d902107a18ff43bd007faa34410d1, type: 2}
+  - {fileID: 2100000, guid: bc26a75b5a672bf45a6efdb7105f9f85, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -193,7 +193,7 @@ GameObject:
   - component: {fileID: 679891907443359942}
   - component: {fileID: 6469468458821320962}
   m_Layer: 0
-  m_Name: RockyPlanet
+  m_Name: UnstablePlanet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

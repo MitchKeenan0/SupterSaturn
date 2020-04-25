@@ -68,7 +68,7 @@ MonoBehaviour:
   yMinLimit: -85
   yMaxLimit: 85
   distanceMin: 6
-  distanceMax: 100
+  distanceMax: 500
   moveSpeed: 10
   moveAcceleration: 20
   turnAcceleration: 100

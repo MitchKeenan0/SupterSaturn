@@ -4,20 +4,18 @@ using UnityEngine;
 
 public class ConstantSizer : MonoBehaviour
 {
-	public float updateInterval = 0.1f;
 	public float scaleFactor = 1f;
 
-	private Transform cameraTransform = null;
+	private Camera cameraMain = null;
 	private Vector3 naturalSize = Vector3.zero;
 	private Vector3 naturalOffset = Vector3.zero;
 	private float naturalWidth = 0;
-
 	private LineRenderer line;
-	bool bPureTransform = true;
+	private bool bPureTransform = false;
 
     void Start()
     {
-		cameraTransform = Camera.main.transform;
+		cameraMain = Camera.main;
 		naturalSize = transform.localScale;
 		naturalOffset = transform.localPosition;
 
@@ -38,7 +36,7 @@ public class ConstantSizer : MonoBehaviour
 
 	void UpdateSize()
 	{
-		Vector3 cameraPosition = cameraTransform.position;
+		Vector3 cameraPosition = cameraMain.transform.position;
 		float distToCamera = Vector3.Distance(transform.position, cameraPosition);
 		distToCamera *= scaleFactor;
 		if (bPureTransform)
@@ -48,8 +46,8 @@ public class ConstantSizer : MonoBehaviour
 		}
 		else if (line != null)
 		{
-			float firstPointDistance = Vector3.Distance(transform.position + line.GetPosition(0), cameraPosition);
-			float secondPointDistance = Vector3.Distance(transform.position + line.GetPosition(1), cameraPosition);
+			float firstPointDistance = Vector3.Distance(line.GetPosition(0), cameraPosition);
+			float secondPointDistance = Vector3.Distance(line.GetPosition(1), cameraPosition);
 			if (firstPointDistance <= secondPointDistance)
 				distToCamera = firstPointDistance;
 			else

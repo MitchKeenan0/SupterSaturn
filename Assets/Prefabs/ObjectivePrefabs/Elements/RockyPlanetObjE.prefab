@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 733637985974023896}
   - component: {fileID: 733637985974023879}
   m_Layer: 0
-  m_Name: PlanetObjE
+  m_Name: RockyPlanetObjE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,5 +45,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementPrefab: {fileID: 6143951963767822065, guid: 1ae4cf93a875f9f44a8899d6602416f4,
     type: 3}
-  planetMinSize: 300
-  planetMaxSize: 500
+  planetMinSize: 100
+  planetMaxSize: 300

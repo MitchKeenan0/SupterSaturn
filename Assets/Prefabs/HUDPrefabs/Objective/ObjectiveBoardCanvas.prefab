@@ -382,6 +382,7 @@ MonoBehaviour:
     type: 3}
   listingPanel: {fileID: 5727653774763651232}
   theWholeThing: {fileID: 5371481078749074101}
+  listingCount: 5
 --- !u!114 &4608520846440504939
 MonoBehaviour:
   m_ObjectHideFlags: 0

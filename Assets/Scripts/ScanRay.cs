@@ -36,13 +36,16 @@ public class ScanRay : Scan
 					RayLine line = lineList[i];
 					if (line.IsEnabled())
 					{
-						if (line.LineFinished())
+						if (line.LineFinished() && (timeElapsed < (scanLifetime * 0.88f)))
 							GetSpreadVector(i);
 						line.UpdateRayLine();
 					}
 
-					if (line.RayHit())
-						GetScanner().Hit(line.GetScanHits());
+					if (line.GetScanHits() > 0)
+					{
+						GetScanner().Hit(1); /// line.GetScanHits()
+						line.ClearHits();
+					}
 				}
 			}
 			if (timeElapsed >= scanLifetime)

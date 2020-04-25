@@ -27,28 +27,29 @@ public class ColorBlend : MonoBehaviour
 		cycleInterval += Random.Range(-intervalDeviation, intervalDeviation);
 
 		int randomIndex = Random.Range(0, colorArray.Length);
-		Color c = colorArray[randomIndex];
+		colorIndex = randomIndex;
+		Color c = colorArray[colorIndex];
 		targetColor = c;
 		myRenderer.startColor = targetColor;
-		myRenderer.endColor = Color.clear;
+		myRenderer.endColor = targetColor;
 	}
 
-  //  void Update()
-  //  {
-		//if (cycleTime >= cycleInterval)
-		//{
-		//	targetColor = CycleColor();
-		//	cycleTime = 0f;
-		//	t = 0f;
-		//}
-		//else
-		//{
-		//	cycleTime += Time.deltaTime;
-		//	t = (Time.time - startTime) * speed;
-		//	myRenderer.startColor = Color.Lerp(startColor, targetColor, t);
-		//	myRenderer.endColor = Color.clear;
-		//}
-  //  }
+	void Update()
+	{
+		if (cycleTime >= cycleInterval)
+		{
+			targetColor = CycleColor();
+			cycleTime = 0f;
+			t = 0f;
+		}
+		else
+		{
+			cycleTime += Time.deltaTime;
+			t = (Time.time - startTime) * speed;
+			myRenderer.startColor = Color.Lerp(startColor, targetColor, t);
+			myRenderer.endColor = myRenderer.startColor;
+		}
+	}
 
 	Color CycleColor()
 	{

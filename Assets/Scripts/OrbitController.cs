@@ -54,10 +54,10 @@ public class OrbitController : MonoBehaviour
 
 	public void SetDirection(Vector3 inputVector)
 	{
-		bUpdating = false;
-		if (bBackgroundUpdating)
-			StopCoroutine(backgroundCoroutine);
-		bBackgroundUpdating = false;
+		//bUpdating = false;
+		//if (bBackgroundUpdating)
+			//StopCoroutine(backgroundCoroutine);
+		//bBackgroundUpdating = false;
 		if (autopilot != null)
 		{
 			///autopilot.FaceVelocity(false);
@@ -170,7 +170,7 @@ public class OrbitController : MonoBehaviour
 					float normal = Mathf.InverseLerp(0f, trajectoryCount, i);
 					float lineAlpha = Mathf.Lerp(0.9f, 0.6f, Mathf.Sqrt(normal));
 					Color lineColor = new Color(lineAlpha, lineAlpha, lineAlpha);
-					float velocity = rb.velocity.magnitude * 0.1f;
+					float velocity = rb.velocity.magnitude * 0.05f;
 					lineColor.g = Mathf.Clamp(lineColor.g - velocity, 0f, 1f);
 					lineColor.b = Mathf.Clamp(lineColor.b - velocity, 0f, 1f);
 					Color start = lineColor * 0.8f;
@@ -268,7 +268,6 @@ public class OrbitController : MonoBehaviour
 			yield return new WaitForSeconds(interval);
 			SimulateTrajectory(rb.velocity, -1f);
 			RenderTrajectory();
-			Debug.Log("background update at " + Time.time.ToString("F1"));
 		}
 	}
 }
