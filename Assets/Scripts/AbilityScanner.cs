@@ -16,8 +16,9 @@ public class AbilityScanner : Ability
 	private bool bWaiting = false;
 	private int hits = 0;
 
-	void Start()
+	public override void Start()
     {
+		base.Start();
 		contextHeader = FindObjectOfType<ContextHeader>();
 		abilityTargeting = FindObjectOfType<AbilityTargetingHUD>();
 		scoreHud = FindObjectOfType<ScoreHUD>();
@@ -133,7 +134,9 @@ public class AbilityScanner : Ability
 	{
 		base.CancelAbility();
 		bUpdating = false;
+		if (!contextHeader)
+			contextHeader = FindObjectOfType<ContextHeader>();
 		if (contextHeader != null)
-			contextHeader.SetContextHeader("");
+			contextHeader.SetContextHeader(" ");
 	}
 }

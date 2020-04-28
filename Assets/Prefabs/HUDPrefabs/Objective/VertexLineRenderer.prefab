@@ -53,12 +53,12 @@ MonoBehaviour:
   intervalDeviation: 3
   startColor: {r: 1, g: 1, b: 1, a: 1}
   colorArray:
-  - {r: 0.8509804, g: 0.23078728, b: 0, a: 1}
-  - {r: 0.7921569, g: 0.68578094, b: 0, a: 1}
-  - {r: 0, g: 0.6792453, b: 0, a: 1}
+  - {r: 0, g: 0.13096553, b: 0.5471698, a: 1}
+  - {r: 0, g: 0.30612114, b: 0.7921569, a: 1}
+  - {r: 0, g: 0.5536926, b: 0.8301887, a: 1}
   - {r: 0, g: 0.48823532, b: 0.7830189, a: 1}
   - {r: 0, g: 0, b: 1, a: 1}
-  - {r: 0.7075472, g: 0, b: 0.7075472, a: 1}
+  - {r: 0.2688679, g: 0.3009057, b: 1, a: 1}
 --- !u!114 &1855211054250735132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,7 +186,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.05
+  m_Radius: 0.1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &4157700743529628756
 Rigidbody:

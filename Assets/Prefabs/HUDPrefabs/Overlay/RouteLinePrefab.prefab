@@ -44,7 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 695536d93d2eab24a9e9a196aae2ce38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  updateInterval: 0.1
   scaleFactor: 0.05
 --- !u!120 &1717023931117533250
 LineRenderer:
@@ -88,7 +87,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.1
+    widthMultiplier: 0.3
     widthCurve:
       serializedVersion: 2
       m_Curve:

@@ -148,8 +148,8 @@ public class TeamFleetHUD : MonoBehaviour
 		}
 
 		// scale panel
-		RectTransform rt = diagramPanel.GetComponent<RectTransform>();
-		rt.sizeDelta = new Vector2((teamButtonList.Count * 150f), rt.sizeDelta.y);
+		//RectTransform rt = diagramPanel.GetComponent<RectTransform>();
+		//rt.sizeDelta = new Vector2((teamButtonList.Count * 150f), rt.sizeDelta.y);
 	}
 
 	GameObject CreateSpacecraftDiagram()

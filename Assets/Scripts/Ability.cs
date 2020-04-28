@@ -7,6 +7,7 @@ public class Ability : MonoBehaviour
 {
 	public GameObject startEffectPrefab;
 	public Button loopToggleButton;
+	public float powerCost = 1f;
 	public float warmup = 0.1f;
 	public float duration = 0.5f;
 	public float cooldown = 1f;
@@ -14,6 +15,7 @@ public class Ability : MonoBehaviour
 	public string abilityName = "";
 	public Color abilityColor;
 	public bool bTargeting = false;
+	public Powerplant powerplant;
 
 	private IEnumerator warmupCoroutine;
 	private IEnumerator durationCoroutine;
@@ -29,6 +31,11 @@ public class Ability : MonoBehaviour
 	public bool IsCooling() { return bCooling; }
 	public GameObject GetUIObject() { return (myButton != null) ? myButton.gameObject : null; }
 
+	public virtual void Start()
+	{
+		powerplant = transform.parent.GetComponentInChildren<Powerplant>();
+	}
+
 	public void BondToButton(Button button)
 	{
 		myButton = button;
@@ -40,6 +47,10 @@ public class Ability : MonoBehaviour
 		if (!bCooling && !bActive)
 		{
 			activeTime = 0f;
+			if (!powerplant)
+				powerplant = transform.parent.GetComponentInChildren<Powerplant>();
+			if (powerplant != null)
+				powerplant.InstantCost(powerCost);
 			warmupCoroutine = AbilityWarmup(warmup);
 			StartCoroutine(warmupCoroutine);
 			if (myButton != null)

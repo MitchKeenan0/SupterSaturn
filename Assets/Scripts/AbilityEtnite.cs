@@ -20,8 +20,9 @@ public class AbilityEtnite : Ability
 	private bool bCharging = false;
 	private float charge = 0f;
 
-	void Start()
+	public override void Start()
     {
+		base.Start();
 		spacecraft = GetComponentInParent<Spacecraft>();
 		abilityTargeting = FindObjectOfType<AbilityTargetingHUD>();
 		trackTargetVector = transform.forward;

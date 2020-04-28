@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class RayLine : MonoBehaviour
 {
+	public float lineLengthScale = 5f;
+
 	private LineRenderer line;
 	private Transform originTransform;
 	private Vector3 lineStart = Vector3.zero;
@@ -73,7 +75,7 @@ public class RayLine : MonoBehaviour
 			lineEnd = Vector3.MoveTowards(lineEnd, rayVector, Time.deltaTime * raySpeed);
 		}
 		
-		if (bHit || (RayExtent() > (Time.deltaTime * raySpeed) * 3f))
+		if (bHit || (RayExtent() > (Time.deltaTime * raySpeed) * lineLengthScale))
 		{
 			lineStart = Vector3.MoveTowards(lineStart, lineEnd, Time.deltaTime * raySpeed);
 			if (Vector3.Distance(lineStart, lineEnd) <= 1f)

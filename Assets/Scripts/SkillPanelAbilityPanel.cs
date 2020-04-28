@@ -66,7 +66,7 @@ public class SkillPanelAbilityPanel : MonoBehaviour
 		abilityColor = ab.abilityColor;
 		//Color backgroundColor = abilityColor * 0.8f;
 		//backgroundColor.a = 1f;
-		backgroundImage.color = abilityColor; 
+		backgroundImage.color = abilityColor;
 		abilityImage.color = abilityColor;
 		ab.BondToButton(myButton);
 	}
@@ -118,6 +118,10 @@ public class SkillPanelAbilityPanel : MonoBehaviour
 		{
 			int siblingIndex = transform.GetSiblingIndex();
 			skillPanel.ActivateAbility(siblingIndex);
+		}
+		else
+		{
+			ability.CancelAbility();
 		}
 	}
 

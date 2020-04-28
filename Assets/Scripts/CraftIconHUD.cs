@@ -141,7 +141,7 @@ public class CraftIconHUD : MonoBehaviour
 							img.rectTransform.sizeDelta = Vector2.one * sp.iconScale;
 
 							Vector3 worldPosition = sp.transform.position;
-							Vector3 craftScreenPosition = worldPosition;
+							Vector3 craftScreenPosition = cameraMain.WorldToScreenPoint(worldPosition);
 							img.rectTransform.position = Vector3.MoveTowards(img.rectTransform.position, craftScreenPosition, Time.deltaTime * 1f);
 							
 							Vector3 toCamera = cameraMain.transform.position - sp.transform.position;

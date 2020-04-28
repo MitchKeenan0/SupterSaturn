@@ -45,12 +45,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startEffectPrefab: {fileID: 0}
   loopToggleButton: {fileID: 0}
+  powerCost: 1
   warmup: 0.1
-  duration: 1
-  cooldown: 0.5
+  duration: 1.6
+  cooldown: 0.3
   abilitySprite: {fileID: 21300000, guid: fa3d10bd682e87d42bb4eafad9d4e73d, type: 3}
   abilityName: Scanner
   abilityColor: {r: 0.24563903, g: 0.6029918, b: 0.754717, a: 1}
   bTargeting: 1
+  powerplant: {fileID: 0}
   scanObjectPrefab: {fileID: -8771968458394331919, guid: 7481f97439404ce41a751d44b7ca0a5c,
     type: 3}

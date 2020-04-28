@@ -69,7 +69,7 @@ MonoBehaviour:
   yMaxLimit: 85
   distanceMin: 6
   distanceMax: 500
-  moveSpeed: 10
+  moveSpeed: 1
   moveAcceleration: 20
   turnAcceleration: 100
 --- !u!114 &8112959024247920879
@@ -127,13 +127,13 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.13725491, g: 0.13725491, b: 0, a: 1}
+  m_BackGroundColor: {r: 0, g: 0.12409287, b: 0.33962262, a: 1}
   m_projectionMatrixMode: 2
   m_GateFitMode: 2
   m_FOVAxisMode: 0
   m_SensorSize: {x: 10.65, y: 10}
   m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 8.26
+  m_FocalLength: 5
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -142,7 +142,7 @@ Camera:
     height: 1
   near clip plane: 0.01
   far clip plane: 5000
-  field of view: 62.37529
+  field of view: 90
   orthographic: 0
   orthographic size: 5
   m_Depth: -1

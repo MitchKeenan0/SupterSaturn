@@ -45,5 +45,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementPrefab: {fileID: 6143951963767822065, guid: 59dba22e4fde6d84fb95501109ea2ea6,
     type: 3}
-  planetMinSize: 300
-  planetMaxSize: 500
+  planetMinSize: 500
+  planetMaxSize: 1000

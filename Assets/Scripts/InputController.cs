@@ -196,7 +196,7 @@ public class InputController : MonoBehaviour
 			sc.CancelNavCommand();
 			spacecraft.GetComponent<Autopilot>().FireEngineBurn(99f, false);
 			orbitController.SetUpdating(true);
-			SetNavigationButtonMode(2);
+			SetNavigationButtonMode(0);
 		}
 		
 		bNavigationMode = value;

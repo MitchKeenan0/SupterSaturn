@@ -11,8 +11,9 @@ public class AbilityBoost : Ability
 	private OrbitController orbitController;
 	private float originalEnginePower = 0;
 
-    void Start()
+    public override void Start()
     {
+		base.Start();
 		mySpacecraft = GetComponentInParent<Spacecraft>();
 		autopilot = GetComponentInParent<Autopilot>();
 		orbitController = FindObjectOfType<OrbitController>();
@@ -26,6 +27,7 @@ public class AbilityBoost : Ability
 		if (mySpacecraft.GetMainEngineVector() == Vector3.zero)
 			autopilot.FireEngineBurn(duration, false);
 		orbitController.SetUpdatingForDuration(duration);
+		powerplant.InstantCost(powerCost);
 
 		if (startEffectPrefab != null)
 		{

@@ -9,6 +9,7 @@ public class Spacecraft : MonoBehaviour
 	public float mainEnginePower = 1f;
 	public float turningPower = 1f;
 	public float maneuverPower = 0.6f;
+	public float thrustPowerCost = 2f;
 	public string spacecraftName = "Spacecraft";
 	public ParticleSystem thrustParticles;
 	public Transform destroyedParticlesPrefab;
@@ -26,6 +27,7 @@ public class Spacecraft : MonoBehaviour
 	private CameraController cameraController;
 	private MouseSelection mouseSelection;
 	private BattleOutcome battleOutcome;
+	private Powerplant powerplant;
 
 	private Vector3 mainEnginesVector = Vector3.zero;
 	private Vector3 maneuverEnginesVector = Vector3.zero;
@@ -68,6 +70,7 @@ public class Spacecraft : MonoBehaviour
 		meshRenderComponents = GetComponentsInChildren<MeshRenderer>();
 		particleComponents = GetComponentsInChildren<ParticleSystem>();
 		trailComponents = GetComponentsInChildren<TrailRenderer>();
+		powerplant = GetComponentInChildren<Powerplant>();
 		if (GetComponentInChildren<GridVisualizer>())
 			gridObject = GetComponentInChildren<GridVisualizer>().gameObject;
 	}
@@ -110,7 +113,7 @@ public class Spacecraft : MonoBehaviour
 			if (turningVector != Vector3.zero)
 			{
 				float kernScale = Mathf.Clamp(Vector3.Dot(transform.forward.normalized, turningVector.normalized) * 3f, 0.5f, 3f);
-				angularVelocity = Vector3.Lerp(angularVelocity, turningVector, Time.deltaTime * turningPower * kernScale);
+				angularVelocity = Vector3.MoveTowards(angularVelocity, turningVector, Time.deltaTime * turningPower * kernScale);
 				transform.rotation = Quaternion.LookRotation(angularVelocity);
 			}
 
@@ -169,16 +172,18 @@ public class Spacecraft : MonoBehaviour
 	{
 		bThrottle = false;
 		mainEnginesVector = transform.forward * driveDirection;
-		var ps = thrustParticles.main;
+		//var ps = thrustParticles.main;
 		var em = thrustParticles.emission;
 		if (Mathf.Abs(driveDirection) > 0.0f)
 		{
 			em.enabled = true;
-			ps.startSize = Mathf.Abs(driveDirection);
+			//ps.startSize = Mathf.Abs(driveDirection);
+			powerplant.AddPowerDrawOffset(-thrustPowerCost);
 		}
 		else
 		{
 			em.enabled = false;
+			powerplant.AddPowerDrawOffset(thrustPowerCost);
 		}
 	}
 
@@ -369,11 +374,20 @@ public class Spacecraft : MonoBehaviour
 		}
 	}
 
-	public void HotStart()
+	public void PlayerStart()
 	{
 		if (!rb)
 			rb = GetComponent<Rigidbody>();
-		transform.position = new Vector3(-500f, 500f, -500f);
-		rb.velocity = (transform.forward * (mainEnginePower * mainEnginePower));
+		float X = Random.Range(-500f, 500f);
+		float Y = Random.Range(-500f, 500f);
+		transform.position = new Vector3(X, Y, -1500f);
+		rb.AddForce(transform.forward * Mathf.Pow(mainEnginePower, 3), ForceMode.Impulse);
+		PowerHUD powerHud = FindObjectOfType<PowerHUD>();
+		if (powerHud != null)
+		{
+			Powerplant plant = GetComponentInChildren<Powerplant>();
+			if (plant != null)
+				powerHud.SetPowerSource(plant);
+		}
 	}
 }

@@ -48,10 +48,10 @@ MonoBehaviour:
   scanLifetime: 2
   rayLinePrefab: {fileID: 2983850480264416494, guid: 99aa87713f5971444aa5d7ba3d0b8c38,
     type: 3}
-  rayLineCount: 3
+  rayLineCount: 1
   rayRange: 5000
-  raySpread: 500
-  raySpeed: 5000
+  raySpread: 10
+  raySpeed: 1000
 --- !u!1 &5145164364138951353
 GameObject:
   m_ObjectHideFlags: 0

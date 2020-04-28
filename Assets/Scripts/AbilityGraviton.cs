@@ -13,8 +13,9 @@ public class AbilityGraviton : Ability
 	private Transform targetTransform = null;
 	private bool bUpdating = false;
 
-	void Start()
+	public override void Start()
 	{
+		base.Start();
 		abilityTargeting = FindObjectOfType<AbilityTargetingHUD>();
 		spacecraft = GetComponentInParent<Spacecraft>();
 	}
