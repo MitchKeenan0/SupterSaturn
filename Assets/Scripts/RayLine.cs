@@ -111,7 +111,7 @@ public class RayLine : MonoBehaviour
 			lineEnd = end;
 			line.enabled = true;
 		}
-		if (!bHit)
+		//if (!bHit)
 			CheckRayHit();
 	}
 

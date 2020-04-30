@@ -28,6 +28,7 @@ public class ObjE_Cloud : ObjectiveElement
 			for (int i = 0; i < cloudChildren; i++)
 			{
 				Vector3 spreadPosition = element.transform.position + (Random.insideUnitSphere * (cloudSpread));
+				spreadPosition.y = 0f;
 				GameObject duplicate = Instantiate(elementPrefab, spreadPosition, Quaternion.identity);
 				duplicate.transform.SetParent(element.transform);
 			}

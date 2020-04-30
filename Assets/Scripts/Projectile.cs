@@ -8,6 +8,8 @@ public class Projectile : MonoBehaviour
 	public float impactForce = 1f;
 	public Transform impactPrefab;
 	public float maxLifetime = 5f;
+	public float naturalSpeed = 100f;
+	public int naturalDamage = 1;
 
 	private Rigidbody rb;
 	private Weapon owner;
@@ -22,7 +24,7 @@ public class Projectile : MonoBehaviour
 	private IEnumerator lifeTimeCoroutine;
 	private IEnumerator fadeAwayCoroutine;
 
-	void Start()
+	void Awake()
     {
 		rb = GetComponent<Rigidbody>();
 		trail = GetComponentInChildren<TrailRenderer>();
@@ -39,12 +41,21 @@ public class Projectile : MonoBehaviour
 
 	public void ArmProjectile(Weapon ownerWeapon)
 	{
-		owner = ownerWeapon;
-		damage = ownerWeapon.damage;
+		if (ownerWeapon != null)
+		{
+			owner = ownerWeapon;
+			damage = ownerWeapon.damage;
+		}
+		else
+		{
+			damage = naturalDamage;
+		}
 		timeAtFired = Time.time;
 		if (!raycastManager)
 			raycastManager = FindObjectOfType<RaycastManager>();
 		raycastManager.AddProjectile(this);
+		if (rb.velocity.magnitude < 1f)
+			rb.AddForce(transform.forward * naturalSpeed, ForceMode.Impulse);
 	}
 
 	public void Hit(RaycastHit hit)

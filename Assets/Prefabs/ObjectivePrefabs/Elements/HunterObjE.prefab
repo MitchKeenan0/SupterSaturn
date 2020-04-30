@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &733637985974023878
+--- !u!1 &8332184736459955387
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 733637985974023896}
-  - component: {fileID: 733637985974023879}
+  - component: {fileID: 8332184736459955365}
+  - component: {fileID: 8332184736459955384}
   m_Layer: 0
-  m_Name: UnstablePlanetObjE
+  m_Name: HunterObjE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &733637985974023896
+--- !u!4 &8332184736459955365
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 733637985974023878}
+  m_GameObject: {fileID: 8332184736459955387}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31,19 +31,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &733637985974023879
+--- !u!114 &8332184736459955384
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 733637985974023878}
+  m_GameObject: {fileID: 8332184736459955387}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f62a273e672c2348a4cc1394fec8703, type: 3}
+  m_Script: {fileID: 11500000, guid: 624b760c8c6736e4c8e8e594bf45506b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementPrefab: {fileID: 6143951963767822065, guid: 59dba22e4fde6d84fb95501109ea2ea6,
+  elementPrefab: {fileID: 3319588428128761079, guid: 3f3281fc954b29841b689b6dae7bccf9,
     type: 3}
-  planetMinSize: 200
-  planetMaxSize: 300
+  spawnRangeMinimum: 500
+  spawnRangeMaximum: 1000

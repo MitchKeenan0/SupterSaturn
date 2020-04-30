@@ -20,11 +20,16 @@ public class TouchOrbit : MonoBehaviour
 	public float moveAcceleration = 10f;
 	public float turnAcceleration = 10f;
 
+	public Vector3 startRotationVector;
+	public float offsetX = 0f;
+	public float offsetY = 0f;
+
 	private CameraController cameraController;
 	private InputController inputController;
 	private Camera cameraMain;
 	private Vector3 moveInput = Vector3.zero;
 	private Vector3 moveVector = Vector3.zero;
+	private Vector3 orbitOffset = Vector3.zero;
 	private float inputX = 0f;
 	private float inputZ = 0f;
 	private float lx = 0f;
@@ -33,6 +38,7 @@ public class TouchOrbit : MonoBehaviour
 	private float y = 0f;
 	private float twoTouchDistance = 0;
 	private bool bActivated = true;
+	private bool bMoveMode = false;
 	private Transform anchorTransform = null;
 
 	public float GetInputScale() { return moveSpeed; }
@@ -50,7 +56,7 @@ public class TouchOrbit : MonoBehaviour
 		y = angles.x;
 		distance = distanceMax;
 		this.enabled = bActivated;
-		//moveInput = new Vector3(-150f, -150f, 0f);
+		transform.rotation = Quaternion.LookRotation(startRotationVector);
 	}
 
 	void Update()
@@ -98,6 +104,22 @@ public class TouchOrbit : MonoBehaviour
 
 	void LateUpdate()
 	{
+		if (bMoveMode)
+			InputOrbit();
+		else
+			IdleFollow();
+	}
+
+	void IdleFollow()
+	{
+		Vector3 followPosition = anchorTransform.position + (cameraMain.transform.forward * -distance);
+		Vector3 offset = (cameraMain.transform.right * inputX) + (cameraMain.transform.forward * inputZ);
+		offset.y = 0f;
+		transform.position = followPosition + offset;
+	}
+
+	void InputOrbit()
+	{
 		Quaternion rotation = Quaternion.identity;
 		Vector3 position = orbitAnchor.transform.position;
 
@@ -118,7 +140,9 @@ public class TouchOrbit : MonoBehaviour
 		}
 
 		transform.rotation = rotation;
-		transform.position = position; ///Vector3.MoveTowards(transform.position, position + moveVector, Time.deltaTime * moveAcceleration * moveSpeed);
+
+		Vector3 offset = ((transform.right * offsetX) + (transform.up * offsetY)) * Mathf.Abs(distance);
+		transform.position = position + offset; ///Vector3.MoveTowards(transform.position, position + moveVector, Time.deltaTime * moveAcceleration * moveSpeed);
 	}
 
 	public void ResetAnchor(bool overrideDistance)
@@ -144,16 +168,13 @@ public class TouchOrbit : MonoBehaviour
 	{
 		anchorTransform = value;
 		distance = distanceMax - distanceMin;
+		transform.position = value.position;
+		transform.rotation = Quaternion.LookRotation(startRotationVector);
 	}
 
 	public void SetScoped(bool value)
 	{
 		float focal = value ? 24.78f : 8.26f;
 		cameraMain.focalLength = focal;
-	}
-
-	public void SetTarget(Transform target)
-	{
-
 	}
 }

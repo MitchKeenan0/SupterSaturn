@@ -50,6 +50,8 @@ MonoBehaviour:
   impactPrefab: {fileID: 4929095700065580019, guid: a3764d103d069fa41ad9f6e2ddabde43,
     type: 3}
   maxLifetime: 5
+  naturalSpeed: 1000
+  naturalDamage: 1
 --- !u!54 &298334711150030354
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -156,7 +158,7 @@ PrefabInstance:
     - target: {fileID: 6447380005445377347, guid: c28a3a33ec843ed489ebefc9c291072c,
         type: 3}
       propertyPath: m_Parameters.widthMultiplier
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c28a3a33ec843ed489ebefc9c291072c, type: 3}

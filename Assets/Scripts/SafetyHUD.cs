@@ -61,10 +61,10 @@ public class SafetyHUD : MonoBehaviour
 							CollisionWarningPanel cwp = collisionWarningPanel.GetComponent<CollisionWarningPanel>();
 							if (cwp != null)
 								cwp.SetDistance(Vector3.Distance(cameraMain.transform.position, hit.point));
-							bHit = true;
-							orbitController.SetClampedLength(i);
-							orbitController.ClearPartialTrajectory(i);
 						}
+						bHit = true;
+						orbitController.SetClampedLength(i);
+						orbitController.ClearPartialTrajectory(i);
 					}
 				}
 			}

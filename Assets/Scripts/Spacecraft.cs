@@ -379,7 +379,7 @@ public class Spacecraft : MonoBehaviour
 		if (!rb)
 			rb = GetComponent<Rigidbody>();
 		float X = Random.Range(-500f, 500f);
-		float Y = Random.Range(-500f, 500f);
+		float Y = 0f;
 		transform.position = new Vector3(X, Y, -1500f);
 		rb.AddForce(transform.forward * Mathf.Pow(mainEnginePower, 3), ForceMode.Impulse);
 		PowerHUD powerHud = FindObjectOfType<PowerHUD>();

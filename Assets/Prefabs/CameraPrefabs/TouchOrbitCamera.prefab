@@ -67,11 +67,14 @@ MonoBehaviour:
   mousePanSpeed: 0.6
   yMinLimit: -85
   yMaxLimit: 85
-  distanceMin: 6
+  distanceMin: 50
   distanceMax: 500
   moveSpeed: 1
   moveAcceleration: 20
   turnAcceleration: 100
+  startRotationVector: {x: -30, y: -80, z: 0}
+  offsetX: 0
+  offsetY: 0.5
 --- !u!114 &8112959024247920879
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,10 +133,10 @@ Camera:
   m_BackGroundColor: {r: 0, g: 0.12409287, b: 0.33962262, a: 1}
   m_projectionMatrixMode: 2
   m_GateFitMode: 2
-  m_FOVAxisMode: 0
+  m_FOVAxisMode: 1
   m_SensorSize: {x: 10.65, y: 10}
   m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 5
+  m_FocalLength: 7.3292336
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -142,9 +145,9 @@ Camera:
     height: 1
   near clip plane: 0.01
   far clip plane: 5000
-  field of view: 90
+  field of view: 68.603584
   orthographic: 0
-  orthographic size: 5
+  orthographic size: 1080
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

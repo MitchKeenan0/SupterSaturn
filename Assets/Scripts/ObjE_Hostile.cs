@@ -21,7 +21,9 @@ public class ObjE_Hostile : ObjectiveElement
 		if (element != null)
 		{
 			float spawnRange = Random.Range(spawnRangeMinimum, spawnRangeMaximum);
-			element.transform.position = Random.onUnitSphere * spawnRange;
+			Vector3 spawnPosition = Random.onUnitSphere * spawnRange;
+			spawnPosition.y = 0f;
+			element.transform.position = spawnPosition;
 			element.SetActive(true);
 		}
 	}

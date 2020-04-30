@@ -28,7 +28,7 @@ public class InputController : MonoBehaviour
 	private bool bFreeCameraMode = false;
 	private bool bStopped = false;
 	private bool bCameraScope = false;
-	private int cameraMode = 0;
+	private int cameraMode = 1;
 	private int numCameraModes = 0;
 	private List<float> distanceModes;
 

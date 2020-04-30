@@ -14,6 +14,7 @@ public class ScanRay : Scan
 	private float timeElapsed = 0f;
 	private bool bUpdating = false;
 	private bool bArrangingCone = false;
+	private int lines = 0;
 	private IEnumerator coneSpreadCoroutine;
 
     void Awake()
@@ -36,8 +37,8 @@ public class ScanRay : Scan
 					RayLine line = lineList[i];
 					if (line.IsEnabled())
 					{
-						if (line.LineFinished() && (timeElapsed < (scanLifetime * 0.88f)))
-							GetSpreadVector(i);
+						//if (line.LineFinished() && (timeElapsed < (scanLifetime * 0.88f)))
+						//	GetSpreadVector(i);
 						line.UpdateRayLine();
 					}
 
@@ -98,6 +99,7 @@ public class ScanRay : Scan
 		{
 			GetSpreadVector(i);
 			i++;
+			lines++;
 			yield return new WaitForSeconds(interval);
 		}
 		bArrangingCone = false;

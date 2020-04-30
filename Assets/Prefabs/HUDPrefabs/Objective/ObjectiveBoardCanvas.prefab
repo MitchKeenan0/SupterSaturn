@@ -407,12 +407,14 @@ MonoBehaviour:
   moonObjectCountFactor: 5
   secondarySystemObjects:
   - {fileID: 9144373088868220479, guid: b647e7df7985768408db7ccd99499044, type: 3}
-  secondaryObjectCountFactor: 3
+  secondaryObjectCountFactor: 5
   salientObjects:
   - {fileID: 9144373088868220479, guid: b069169be6a5d7e4a9967b6fdcdcf517, type: 3}
   - {fileID: 9144373088868220479, guid: 4c100115572d594428839b8a5e7d9b79, type: 3}
   - {fileID: 9144373088868220479, guid: afd0de1a8074d454989b4b7c1d529738, type: 3}
-  salientObjectCountFactor: 1
+  - {fileID: 9144373088868220479, guid: 2458c34128b01904ebe13f5f3bcade26, type: 3}
+  - {fileID: 9144373088868220479, guid: 6b3103ee33ecd8e498e39fd39518c822, type: 3}
+  salientObjectCountFactor: 3
 --- !u!1 &6022743590557241850
 GameObject:
   m_ObjectHideFlags: 0

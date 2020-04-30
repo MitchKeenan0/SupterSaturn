@@ -21,9 +21,9 @@ public class PlanetArm : MonoBehaviour
 		if (offsetRotationScale != 0f)
 		{
 			Vector3 offsetEuler = Vector3.zero;
-			offsetEuler.x = Random.Range(-offsetRotationScale, offsetRotationScale);
+			//offsetEuler.x = Random.Range(-offsetRotationScale, offsetRotationScale);
 			offsetEuler.y = Random.Range(-offsetRotationScale, offsetRotationScale);
-			offsetEuler.z = Random.Range(-offsetRotationScale, offsetRotationScale);
+			//offsetEuler.z = Random.Range(-offsetRotationScale, offsetRotationScale);
 			transform.rotation = Quaternion.Euler(offsetEuler);
 			if (circle != null)
 			{

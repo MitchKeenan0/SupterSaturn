@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4812151267204492421}
-  - component: {fileID: 1699210816221806066}
+  - component: {fileID: 6029074018755240313}
   - component: {fileID: 1717023931117533250}
   m_Layer: 0
   m_Name: RouteLinePrefab
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1699210816221806066
+--- !u!114 &6029074018755240313
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

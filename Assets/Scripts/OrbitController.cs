@@ -127,13 +127,17 @@ public class OrbitController : MonoBehaviour
 		{
 			trajecto = deltaVelocity;
 			if (bSimulateEnginePower)
-				trajecto += spacecraft.transform.forward * (spacecraft.mainEnginePower * deltaTime);
-
-			int numGravs = gravityList.Count;
-			for (int i = 0; i < numGravs; i++)
 			{
-				Gravity gr = gravityList[i];
-				trajecto += gr.GetGravity(rb, currentPosition, rb.mass);
+				trajecto += spacecraft.transform.forward * (spacecraft.mainEnginePower * deltaTime);
+			}
+			else
+			{
+				int numGravs = gravityList.Count;
+				for (int i = 0; i < numGravs; i++)
+				{
+					Gravity gr = gravityList[i];
+					trajecto += gr.GetGravity(rb, currentPosition, rb.mass);
+				}
 			}
 
 			velocity = currentPosition + trajecto;
@@ -168,7 +172,7 @@ public class OrbitController : MonoBehaviour
 					line.gameObject.SetActive(true);
 
 					float normal = Mathf.InverseLerp(0f, trajectoryCount, i);
-					float lineAlpha = Mathf.Lerp(0.9f, 0.6f, Mathf.Sqrt(normal));
+					float lineAlpha = Mathf.Lerp(0.9f, 0.1f, Mathf.Sqrt(normal));
 					Color lineColor = new Color(lineAlpha, lineAlpha, lineAlpha);
 					float velocity = rb.velocity.magnitude * 0.01f;
 					lineColor.g = Mathf.Clamp(lineColor.g - velocity, 0f, 1f);
