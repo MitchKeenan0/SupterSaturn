@@ -213,7 +213,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bodyTransform: {fileID: 3221379657793794119}
   radius: 5000
-  strength: 500
+  strength: 300
 --- !u!114 &3401129090991631764
 MonoBehaviour:
   m_ObjectHideFlags: 0

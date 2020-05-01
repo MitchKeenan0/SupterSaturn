@@ -28,6 +28,9 @@ public class Health : MonoBehaviour
 	{
 		if (bAlive)
 		{
+			if (!spacecraft)
+				spacecraft = GetComponent<Spacecraft>();
+
 			int damage = Mathf.Clamp(value, -(maxHealth + 1), maxHealth + 1);
 			currentHealth += damage;
 
@@ -63,6 +66,15 @@ public class Health : MonoBehaviour
 			if (teamFleetHud != null)
 				teamFleetHud.SetHealthBarValue(spacecraft);
 		}
+	}
+
+	public void RaiseMaxHealth(int value)
+	{
+		maxHealth += value;
+		if (!teamFleetHud)
+			teamFleetHud = FindObjectOfType<TeamFleetHUD>();
+		if (teamFleetHud != null)
+			teamFleetHud.SetHealthBarValue(spacecraft);
 	}
 
 	public int GetHealth() { return currentHealth; }

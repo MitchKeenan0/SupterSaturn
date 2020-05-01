@@ -204,7 +204,7 @@ public class TeamFleetHUD : MonoBehaviour
 					{
 						Health health = sp.GetComponent<Health>();
 						healthBar.InitHeath(health.maxHealth, health.GetHealth());
-						///Debug.Log("fleet hud set health bar");
+						Debug.Log("hp max " + health.maxHealth + "  hp " + health.GetHealth());
 					}
 				}
 			}

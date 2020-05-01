@@ -132,7 +132,7 @@ public class CardRosterSlot : MonoBehaviour, IDeselectHandler
 		if (card != null)
 			sp = card.cardObjectPrefab.GetComponent<Spacecraft>();
 
-		game.SetPlayerSpacecraft(sp);
+		//game.SetPlayerSpacecraft(sp);
 
 		SetSlotActive(card != null);
 	}

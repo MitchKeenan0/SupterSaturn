@@ -72,11 +72,19 @@ public class TouchOrbit : MonoBehaviour
 			if (Input.touchCount == 1)
 			{
 				Touch touch = Input.GetTouch(0);
-				moveInput = touch.deltaPosition;
-				if (moveInput != Vector3.zero)
+				if (touch.phase == TouchPhase.Began)
 				{
-					inputX = moveInput.x;
-					inputZ = moveInput.y;
+					moveInput = Vector3.zero;
+					if (moveInput != Vector3.zero)
+					{
+						inputX = moveInput.x;
+						inputZ = moveInput.y;
+					}
+				}
+				else if (touch.phase == TouchPhase.Moved)
+				{
+					Vector3 deltaTouch = touch.deltaPosition;
+					moveInput += deltaTouch;
 				}
 			}
 

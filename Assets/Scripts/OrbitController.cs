@@ -80,7 +80,7 @@ public class OrbitController : MonoBehaviour
 	private IEnumerator durationUpdateCoroutine;
 	private IEnumerator DurationUpdate(float duration)
 	{
-		bool previous = bUpdating;
+		bool previous = bUpdating || bBackgroundUpdating;
 		bUpdating = true;
 		yield return new WaitForSeconds(duration);
 		if (!previous)
@@ -152,7 +152,7 @@ public class OrbitController : MonoBehaviour
 	void RenderTrajectory()
 	{
 		int trajectoryCount = trajectoryList.Count;
-		for (int i = 0; i < trajectoryCount; i++)
+		for (int i = 1; i < trajectoryCount; i++)
 		{
 			LineRenderer line = null;
 			if ((i < lineList.Count) && (lineList[i] != null))
@@ -259,7 +259,7 @@ public class OrbitController : MonoBehaviour
 		if (!bBackgroundUpdating)
 		{
 			bBackgroundUpdating = true;
-			backgroundCoroutine = BackgroundUpdate(2f);
+			backgroundCoroutine = BackgroundUpdate(1f);
 			StartCoroutine(backgroundCoroutine);
 		}
 	}

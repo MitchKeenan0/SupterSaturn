@@ -20,6 +20,7 @@ public class Game : MonoBehaviour
 	private GameObject ghostCampaign;
 	private Card playerSpacecraftCard;
 	private Crew crew;
+	private Spacecraft playerSpacecraft = null;
 	private List<Card> enemyCardList;
 	private List<Spacecraft> spacecraftList;
 	private List<Spacecraft> enemySpacecraftList;
@@ -31,6 +32,7 @@ public class Game : MonoBehaviour
 	private bool bFleetTutorialClosed = false;
 	private bool bGameTutorialClosed = false;
 
+	public Spacecraft GetPlayerSpacecraft() { return playerSpacecraft; }
 	public Card GetSelectedCard() { return playerSpacecraftCard; }
 	public List<Card> GetEnemyCards() { return enemyCardList; }
 	public List<Spacecraft> GetSpacecraftList() { return spacecraftList; }
@@ -131,6 +133,7 @@ public class Game : MonoBehaviour
 
 	public void SetPlayerSpacecraft(Spacecraft sp)
 	{
+		playerSpacecraft = sp;
 		if (spacecraftList == null)
 			spacecraftList = new List<Spacecraft>();
 		if (spacecraftList.Count > 0)

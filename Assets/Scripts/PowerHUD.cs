@@ -32,7 +32,7 @@ public class PowerHUD : MonoBehaviour
 	void UpdatePowerBarValue()
 	{
 		float power = powerPlant.GetPower();
-		float currentPowerPercent = power / powerPlant.maxPower;
+		float currentPowerPercent = power / powerPlant.GetMaxPower();
 		float percentBarSize = powerPanelWidth * currentPowerPercent;
 		Vector2 barSizeDelta = new Vector2(percentBarSize, powerPanelHeight);
 		powerBar.sizeDelta = barSizeDelta;

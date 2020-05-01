@@ -12,7 +12,7 @@ public class ScoreHUD : MonoBehaviour
 
 	private ScoreComboManager comboManager;
 	private Camera cameraMain;
-	private BattleOutcome battleOutcome;
+	private ExpCanvas expCanvas;
 	private CanvasGroup scoreContextCG;
 	private Text scoreContextText;
 	private int score = 0;
@@ -27,7 +27,7 @@ public class ScoreHUD : MonoBehaviour
 		scoreContextCG = scoreContextPanel.GetComponent<CanvasGroup>();
 		scoreContextCG.alpha = 0f;
 		scoreContextText = scoreContextPanel.GetComponentInChildren<Text>();
-		battleOutcome = FindObjectOfType<BattleOutcome>();
+		expCanvas = FindObjectOfType<ExpCanvas>();
 		comboManager = FindObjectOfType<ScoreComboManager>();
 		cameraMain = Camera.main;
 		for (int i = 0; i < expectedPopupLoad; i++)
@@ -56,11 +56,8 @@ public class ScoreHUD : MonoBehaviour
 	{
 		maxScore = maxValue;
 		score += value;
-		valueText.text = score.ToString() + " / " + maxScore.ToString();
-		if (!battleOutcome)
-			battleOutcome = FindObjectOfType<BattleOutcome>();
-		if ((battleOutcome != null) && (score >= maxScore))
-			battleOutcome.BattleOver(true);
+		valueText.text = score.ToString();
+		expCanvas.AddExp(value);
 	}
 
 	ScorePopup GetScorePanel()
@@ -87,11 +84,11 @@ public class ScoreHUD : MonoBehaviour
 		return newScorePanel;
 	}
 
-	public void UpdateMaxScore(int max)
-	{
-		maxScore += max;
-		UpdateScore(0, maxScore);
-	}
+	//public void UpdateMaxScore(int max)
+	//{
+	//	maxScore += max;
+	//	UpdateScore(0, maxScore);
+	//}
 
 	public void PopupScore(Vector3 worldPosition, int scoreValue, int maxValue)
 	{

@@ -44,7 +44,6 @@ public class Salient : MonoBehaviour
 			if (hit.transform == playerObject.transform)
 			{
 				bHit = true;
-				Debug.Log("los hit");
 			}
 		}
 		bPlayerLOS = bHit;

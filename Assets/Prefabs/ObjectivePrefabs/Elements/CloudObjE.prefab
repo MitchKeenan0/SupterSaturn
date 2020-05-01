@@ -47,5 +47,5 @@ MonoBehaviour:
     type: 3}
   cloudChildren: 10
   cloudSpread: 500
-  spawnRangeMinimum: 1000
-  spawnRangeMaximum: 2000
+  spawnRangeMinimum: 100
+  spawnRangeMaximum: 1000

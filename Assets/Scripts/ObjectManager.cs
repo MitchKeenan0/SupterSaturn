@@ -83,8 +83,8 @@ public class ObjectManager : MonoBehaviour
 		{
 			if (numTeam == 0)
 				battleOutcome.BattleOver(false);
-			else if (numEnemy == 0)
-				battleOutcome.BattleOver(true);
+			//else if (numEnemy == 0)
+			//	battleOutcome.BattleOver(true);
 		}
 	}
 
