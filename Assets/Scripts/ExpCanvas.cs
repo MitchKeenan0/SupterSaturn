@@ -62,7 +62,7 @@ public class ExpCanvas : MonoBehaviour
 		UpdateExpBar();
 		float nextLevelSize = currentLevelExpSize * levelSizeScaling;
 		currentLevelExpSize = nextLevelSize;
-		Time.timeScale = 0.001f;
+		Time.timeScale = 0.2f;
 		SetLevelPanelActive(true);
 	}
 

@@ -7,6 +7,7 @@ public class OrbitController : MonoBehaviour
 	public LineRenderer trajectoryLinePrefab;
 	public int maxLineCount = 250;
 	public float updateInterval = 0.1f;
+	public float backgroundUpdateInterval = 2f;
 
 	private Autopilot autopilot;
 	private Rigidbody rb;
@@ -54,10 +55,12 @@ public class OrbitController : MonoBehaviour
 
 	public void SetDirection(Vector3 inputVector)
 	{
-		//bUpdating = false;
-		//if (bBackgroundUpdating)
-			//StopCoroutine(backgroundCoroutine);
-		//bBackgroundUpdating = false;
+		if (bBackgroundUpdating)
+		{
+			bBackgroundUpdating = false;
+			StopCoroutine(backgroundCoroutine);
+		}
+
 		if (autopilot != null)
 		{
 			///autopilot.FaceVelocity(false);
@@ -80,7 +83,7 @@ public class OrbitController : MonoBehaviour
 	private IEnumerator durationUpdateCoroutine;
 	private IEnumerator DurationUpdate(float duration)
 	{
-		bool previous = bUpdating || bBackgroundUpdating;
+		bool previous = bUpdating;
 		bUpdating = true;
 		yield return new WaitForSeconds(duration);
 		if (!previous)
@@ -109,7 +112,7 @@ public class OrbitController : MonoBehaviour
 		bool bSimulateEnginePower = true;
 		if (duration <= 0f)
 		{
-			duration = Mathf.Clamp(Mathf.Pow(rb.velocity.magnitude, 2), 0.001f, 60f);
+			duration = Mathf.Clamp(Mathf.Pow(rb.velocity.magnitude, 2), 0.001f, 30f);
 			bSimulateEnginePower = false;
 		}
 
@@ -256,12 +259,9 @@ public class OrbitController : MonoBehaviour
 	{
 		yield return new WaitForSeconds(waitTime);
 		SetUpdating(false);
-		if (!bBackgroundUpdating)
-		{
-			bBackgroundUpdating = true;
-			backgroundCoroutine = BackgroundUpdate(1f);
-			StartCoroutine(backgroundCoroutine);
-		}
+		bBackgroundUpdating = true;
+		backgroundCoroutine = BackgroundUpdate(backgroundUpdateInterval);
+		StartCoroutine(backgroundCoroutine);
 	}
 
 	private IEnumerator backgroundCoroutine;

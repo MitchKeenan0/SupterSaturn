@@ -11,6 +11,7 @@ public class Spacecraft : MonoBehaviour
 	public float maneuverPower = 0.6f;
 	public float thrustPowerCost = 2f;
 	public string spacecraftName = "Spacecraft";
+	public float warpInSpeed = 100f;
 	public ParticleSystem thrustParticles;
 	public Transform destroyedParticlesPrefab;
 	public Sprite craftIcon;
@@ -43,7 +44,7 @@ public class Spacecraft : MonoBehaviour
 	private TrailRenderer[] trailComponents;
 	private int numMarked = 0;
 	private float timeAtLastClick = 0f;
-	private bool bThrottle = false;
+	private bool bThrottling = false;
 	private float throttleVelocityTarget = 0f;
 
 	public Agent GetAgent() { return agent; }
@@ -123,7 +124,7 @@ public class Spacecraft : MonoBehaviour
 				velocity += sideJetVector;
 
 			/// thrust
-			if (!bThrottle)
+			if (!bThrottling)
 			{
 				if (mainEnginesVector != Vector3.zero)
 					velocity += mainEnginesVector * mainEnginePower * Time.deltaTime;
@@ -149,9 +150,9 @@ public class Spacecraft : MonoBehaviour
 	private IEnumerator throttleCoroutine;
 	private IEnumerator ThrottleForDuration(float waitTime)
 	{
-		bThrottle = true;
+		bThrottling = true;
 		yield return new WaitForSeconds(waitTime);
-		bThrottle = false;
+		bThrottling = false;
 	}
 
 	public void Maneuver(Vector3 targetDirection)
@@ -170,7 +171,7 @@ public class Spacecraft : MonoBehaviour
 
 	public void MainEngines(float driveDirection)
 	{
-		bThrottle = false;
+		bThrottling = false;
 		mainEnginesVector = transform.forward * driveDirection;
 		//var ps = thrustParticles.main;
 		var em = thrustParticles.emission;
@@ -227,7 +228,7 @@ public class Spacecraft : MonoBehaviour
 			{
 				Transform destroyedEffects = Instantiate(destroyedParticlesPrefab, transform.position, transform.rotation);
 				Destroy(destroyedEffects.gameObject, 5f);
-				Destroy(gameObject, 0.2f);
+				///Destroy(gameObject, 0.2f);
 			}
 		}
 
@@ -317,31 +318,32 @@ public class Spacecraft : MonoBehaviour
 		return hudIcon;
 	}
 
-	/// Collision and mouse touch
-	private void OnMouseOver()
+	public void PlayerStart()
 	{
-		if (!spacecraftInformation)
-			spacecraftInformation = GetComponent<SpacecraftInformation>();
-		if (cameraController != null)
-			cameraController.SetMouseContext(true, this);
-	}
-
-	private void OnMouseExit()
-	{
-		if (cameraController != null)
-			cameraController.SetMouseContext(false, null);
-	}
-
-	private void OnMouseDown()
-	{
-		if (mouseSelection != null)
+		if (!rb)
+			rb = GetComponent<Rigidbody>();
+		float X = Random.Range(-500f, 500f);
+		float Y = 0f;
+		float Z = Random.Range(-1000f, -1500f);
+		transform.position = new Vector3(X, Y, Z);
+		PowerHUD powerHud = FindObjectOfType<PowerHUD>();
+		if (powerHud != null)
 		{
-			if ((Time.time - timeAtLastClick) >= 1f)
-				mouseSelection.UpdateSelection(GetComponent<Selectable>(), true);
-			else if (cameraController != null)
-				cameraController.SetOrbitTarget(transform);
+			Powerplant plant = GetComponentInChildren<Powerplant>();
+			if (plant != null)
+				powerHud.SetPowerSource(plant);
 		}
-		timeAtLastClick = Time.time;
+		gameObject.tag = "Player";
+		WarpIn();
+	}
+
+	public void WarpIn()
+	{
+		gameObject.SetActive(true);
+		Vector3 enterPosition = transform.position;
+		transform.position = enterPosition;
+		Vector3 enterVelocity = (Vector3.zero - transform.position).normalized * warpInSpeed;
+		GetComponent<Rigidbody>().AddForce(enterVelocity, ForceMode.Impulse);
 	}
 
 	private void OnCollisionEnter(Collision collision)
@@ -371,23 +373,6 @@ public class Spacecraft : MonoBehaviour
 			int randomScore = Random.Range(10, 50);
 			battleOutcome.AddScore(randomScore);
 			battleOutcome.BattleOver(true);
-		}
-	}
-
-	public void PlayerStart()
-	{
-		if (!rb)
-			rb = GetComponent<Rigidbody>();
-		float X = Random.Range(-500f, 500f);
-		float Y = 0f;
-		transform.position = new Vector3(X, Y, -1500f);
-		rb.AddForce(transform.forward * Mathf.Pow(mainEnginePower, 3), ForceMode.Impulse);
-		PowerHUD powerHud = FindObjectOfType<PowerHUD>();
-		if (powerHud != null)
-		{
-			Powerplant plant = GetComponentInChildren<Powerplant>();
-			if (plant != null)
-				powerHud.SetPowerSource(plant);
 		}
 	}
 }

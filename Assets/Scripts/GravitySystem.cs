@@ -6,6 +6,7 @@ public class GravitySystem : MonoBehaviour
 {
 	public float updateInterval = 0.1f;
 
+	private CelestialHUD celestialHud;
 	private List<Gravity> gravityList;
 	private IEnumerator loadCoroutine;
 	private IEnumerator surroundingCheckCoroutine;
@@ -17,6 +18,7 @@ public class GravitySystem : MonoBehaviour
 	{
 		gravityList = new List<Gravity>();
 		rbMasterList = new List<List<Rigidbody>>();
+		celestialHud = FindObjectOfType<CelestialHUD>();
 		loadCoroutine = LoadWait(0.3f);
 		StartCoroutine(loadCoroutine);
 	}
@@ -25,6 +27,7 @@ public class GravitySystem : MonoBehaviour
 	{
 		yield return new WaitForSeconds(waitTime);
 		InitGravitySystem();
+		celestialHud.InitCelestialHud();
 	}
 
 	void InitGravitySystem()
@@ -50,14 +53,14 @@ public class GravitySystem : MonoBehaviour
 	{
 		while (true)
 		{
-			yield return new WaitForSeconds(intervalTime);
-
 			int numGravity = gravityList.Count;
 			if (numGravity > 0)
 			{
 				for (int i = 0; i < numGravity; i++)
 					UpdateGravities(i);
 			}
+
+			yield return new WaitForSeconds(intervalTime);
 		}
 	}
 

@@ -9,6 +9,7 @@ public class BattleFleet : MonoBehaviour
 	public Vector3[] groupPositions;
 
 	private Game game;
+	private TeamFleetHUD teamHud;
 	private Player player;
 	private CardToSpacecraftLoader cardLoader;
 
@@ -17,6 +18,7 @@ public class BattleFleet : MonoBehaviour
 	void Awake()
 	{
 		game = FindObjectOfType<Game>();
+		teamHud = FindObjectOfType<TeamFleetHUD>();
 		player = FindObjectOfType<Player>();
 		cardLoader = FindObjectOfType<CardToSpacecraftLoader>();
 	}
@@ -35,39 +37,21 @@ public class BattleFleet : MonoBehaviour
 
 	void InitSavedFleet()
 	{
-		List<Spacecraft> spacecraftList = new List<Spacecraft>(game.GetSpacecraftList());
-		if (teamID != 0)
-			spacecraftList = game.GetEnemySpacecraftList();
-
-		int numCards = spacecraftList.Count;
-		for (int i = 0; i < numCards; i++)
+		Spacecraft sp = game.GetSpacecraftList()[0];
+		if (sp != null)
 		{
-			Spacecraft sp = spacecraftList[i];
-			if (sp != null)
-			{
-				Vector3 amidstPosition = Vector3.forward * -i;
-				if (groupPositions.Length > i)
-					amidstPosition = groupPositions[i];
-				Vector3 worldPosition = transform.position;
-				if (bSphericalPositions)
-					worldPosition = Random.onUnitSphere * transform.position.z;
-				sp.transform.position = worldPosition + amidstPosition;
-				sp.transform.SetParent(transform);
+			Card spCard = null;
 
-				Card spCard = null;
-				if (teamID == 0)
-					spCard = game.GetSelectedCard();
-				else
-					spCard = game.cardLibrary[Random.Range(0, game.npcCardLibrary.Length - 1)];
-				cardLoader.UploadCardToSpacecraft(spCard, sp);
+			if (teamID == 0)
+				spCard = game.GetSelectedCard();
+			else
+				spCard = game.cardLibrary[Random.Range(0, game.npcCardLibrary.Length - 1)];
+			cardLoader.UploadCardToSpacecraft(spCard, sp);
 
-				sp.gameObject.SetActive(true);
+			sp.gameObject.SetActive(true);
 
-				if (sp.GetAgent() != null)
-				{
-					sp.GetAgent().teamID = teamID;
-				}
-			}
+			if (sp.GetAgent() != null)
+				sp.GetAgent().teamID = teamID;
 		}
 	}
 }

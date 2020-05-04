@@ -204,7 +204,8 @@ public class Game : MonoBehaviour
 			playerSpacecraftCard = selectedCard;
 			SetSelectedCard(selectedCard);
 			Spacecraft sp = CreateSpacecraft(selectedCard);
-			SetPlayerSpacecraft(sp);
+			if (FindObjectOfType<OrbitController>() != null)
+				SetPlayerSpacecraft(sp);
 
 			// player health
 			int savedHealth = save.playerHealth;

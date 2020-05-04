@@ -15,7 +15,6 @@ public class SalientSniper : Salient
 	public override void InitSalience()
 	{
 		base.InitSalience();
-		Debug.Log("init");
 	}
 
 	public override void Sense()
@@ -28,7 +27,6 @@ public class SalientSniper : Salient
 	public override void Move(Vector3 moveDirection, ForceMode forceMode)
 	{
 		base.Move(moveDirection, forceMode);
-		Debug.Log("moving");
 	}
 
 	public override void Attac()

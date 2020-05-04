@@ -13,6 +13,13 @@ public class NameLibrary : MonoBehaviour
 	public string[] uniqueLocationNames = { "Reccez", "Aqua Nebula", "Karaoke Nebula", "Randal's Cloud", "The Maelstrom", "Teh Garden", "Hydrogean", "Helix Nebula", "Sauna", "Guedes Giant", "Harrow" };
 	public string[] rareLocationNames = { "Family Fortress", "Edne", "Reasearch Base", "Nike", "HG-413", "Lost Temple", "Super Saturn", "Seed of the Stars", "Matrices of Or", "Father Star", "Never", "Empress" };
 
+	public List<string[]> moonNameMasterList;
+	public string[] moonNames1 = { "Lancet", "Blunder", "Farefox", "Gastro", "Bluebird", "Blase", "Rosen", "Ippa Yaya", "Fountain" };
+	public string[] moonNames2 = { "Grosjean", "Yinyang", "Eboness", "Jewel of Carrera", "Bondine", "Abbey", "Rocky Joe", "Grassball" };
+	public string[] moonNames3 = { "Quantib", "Hemma", "Yundon", "Jabel", "Yoona", "Pleyene", "Callisto", "Hunt Ltd.", "Tangerine" };
+	public string[] moonNames4 = { "Bateau", "Coracle", "Ley", "Foldes", "Gemma", "Abenie", "Maison", "Ouellete", "Tiger", "Salo" };
+	public string[] moonNames5 = { "Conjiquas", "Faille", "Oopsi", "Never", "Mem" };
+
 	public string[] identityNames = { "Bauer", "Culture Viper", "Carrera", "Voltez", "Kara", "Abriette", "Tangerine", "Minerva", "Chandra", "Ali", "Mahdi" };
 	public string[] fleetNames = { "Rogue Navy", "Scerzaron", "Thief Cartel", "Herald Fleet", "Bodysnatchers" };
 
@@ -32,6 +39,13 @@ public class NameLibrary : MonoBehaviour
 		//{
 		//	Destroy(gameObject);
 		//}
+
+		moonNameMasterList = new List<string[]>();
+		moonNameMasterList.Add(moonNames1);
+		moonNameMasterList.Add(moonNames2);
+		moonNameMasterList.Add(moonNames3);
+		moonNameMasterList.Add(moonNames4);
+		moonNameMasterList.Add(moonNames5);
 
 		usedCommonLocations = new List<int>();
 		usedUniqueLocations = new List<int>();

@@ -46,7 +46,7 @@ public class CelestialHUD : MonoBehaviour
 				if ((i < panelList.Count) && (panelList[i] != null))
 				{
 					RectTransform rt = panelList[i];
-					Vector3 celestialBodyPosition = celestialBodyList[i].transform.position;
+					Vector3 celestialBodyPosition = celestialBodyList[i].GetPlanetPosition();
 					if (Vector3.Distance(cameraMain.transform.position, celestialBodyPosition) >= 900)
 					{
 						Vector3 toBody = celestialBodyPosition - cameraMain.transform.position;

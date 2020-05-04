@@ -63,7 +63,6 @@ public class InputController : MonoBehaviour
 
 	public void Begin()
 	{
-		//AllStop(false);
 		CameraMode();
 		ActivateButton(stopButton, false, true);
 		orbitController.SetUpdatingForDuration(0.3f);

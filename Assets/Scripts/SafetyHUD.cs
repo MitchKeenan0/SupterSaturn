@@ -49,7 +49,7 @@ public class SafetyHUD : MonoBehaviour
 				Vector3 lineStart = trajectoryList[i];
 				Vector3 lineEnd = lineStart + (trajectoryList[i + 1] - trajectoryList[i]);
 				RaycastHit hit = raycastManager.CustomLinecast(lineStart, lineEnd);
-				if ((hit.transform != null))
+				if ((hit.transform != null) && (!hit.collider.isTrigger))
 				{
 					if (hit.transform.gameObject.GetComponent<Gravity>())
 					{

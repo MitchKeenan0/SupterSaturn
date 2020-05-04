@@ -50,7 +50,7 @@ MonoBehaviour:
   impactPrefab: {fileID: 4929095700065580019, guid: a3764d103d069fa41ad9f6e2ddabde43,
     type: 3}
   maxLifetime: 5
-  naturalSpeed: 1000
+  naturalSpeed: 150
   naturalDamage: 1
 --- !u!54 &298334711150030354
 Rigidbody:

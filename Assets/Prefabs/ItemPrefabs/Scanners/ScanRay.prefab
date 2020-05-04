@@ -50,7 +50,7 @@ MonoBehaviour:
     type: 3}
   rayLineCount: 3
   rayRange: 5000
-  raySpread: 100
+  raySpread: 250
   raySpeed: 500
 --- !u!1 &5145164364138951353
 GameObject:
