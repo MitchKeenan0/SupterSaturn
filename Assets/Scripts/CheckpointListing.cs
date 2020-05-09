@@ -13,9 +13,10 @@ public class CheckpointListing : MonoBehaviour
 		checkCompleteImage.enabled = false;
     }
 
-	public void SetListing(string checkpointName)
+	public void SetListing(string checkpointName, Color checkpointColor)
 	{
 		checkpointNameText.text = checkpointName;
+		checkpointNameText.color = checkpointColor;
 	}
 
 	public void ClearCheckpoint()

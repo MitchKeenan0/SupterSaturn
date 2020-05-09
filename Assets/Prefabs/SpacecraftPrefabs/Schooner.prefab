@@ -401,6 +401,7 @@ MonoBehaviour:
   maneuverPower: 0.2
   thrustPowerCost: 2
   spacecraftName: Schooner
+  warpInSpeed: 100
   thrustParticles: {fileID: 2104020796097920098}
   destroyedParticlesPrefab: {fileID: 2766248710761914840, guid: 05469ee24ae991f41b944cbcf9f43ad0,
     type: 3}
@@ -975,7 +976,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 93e4d38080aaf504699d4e662f0204ba, type: 2}
+  - {fileID: 2100000, guid: dc1c5319cbf977a4bbeb8852b9a42be1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

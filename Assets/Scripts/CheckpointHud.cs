@@ -6,6 +6,7 @@ public class CheckpointHud : MonoBehaviour
 {
 	public Transform checkpointListPanel;
 	public GameObject checkpointListingPrefab;
+	public Color[] colorPool;
 
 	private List<CelestialBody> celestialBodyList;
 	private List<CheckpointListing> checkpointListingList;
@@ -27,9 +28,16 @@ public class CheckpointHud : MonoBehaviour
 		{
 			CelestialBody cb = celestials[i];
 			celestialBodyList.Add(cb);
+
+			int randomColorIndex = Random.Range(0, colorPool.Length);
+			Color checkpointColor = colorPool[randomColorIndex];
+			Checkpoint cp = cb.gameObject.GetComponentInChildren<Checkpoint>();
+			if (cp != null)
+				cp.SetColor(checkpointColor);
+
 			CheckpointListing cl = SpawnListing();
 			string checkpointName = cb.celestialBodyName;
-			cl.SetListing(checkpointName);
+			cl.SetListing(checkpointName, checkpointColor);
 			checkpointListingList.Add(cl);
 		}
 	}

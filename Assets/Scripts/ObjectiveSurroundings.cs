@@ -44,7 +44,7 @@ public class ObjectiveSurroundings : MonoBehaviour
 
 	void InitMoons(int rating)
 	{
-		int numMoons = Random.Range(rating, (rating * moonObjectCountFactor));
+		int numMoons = Random.Range(3, (rating * moonObjectCountFactor));
 		for (int i = 0; i < numMoons; i++)
 		{
 			int moons = moonObjects.Length;

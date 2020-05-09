@@ -142,7 +142,7 @@ MonoBehaviour:
   maxSize: 3
   minSize: 2
   bScannable: 0
-  colliderScale: 0.4
+  colliderScale: 0.5
   vertexRangeScale: 0.1
 --- !u!114 &1806651087923316135
 MonoBehaviour:

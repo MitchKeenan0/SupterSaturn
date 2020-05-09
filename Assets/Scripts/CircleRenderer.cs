@@ -70,6 +70,12 @@ public class CircleRenderer : MonoBehaviour
 		circleLineRenderer.enabled = false;
 	}
 
+	public void SetColor(Color value)
+	{
+		circleLineRenderer.startColor = value;
+		circleLineRenderer.endColor = value;
+	}
+
 	public void SetPosition(Vector3 value)
 	{
 		transform.position = value;
