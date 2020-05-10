@@ -22,6 +22,7 @@ public class OrbitController : MonoBehaviour
 	private float burnDuration = 0f;
 	private bool bUpdating = false;
 	private bool bBackgroundUpdating = false;
+	private bool bRenderFlip = false;
 	private int trajectoryClampedLength = 0;
 
 	public Autopilot GetAutopilot() { return autopilot; }
@@ -46,62 +47,15 @@ public class OrbitController : MonoBehaviour
 		autopilot = ap;
 		if (autopilot != null)
 			rb = autopilot.gameObject.GetComponent<Rigidbody>();
+
+		bBackgroundUpdating = true;
+		backgroundCoroutine = BackgroundUpdate(backgroundUpdateInterval);
+		StartCoroutine(backgroundCoroutine);
 	}
 
 	public void SetBurnDuration(float value)
 	{
 		burnDuration = value;
-	}
-
-	public void SetDirection(Vector3 inputVector)
-	{
-		if (bBackgroundUpdating)
-		{
-			bBackgroundUpdating = false;
-			StopCoroutine(backgroundCoroutine);
-		}
-
-		if (autopilot != null)
-		{
-			///autopilot.FaceVelocity(false);
-			SimulateTrajectory(inputVector, burnDuration);
-			RenderTrajectory();
-		}
-	}
-
-	public void SetUpdating(bool value)
-	{
-		bUpdating = value;
-	}
-
-	public void SetUpdatingForDuration(float value)
-	{
-		durationUpdateCoroutine = DurationUpdate(value);
-		StartCoroutine(durationUpdateCoroutine);
-	}
-
-	private IEnumerator durationUpdateCoroutine;
-	private IEnumerator DurationUpdate(float duration)
-	{
-		bool previous = bUpdating;
-		bUpdating = true;
-		yield return new WaitForSeconds(duration);
-		if (!previous)
-			DelayStop(0.2f);
-		else
-			bUpdating = previous;
-	}
-
-	void Update()
-	{
-		if (bUpdating)
-		{
-			if ((rb != null) && (rb.velocity.magnitude > 0f))
-			{
-				SimulateTrajectory(rb.velocity, -1f);
-				RenderTrajectory();
-			}
-		}
 	}
 
 	void SimulateTrajectory(Vector3 heading, float duration)
@@ -112,7 +66,7 @@ public class OrbitController : MonoBehaviour
 		bool bSimulateEnginePower = true;
 		if (duration <= 0f)
 		{
-			duration = Mathf.Clamp(Mathf.Pow(rb.velocity.magnitude, 2), 0.001f, 30f);
+			duration = Mathf.Clamp(rb.velocity.magnitude * 0.6f, 0.001f, 30f);
 			bSimulateEnginePower = false;
 		}
 
@@ -157,6 +111,9 @@ public class OrbitController : MonoBehaviour
 		int trajectoryCount = trajectoryList.Count;
 		for (int i = 1; i < trajectoryCount; i++)
 		{
+			bRenderFlip = !bRenderFlip;
+			if (bRenderFlip)
+				continue;
 			LineRenderer line = null;
 			if ((i < lineList.Count) && (lineList[i] != null))
 			{
@@ -168,7 +125,7 @@ public class OrbitController : MonoBehaviour
 				Vector3 lineStart = trajectoryList[i];
 				if (trajectoryList.Count > (i + 1))
 				{
-					Vector3 lineEnd = lineStart + ((trajectoryList[i + 1] - trajectoryList[i]) * 0.6f);
+					Vector3 lineEnd = lineStart + ((trajectoryList[i + 1] - trajectoryList[i]) * 0.8f);
 					line.SetPosition(0, lineStart);
 					line.SetPosition(1, lineEnd);
 					line.enabled = true;
@@ -177,9 +134,9 @@ public class OrbitController : MonoBehaviour
 					float normal = Mathf.InverseLerp(0f, trajectoryCount, i);
 					float lineAlpha = Mathf.Lerp(0.9f, 0.1f, Mathf.Sqrt(normal));
 					Color lineColor = new Color(lineAlpha, lineAlpha, lineAlpha);
-					float velocity = rb.velocity.magnitude * 0.01f;
-					lineColor.g = Mathf.Clamp(lineColor.g - velocity, 0f, 1f);
-					lineColor.b = Mathf.Clamp(lineColor.b - velocity, 0f, 1f);
+					float velocity = rb.velocity.magnitude * 0.001f;
+					lineColor.g = Mathf.Clamp(lineColor.g - velocity, 0f, 0.5f);
+					lineColor.b = Mathf.Clamp(lineColor.b - velocity, 0f, 0.5f);
 					Color start = lineColor * 0.8f;
 					start.a = 1f;
 					line.startColor = start;
@@ -249,18 +206,10 @@ public class OrbitController : MonoBehaviour
 		ClearPartialTrajectory(0);
 	}
 
-	private IEnumerator delayStopCoroutine;
-	public void DelayStop(float waitTime)
+	public void SetBackgroundUpdateInterval(float value)
 	{
-		delayStopCoroutine = StopDelay(waitTime);
-		StartCoroutine(delayStopCoroutine);
-	}
-	public IEnumerator StopDelay(float waitTime)
-	{
-		yield return new WaitForSeconds(waitTime);
-		SetUpdating(false);
-		bBackgroundUpdating = true;
-		backgroundCoroutine = BackgroundUpdate(backgroundUpdateInterval);
+		StopAllCoroutines();
+		backgroundCoroutine = BackgroundUpdate(value);
 		StartCoroutine(backgroundCoroutine);
 	}
 

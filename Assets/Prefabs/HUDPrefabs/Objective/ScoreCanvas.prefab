@@ -93,7 +93,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 389}
+  m_AnchoredPosition: {x: 0, y: 500}
   m_SizeDelta: {x: 700, y: 100}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &1857566116969408006
@@ -448,6 +448,7 @@ GameObject:
   - component: {fileID: 9158545953593624228}
   - component: {fileID: 9158545953593624231}
   - component: {fileID: 9158545953593624229}
+  - component: {fileID: 1740145975}
   m_Layer: 5
   m_Name: TotalScorePanel
   m_TagString: Untagged
@@ -538,6 +539,18 @@ MonoBehaviour:
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
+--- !u!225 &1740145975
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9158545953593624233}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &9158545953914946837
 GameObject:
   m_ObjectHideFlags: 0

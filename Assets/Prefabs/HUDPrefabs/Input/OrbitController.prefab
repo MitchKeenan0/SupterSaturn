@@ -47,3 +47,4 @@ MonoBehaviour:
     type: 3}
   maxLineCount: 300
   updateInterval: 0.5
+  backgroundUpdateInterval: 2

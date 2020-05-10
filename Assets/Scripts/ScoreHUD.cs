@@ -52,9 +52,10 @@ public class ScoreHUD : MonoBehaviour
 		}
 	}
 
-	void UpdateScore(int value, int maxValue)
+	public void UpdateScore(int value, int maxValue)
 	{
-		maxScore = maxValue;
+		if (maxValue != 0)
+			maxScore = maxValue;
 		score += value;
 		valueText.text = score.ToString();
 		expCanvas.AddExp(value);

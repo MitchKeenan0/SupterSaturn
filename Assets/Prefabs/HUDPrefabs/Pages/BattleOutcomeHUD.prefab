@@ -319,7 +319,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -159}
+  m_AnchoredPosition: {x: 0, y: -551}
   m_SizeDelta: {x: 1000, y: 190}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1358001832518739445
@@ -387,10 +387,10 @@ RectTransform:
   m_Father: {fileID: 1358001833102996776}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -22.999878}
-  m_SizeDelta: {x: 1000, y: 100}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -51.354767}
+  m_SizeDelta: {x: 1000, y: -2037.2896}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1358001832548853351
 CanvasRenderer:
@@ -1024,7 +1024,7 @@ GameObject:
   - component: {fileID: 2105705849802858212}
   - component: {fileID: 2143745380596940590}
   - component: {fileID: 1630267213514571576}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: OptionPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1048,7 +1048,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -281}
+  m_AnchoredPosition: {x: 0, y: -201}
   m_SizeDelta: {x: 300, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2143745380596940590
@@ -1095,7 +1095,7 @@ GameObject:
   - component: {fileID: 4696455991694495271}
   - component: {fileID: 3219298509219252937}
   - component: {fileID: 3152160138713845271}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1254,7 +1254,7 @@ GameObject:
   - component: {fileID: 1299645483791181236}
   - component: {fileID: 1216287409719454887}
   - component: {fileID: 2445378862919587666}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: ReturnButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}

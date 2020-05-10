@@ -10,6 +10,7 @@ public class Checkpoint : MonoBehaviour
 	private GameObject playerObject = null;
 	private CelestialBody celestialBody;
 	private CheckpointHud checkpointHud = null;
+	private ScoreHUD scoreHud = null;
 	private CircleRenderer circleRenderer = null;
 	private ParticleSystem clearParticles;
 	private bool bHit = false;
@@ -21,6 +22,7 @@ public class Checkpoint : MonoBehaviour
 		circleRenderer = transform.root.GetComponentInChildren<CircleRenderer>();
 		clearParticles = GetComponentInChildren<ParticleSystem>();
 		checkpointHud = FindObjectOfType<CheckpointHud>();
+		scoreHud = FindObjectOfType<ScoreHUD>();
 	}
 
 	void ClearCheckpoint()
@@ -32,6 +34,8 @@ public class Checkpoint : MonoBehaviour
 			bHit = true;
 			SetColor(Color.gray);
 			clearParticles.Play();
+			scoreHud.PopupScore(transform.position, 1, 0);
+			scoreHud.ToastContext("Checkpoint clear +" + 1);
 		}
 	}
 

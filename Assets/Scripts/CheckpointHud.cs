@@ -12,8 +12,15 @@ public class CheckpointHud : MonoBehaviour
 	private List<CheckpointListing> checkpointListingList;
 	private IEnumerator loadCoroutine;
 
+	private BattleOutcome outcome = null;
+	private Timer timer = null;
+	private int checkpoints = 0;
+	private int clearedCheckpoints = 0;
+
     void Start()
     {
+		outcome = FindObjectOfType<BattleOutcome>();
+		timer = FindObjectOfType<Timer>();
 		loadCoroutine = LoadDelay(0.3f);
 		StartCoroutine(loadCoroutine);
     }
@@ -33,12 +40,15 @@ public class CheckpointHud : MonoBehaviour
 			Color checkpointColor = colorPool[randomColorIndex];
 			Checkpoint cp = cb.gameObject.GetComponentInChildren<Checkpoint>();
 			if (cp != null)
+			{
+				checkpoints++;
 				cp.SetColor(checkpointColor);
 
-			CheckpointListing cl = SpawnListing();
-			string checkpointName = cb.celestialBodyName;
-			cl.SetListing(checkpointName, checkpointColor);
-			checkpointListingList.Add(cl);
+				CheckpointListing cl = SpawnListing();
+				string checkpointName = cb.celestialBodyName;
+				cl.SetListing(checkpointName, checkpointColor);
+				checkpointListingList.Add(cl);
+			}
 		}
 	}
 
@@ -60,5 +70,14 @@ public class CheckpointHud : MonoBehaviour
 		int bodyIndex = celestialBodyList.IndexOf(celestialBody);
 		CheckpointListing cl = checkpointListingList[bodyIndex];
 		cl.ClearCheckpoint();
+		clearedCheckpoints++;
+		if (clearedCheckpoints >= checkpoints)
+		{
+			float time = Time.timeSinceLevelLoad;
+			float levelScore = FindObjectOfType<ObjectiveType>().objectiveValue / time;
+			FindObjectOfType<ScoreHUD>().UpdateScore(Mathf.RoundToInt(levelScore), Mathf.RoundToInt(levelScore));
+			outcome.BattleOver(true);
+			timer.Freeze();
+		}
 	}
 }

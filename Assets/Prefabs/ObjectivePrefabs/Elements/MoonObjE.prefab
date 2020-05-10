@@ -47,4 +47,4 @@ MonoBehaviour:
     type: 3}
   sizeMinimum: 50
   sizeMaximum: 100
-  distanceScale: 1.6
+  distanceScale: 1

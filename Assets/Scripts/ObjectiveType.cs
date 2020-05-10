@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class ObjectiveType : MonoBehaviour
 {
 	public string objectiveName = "";
+	public int objectiveValue = 100;
 	public string objectiveDescription = "";
 	public Sprite objectiveIcon;
 	public int objectiveRating = 1;

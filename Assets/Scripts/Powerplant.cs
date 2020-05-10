@@ -25,7 +25,7 @@ public class Powerplant : MonoBehaviour
     void Awake()
     {
 		_maxPower = maxPower;
-		Debug.Log("_maxPower init " + _maxPower);
+		///Debug.Log("_maxPower init " + _maxPower);
 		currentPower = _maxPower * startPowerFactor;
     }
 

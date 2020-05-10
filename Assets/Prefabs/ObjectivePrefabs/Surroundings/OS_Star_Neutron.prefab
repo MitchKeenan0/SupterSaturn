@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 062e15f163f4a3c41bfa9691e302c875, type: 3}
+  gameValue: 1000
   iconScale: 150
   iconColor: {r: 0.61960787, g: 0.961297, b: 1, a: 1}
   bSecondary: 0

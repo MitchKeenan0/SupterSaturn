@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ObjectiveSurroundingsIcon : MonoBehaviour
 {
 	public Sprite icon;
+	public int gameValue = 100;
 	public float iconScale = 1f;
 	public Color iconColor;
 	public bool bSecondary = false;

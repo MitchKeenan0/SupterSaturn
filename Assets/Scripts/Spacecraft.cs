@@ -113,21 +113,20 @@ public class Spacecraft : MonoBehaviour
 			/// rotating
 			if (turningVector != Vector3.zero)
 			{
-				float kernScale = Mathf.Clamp(Vector3.Dot(transform.forward.normalized, turningVector.normalized) * 3f, 0.5f, 3f);
-				angularVelocity = Vector3.MoveTowards(angularVelocity, turningVector, Time.deltaTime * turningPower * kernScale);
+				angularVelocity = Vector3.MoveTowards(angularVelocity, turningVector, Time.deltaTime * turningPower);
 				transform.rotation = Quaternion.LookRotation(angularVelocity);
 			}
 
 			/// vectoring
 			velocity = Vector3.zero;
-			if (sideJetVector != Vector3.zero)
-				velocity += sideJetVector;
+			//if (sideJetVector != Vector3.zero)
+			//	velocity += sideJetVector;
 
 			/// thrust
 			if (!bThrottling)
 			{
 				if (mainEnginesVector != Vector3.zero)
-					velocity += mainEnginesVector * mainEnginePower * Time.deltaTime;
+					velocity += transform.forward * mainEnginePower * Time.deltaTime;
 
 				if (velocity != Vector3.zero)
 					rb.AddForce(velocity);
@@ -324,7 +323,7 @@ public class Spacecraft : MonoBehaviour
 			rb = GetComponent<Rigidbody>();
 		float X = Random.Range(-500f, 500f);
 		float Y = 0f;
-		float Z = Random.Range(-1000f, -1500f);
+		float Z = Random.Range(-750f, -1000f);
 		transform.position = new Vector3(X, Y, Z);
 		PowerHUD powerHud = FindObjectOfType<PowerHUD>();
 		if (powerHud != null)
@@ -341,6 +340,7 @@ public class Spacecraft : MonoBehaviour
 	{
 		gameObject.SetActive(true);
 		Vector3 enterPosition = transform.position;
+		enterPosition.y = 0f;
 		transform.position = enterPosition;
 		Vector3 enterVelocity = (Vector3.zero - transform.position).normalized * warpInSpeed;
 		GetComponent<Rigidbody>().AddForce(enterVelocity, ForceMode.Impulse);

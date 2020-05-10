@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6477217870984987282}
   - component: {fileID: 6477217870984987283}
   - component: {fileID: 6477217870984987280}
+  - component: {fileID: 237756115}
   m_Layer: 0
   m_Name: OuterStars
   m_TagString: Untagged
@@ -284,7 +285,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 10
+      scalar: 3
       minScalar: 0.1
       maxCurve:
         serializedVersion: 2
@@ -663,7 +664,7 @@ ParticleSystem:
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
-    radiusThickness: 0.5
+    radiusThickness: 1
     donutRadius: 0.2
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
@@ -4761,3 +4762,22 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!114 &237756115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6477217870984987281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40b3f8e52d954ce4c8d89069b4abdfeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  xForceDirection: -0.25
+  yForceDirection: 0.5
+  zForceDirection: 0
+  speedMultiplier: 1
+  bRandomRotationStart: 0
+  bRandomSpeed: 0
+  worldPivot: 0

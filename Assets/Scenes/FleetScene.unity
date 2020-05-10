@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 5
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: d379b65adfa9630439b884de9e7b0b6a, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -52,7 +52,7 @@ LightmapSettings:
     m_AlbedoBoost: 1
     m_EnvironmentLightingMode: 0
     m_EnableBakedLightmaps: 1
-    m_EnableRealtimeLightmaps: 1
+    m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
     serializedVersion: 12
     m_Resolution: 2
@@ -454,7 +454,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 746298053}
   m_LocalRotation: {x: -0.35188052, y: -0.24160522, z: -0.85029626, w: -0.30790144}
-  m_LocalPosition: {x: -0.24, y: 0.49, z: 11.68}
+  m_LocalPosition: {x: -0.24, y: 0.49, z: 100}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -483,6 +483,7 @@ GameObject:
   m_Component:
   - component: {fileID: 807171724}
   - component: {fileID: 807171723}
+  - component: {fileID: 807171725}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -535,7 +536,7 @@ Light:
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -557,13 +558,32 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 807171722}
-  m_LocalRotation: {x: 0.14663507, y: 0.5074459, z: -0.08810723, w: 0.84453183}
-  m_LocalPosition: {x: -90, y: 33, z: -50}
+  m_LocalRotation: {x: -0.12712929, y: 0.6592671, z: -0.11446777, w: -0.73219}
+  m_LocalPosition: {x: 49, y: 306, z: 186}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2036855452}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 19.7, y: 62, z: 0}
+  m_LocalEulerAnglesHint: {x: 19.7, y: 276, z: 0}
+--- !u!114 &807171725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 807171722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40b3f8e52d954ce4c8d89069b4abdfeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  xForceDirection: 0
+  yForceDirection: -0.5
+  zForceDirection: 0
+  speedMultiplier: 1
+  bRandomRotationStart: 0
+  bRandomSpeed: 0
+  worldPivot: 0
 --- !u!4 &1272570956 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6477385112627734035, guid: af110f4f0f7bbbf4da146e5f0dadd170,
@@ -1255,6 +1275,21 @@ PrefabInstance:
       propertyPath: m_Text
       value: map
       objectReference: {fileID: 0}
+    - target: {fileID: 8940093166705724425, guid: 63e6342632b5d2949af6e854e7a14da2,
+        type: 3}
+      propertyPath: m_Colors.m_NormalColor.r
+      value: 0.15726237
+      objectReference: {fileID: 0}
+    - target: {fileID: 8940093166705724425, guid: 63e6342632b5d2949af6e854e7a14da2,
+        type: 3}
+      propertyPath: m_Colors.m_NormalColor.g
+      value: 0.3584906
+      objectReference: {fileID: 0}
+    - target: {fileID: 8940093166705724425, guid: 63e6342632b5d2949af6e854e7a14da2,
+        type: 3}
+      propertyPath: m_Colors.m_NormalColor.b
+      value: 0.20038272
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63e6342632b5d2949af6e854e7a14da2, type: 3}
 --- !u!1001 &1896965900
@@ -1528,6 +1563,7 @@ GameObject:
   - component: {fileID: 2106777902}
   - component: {fileID: 2106777901}
   - component: {fileID: 2106777905}
+  - component: {fileID: 2106777906}
   m_Layer: 0
   m_Name: Planet
   m_TagString: Untagged
@@ -1627,6 +1663,21 @@ MonoBehaviour:
   bRandomRotationStart: 0
   bRandomSpeed: 0
   worldPivot: 0
+--- !u!114 &2106777906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2106777900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68278e60c69e0d84c9938837ad4fa2f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialMin: 0.01
+  initialMax: 0.02
+  percentage: 0.333
 --- !u!1001 &828669406125831715
 PrefabInstance:
   m_ObjectHideFlags: 0

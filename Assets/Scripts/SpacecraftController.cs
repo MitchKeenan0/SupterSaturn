@@ -12,6 +12,7 @@ public class SpacecraftController : MonoBehaviour
 	private Spacecraft spacecraft;
 	private Autopilot autopilot;
 	private Rigidbody rb;
+	private LineRenderer touchLineRenderer;
 	private TouchLine touchLine;
 	private InputController inputController;
 	private OrbitController orbitController;
@@ -40,6 +41,7 @@ public class SpacecraftController : MonoBehaviour
 
 	void Start()
     {
+		touchLineRenderer = GetComponent<LineRenderer>();
 		spacecraft = GetComponent<Spacecraft>();
 		if (!spacecraft && (transform.parent != null))
 			spacecraft = transform.parent.GetComponentInChildren<Spacecraft>();
@@ -104,7 +106,7 @@ public class SpacecraftController : MonoBehaviour
 			else if (!bEndTouchDelay && !touchLine.IsTouching() && bLining)
 				EndTouch();
 
-			if (bLining)
+			if (bLining && (Input.touchCount > 0))
 			{
 				touchLineVector = touchLine.GetLine() * moveLineScale;
 				touchPosition = touchLine.GetPosition();
@@ -125,10 +127,23 @@ public class SpacecraftController : MonoBehaviour
 					Plane plane = new Plane(Vector3.up, Vector3.zero);
 					float distance = 0; // this will return the distance from the camera
 					if (plane.Raycast(ray, out distance))
-					{ // if plane hit...
+					{
 						Vector3 pos = ray.GetPoint(distance); // get the point
 						onscreenDirection = pos; // pos has the position in the plane you've touched
 					}
+
+					/// touch line UI
+					touchLineRenderer.SetPosition(0, transform.position);
+					touchLineRenderer.SetPosition(1, onscreenDirection);
+					float lineDist = Vector3.Distance(transform.position, onscreenDirection);
+					Color lineColor = new Color(1f, lineDist, 1f);
+					float velocity = rb.velocity.magnitude * 0.01f;
+					lineColor.g = Mathf.Clamp(lineColor.g - velocity, 0f, 1f);
+					lineColor.b = Mathf.Clamp(lineColor.b - velocity, 0f, 1f);
+					Color start = lineColor * 0.8f;
+					start.a = 1f;
+					touchLineRenderer.startColor = start;
+					touchLineRenderer.endColor = lineColor;
 
 					/// burn duration
 					burnDuration = Vector3.Distance(onscreenDirection, spacecraft.transform.position) / 600f;
@@ -137,10 +152,9 @@ public class SpacecraftController : MonoBehaviour
 
 					//Vector3 navigationTarget = (Quaternion.Euler(cameraMain.transform.eulerAngles) * (onscreenDirection * 0.9f));
 					//navigationTarget += cameraMain.transform.forward * 900f;
-					Vector3 navigationVector = onscreenDirection;// + spacecraft.transform.position;
+					Vector3 navigationVector = onscreenDirection;
 					navigationVector.y = 0f;
 					directionVector = navigationVector;
-					orbitController.SetDirection(directionVector);
 
 					/// visualize
 					autopilot.ManeuverRotationTo(directionVector);
@@ -168,9 +182,8 @@ public class SpacecraftController : MonoBehaviour
 
 	void StartTouch()
 	{
-		Debug.Log("start touch");
 		bStartTouchDelay = true;
-		startTouchCoroutine = StartTouchDelay(0.5f);
+		startTouchCoroutine = StartTouchDelay(0.1f);
 		StartCoroutine(startTouchCoroutine);
 	}
 
@@ -183,33 +196,39 @@ public class SpacecraftController : MonoBehaviour
 			bUpdateNavigationTarget = false;
 			directionVector = Vector3.zero;
 			bLining = true;
+			touchLineRenderer.enabled = true;
 			navigationHud.SetActive(true);
 			bStartTouchDelay = false;
 			bInputting = true;
-			Debug.Log("bLining = true");
-		}
-		else
-		{
-			Debug.Log("cancelled");
+
+			autopilot.FireEngineBurn(99f, false);
+			orbitController.SetBackgroundUpdateInterval(0.1f);
 		}
 	}
 
 	void EndTouch()
 	{
 		bEndTouchDelay = true;
-		StartCoroutine("EndTouchDelay");
+		endTouchCoroutine = EndTouchDelay();
+		StartCoroutine(endTouchCoroutine);
 	}
 
 	private IEnumerator endTouchCoroutine;
 	private IEnumerator EndTouchDelay()
 	{
 		bLining = false;
-		yield return new WaitForSeconds(0.2f);
-		autopilot.ManeuverRotationTo(directionVector - autopilot.gameObject.GetComponent<Rigidbody>().velocity);
+		touchLineRenderer.enabled = false;
+
+		yield return new WaitForSeconds(0.1f);
+
+		autopilot.ManeuverRotationTo(directionVector);
+		autopilot.MainEngineShutdown();
+		orbitController.SetBackgroundUpdateInterval(2f);
+
 		bInputting = false;
 		bEndTouchDelay = false;
 		bUpdateNavigationTarget = true;
-		inputController.SetNavigationButtonMode(1);
+		///inputController.SetNavigationButtonMode(1);
 		inputController.DeactivateButtonIndex(0, false, false);
 	}
 
@@ -241,5 +260,15 @@ public class SpacecraftController : MonoBehaviour
 	public void SetInputting(bool value)
 	{
 		bInputting = value;
+		
+		if (bInputting)
+		{
+			StartTouch();
+			
+		}
+		else
+		{
+			EndTouch();
+		}
 	}
 }

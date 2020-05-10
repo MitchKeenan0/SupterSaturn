@@ -5,17 +5,17 @@ using UnityEngine.UI;
 
 public class ObjectiveListing : MonoBehaviour
 {
-	public Text nameText;
+	public Text valueText;
 	public GameObject ratingPanel;
 	public GameObject ratingStarPrefab;
 	public Transform primaryT;
 	public Transform secondaryT;
-	public Transform salientT;
 
 	private ObjectiveType objectiveType;
 	private MainMenu menu;
 	private string objectiveName = "";
 	private Sprite objectiveIcon;
+	private int objectiveValue = 0;
 	private int objectiveRating = 1;
 	private List<GameObject> ratingStarList;
 	private List<ObjectiveElement> surroundingsElementList;
@@ -34,8 +34,6 @@ public class ObjectiveListing : MonoBehaviour
 		objectiveName = objectiveType.objectiveName;
 		objectiveIcon = objectiveType.objectiveIcon;
 		objectiveRating = objectiveType.objectiveRating;
-
-		nameText.text = objectiveName;
 		FillRatings(objectiveRating);
 	}
 
@@ -52,6 +50,7 @@ public class ObjectiveListing : MonoBehaviour
 		{
 			ObjectiveSurroundingsIcon osi = iconList[i];
 			surroundingsElementList.Add(osi.objectiveElementPrefab);
+			objectiveValue += osi.gameValue;
 
 			if (i == 0)
 			{
@@ -68,10 +67,7 @@ public class ObjectiveListing : MonoBehaviour
 				}
 				else
 				{
-					if (osi.bSalient)
-						osi.transform.SetParent(salientT);
-					else
-						osi.transform.SetParent(secondaryT);
+					osi.transform.SetParent(secondaryT);
 				}
 			}
 			osi.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
@@ -100,6 +96,11 @@ public class ObjectiveListing : MonoBehaviour
 			}
 			rareSecondaries.Clear();
 		}
+
+		/// tally objective value
+		string sValue = objectiveValue.ToString("n0");
+		valueText.text = sValue;
+		Debug.Log("objValue " + objectiveValue);
 	}
 
 	void FillRatings(int value)

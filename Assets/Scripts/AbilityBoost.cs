@@ -26,7 +26,6 @@ public class AbilityBoost : Ability
 		mySpacecraft.mainEnginePower = boostPower;
 		if (mySpacecraft.GetMainEngineVector() == Vector3.zero)
 			autopilot.FireEngineBurn(duration, false);
-		orbitController.SetUpdatingForDuration(duration);
 		powerplant.InstantCost(powerCost);
 
 		if (startEffectPrefab != null)

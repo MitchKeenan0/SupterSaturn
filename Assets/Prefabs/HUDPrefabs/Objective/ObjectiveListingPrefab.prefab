@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6801015718352907092}
   - component: {fileID: 7305532341076490421}
-  - component: {fileID: 1081460947948714336}
+  - component: {fileID: 7791296158614643455}
   m_Layer: 5
   m_Name: Secondary
   m_TagString: Untagged
@@ -35,8 +35,8 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 215, y: 47.7}
-  m_Pivot: {x: 1, y: 0}
+  m_SizeDelta: {x: 304.7, y: 90.6}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &7305532341076490421
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -45,7 +45,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1664306304206458016}
   m_CullTransparentMesh: 0
---- !u!114 &1081460947948714336
+--- !u!114 &7791296158614643455
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -104,7 +104,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -5, y: -100}
+  m_AnchoredPosition: {x: -15, y: -65}
   m_SizeDelta: {x: 110, y: 40}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &5628390652506731015
@@ -231,13 +231,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ae20ea2f4e69fe47a4f659be70d60c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameText: {fileID: 5628390652989964116}
+  valueText: {fileID: 5628390652989964116}
   ratingPanel: {fileID: 5628390652506731010}
   ratingStarPrefab: {fileID: 5442929703891035869, guid: 5d27ca1e6c9d1bc4da687442214708f6,
     type: 3}
   primaryT: {fileID: 9222424966102062537}
   secondaryT: {fileID: 6801015718352907092}
-  salientT: {fileID: 8701280862836504924}
 --- !u!114 &5628390652875000133
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -258,7 +257,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0, g: 0.07450981, b: 0.20392159, a: 1}
+    m_NormalColor: {r: 0, g: 0.07450981, b: 0.20392159, a: 0.05882353}
     m_HighlightedColor: {r: 0, g: 0.113751814, b: 0.31132078, a: 1}
     m_PressedColor: {r: 0, g: 0.18008105, b: 0.49056602, a: 1}
     m_SelectedColor: {r: 0, g: 0.18039216, b: 0.4901961, a: 1}
@@ -306,7 +305,7 @@ GameObject:
   - component: {fileID: 5628390652989964119}
   - component: {fileID: 5628390652989964116}
   m_Layer: 5
-  m_Name: ObjectiveNameText
+  m_Name: ObjectiveValueText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -328,8 +327,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -5, y: -5}
-  m_SizeDelta: {x: 150, y: 75}
+  m_AnchoredPosition: {x: -15, y: -15}
+  m_SizeDelta: {x: 135.15, y: 50}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &5628390652989964119
 CanvasRenderer:
@@ -352,7 +351,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.39215687, g: 0.39215687, b: 0.39215687, a: 1}
+  m_Color: {r: 0.8962264, g: 0.8962264, b: 0.8962264, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -361,10 +360,10 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 3c4286ecb6a45574e8a9bd24f4991868, type: 3}
-    m_FontSize: 30
-    m_FontStyle: 0
+    m_FontSize: 40
+    m_FontStyle: 2
     m_BestFit: 1
-    m_MinSize: 3
+    m_MinSize: 2
     m_MaxSize: 40
     m_Alignment: 2
     m_AlignByGeometry: 0
@@ -372,77 +371,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Objective Name
---- !u!1 &5643862076804012692
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8701280862836504924}
-  - component: {fileID: 4536818874410393290}
-  - component: {fileID: 4221110053913762778}
-  m_Layer: 5
-  m_Name: Salient
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &8701280862836504924
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5643862076804012692}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 6431935965141624498}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 215, y: 47.7}
-  m_Pivot: {x: 1, y: 0.5}
---- !u!222 &4536818874410393290
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5643862076804012692}
-  m_CullTransparentMesh: 0
---- !u!114 &4221110053913762778
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5643862076804012692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -405508275, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 3
-  m_Spacing: 0
-  m_ChildForceExpandWidth: 0
-  m_ChildForceExpandHeight: 0
-  m_ChildControlWidth: 0
-  m_ChildControlHeight: 0
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
+  m_Text: 10,000
 --- !u!1 &6303859595774091325
 GameObject:
   m_ObjectHideFlags: 0
@@ -474,7 +403,6 @@ RectTransform:
   m_Children:
   - {fileID: 9222424966102062537}
   - {fileID: 6801015718352907092}
-  - {fileID: 8701280862836504924}
   m_Father: {fileID: 5628390652875000131}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -504,7 +432,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
+    m_Left: 15
     m_Right: 0
     m_Top: 0
     m_Bottom: 0

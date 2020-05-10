@@ -36,7 +36,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &9144373088868220479
 MonoBehaviour:
@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: e315c682597502a4d8e62da6b5769d3a, type: 3}
+  gameValue: 10
   iconScale: 50
   iconColor: {r: 0.3820755, g: 0.3820755, b: 1, a: 1}
   bSecondary: 0

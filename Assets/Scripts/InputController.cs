@@ -65,7 +65,7 @@ public class InputController : MonoBehaviour
 	{
 		CameraMode();
 		ActivateButton(stopButton, false, true);
-		orbitController.SetUpdatingForDuration(0.3f);
+		UpdateStatusText("Initial approach");
 	}
 
 	public void DeactivateButtonIndex(int index, bool value, bool bFinished)
@@ -173,31 +173,28 @@ public class InputController : MonoBehaviour
 		{
 			bTurningOff = false;
 			bStopped = false;
-			orbitController.DelayStop(0.2f);
 		}
 
 		if (bStopped && !bEngineShutdown)
 			orbitController.KillOrbit();
 
-		bool bActivated = bStopped || bEngineShutdown;
+		bool bActivated = bStopped;
 		ActivateButton(stopButton, bActivated, bTurningOff);
 	}
 
 	public void NavigationMode(bool value)
 	{
-		bool bTurningOff = bNavigationMode;
-		if (value == false)
-			bTurningOff = true;
-		if (bTurningOff)
-		{
-			value = false;
-			SpacecraftController sc = spacecraft.GetComponentInChildren<SpacecraftController>();
-			bool controllerActive = sc.IsActive();
-			sc.CancelNavCommand();
-			spacecraft.GetComponent<Autopilot>().FireEngineBurn(99f, false);
-			orbitController.SetUpdating(true);
-			SetNavigationButtonMode(0);
-		}
+		//bool bTurningOff = bNavigationMode;
+		//if (value == false)
+		//	bTurningOff = true;
+		//if (bTurningOff)
+		//{
+		//	value = false;
+		//	SpacecraftController sc = spacecraft.GetComponentInChildren<SpacecraftController>();
+		//	bool controllerActive = sc.IsActive();
+		//	sc.CancelNavCommand();
+		//	///SetNavigationButtonMode(0);
+		//}
 		
 		bNavigationMode = value;
 		if (spacecraft == null)
@@ -209,7 +206,6 @@ public class InputController : MonoBehaviour
 		{
 			UpdateStatusText("Navigation mode");
 			contextHeader.SetContextHeader("Navigation awaiting input");
-			SetNavigationButtonMode(0);
 		}
 		else
 		{
@@ -217,7 +213,7 @@ public class InputController : MonoBehaviour
 			contextHeader.SetContextHeader("");
 		}
 
-		ActivateButton(navigationModeButton, bNavigationMode, bTurningOff);
+		ActivateButton(navigationModeButton, bNavigationMode, false); /// bTurningOff
 	}
 
 	public void CameraMode()
@@ -229,8 +225,8 @@ public class InputController : MonoBehaviour
 			spacecraft = game.GetSpacecraftList()[0];
 			cameraTargetFinder.SetActive(true);
 			float dist = distanceModes[cameraMode];
-			bool bFar = (cameraMode == 0) ? false : true;
-			spacecraft.SetBigGhostMode(bFar);
+			//bool bFar = (cameraMode == 0) ? false : true;
+			//spacecraft.SetBigGhostMode(bFar);
 			touchOrbit.SetDistance(dist);
 			///cameraMain.focalLength = 1f / (Mathf.Sqrt(dist) * 0.1f) * 6f;
 			cameraMode++;

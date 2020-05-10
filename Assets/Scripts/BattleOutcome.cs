@@ -82,6 +82,8 @@ public class BattleOutcome : MonoBehaviour
 		}
 		
 		game.SaveGame();
+
+		Time.timeScale = 0.1f;
 	}
 
 	public void Continue()

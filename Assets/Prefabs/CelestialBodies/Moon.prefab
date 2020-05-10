@@ -72,7 +72,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5915447a6783d8d46873752d81b95395, type: 2}
+  - {fileID: 2100000, guid: 75f3bf48f401400408919b6c0dd55fd5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -213,8 +213,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bodyTransform: {fileID: 5273469545884070276}
-  radius: 9999
-  strength: 50
+  radius: 5000
+  strength: 150
 --- !u!114 &2385305642852186100
 MonoBehaviour:
   m_ObjectHideFlags: 0

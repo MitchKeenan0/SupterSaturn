@@ -88,6 +88,8 @@ public class Autopilot : MonoBehaviour
 		spacecraft.MainEngines(0f);
 		spacecraft.Maneuver(Vector3.zero);
 		spacecraft.SideJets(Vector3.zero);
+
+		Debug.Log("all stop autopilot");
 	}
 
 	public void ReleaseBrakes()
@@ -121,11 +123,6 @@ public class Autopilot : MonoBehaviour
 		}
 	}
 
-	public void FaceVelocity(bool value)
-	{
-		bFaceVelocity = value;
-	}
-
 	private IEnumerator alignCoroutine;
 	IEnumerator Align(float intervalTime)
 	{
@@ -134,7 +131,7 @@ public class Autopilot : MonoBehaviour
 		bool burn = false;
 		while (dot < 0.99f)
 		{
-			ManeuverRotationTo(destination - rb.velocity);
+			ManeuverRotationTo(destination);
 			spacecraft.Brake();
 
 			Vector3 alignVector = ((destination - rb.velocity) - spacecraft.transform.position);
@@ -170,8 +167,15 @@ public class Autopilot : MonoBehaviour
 			FindObjectOfType<InputController>().AllStop(false);
 
 		yield return new WaitForSeconds(durationTime);
+
 		spacecraft.MainEngines(0f);
 		bEngineActive = false;
-		FindObjectOfType<OrbitController>().DelayStop(0.2f);
+	}
+
+	public void MainEngineShutdown()
+	{
+		spacecraft.MainEngines(0f);
+		bEngineActive = false;
+		StopCoroutine(engineCoroutine);
 	}
 }
