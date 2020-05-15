@@ -67,6 +67,8 @@ public class CheckpointHud : MonoBehaviour
 
 	public void CheckpointClear(CelestialBody celestialBody)
 	{
+		if (celestialBodyList == null)
+			celestialBodyList = new List<CelestialBody>();
 		int bodyIndex = celestialBodyList.IndexOf(celestialBody);
 		CheckpointListing cl = checkpointListingList[bodyIndex];
 		cl.ClearCheckpoint();
@@ -74,8 +76,9 @@ public class CheckpointHud : MonoBehaviour
 		if (clearedCheckpoints >= checkpoints)
 		{
 			float time = Time.timeSinceLevelLoad;
-			float levelScore = FindObjectOfType<ObjectiveType>().objectiveValue / time;
-			FindObjectOfType<ScoreHUD>().UpdateScore(Mathf.RoundToInt(levelScore), Mathf.RoundToInt(levelScore));
+			int objValue = FindObjectOfType<ObjectiveType>().objectiveValue;
+			float levelScore = objValue / time;
+			FindObjectOfType<ScoreHUD>().UpdateScore(Mathf.RoundToInt(levelScore));
 			outcome.BattleOver(true);
 			timer.Freeze();
 		}

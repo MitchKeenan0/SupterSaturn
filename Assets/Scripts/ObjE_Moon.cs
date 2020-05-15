@@ -34,7 +34,7 @@ public class ObjE_Moon : ObjectiveElement
 			int numExistingMoons = FindObjectsOfType<ObjE_Moon>().Length;
 			planetArm.SetLength((numExistingMoons + 1) * distanceScale * Random.Range(0.9f, 1.1f));
 
-			///element.transform.localRotation = Quaternion.Euler(Random.Range(-30f, 30f), Random.Range(-30f, 30f), Random.Range(-30f, 30f));
+			element.transform.localRotation = Quaternion.Euler(Random.Range(-30f, 30f), Random.Range(-30f, 30f), Random.Range(-30f, 30f));
 		}
 	}
 

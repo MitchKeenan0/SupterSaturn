@@ -98,9 +98,9 @@ public class ObjectiveListing : MonoBehaviour
 		}
 
 		/// tally objective value
+		objectiveType.SetValue(objectiveValue);
 		string sValue = objectiveValue.ToString("n0");
 		valueText.text = sValue;
-		Debug.Log("objValue " + objectiveValue);
 	}
 
 	void FillRatings(int value)

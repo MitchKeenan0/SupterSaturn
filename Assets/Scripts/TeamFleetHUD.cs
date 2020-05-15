@@ -72,9 +72,7 @@ public class TeamFleetHUD : MonoBehaviour
 					TeamFleetDiagram tfd = teamDiagramList[i];
 					if (sp != null)
 					{
-						tfd.SetClass(sp.spacecraftName);
-						tfd.SetName("");
-						float speed = sp.GetComponent<Rigidbody>().velocity.magnitude;
+						float speed = sp.GetComponent<Rigidbody>().velocity.magnitude * 16;
 						string speedText = speed.ToString("F0");
 						tfd.SetSpeed(speedText);
 					}
@@ -204,7 +202,6 @@ public class TeamFleetHUD : MonoBehaviour
 					{
 						Health health = sp.GetComponent<Health>();
 						healthBar.InitHeath(health.maxHealth, health.GetHealth());
-						Debug.Log("hp max " + health.maxHealth + "  hp " + health.GetHealth());
 					}
 				}
 			}

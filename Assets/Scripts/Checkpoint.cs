@@ -34,14 +34,13 @@ public class Checkpoint : MonoBehaviour
 			bHit = true;
 			SetColor(Color.gray);
 			clearParticles.Play();
-			scoreHud.PopupScore(transform.position, 1, 0);
+			scoreHud.PopupScore(transform.position, 1);
 			scoreHud.ToastContext("Checkpoint clear +" + 1);
 		}
 	}
 
 	private void OnTriggerEnter(Collider other)
 	{
-		Debug.Log(other.gameObject.name);
 		if (!playerObject)
 			playerObject = GameObject.FindGameObjectWithTag("Player");
 		if (other.gameObject == playerObject)

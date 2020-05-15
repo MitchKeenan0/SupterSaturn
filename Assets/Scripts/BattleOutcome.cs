@@ -47,15 +47,23 @@ public class BattleOutcome : MonoBehaviour
 
 	public void BattleOver(bool bPlayerWin)
 	{
+		FindObjectOfType<Timer>().Freeze();
+
 		if (bPlayerWin)
 			conclusionText.text = "SUCCESS";
 		else
 			conclusionText.text = "DEFEAT";
 
-		if (!scoreHud)
-			scoreHud = FindObjectOfType<ScoreHUD>();
-		if (scoreHud != null)
-			playerScore += scoreHud.GetScore();
+		//if (!scoreHud)
+		//	scoreHud = FindObjectOfType<ScoreHUD>();
+		//if (scoreHud != null)
+		//	playerScore += scoreHud.GetScore();
+
+		ObjectiveType ot = FindObjectOfType<ObjectiveType>();
+		if (ot != null)
+		{
+			playerScore += ot.objectiveValue;
+		}
 
 		scoreText.text = "+" + playerScore.ToString();
 		lostText.text = playerLost.ToString();
@@ -78,7 +86,7 @@ public class BattleOutcome : MonoBehaviour
 			string conference = "+";
 			if (totalNewChevrons < 0)
 				conference = " ";
-			totalText.text = conference + totalNewChevrons.ToString() + "    " + "<size=50>" + game.GetChevrons().ToString() + "</size>";
+			totalText.text = conference + totalNewChevrons.ToString();
 		}
 		
 		game.SaveGame();

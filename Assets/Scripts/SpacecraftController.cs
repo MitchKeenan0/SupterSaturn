@@ -86,7 +86,6 @@ public class SpacecraftController : MonoBehaviour
 	{
 		if (bUpdating)
 		{
-			UpdateThrottleControl();
 			if (bInputting)
 				UpdateSpacecraftController();
 		}
@@ -117,24 +116,17 @@ public class SpacecraftController : MonoBehaviour
 
 					/// normalized onscreen
 					Camera cameraMain = Camera.main;
-					//Vector3 centerScreen = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
-					Vector3 onscreenDirection = transform.position; /// = new Vector3(touchPosition.x, touchPosition.y, 0f) - centerScreen;
+					Vector3 centerScreen = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
+					Vector3 onscreenDirection = new Vector3(touchPosition.x, touchPosition.y, 0f) - centerScreen;
 
-					// create ray from the camera and passing through the touch position:
-					Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
-					// create a logical plane at this object's position
-					// and perpendicular to world Y:
-					Plane plane = new Plane(Vector3.up, Vector3.zero);
-					float distance = 0; // this will return the distance from the camera
-					if (plane.Raycast(ray, out distance))
-					{
-						Vector3 pos = ray.GetPoint(distance); // get the point
-						onscreenDirection = pos; // pos has the position in the plane you've touched
-					}
+					Vector3 navigationTarget = (Quaternion.Euler(cameraMain.transform.eulerAngles) * (onscreenDirection * 0.9f));
+					navigationTarget += cameraMain.transform.forward * 500f;
+					Vector3 navigationVector = navigationTarget + transform.position;
+					directionVector = navigationVector;
 
 					/// touch line UI
 					touchLineRenderer.SetPosition(0, transform.position);
-					touchLineRenderer.SetPosition(1, onscreenDirection);
+					touchLineRenderer.SetPosition(1, transform.position + (spacecraft.transform.forward * 10)); /// directionVector
 					float lineDist = Vector3.Distance(transform.position, onscreenDirection);
 					Color lineColor = new Color(1f, lineDist, 1f);
 					float velocity = rb.velocity.magnitude * 0.01f;
@@ -145,40 +137,12 @@ public class SpacecraftController : MonoBehaviour
 					touchLineRenderer.startColor = start;
 					touchLineRenderer.endColor = lineColor;
 
-					/// burn duration
-					burnDuration = Vector3.Distance(onscreenDirection, spacecraft.transform.position) / 600f;
-					orbitController.SetBurnDuration(burnDuration);
-					navigationHud.SetBurnDuration(burnDuration);
-
-					//Vector3 navigationTarget = (Quaternion.Euler(cameraMain.transform.eulerAngles) * (onscreenDirection * 0.9f));
-					//navigationTarget += cameraMain.transform.forward * 900f;
-					Vector3 navigationVector = onscreenDirection;
-					navigationVector.y = 0f;
-					directionVector = navigationVector;
-
 					/// visualize
 					autopilot.ManeuverRotationTo(directionVector);
 				}
 			}
 		}
 	}
-
-	void UpdateThrottleControl()
-	{
-		if (rb.velocity.magnitude > 1f)
-		{
-			if (!bThrottleControlActive)
-			{
-				throttleHud.SetThrottleControlActive(true);
-				bThrottleControlActive = true;
-			}
-		}
-		else if (bThrottleControlActive)
-		{
-			throttleHud.SetThrottleControlActive(false);
-			bThrottleControlActive = false;
-		}
-	} 
 
 	void StartTouch()
 	{
@@ -254,7 +218,6 @@ public class SpacecraftController : MonoBehaviour
 		}
 		bLining = false;
 		navigationHud.SetActive(false);
-		Debug.Log("canceled nav command");
 	}
 
 	public void SetInputting(bool value)

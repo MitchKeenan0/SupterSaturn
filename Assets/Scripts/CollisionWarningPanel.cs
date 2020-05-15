@@ -9,6 +9,6 @@ public class CollisionWarningPanel : MonoBehaviour
 
     public void SetDistance(float value)
 	{
-		distanceText.text = (value * 10).ToString("F0") + " km";
+		distanceText.text = (value * 10).ToString("F0");
 	}
 }

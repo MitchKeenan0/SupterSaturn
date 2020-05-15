@@ -60,6 +60,27 @@ public class CelestialHUD : MonoBehaviour
 					}
 				}
 			}
+
+			// touch celestials
+			if ((Input.touchCount > 0) && (Input.GetTouch(0).phase == TouchPhase.Began))
+			{
+				Ray raycast = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+				RaycastHit[] raycastHits = Physics.RaycastAll(raycast);
+				if (raycastHits.Length > 0)
+				{
+					for(int i = 0; i < raycastHits.Length; i++)
+					{
+						Debug.Log("Something Hit");
+						RaycastHit hit = raycastHits[i];
+						if (hit.collider.transform.root.gameObject.GetComponent<CelestialBody>())
+						{
+							Debug.Log("celestial clicked");
+							FindObjectOfType<TouchOrbit>().SetFocusTransform(hit.collider.transform);
+							break;
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -67,7 +88,7 @@ public class CelestialHUD : MonoBehaviour
 	{
 		GameObject panel = Instantiate(panelPrefab, transform);
 		CelestialBodyPanel cbp = panel.GetComponent<CelestialBodyPanel>();
-		cbp.SetPanel(null, cb.celestialBodyName);
+		cbp.SetPanel(null, cb.celestialBodyName, cb.transform);
 		RectTransform rt = panel.GetComponent<RectTransform>();
 		if (rt != null)
 			panelList.Add(rt);

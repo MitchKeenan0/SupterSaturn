@@ -15,7 +15,6 @@ public class ThrottleHUD : MonoBehaviour
     void Start()
     {
 		throttleCanvasGroup = throttleControlPanel.GetComponent<CanvasGroup>();
-		SetThrottleControlActive(false);
 		inputController = FindObjectOfType<InputController>();
 		orbitController = FindObjectOfType<OrbitController>();
 	}
@@ -25,15 +24,12 @@ public class ThrottleHUD : MonoBehaviour
 		spacecraft = sp;
 	}
 
-	public void SetThrottleControlActive(bool value)
-	{
-		throttleCanvasGroup.alpha = value ? 1f : 0f;
-		throttleCanvasGroup.blocksRaycasts = value;
-	}
-
 	public void ThrottleLevel(float percent)
 	{
 		spacecraft.SetThrottle(percent);
 		inputController.UpdateStatusText("Throttle " + percent * 100 + "%");
+		inputController.StopButton();
+		if (percent == 0f)
+			inputController.AllStop(true);
 	}
 }

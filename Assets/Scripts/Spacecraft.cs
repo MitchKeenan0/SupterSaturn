@@ -34,7 +34,7 @@ public class Spacecraft : MonoBehaviour
 	private Vector3 maneuverEnginesVector = Vector3.zero;
 	private Vector3 turningVector = Vector3.zero;
 	private Vector3 lerpTorque = Vector3.zero;
-	private Vector3 velocity = Vector3.zero;
+	private Vector3 thrustVelocity = Vector3.zero;
 	private Vector3 angularVelocity = Vector3.zero;
 	private Vector3 sideJetVector = Vector3.zero;
 	private GameObject hudIcon;
@@ -118,7 +118,13 @@ public class Spacecraft : MonoBehaviour
 			}
 
 			/// vectoring
-			velocity = Vector3.zero;
+			thrustVelocity = Vector3.zero;
+			Vector3 rbVelocity = rb.velocity;
+			if (rbVelocity.magnitude <= 3)
+				rbVelocity = transform.forward;
+			float dotToTarget = Vector3.Dot(rbVelocity.normalized, turningVector.normalized);
+			float vectoringPower = Mathf.Clamp(maneuverPower * dotToTarget, maneuverPower * 0.5f, maneuverPower);
+			rb.velocity *= vectoringPower;
 			//if (sideJetVector != Vector3.zero)
 			//	velocity += sideJetVector;
 
@@ -126,10 +132,10 @@ public class Spacecraft : MonoBehaviour
 			if (!bThrottling)
 			{
 				if (mainEnginesVector != Vector3.zero)
-					velocity += transform.forward * mainEnginePower * Time.deltaTime;
+					thrustVelocity += transform.forward * mainEnginePower * Time.deltaTime;
 
-				if (velocity != Vector3.zero)
-					rb.AddForce(velocity);
+				if (thrustVelocity != Vector3.zero)
+					rb.AddForce(thrustVelocity);
 			}
 			else
 			{
@@ -258,13 +264,13 @@ public class Spacecraft : MonoBehaviour
 	{
 		if (realBody != null)
 			realBody.GetComponent<Renderer>().enabled = !value;
-		bigGhostBody.GetComponent<Renderer>().enabled = value;
-		if (bigGhostBody.transform.childCount > 0)
-		{
-			Renderer[] bigGhostRenders = bigGhostBody.GetComponentsInChildren<Renderer>();
-			for(int i = 0; i < bigGhostRenders.Length; i++)
-				bigGhostRenders[i].enabled = value;
-		}
+		//bigGhostBody.GetComponent<Renderer>().enabled = value;
+		//if (bigGhostBody.transform.childCount > 0)
+		//{
+		//	Renderer[] bigGhostRenders = bigGhostBody.GetComponentsInChildren<Renderer>();
+		//	for(int i = 0; i < bigGhostRenders.Length; i++)
+		//		bigGhostRenders[i].enabled = value;
+		//}
 	}
 
 	public void SetRenderComponents(bool value)
@@ -323,7 +329,7 @@ public class Spacecraft : MonoBehaviour
 			rb = GetComponent<Rigidbody>();
 		float X = Random.Range(-500f, 500f);
 		float Y = 0f;
-		float Z = Random.Range(-750f, -1000f);
+		float Z = -500f;
 		transform.position = new Vector3(X, Y, Z);
 		PowerHUD powerHud = FindObjectOfType<PowerHUD>();
 		if (powerHud != null)

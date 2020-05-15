@@ -31,7 +31,7 @@ public class Timer : MonoBehaviour
 			valueText.text = valueString;
 
 			/// small decimal counter
-			float decimalTime = (currentTime - intTime) * 100f;
+			float decimalTime = Mathf.Clamp((currentTime - intTime) * 100f, 0f, 99f);
 			string decimalString = decimalTime.ToString("F0");
 			decimalText.text = decimalString;
 		}

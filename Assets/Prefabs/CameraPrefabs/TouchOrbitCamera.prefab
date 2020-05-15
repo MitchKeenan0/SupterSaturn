@@ -60,17 +60,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orbitAnchor: {fileID: 6167527401676555419}
+  focusTransform: {fileID: 0}
   distance: 200
-  xSpeed: 1.5
-  ySpeed: 1.5
+  xSpeed: 0.1
+  ySpeed: 0.05
   mousePanSpeed: 0.6
   yMinLimit: -85
   yMaxLimit: 85
-  distanceMin: 50
-  distanceMax: 500
-  moveSpeed: 1
-  moveAcceleration: 20
-  turnAcceleration: 100
+  distanceMin: 10
+  distanceMax: 100
+  orbitSpeed: 10
+  moveAcceleration: 50
+  turnAcceleration: 10
   startRotationVector: {x: 0, y: -90, z: 0}
   offsetX: 0
   offsetY: 0.5

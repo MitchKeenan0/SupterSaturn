@@ -30,11 +30,10 @@ public class ScanCollider : MonoBehaviour
 			line.enabled = false;
 
 			visualizer.DisableLine(vertexPosition);
-			int maxScore = visualizer.GetNumVerticies();
 			if (!scoreHud)
 				scoreHud = FindObjectOfType<ScoreHUD>();
 			if (scoreHud != null)
-				scoreHud.PopupScore(vertexPosition, 1, maxScore);
+				scoreHud.PopupScore(vertexPosition, 1);
 
 			hitParticles.transform.position = vertexPosition;
 			Vector3 lineDirection = (transform.TransformPoint(line.GetPosition(1)) - vertexPosition).normalized;

@@ -132,9 +132,9 @@ public class OrbitController : MonoBehaviour
 					line.gameObject.SetActive(true);
 
 					float normal = Mathf.InverseLerp(0f, trajectoryCount, i);
-					float lineAlpha = Mathf.Lerp(0.9f, 0.1f, Mathf.Sqrt(normal));
+					float lineAlpha = Mathf.Lerp(1f, 0.1f, Mathf.Sqrt(normal));
 					Color lineColor = new Color(lineAlpha, lineAlpha, lineAlpha);
-					float velocity = rb.velocity.magnitude * 0.001f;
+					float velocity = rb.velocity.magnitude * 0.005f;
 					lineColor.g = Mathf.Clamp(lineColor.g - velocity, 0f, 0.5f);
 					lineColor.b = Mathf.Clamp(lineColor.b - velocity, 0f, 0.5f);
 					Color start = lineColor * 0.8f;

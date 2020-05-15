@@ -10,6 +10,7 @@ public class InputController : MonoBehaviour
 	public Sprite[] navigationButtonSprites; /// 0-none/idle 1-ignite 2-shutdown
 	public Button navigationModeButton;
 	public Button cameraModeButton;
+	public GameObject throttlePanel;
 	public Button stopButton;
 	public Color standbyColor;
 	public Color activeColor;
@@ -23,11 +24,13 @@ public class InputController : MonoBehaviour
 	private ContextHeader contextHeader;
 	private SkillPanel skillPanel;
 	private Image navButtonImage;
+	private CanvasGroup throttleCanvasGroup;
 	private float originalCameraScale = 1f;
 	private bool bNavigationMode = false;
 	private bool bFreeCameraMode = false;
 	private bool bStopped = false;
 	private bool bCameraScope = false;
+	private bool bThrottleEnabled = false;
 	private int cameraMode = 1;
 	private int numCameraModes = 0;
 	private List<float> distanceModes;
@@ -37,6 +40,8 @@ public class InputController : MonoBehaviour
 	void Awake()
 	{
 		distanceModes = new List<float>();
+		touchOrbit = FindObjectOfType<TouchOrbit>();
+		originalCameraScale = touchOrbit.GetInputScale();
 	}
 
 	void Start()
@@ -44,21 +49,29 @@ public class InputController : MonoBehaviour
 		game = FindObjectOfType<Game>();
 		cameraMain = Camera.main;
 		cameraTargetFinder = FindObjectOfType<CameraTargetFinder>();
-		touchOrbit = FindObjectOfType<TouchOrbit>();
 		orbitController = FindObjectOfType<OrbitController>();
 		contextHeader = FindObjectOfType<ContextHeader>();
 		skillPanel = FindObjectOfType<SkillPanel>();
 		distanceModes.Add(touchOrbit.distanceMin);
 		distanceModes.Add(touchOrbit.distanceMax);
-		originalCameraScale = touchOrbit.GetInputScale();
 		statusText.text = "";
 		numCameraModes = distanceModes.Count;
 		navButtonImage = navigationModeButton.GetComponent<Image>();
 		navButtonImage.preserveAspect = true;
+		throttleCanvasGroup = throttlePanel.GetComponent<CanvasGroup>();
+		SetThrottlePanelActive(false);
 
 		ActivateButton(navigationModeButton, false, true);
 		ActivateButton(cameraModeButton, false, true);
 		ActivateButton(stopButton, false, true);
+	}
+
+	void SetThrottlePanelActive(bool value)
+	{
+		throttleCanvasGroup.alpha = value ? 1f : 0f;
+		throttleCanvasGroup.interactable = value;
+		throttleCanvasGroup.blocksRaycasts = value;
+		bThrottleEnabled = value;
 	}
 
 	public void Begin()
@@ -121,7 +134,7 @@ public class InputController : MonoBehaviour
 	void SetFineCameraInput(bool value)
 	{
 		if (value)
-			touchOrbit.SetInputScale(originalCameraScale * 0.6f);
+			touchOrbit.SetInputScale(originalCameraScale * 0.3f);
 		else
 			touchOrbit.SetInputScale(originalCameraScale);
 	}
@@ -129,6 +142,11 @@ public class InputController : MonoBehaviour
 	public void SetNavigationButtonMode(int navModeIndex)
 	{
 		navButtonImage.sprite = navigationButtonSprites[navModeIndex];
+	}
+
+	public void StopButton()
+	{
+		SetThrottlePanelActive(!bThrottleEnabled);
 	}
 
 	public void AllStop(bool bActuallyThough)
@@ -184,19 +202,12 @@ public class InputController : MonoBehaviour
 
 	public void NavigationMode(bool value)
 	{
-		//bool bTurningOff = bNavigationMode;
-		//if (value == false)
-		//	bTurningOff = true;
-		//if (bTurningOff)
-		//{
-		//	value = false;
-		//	SpacecraftController sc = spacecraft.GetComponentInChildren<SpacecraftController>();
-		//	bool controllerActive = sc.IsActive();
-		//	sc.CancelNavCommand();
-		//	///SetNavigationButtonMode(0);
-		//}
-		
+		bool bTurningOff = bNavigationMode;
+		if (value == false)
+			bTurningOff = true;
+
 		bNavigationMode = value;
+		SetFineCameraInput(bNavigationMode);
 		if (spacecraft == null)
 			spacecraft = game.GetSpacecraftList()[0];
 		if (spacecraft != null)
@@ -259,5 +270,30 @@ public class InputController : MonoBehaviour
 	public void SetNavigationInput(bool value)
 	{
 		spacecraft.GetComponentInChildren<SpacecraftController>().SetInputting(value);
+	}
+
+
+	public void NavigationButtonPressed()
+	{
+		NavigationMode(true);
+	}
+
+	public void NavigationButtonReleased()
+	{
+		SetNavigationInput(false);
+		NavigationMode(false);
+		SpacecraftController sc = spacecraft.GetComponentInChildren<SpacecraftController>();
+		sc.CancelNavCommand();
+		//AllStop(false);
+	}
+
+	public void StopButtonPressed()
+	{
+		
+	}
+
+	public void StopButtonReleased()
+	{
+		
 	}
 }

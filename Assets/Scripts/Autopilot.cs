@@ -88,8 +88,6 @@ public class Autopilot : MonoBehaviour
 		spacecraft.MainEngines(0f);
 		spacecraft.Maneuver(Vector3.zero);
 		spacecraft.SideJets(Vector3.zero);
-
-		Debug.Log("all stop autopilot");
 	}
 
 	public void ReleaseBrakes()

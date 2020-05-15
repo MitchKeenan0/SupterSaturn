@@ -52,10 +52,8 @@ public class ScoreHUD : MonoBehaviour
 		}
 	}
 
-	public void UpdateScore(int value, int maxValue)
+	public void UpdateScore(int value)
 	{
-		if (maxValue != 0)
-			maxScore = maxValue;
 		score += value;
 		valueText.text = score.ToString();
 		expCanvas.AddExp(value);
@@ -91,7 +89,7 @@ public class ScoreHUD : MonoBehaviour
 	//	UpdateScore(0, maxScore);
 	//}
 
-	public void PopupScore(Vector3 worldPosition, int scoreValue, int maxValue)
+	public void PopupScore(Vector3 worldPosition, int scoreValue)
 	{
 		ScorePopup scoreo = GetScorePanel();
 		int comboScore = comboManager.Score(scoreValue);
@@ -99,7 +97,7 @@ public class ScoreHUD : MonoBehaviour
 		scoreo.SetActive(true, comboScore, worldPosition, comboColor);
 		Vector3 positionOnScreen = cameraMain.WorldToScreenPoint(worldPosition);
 		scoreo.transform.position = positionOnScreen;
-		UpdateScore(comboScore, maxValue);
+		UpdateScore(comboScore);
 	}
 
 	public int GetScore() { return score; }

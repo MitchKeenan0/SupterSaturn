@@ -42,6 +42,11 @@ public class ObjectiveType : MonoBehaviour
 			LoadObjective();
 	}
 
+	public void SetValue(int value)
+	{
+		objectiveValue = value;
+	}
+
 	public virtual void SetElements(List<ObjectiveElement> elementList)
 	{
 		objectiveElementList.Clear();

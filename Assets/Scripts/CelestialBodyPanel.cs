@@ -8,10 +8,18 @@ public class CelestialBodyPanel : MonoBehaviour
 	public Image panelImage;
 	public Text panelText;
 
-	public void SetPanel(Sprite sp, string st)
+	private Transform celestialTransform;
+
+	public void SetPanel(Sprite sp, string st, Transform ct)
 	{
 		if (sp != null)
 			panelImage.sprite = sp;
 		panelText.text = st;
+		celestialTransform = ct;
+	}
+
+	public void TouchPanel()
+	{
+		FindObjectOfType<TouchOrbit>().SetFocusTransform(celestialTransform);
 	}
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class TouchOrbit : MonoBehaviour
 {
 	public Transform orbitAnchor;
+	public Transform focusTransform = null;
 	public float distance = 5.0f;
 	public float xSpeed = 120.0f;
 	public float ySpeed = 120.0f;
@@ -16,7 +17,7 @@ public class TouchOrbit : MonoBehaviour
 	public float distanceMin = 0.5f;
 	public float distanceMax = 15f;
 
-	public float moveSpeed = 10f;
+	public float orbitSpeed = 10f;
 	public float moveAcceleration = 10f;
 	public float turnAcceleration = 10f;
 
@@ -38,11 +39,11 @@ public class TouchOrbit : MonoBehaviour
 	private float y = 0f;
 	private float twoTouchDistance = 0;
 	private bool bActivated = true;
-	private bool bMoveMode = false;
+	private bool bMoveMode = true;
 	private Transform anchorTransform = null;
 
-	public float GetInputScale() { return moveSpeed; }
-	public void SetInputScale(float value) { moveSpeed = ySpeed = value; }
+	public float GetInputScale() { return orbitSpeed; }
+	public void SetInputScale(float value) { orbitSpeed = value; }
 	public void SetDistance(float value) { distance = value; }
 
 	void Awake()
@@ -100,7 +101,7 @@ public class TouchOrbit : MonoBehaviour
 				else if (touchDistance < twoTouchDistance)
 					targetDistance *= 1.6f;
 				twoTouchDistance = touchDistance;
-				distance = Mathf.Lerp(distance, targetDistance, Time.deltaTime * moveSpeed);
+				distance = Mathf.Lerp(distance, targetDistance, Time.deltaTime * orbitSpeed);
 			}
 		}
 		else
@@ -133,12 +134,16 @@ public class TouchOrbit : MonoBehaviour
 
 		if (anchorTransform != null)
 		{
-			if (bActivated || (lx != 0f) || (ly != 0f))
+			if ((lx != 0f) || (ly != 0f))
 			{
-				lx = Mathf.Lerp(lx, moveInput.x * 0.05f * xSpeed, Time.deltaTime * turnAcceleration);
-				ly = Mathf.Lerp(ly, moveInput.y * 0.05f * ySpeed, Time.deltaTime * turnAcceleration);
+				lx = Mathf.Lerp(lx, moveInput.x * 0.05f * xSpeed, Time.deltaTime * turnAcceleration * orbitSpeed);
+				ly = Mathf.Lerp(ly, moveInput.y * 0.05f * ySpeed, Time.deltaTime * turnAcceleration * orbitSpeed);
 				x += lx;
 				y -= ly;
+			}
+			else if (focusTransform != null)
+			{
+				LookAtFocus();
 			}
 
 			y = Mathf.Clamp(y, -85f, 85f);
@@ -151,6 +156,28 @@ public class TouchOrbit : MonoBehaviour
 
 		Vector3 offset = ((transform.right * offsetX) + (transform.up * offsetY)) * Mathf.Abs(distance);
 		transform.position = position + offset; ///Vector3.MoveTowards(transform.position, position + moveVector, Time.deltaTime * moveAcceleration * moveSpeed);
+	}
+
+	void LookAtFocus()
+	{
+		Vector3 localForward = cameraMain.transform.forward;
+		Vector3 localRight = cameraMain.transform.right;
+		Vector3 localUp = cameraMain.transform.up;
+		Vector3 toFocus = (focusTransform.position - cameraMain.transform.position);
+
+		moveInput.x = Vector3.Dot(localRight, toFocus);
+		moveInput.y = Vector3.Dot(localUp, toFocus);
+		lx = Mathf.Lerp(lx, moveInput.x * 0.05f * xSpeed, Time.deltaTime * turnAcceleration);
+		ly = Mathf.Lerp(ly, moveInput.y * 0.05f * ySpeed, Time.deltaTime * turnAcceleration);
+		x += lx;
+		y -= ly;
+
+		Debug.Log("looking at focus");
+	}
+
+	public void SetFocusTransform(Transform value)
+	{
+		focusTransform = value;
 	}
 
 	public void ResetAnchor(bool overrideDistance)
