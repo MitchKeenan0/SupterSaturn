@@ -46,7 +46,7 @@ public class CheckpointHud : MonoBehaviour
 
 				CheckpointListing cl = SpawnListing();
 				string checkpointName = cb.celestialBodyName;
-				cl.SetListing(checkpointName, checkpointColor);
+				cl.SetListing(checkpointName, checkpointColor, cb.transform);
 				checkpointListingList.Add(cl);
 			}
 		}

@@ -26,6 +26,7 @@ public class ThrottleHUD : MonoBehaviour
 
 	public void ThrottleLevel(float percent)
 	{
+		Debug.Log("th throttle");
 		spacecraft.SetThrottle(percent);
 		inputController.UpdateStatusText("Throttle " + percent * 100 + "%");
 		inputController.StopButton();

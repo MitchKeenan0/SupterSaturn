@@ -41,5 +41,7 @@ public class PlanetGeometry : MonoBehaviour
 
 		mesh.vertices = vertices;
 		mesh.RecalculateBounds();
+		mesh.RecalculateNormals();
+		mesh.RecalculateTangents();
 	}
 }

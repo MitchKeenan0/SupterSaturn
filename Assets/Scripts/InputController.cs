@@ -147,57 +147,27 @@ public class InputController : MonoBehaviour
 	public void StopButton()
 	{
 		SetThrottlePanelActive(!bThrottleEnabled);
+		ActivateButton(stopButton, bThrottleEnabled, false);
 	}
 
 	public void AllStop(bool bActuallyThough)
 	{
-		bool bTurningOff = bStopped;
-		bStopped = !bStopped;
+		Debug.Log("ic allstop");
 		if (bActuallyThough)
 			bStopped = true;
-		bool bEngineShutdown = false;
 		if (game.GetSpacecraftList() != null)
 		{
 			if (bStopped)
 			{
 				spacecraft = game.GetSpacecraftList()[0];
 				Autopilot autopilot = spacecraft.GetComponent<Autopilot>();
-				if (autopilot.IsEngineActive())
-					bEngineShutdown = true;
 				autopilot.AllStop();
 			}
-			else
-			{
-				spacecraft = game.GetSpacecraftList()[0];
-				Autopilot autopilot = spacecraft.GetComponent<Autopilot>();
-				autopilot.ReleaseBrakes();
-			}
 		}
 
-		if (bStopped)
-		{
-			if (bEngineShutdown)
-				UpdateStatusText("Main engine shutdown");
-			else
-				UpdateStatusText("All stop");
-		}
-		else
-		{
-			UpdateStatusText("Intertial stabilizers off");
-			//orbitController.SetUpdating(true);
-		}
-
-		if (bEngineShutdown)
-		{
-			bTurningOff = false;
-			bStopped = false;
-		}
-
-		if (bStopped && !bEngineShutdown)
-			orbitController.KillOrbit();
-
+		UpdateStatusText("All stop");
+		orbitController.KillOrbit();
 		bool bActivated = bStopped;
-		ActivateButton(stopButton, bActivated, bTurningOff);
 	}
 
 	public void NavigationMode(bool value)
@@ -271,7 +241,6 @@ public class InputController : MonoBehaviour
 	{
 		spacecraft.GetComponentInChildren<SpacecraftController>().SetInputting(value);
 	}
-
 
 	public void NavigationButtonPressed()
 	{

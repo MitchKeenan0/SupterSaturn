@@ -6,6 +6,7 @@ public class Checkpoint : MonoBehaviour
 {
 	public Transform renderTransform;
 	public Color checkpointColor;
+	public Vector3 rootOffset = Vector3.one;
 
 	private GameObject playerObject = null;
 	private CelestialBody celestialBody;
@@ -23,6 +24,7 @@ public class Checkpoint : MonoBehaviour
 		clearParticles = GetComponentInChildren<ParticleSystem>();
 		checkpointHud = FindObjectOfType<CheckpointHud>();
 		scoreHud = FindObjectOfType<ScoreHUD>();
+		transform.localPosition = rootOffset;
 	}
 
 	void ClearCheckpoint()

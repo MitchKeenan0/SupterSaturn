@@ -17,9 +17,4 @@ public class CelestialBodyPanel : MonoBehaviour
 		panelText.text = st;
 		celestialTransform = ct;
 	}
-
-	public void TouchPanel()
-	{
-		FindObjectOfType<TouchOrbit>().SetFocusTransform(celestialTransform);
-	}
 }

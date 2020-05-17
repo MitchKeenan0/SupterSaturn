@@ -119,12 +119,12 @@ public class Spacecraft : MonoBehaviour
 
 			/// vectoring
 			thrustVelocity = Vector3.zero;
-			Vector3 rbVelocity = rb.velocity;
-			if (rbVelocity.magnitude <= 3)
-				rbVelocity = transform.forward;
-			float dotToTarget = Vector3.Dot(rbVelocity.normalized, turningVector.normalized);
-			float vectoringPower = Mathf.Clamp(maneuverPower * dotToTarget, maneuverPower * 0.5f, maneuverPower);
-			rb.velocity *= vectoringPower;
+			//Vector3 rbVelocity = rb.velocity;
+			//if (rbVelocity.magnitude <= 3)
+			//	rbVelocity = transform.forward;
+			//float dotToTarget = Vector3.Dot(rbVelocity.normalized, turningVector.normalized);
+			//float vectoringPower = Mathf.Clamp(maneuverPower * dotToTarget, maneuverPower * 0.5f, maneuverPower);
+			//rb.velocity *= vectoringPower;
 			//if (sideJetVector != Vector3.zero)
 			//	velocity += sideJetVector;
 
@@ -148,7 +148,7 @@ public class Spacecraft : MonoBehaviour
 	public void SetThrottle(float value)
 	{
 		throttleVelocityTarget = rb.velocity.magnitude * value;
-		throttleCoroutine = ThrottleForDuration(1f);
+		throttleCoroutine = ThrottleForDuration(1.6f);
 		StartCoroutine(throttleCoroutine);
 	}
 
@@ -233,7 +233,6 @@ public class Spacecraft : MonoBehaviour
 			{
 				Transform destroyedEffects = Instantiate(destroyedParticlesPrefab, transform.position, transform.rotation);
 				Destroy(destroyedEffects.gameObject, 5f);
-				///Destroy(gameObject, 0.2f);
 			}
 		}
 

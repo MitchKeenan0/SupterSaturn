@@ -70,11 +70,9 @@ public class CelestialHUD : MonoBehaviour
 				{
 					for(int i = 0; i < raycastHits.Length; i++)
 					{
-						Debug.Log("Something Hit");
 						RaycastHit hit = raycastHits[i];
 						if (hit.collider.transform.root.gameObject.GetComponent<CelestialBody>())
 						{
-							Debug.Log("celestial clicked");
 							FindObjectOfType<TouchOrbit>().SetFocusTransform(hit.collider.transform);
 							break;
 						}

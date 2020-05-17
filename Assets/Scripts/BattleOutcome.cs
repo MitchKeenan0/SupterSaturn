@@ -10,6 +10,7 @@ public class BattleOutcome : MonoBehaviour
 	public GameObject scorePanel;
 	public GameObject optionPanel;
 	public Text conclusionText;
+	public Text timeText;
 	public Text scoreText;
 	public Text lostText;
 	public Text totalText;
@@ -63,9 +64,11 @@ public class BattleOutcome : MonoBehaviour
 		if (ot != null)
 		{
 			playerScore += ot.objectiveValue;
+			playerScore = Mathf.RoundToInt(playerScore / Time.timeSinceLevelLoad);
 		}
 
-		scoreText.text = "+" + playerScore.ToString();
+		timeText.text = Time.timeSinceLevelLoad.ToString("F2");
+		scoreText.text = ot.objectiveValue.ToString();
 		lostText.text = playerLost.ToString();
 		playerNameText.text = player.playerName;
 
@@ -90,8 +93,8 @@ public class BattleOutcome : MonoBehaviour
 		}
 		
 		game.SaveGame();
-
-		Time.timeScale = 0.1f;
+		Time.timeScale = bPlayerWin ? 0.1f : 0.5f;
+		FindObjectOfType<HudController>().SetHudsEnabled(false);
 	}
 
 	public void Continue()

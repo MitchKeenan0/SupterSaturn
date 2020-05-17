@@ -13,6 +13,7 @@ public class CircleRenderer : MonoBehaviour
 	public float updateInterval = 0.1f;
 	public bool bStartEnabled = true;
 	public bool bAlwaysFaceCamera = false;
+	public bool bLocal = false;
 
 	public LineRenderer GetLineRenderer() { return circleLineRenderer; }
 	private LineRenderer circleLineRenderer;
@@ -105,6 +106,8 @@ public class CircleRenderer : MonoBehaviour
 				float x = circleRadius * Mathf.Cos(theta);
 				float z = circleRadius * Mathf.Sin(theta);
 				Vector3 pos = new Vector3(x, 0, z);
+				if (bLocal)
+					pos += transform.position;
 				circleLineRenderer.SetPosition(i, pos);
 				theta += deltaTheta;
 			}

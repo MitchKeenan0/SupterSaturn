@@ -416,6 +416,7 @@ GameObject:
   - component: {fileID: 7100616598616082231}
   - component: {fileID: 7100616598616082228}
   - component: {fileID: 7100616598616082224}
+  - component: {fileID: 4231780966006334938}
   m_Layer: 5
   m_Name: NavigationCanvas
   m_TagString: Untagged
@@ -517,3 +518,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   burnTargetPanel: {fileID: 7100616598351094800}
   burnDurationText: {fileID: 7100616597917951956}
+--- !u!225 &4231780966006334938
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7100616598616082229}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0

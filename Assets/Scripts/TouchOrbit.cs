@@ -31,8 +31,6 @@ public class TouchOrbit : MonoBehaviour
 	private Vector3 moveInput = Vector3.zero;
 	private Vector3 moveVector = Vector3.zero;
 	private Vector3 orbitOffset = Vector3.zero;
-	private float inputX = 0f;
-	private float inputZ = 0f;
 	private float lx = 0f;
 	private float ly = 0f;
 	private float x = 0f;
@@ -58,11 +56,14 @@ public class TouchOrbit : MonoBehaviour
 		distance = distanceMax;
 		this.enabled = bActivated;
 		transform.rotation = Quaternion.LookRotation(startRotationVector);
+		if (orbitAnchor != null) 
+			SetFocusTransform(orbitAnchor);
 	}
 
 	void Update()
 	{
 		UpdateTouchControl();
+		///InputOrbit();
 	}
 
 	void UpdateTouchControl()
@@ -73,20 +74,8 @@ public class TouchOrbit : MonoBehaviour
 			if (Input.touchCount == 1)
 			{
 				Touch touch = Input.GetTouch(0);
-				if (touch.phase == TouchPhase.Began)
-				{
-					moveInput = Vector3.zero;
-					if (moveInput != Vector3.zero)
-					{
-						inputX = moveInput.x;
-						inputZ = moveInput.y;
-					}
-				}
-				else if (touch.phase == TouchPhase.Moved)
-				{
-					Vector3 deltaTouch = touch.deltaPosition;
-					moveInput += deltaTouch;
-				}
+				if (touch.phase == TouchPhase.Moved)
+					moveInput = touch.deltaPosition;
 			}
 
 			// camera distance scoping
@@ -106,25 +95,15 @@ public class TouchOrbit : MonoBehaviour
 		}
 		else
 		{
-			moveVector = Vector3.Lerp(moveVector, Vector3.zero, Time.deltaTime * moveAcceleration);
-			moveInput = Vector3.Lerp(moveInput, Vector3.zero, Time.deltaTime * moveAcceleration);
+			float deltaT = Time.deltaTime * moveAcceleration;
+			moveVector = Vector3.Lerp(moveVector, Vector3.zero, deltaT);
+			moveInput = Vector3.Lerp(moveInput, Vector3.zero, deltaT);
 		}
 	}
 
 	void LateUpdate()
 	{
-		if (bMoveMode)
-			InputOrbit();
-		else
-			IdleFollow();
-	}
-
-	void IdleFollow()
-	{
-		Vector3 followPosition = anchorTransform.position + (cameraMain.transform.forward * -distance);
-		Vector3 offset = (cameraMain.transform.right * inputX) + (cameraMain.transform.forward * inputZ);
-		offset.y = 0f;
-		transform.position = followPosition + offset;
+		InputOrbit();
 	}
 
 	void InputOrbit()
@@ -134,16 +113,17 @@ public class TouchOrbit : MonoBehaviour
 
 		if (anchorTransform != null)
 		{
-			if ((lx != 0f) || (ly != 0f))
+			if (((lx != 0f) || (ly != 0f)) && (moveInput.magnitude > 0.5f))
 			{
-				lx = Mathf.Lerp(lx, moveInput.x * 0.05f * xSpeed, Time.deltaTime * turnAcceleration * orbitSpeed);
-				ly = Mathf.Lerp(ly, moveInput.y * 0.05f * ySpeed, Time.deltaTime * turnAcceleration * orbitSpeed);
+				lx = Mathf.MoveTowards(lx, moveInput.x * 0.5f * xSpeed, Time.deltaTime * turnAcceleration * orbitSpeed);
+				ly = Mathf.MoveTowards(ly, moveInput.y * 0.5f * ySpeed, Time.deltaTime * turnAcceleration * orbitSpeed);
 				x += lx;
 				y -= ly;
 			}
-			else if (focusTransform != null)
+			else if (moveInput.magnitude < 0.05f)
 			{
-				LookAtFocus();
+				if (focusTransform != null)
+					LookAtFocus();
 			}
 
 			y = Mathf.Clamp(y, -85f, 85f);
@@ -152,10 +132,10 @@ public class TouchOrbit : MonoBehaviour
 			position = (rotation * negDistance) + anchorTransform.position;
 		}
 
-		transform.rotation = rotation;
-
 		Vector3 offset = ((transform.right * offsetX) + (transform.up * offsetY)) * Mathf.Abs(distance);
-		transform.position = position + offset; ///Vector3.MoveTowards(transform.position, position + moveVector, Time.deltaTime * moveAcceleration * moveSpeed);
+		transform.position = position + offset;
+
+		transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * turnAcceleration);
 	}
 
 	void LookAtFocus()
@@ -167,17 +147,19 @@ public class TouchOrbit : MonoBehaviour
 
 		moveInput.x = Vector3.Dot(localRight, toFocus);
 		moveInput.y = Vector3.Dot(localUp, toFocus);
-		lx = Mathf.Lerp(lx, moveInput.x * 0.05f * xSpeed, Time.deltaTime * turnAcceleration);
-		ly = Mathf.Lerp(ly, moveInput.y * 0.05f * ySpeed, Time.deltaTime * turnAcceleration);
+		float targetX = moveInput.x * 0.05f * xSpeed;
+		float targetY = moveInput.y * 0.05f * ySpeed;
+		float deltaT = Time.deltaTime * turnAcceleration;
+		lx = Mathf.Lerp(lx, targetX, deltaT);
+		ly = Mathf.Lerp(ly, targetY, deltaT);
 		x += lx;
 		y -= ly;
-
-		Debug.Log("looking at focus");
 	}
 
 	public void SetFocusTransform(Transform value)
 	{
 		focusTransform = value;
+		Debug.Log("new focus transform " + Time.time.ToString("F1"));
 	}
 
 	public void ResetAnchor(bool overrideDistance)

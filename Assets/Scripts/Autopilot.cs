@@ -56,38 +56,20 @@ public class Autopilot : MonoBehaviour
 
 	void Update()
 	{
-		if (bFaceVelocity && (rb.velocity.magnitude > 1f))
-		{
-			Vector3 velocity = rb.velocity + transform.position;
-			ManeuverRotationTo(velocity);
-		}
-
 		if (bStopping)
-		{
-			float velocity = rb.velocity.magnitude;
-			if (Mathf.Abs(velocity) > 0f)
-				spacecraft.Brake();
-		}
+			spacecraft.Brake();
 	}
 
 	public void AllStop()
 	{
-		if (bEngineActive)
-		{
-			StopCoroutine(engineCoroutine);
-			bEngineActive = false;
-			///FaceVelocity(true);
-		}
-		else
-		{
-			bStopping = true;
-			///FaceVelocity(false);
-			StopAllCoroutines();
-		}
-		
+		bStopping = true;
+		bEngineActive = false;
+		StopAllCoroutines();
+
 		spacecraft.MainEngines(0f);
 		spacecraft.Maneuver(Vector3.zero);
 		spacecraft.SideJets(Vector3.zero);
+		spacecraft.SetThrottle(0);
 	}
 
 	public void ReleaseBrakes()
@@ -161,8 +143,9 @@ public class Autopilot : MonoBehaviour
 	{
 		spacecraft.MainEngines(1f);
 		bEngineActive = true;
-		if (rb.velocity.magnitude < 1f)
-			FindObjectOfType<InputController>().AllStop(false);
+		//if (rb.velocity.magnitude < 1f)
+		//	FindObjectOfType<InputController>().AllStop(false);
+		ReleaseBrakes();
 
 		yield return new WaitForSeconds(durationTime);
 

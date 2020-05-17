@@ -157,7 +157,7 @@ public class SpacecraftController : MonoBehaviour
 		yield return new WaitForSeconds(waitTime);
 		if (bStartTouchDelay)
 		{
-			bUpdateNavigationTarget = false;
+			//bUpdateNavigationTarget = false;
 			directionVector = Vector3.zero;
 			bLining = true;
 			touchLineRenderer.enabled = true;
@@ -227,7 +227,6 @@ public class SpacecraftController : MonoBehaviour
 		if (bInputting)
 		{
 			StartTouch();
-			
 		}
 		else
 		{

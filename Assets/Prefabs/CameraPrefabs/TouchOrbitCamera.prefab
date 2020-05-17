@@ -63,15 +63,15 @@ MonoBehaviour:
   focusTransform: {fileID: 0}
   distance: 200
   xSpeed: 0.1
-  ySpeed: 0.05
+  ySpeed: 0.1
   mousePanSpeed: 0.6
   yMinLimit: -85
   yMaxLimit: 85
   distanceMin: 10
   distanceMax: 100
   orbitSpeed: 10
-  moveAcceleration: 50
-  turnAcceleration: 10
+  moveAcceleration: 25
+  turnAcceleration: 5
   startRotationVector: {x: 0, y: -90, z: 0}
   offsetX: 0
   offsetY: 0.5
