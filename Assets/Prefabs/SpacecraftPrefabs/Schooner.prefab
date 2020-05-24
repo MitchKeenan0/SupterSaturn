@@ -157,8 +157,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bAgentStartsEnabled: 1
   mainEnginePower: 291
-  turningPower: 0.5
+  turningSpeed: 1
   maneuverPower: 0.2
+  thrustModeDrag: 0.1
   thrustPowerCost: 1
   spacecraftName: Schooner
   warpInSpeed: 1.5
@@ -343,7 +344,7 @@ Transform:
   m_GameObject: {fileID: 7517603745946648432}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 3195518880486804483}
   m_RootOrder: 0

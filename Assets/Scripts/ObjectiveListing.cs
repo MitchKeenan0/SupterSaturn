@@ -8,11 +8,15 @@ public class ObjectiveListing : MonoBehaviour
 	public Text valueText;
 	public GameObject ratingPanel;
 	public GameObject ratingStarPrefab;
+	public Transform surroundingsPanel;
 	public Transform primaryT;
 	public Transform secondaryT;
 
 	private ObjectiveType objectiveType;
 	private MainMenu menu;
+	private CanvasGroup surroundingsCanvasGroup;
+	private HudController hudController;
+
 	private string objectiveName = "";
 	private Sprite objectiveIcon;
 	private int objectiveValue = 0;
@@ -26,6 +30,8 @@ public class ObjectiveListing : MonoBehaviour
 		if (surroundingsElementList == null)
 			surroundingsElementList = new List<ObjectiveElement>();
 		menu = FindObjectOfType<MainMenu>();
+		surroundingsCanvasGroup = surroundingsPanel.GetComponent<CanvasGroup>();
+		SetCanvasGroupEnabled(false);
 	}
 
 	public void SetObjective(ObjectiveType obj)
@@ -117,9 +123,21 @@ public class ObjectiveListing : MonoBehaviour
 		}
 	}
 
+	public void SetCanvasGroupEnabled(bool value)
+	{
+		surroundingsCanvasGroup.alpha = value ? 1f : 0f;
+		surroundingsCanvasGroup.blocksRaycasts = value;
+		surroundingsCanvasGroup.interactable = value;
+	}
+
 	public void SelectObjective()
 	{
-		ObjectiveType spawnedObjective = Instantiate(objectiveType, null);
+		SetCanvasGroupEnabled(true);
+	}
+
+	public void LaunchObjective()
+	{
+		ObjectiveType spawnedObjective = Instantiate(objectiveType, null); /// is this double?
 		if (surroundingsElementList.Count > 0)
 		{
 			spawnedObjective.SetElements(surroundingsElementList);

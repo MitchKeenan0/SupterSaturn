@@ -7,8 +7,9 @@ public class Spacecraft : MonoBehaviour
 {
 	public bool bAgentStartsEnabled = true;
 	public float mainEnginePower = 1f;
-	public float turningPower = 1f;
+	public float turningSpeed = 1f;
 	public float maneuverPower = 0.6f;
+	public float thrustModeDrag = 1f;
 	public float thrustPowerCost = 2f;
 	public string spacecraftName = "Spacecraft";
 	public float warpInSpeed = 100f;
@@ -113,7 +114,7 @@ public class Spacecraft : MonoBehaviour
 			/// rotating
 			if (turningVector != Vector3.zero)
 			{
-				angularVelocity = Vector3.MoveTowards(angularVelocity, turningVector, Time.deltaTime * turningPower);
+				angularVelocity = Vector3.MoveTowards(angularVelocity, turningVector, Time.deltaTime * turningSpeed);
 				transform.rotation = Quaternion.LookRotation(angularVelocity);
 			}
 
@@ -198,6 +199,11 @@ public class Spacecraft : MonoBehaviour
 		float brakingScalar = Mathf.Clamp(Mathf.Sqrt(rb.velocity.magnitude), 1f, 100f);
 		Vector3 brakingVelocity = Vector3.MoveTowards(rb.velocity, Vector3.zero, Time.fixedDeltaTime * (mainEnginePower * 0.1f) * brakingScalar);
 		rb.velocity = brakingVelocity;
+	}
+
+	public void SetDragMode(bool value)
+	{
+		rb.drag = value ? thrustModeDrag : 0f;
 	}
 
 	public void SpacecraftKnockedOut(Transform responsibleTransform)

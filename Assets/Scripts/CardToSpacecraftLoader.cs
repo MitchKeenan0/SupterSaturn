@@ -8,7 +8,7 @@ public class CardToSpacecraftLoader : MonoBehaviour
 	{
 		Spacecraft csp = sp;
 		csp.mainEnginePower = card.mainEnginePower;
-		csp.turningPower = card.turningPower;
+		csp.turningSpeed = card.turningPower;
 		csp.maneuverPower = card.maneuverPower;
 		csp.spacecraftName = card.cardName;
 		csp.craftIcon = card.iconSprite;

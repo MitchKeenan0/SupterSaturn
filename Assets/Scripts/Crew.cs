@@ -25,7 +25,7 @@ public class Crew : MonoBehaviour
 
 	public void ImbueSpacecraft(Spacecraft sp)
 	{
-		sp.turningPower += pilot;
+		sp.turningSpeed += pilot;
 		sp.mainEnginePower += engine;
 		Weapon wp = sp.gameObject.GetComponent<Weapon>();
 		if (wp != null)

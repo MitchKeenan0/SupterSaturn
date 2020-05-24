@@ -23,4 +23,11 @@ public class HudController : MonoBehaviour
 		ic.GetComponent<CanvasGroup>().blocksRaycasts = value;
 		sp.GetComponent<CanvasGroup>().blocksRaycasts = value;
 	}
+
+	public void SetCanvasGroupEnabled(CanvasGroup cg, bool value)
+	{
+		cg.alpha = value ? 1f : 0f;
+		cg.blocksRaycasts = value;
+		cg.interactable = false;
+	}
 }

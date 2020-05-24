@@ -164,6 +164,7 @@ public class SpacecraftController : MonoBehaviour
 			navigationHud.SetActive(true);
 			bStartTouchDelay = false;
 			bInputting = true;
+			spacecraft.SetDragMode(true);
 
 			autopilot.FireEngineBurn(99f, false);
 			orbitController.SetBackgroundUpdateInterval(0.1f);
@@ -192,6 +193,8 @@ public class SpacecraftController : MonoBehaviour
 		bInputting = false;
 		bEndTouchDelay = false;
 		bUpdateNavigationTarget = true;
+
+		spacecraft.SetDragMode(false);
 		///inputController.SetNavigationButtonMode(1);
 		inputController.DeactivateButtonIndex(0, false, false);
 	}

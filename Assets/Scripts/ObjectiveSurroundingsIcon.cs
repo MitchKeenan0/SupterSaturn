@@ -12,6 +12,9 @@ public class ObjectiveSurroundingsIcon : MonoBehaviour
 	public bool bSecondary = false;
 	public bool bSalient = false;
 	public float rarity = 1f;
+	public bool bOrbital = false;
+	public Sprite orbitRingSprite;
+	public float startOrbitRotation = 0f;
 	public ObjectiveElement objectiveElementPrefab;
 
 	private ObjectiveElement element;
@@ -20,6 +23,8 @@ public class ObjectiveSurroundingsIcon : MonoBehaviour
 	void Awake()
     {
 		iconImage = GetComponent<Image>();
+		if (bOrbital)
+			iconImage = GetComponentInChildren<Image>();
     }
 
 	public void InitIcon()

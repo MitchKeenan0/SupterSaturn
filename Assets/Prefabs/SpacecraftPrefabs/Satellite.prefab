@@ -160,9 +160,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bAgentStartsEnabled: 0
   mainEnginePower: 1
-  turningPower: 1
+  turningSpeed: 1
   maneuverPower: 0.6
+  thrustModeDrag: 0.1
+  thrustPowerCost: 2
   spacecraftName: Radio Satellite
+  warpInSpeed: 100
   thrustParticles: {fileID: 0}
   destroyedParticlesPrefab: {fileID: 2766248710761914840, guid: 05469ee24ae991f41b944cbcf9f43ad0,
     type: 3}
@@ -170,6 +173,8 @@ MonoBehaviour:
   craftDiagram: {fileID: 21300000, guid: 84cad4e54bf58f04a835df643351cda3, type: 3}
   iconScale: 1
   numericID: 3
+  realBody: {fileID: 0}
+  bigGhostBody: {fileID: 0}
 --- !u!114 &6156221018427815328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,7 +188,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   teamID: 0
-  preferredEngagementDistance: 10
   bAttackPredictions: 1
 --- !u!114 &5836535628115178733
 MonoBehaviour:
