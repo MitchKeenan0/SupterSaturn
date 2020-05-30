@@ -12,21 +12,26 @@ public class ObjectiveListing : MonoBehaviour
 	public Transform primaryT;
 	public Transform secondaryT;
 
-	private ObjectiveType objectiveType;
+	public ObjectiveType objectiveType;
 	private MainMenu menu;
 	private CanvasGroup surroundingsCanvasGroup;
 	private HudController hudController;
 
-	private string objectiveName = "";
+	public string objectiveName = "";
 	private Sprite objectiveIcon;
-	private int objectiveValue = 0;
-	private int objectiveRating = 1;
+	public int objectiveValue = 0;
+	public int objectiveRating = 1;
 	private List<GameObject> ratingStarList;
-	private List<ObjectiveElement> surroundingsElementList;
+	public ObjectiveElement primaryObjElement;
+	public List<ObjectiveElement> surroundingsElementList;
+	private List<Vector3> offsetList;
+	private List<Quaternion> rotationList;
 
 	void Awake()
 	{
 		ratingStarList = new List<GameObject>();
+		offsetList = new List<Vector3>();
+		rotationList = new List<Quaternion>();
 		if (surroundingsElementList == null)
 			surroundingsElementList = new List<ObjectiveElement>();
 		menu = FindObjectOfType<MainMenu>();
@@ -34,82 +39,7 @@ public class ObjectiveListing : MonoBehaviour
 		SetCanvasGroupEnabled(false);
 	}
 
-	public void SetObjective(ObjectiveType obj)
-	{
-		objectiveType = obj;
-		objectiveName = objectiveType.objectiveName;
-		objectiveIcon = objectiveType.objectiveIcon;
-		objectiveRating = objectiveType.objectiveRating;
-		FillRatings(objectiveRating);
-	}
-
-	public void SetSurroundings(List<ObjectiveSurroundingsIcon> iconList)
-	{
-		int listCount = iconList.Count;
-		List<ObjectiveSurroundingsIcon> secondaryIcons = new List<ObjectiveSurroundingsIcon>();
-		List<ObjectiveSurroundingsIcon> rareSecondaries = new List<ObjectiveSurroundingsIcon>();
-		if (surroundingsElementList == null)
-			surroundingsElementList = new List<ObjectiveElement>();
-
-		/// initial sorting
-		for (int i = 0; i < listCount; i++)
-		{
-			ObjectiveSurroundingsIcon osi = iconList[i];
-			surroundingsElementList.Add(osi.objectiveElementPrefab);
-			objectiveValue += osi.gameValue;
-
-			if (i == 0)
-			{
-				osi.transform.SetParent(primaryT);
-			}
-			else
-			{
-				if (osi.bSecondary)
-				{
-					if (osi.rarity < 1f)
-						rareSecondaries.Add(osi);
-					else
-						secondaryIcons.Add(osi);
-				}
-				else
-				{
-					osi.transform.SetParent(secondaryT);
-				}
-			}
-			osi.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-		}
-
-		/// normal secondaries
-		if (secondaryIcons.Count > 0)
-		{
-			for (int j = 0; j < secondaryIcons.Count; j++)
-			{
-				ObjectiveSurroundingsIcon sosi = secondaryIcons[j];
-				sosi.transform.SetParent(secondaryT);
-				sosi.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-			}
-			secondaryIcons.Clear();
-		}
-
-		/// rare secondaries
-		if (rareSecondaries.Count > 0)
-		{
-			for (int j = 0; j < rareSecondaries.Count; j++)
-			{
-				ObjectiveSurroundingsIcon rosi = rareSecondaries[j];
-				rosi.transform.SetParent(secondaryT);
-				rosi.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-			}
-			rareSecondaries.Clear();
-		}
-
-		/// tally objective value
-		objectiveType.SetValue(objectiveValue);
-		string sValue = objectiveValue.ToString("n0");
-		valueText.text = sValue;
-	}
-
-	void FillRatings(int value)
+	void InitRatingStars(int value)
 	{
 		if (ratingStarList == null)
 			ratingStarList = new List<GameObject>();
@@ -137,11 +67,28 @@ public class ObjectiveListing : MonoBehaviour
 
 	public void LaunchObjective()
 	{
-		ObjectiveType spawnedObjective = Instantiate(objectiveType, null); /// is this double?
+		ObjectiveType spawnedObjective = Instantiate(objectiveType, null);
 		if (surroundingsElementList.Count > 0)
 		{
-			spawnedObjective.SetElements(surroundingsElementList);
+			surroundingsElementList.Add(primaryObjElement);
+
+			ObjectiveSurroundingsIcon[] icons = surroundingsPanel.GetComponentsInChildren<ObjectiveSurroundingsIcon>();
+			foreach(ObjectiveSurroundingsIcon osi in icons)
+			{
+				Vector3 osiPosition = osi.startOrbitOffset;
+				offsetList.Add(osiPosition);
+				Quaternion osiRotation = osi.startOrbitRotation;
+				rotationList.Add(osiRotation);
+
+				//ObjectiveElement objE = osi.objectiveElementPrefab;
+				//surroundingsElementList.Add(objE);
+			}
+
+			Vector3[] offsets = offsetList.ToArray();
+			Quaternion[] rotations = rotationList.ToArray();
+			spawnedObjective.SetElements(surroundingsElementList, offsets, rotations);
 			spawnedObjective.Activate();
+
 			menu.StartGame();
 		}
 	}

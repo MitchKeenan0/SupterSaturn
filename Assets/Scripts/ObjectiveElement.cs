@@ -14,10 +14,12 @@ public class ObjectiveElement : MonoBehaviour
 		
     }
 
-	public virtual void Init()
+	public virtual void Init(Vector3 offset, Quaternion rotation)
 	{
-		GameObject spawnElement = Instantiate(elementPrefab);
+		GameObject spawnElement = Instantiate(elementPrefab, offset, Quaternion.identity);
+		spawnElement.transform.rotation = rotation;
 		elementObject = spawnElement;
+		elementObject.transform.rotation = rotation;
 		elementObject.SetActive(false);
 	}
 

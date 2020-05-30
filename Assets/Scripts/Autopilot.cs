@@ -26,7 +26,6 @@ public class Autopilot : MonoBehaviour
 	private Vector3 maneuverVector = Vector3.zero;
 	private Vector3 previousRouteVector = Vector3.zero;
 	private bool bEngineActive = false;
-	private bool bFaceVelocity = false;
 	private bool bStopping = false;
 	private bool bAligning = false;
 	private float burnDuration = 0f;
@@ -68,8 +67,10 @@ public class Autopilot : MonoBehaviour
 
 		spacecraft.MainEngines(0f);
 		spacecraft.Maneuver(Vector3.zero);
-		spacecraft.SideJets(Vector3.zero);
+		//spacecraft.SideJets(Vector3.zero);
 		spacecraft.SetThrottle(0);
+
+		Debug.Log("All stop ");
 	}
 
 	public void ReleaseBrakes()
@@ -86,10 +87,7 @@ public class Autopilot : MonoBehaviour
 	
 	public void FireEngineBurn(float duration, bool bAlign)
 	{
-		if (bEngineActive)
-			StopCoroutine(engineCoroutine);
-		if (bAligning)
-			StopCoroutine(alignCoroutine);
+		//StopAllCoroutines();
 		burnDuration = duration;
 		if (bAlign)
 		{
@@ -109,33 +107,25 @@ public class Autopilot : MonoBehaviour
 		bAligning = true;
 		float dot = 0f;
 		bool burn = false;
-		while (dot < 0.99f)
+		while (!burn)
 		{
 			ManeuverRotationTo(destination);
-			spacecraft.Brake();
 
-			Vector3 alignVector = ((destination - rb.velocity) - spacecraft.transform.position);
-			//Vector3 myVelocity = rb.velocity;
-			//Vector3 projectedVelocity = Vector3.ProjectOnPlane(myVelocity, spacecraft.transform.forward.normalized);
-			//projectedVelocity.z = Mathf.Clamp(projectedVelocity.z, -1f, 0f);
-			//spacecraft.SideJets(projectedVelocity * -1f);
+			yield return new WaitForSeconds(intervalTime);
 
+			Vector3 alignVector = (destination - spacecraft.transform.position);
 			Vector3 myVector = rb.velocity;
 			if (myVector.magnitude < 1f)
 				myVector = transform.forward;
 			dot = Vector3.Dot(myVector.normalized, alignVector.normalized);
-
-			if (!burn && (dot > 0.7f))
+			if (dot > 0.7f)
 			{
-				burn = true;
 				engineCoroutine = MainEngineBurn(burnDuration);
 				StartCoroutine(engineCoroutine);
+				burn = true;
 			}
-
-			yield return new WaitForSeconds(intervalTime);
 		}
-
-		spacecraft.SideJets(Vector3.zero);
+		
 		bAligning = false;
 	}
 
@@ -157,6 +147,6 @@ public class Autopilot : MonoBehaviour
 	{
 		spacecraft.MainEngines(0f);
 		bEngineActive = false;
-		StopCoroutine(engineCoroutine);
+		StopAllCoroutines();
 	}
 }

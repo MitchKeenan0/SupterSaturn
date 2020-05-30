@@ -15,9 +15,9 @@ public class ObjE_Star : ObjectiveElement
 		
 	}
 
-	public override void Init()
+	public override void Init(Vector3 offset, Quaternion rotation)
 	{
-		base.Init();
+		base.Init(offset, rotation);
 		element = GetElement();
 		if (element != null)
 		{

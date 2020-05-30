@@ -14,7 +14,8 @@ public class ObjectiveSurroundingsIcon : MonoBehaviour
 	public float rarity = 1f;
 	public bool bOrbital = false;
 	public Sprite orbitRingSprite;
-	public float startOrbitRotation = 0f;
+	public Vector3 startOrbitOffset = Vector3.zero;
+	public Quaternion startOrbitRotation = Quaternion.identity;
 	public ObjectiveElement objectiveElementPrefab;
 
 	private ObjectiveElement element;

@@ -84,6 +84,7 @@ public class Game : MonoBehaviour
 	void Start()
 	{
 		Screen.sleepTimeout = SleepTimeout.NeverSleep;
+		Application.targetFrameRate = 30;
 	}
 
 	public int GetGameMode() { return gameMode; }

@@ -16,7 +16,6 @@ public class ScoreHUD : MonoBehaviour
 	private CanvasGroup scoreContextCG;
 	private Text scoreContextText;
 	private int score = 0;
-	private int maxScore = 0;
 	private int expectedPopupLoad = 40;
 	private List<ScorePopup> popupPanelList;
 	private IEnumerator scoreContextCoroutine;

@@ -13,6 +13,7 @@ public class SafetyHUD : MonoBehaviour
 	private List<Vector3> trajectoryList;
 	private IEnumerator updateCoroutine;
 	private bool bTrajectoryHit = false;
+	private bool bCheckpointCollision = false;
 
 	void Start()
     {
@@ -49,22 +50,54 @@ public class SafetyHUD : MonoBehaviour
 				Vector3 lineStart = trajectoryList[i];
 				Vector3 lineEnd = lineStart + (trajectoryList[i + 1] - trajectoryList[i]);
 				RaycastHit hit = raycastManager.CustomLinecast(lineStart, lineEnd);
-				if ((hit.transform != null) && (!hit.collider.isTrigger))
+				if (hit.transform != null)
 				{
-					if (hit.transform.gameObject.GetComponent<Gravity>())
+					if (!hit.collider.isTrigger)
 					{
-						Vector3 hitPositionOnscreen = cameraMain.WorldToScreenPoint(hit.point);
-						if (hitPositionOnscreen.z > 0f)
+						if (hit.transform.gameObject.GetComponent<Gravity>())
 						{
-							collisionWarningPanel.transform.position = hitPositionOnscreen;
-							collisionWarningPanel.SetActive(true);
-							CollisionWarningPanel cwp = collisionWarningPanel.GetComponent<CollisionWarningPanel>();
-							if (cwp != null)
-								cwp.SetDistance(Vector3.Distance(cameraMain.transform.position, hit.point));
+							Vector3 hitPositionOnscreen = cameraMain.WorldToScreenPoint(hit.point);
+							if (hitPositionOnscreen.z > 0f)
+							{
+								collisionWarningPanel.transform.position = hitPositionOnscreen;
+								collisionWarningPanel.SetActive(true);
+								CollisionWarningPanel cwp = collisionWarningPanel.GetComponent<CollisionWarningPanel>();
+								if (cwp != null)
+									cwp.SetDistance(Vector3.Distance(cameraMain.transform.position, hit.point));
+							}
+							bHit = true;
+							orbitController.SetClampedLength(i);
+							orbitController.ClearPartialTrajectory(i);
+							break;
 						}
-						bHit = true;
-						orbitController.SetClampedLength(i);
-						orbitController.ClearPartialTrajectory(i);
+					}
+					else
+					{
+						if (hit.transform.GetComponent<Checkpoint>())
+						{
+							if (!bCheckpointCollision)
+							{
+								orbitController.SetTrajectoryColor(Color.green, 1);
+								bCheckpointCollision = true;
+								orbitController.SetClampedLength(i);
+							}
+						}
+						else
+						{
+							if (bCheckpointCollision)
+							{
+								orbitController.SetTrajectoryColor(Color.white, 0);
+								bCheckpointCollision = false;
+							}
+						}
+					}
+				}
+				else
+				{
+					if (bCheckpointCollision)
+					{
+						orbitController.SetTrajectoryColor(Color.white, 0);
+						bCheckpointCollision = false;
 					}
 				}
 			}

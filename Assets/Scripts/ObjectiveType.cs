@@ -13,6 +13,8 @@ public class ObjectiveType : MonoBehaviour
 
 	private ObjectiveHUD objectiveHud;
 	private NameLibrary nameLibrary;
+	private Vector3[] offsets;
+	private Quaternion[] rotations;
 	private bool bSpawnOnLoad = true;
 	private bool bLoaded = false;
 	private List<ObjectiveElement> objectiveElementList;
@@ -47,9 +49,11 @@ public class ObjectiveType : MonoBehaviour
 		objectiveValue = value;
 	}
 
-	public virtual void SetElements(List<ObjectiveElement> elementList)
+	public virtual void SetElements(List<ObjectiveElement> elementList, Vector3[] os, Quaternion[] rs)
 	{
 		objectiveElementList.Clear();
+		offsets = os;
+		rotations = rs;
 		List<ObjectiveElement> elementGameObjectPrefabList = new List<ObjectiveElement>();
 		foreach(ObjectiveElement oe in elementList)
 		{
@@ -82,8 +86,9 @@ public class ObjectiveType : MonoBehaviour
 		for(int i = 0; i < numObjects; i++)
 		{
 			ObjectiveElement oe = Instantiate(objectiveElementList[i]);
-			//oe.transform.SetParent(transform);
-			oe.Init();
+			Vector3 os = offsets[i];
+			Quaternion rs = rotations[i];
+			oe.Init(os, rs);
 		}
 	}
 

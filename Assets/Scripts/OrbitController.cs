@@ -8,6 +8,9 @@ public class OrbitController : MonoBehaviour
 	public int maxLineCount = 250;
 	public float updateInterval = 0.1f;
 	public float backgroundUpdateInterval = 2f;
+	public Material lineMaterial;
+	public Material checkpointMaterial;
+	public Material collisionMaterial;
 
 	private Autopilot autopilot;
 	private Rigidbody rb;
@@ -20,7 +23,6 @@ public class OrbitController : MonoBehaviour
 	private List<LineRenderer> lineList;
 	private List<Vector3> trajectoryList;
 	private float burnDuration = 0f;
-	private bool bUpdating = false;
 	private bool bBackgroundUpdating = false;
 	private bool bRenderFlip = false;
 	private int trajectoryClampedLength = 0;
@@ -109,11 +111,11 @@ public class OrbitController : MonoBehaviour
 	void RenderTrajectory()
 	{
 		int trajectoryCount = trajectoryList.Count;
-		for (int i = 1; i < trajectoryCount; i++)
+		for (int i = 0; i < trajectoryCount; i++)
 		{
-			bRenderFlip = !bRenderFlip;
-			if (bRenderFlip)
-				continue;
+			//bRenderFlip = !bRenderFlip;
+			//if (bRenderFlip)
+			//	continue;
 			LineRenderer line = null;
 			if ((i < lineList.Count) && (lineList[i] != null))
 			{
@@ -125,22 +127,38 @@ public class OrbitController : MonoBehaviour
 				Vector3 lineStart = trajectoryList[i];
 				if (trajectoryList.Count > (i + 1))
 				{
-					Vector3 lineEnd = lineStart + ((trajectoryList[i + 1] - trajectoryList[i]) * 0.8f);
-					line.SetPosition(0, lineStart);
-					line.SetPosition(1, lineEnd);
-					line.enabled = true;
-					line.gameObject.SetActive(true);
+					Vector3 lineEnd = lineStart + ((trajectoryList[i + 1] - trajectoryList[i]) * 0.9f);
 
-					float normal = Mathf.InverseLerp(0f, trajectoryCount, i);
-					float lineAlpha = Mathf.Lerp(1f, 0.1f, Mathf.Sqrt(normal));
-					Color lineColor = new Color(lineAlpha, lineAlpha, lineAlpha);
-					float velocity = rb.velocity.magnitude * 0.005f;
-					lineColor.g = Mathf.Clamp(lineColor.g - velocity, 0f, 0.5f);
-					lineColor.b = Mathf.Clamp(lineColor.b - velocity, 0f, 0.5f);
-					Color start = lineColor * 0.8f;
-					start.a = 1f;
-					line.startColor = start;
-					line.endColor = lineColor;
+					Vector3 origin = lineList[0].GetPosition(0);
+					float thresholdDistance = 5f;
+					bool innerThresholdMasked = ((Vector3.Distance(lineStart, origin) < thresholdDistance) 
+												|| (Vector3.Distance(lineEnd, origin) < thresholdDistance));
+					if (innerThresholdMasked)
+					{
+						line.enabled = false;
+					}
+					else
+					{
+						line.SetPosition(0, lineStart);
+						line.SetPosition(1, lineEnd);
+						line.enabled = true;
+						line.gameObject.SetActive(true);
+
+						/// diminishing color
+						float normal = Mathf.InverseLerp(0f, trajectoryCount, i);
+						float lineAlpha = Mathf.Lerp(1f, 0.1f, Mathf.Sqrt(normal));
+						Color lineColor = new Color(lineAlpha, lineAlpha, lineAlpha);
+						float velocity = rb.velocity.magnitude * 0.005f;
+						lineColor.g = Mathf.Clamp(lineColor.g - velocity, 0f, 0.5f);
+						lineColor.b = Mathf.Clamp(lineColor.b - velocity, 0f, 0.5f);
+						Color start = lineColor * 0.8f;
+						start.a = 1f;
+						line.startColor = start;
+						line.endColor = lineColor;
+						ConstantSizer cs = line.gameObject.GetComponent<ConstantSizer>();
+						cs.scaleFactor = lineAlpha * 0.05f;
+						//line.widthMultiplier = lineAlpha * 0.1f;
+					}
 				}
 			}
 			else if (line != null)
@@ -159,6 +177,28 @@ public class OrbitController : MonoBehaviour
 		LineRenderer line = Instantiate(trajectoryLinePrefab, transform);
 		lineList.Add(line);
 		return line;
+	}
+
+	// 0=line 1=checkpoint 2=collision
+	public void SetTrajectoryColor(Color value, int materialIndex)
+	{
+		foreach(LineRenderer lr in lineList)
+		{
+			lr.startColor = lr.endColor = value;
+			Material lrMat = null;
+			switch(materialIndex)
+			{
+				case 0: lrMat = lineMaterial;
+					break;
+				case 1: lrMat = checkpointMaterial;
+					break;
+				case 2: lrMat = collisionMaterial;
+					break;
+				default:
+					break;
+			}
+			lr.material = lrMat;
+		}
 	}
 
 	public void ClearTrajectory()
@@ -200,7 +240,6 @@ public class OrbitController : MonoBehaviour
 	public void KillOrbit()
 	{
 		StopAllCoroutines();
-		bUpdating = false;
 		SetClampedLength(0);
 		ClearTrajectory();
 		ClearPartialTrajectory(0);

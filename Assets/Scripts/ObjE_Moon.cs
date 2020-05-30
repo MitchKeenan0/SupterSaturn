@@ -15,9 +15,9 @@ public class ObjE_Moon : ObjectiveElement
 		
 	}
 
-	public override void Init()
+	public override void Init(Vector3 offset, Quaternion rotation)
 	{
-		base.Init();
+		base.Init(offset, rotation);
 		element = GetElement();
 		if (element != null)
 		{
@@ -30,11 +30,13 @@ public class ObjE_Moon : ObjectiveElement
 				moonPlanet.SetScale(moonSize);
 			}
 
-			PlanetArm planetArm = element.GetComponent<PlanetArm>();
-			int numExistingMoons = FindObjectsOfType<ObjE_Moon>().Length;
-			planetArm.SetLength((numExistingMoons + 1) * distanceScale * Random.Range(0.9f, 1.1f));
-
-			element.transform.localRotation = Quaternion.Euler(Random.Range(-30f, 30f), Random.Range(-30f, 30f), Random.Range(-30f, 30f));
+			if (offset != Vector3.zero)
+			{
+				PlanetArm planetArm = element.GetComponent<PlanetArm>();
+				int numExistingMoons = FindObjectsOfType<ObjE_Moon>().Length;
+				float armLength = offset.magnitude * (numExistingMoons + 1) * distanceScale * Random.Range(0.9f, 1.1f);
+				planetArm.SetLength(armLength);
+			}
 		}
 	}
 

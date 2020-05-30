@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18332868e9bf28a44a9daa2dcb93d151, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 1586382b8e564f54a9e0c915c7e43032, type: 3}
+  icon: {fileID: 21300000, guid: f5e17f7869f69ab4aa8ca7cf178ff4a7, type: 3}
   gameValue: 300
   iconScale: 32
   iconColor: {r: 0.8207547, g: 0.8207547, b: 0.8207547, a: 1}
@@ -59,6 +59,8 @@ MonoBehaviour:
   rarity: 1
   bOrbital: 1
   orbitRingSprite: {fileID: 21300000, guid: 35a6dd326e4d99b47b354967a03c31fe, type: 3}
+  startOrbitOffset: {x: 0, y: 0, z: 100}
+  startOrbitRotation: {x: 0.03, y: 0.2, z: 0.03, w: 1}
   objectiveElementPrefab: {fileID: 5973836059953613732, guid: 5cccdbc4958db1740a488d66d1445c24,
     type: 3}
 --- !u!222 &4154077468768770217
@@ -89,7 +91,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: f5e17f7869f69ab4aa8ca7cf178ff4a7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

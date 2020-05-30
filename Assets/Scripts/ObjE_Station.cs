@@ -11,9 +11,9 @@ public class ObjE_Station : ObjectiveElement
 		
 	}
 
-	public override void Init()
+	public override void Init(Vector3 offset, Quaternion rotation)
 	{
-		base.Init();
+		base.Init(offset, rotation);
 
 	}
 

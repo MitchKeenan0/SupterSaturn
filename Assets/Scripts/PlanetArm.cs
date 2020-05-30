@@ -17,19 +17,11 @@ public class PlanetArm : MonoBehaviour
 
 	public void SetLength(float value)
 	{
-		planetTransform.position = transform.position + (transform.forward * value * armLength);
-		if (offsetRotationScale != 0f)
+		planetTransform.localPosition = (transform.root.forward * value * armLength);
+		if (circle != null)
 		{
-			Vector3 offsetEuler = Vector3.zero;
-			//offsetEuler.x = Random.Range(-offsetRotationScale, offsetRotationScale);
-			offsetEuler.y = Random.Range(-offsetRotationScale, offsetRotationScale);
-			//offsetEuler.z = Random.Range(-offsetRotationScale, offsetRotationScale);
-			transform.rotation = Quaternion.Euler(offsetEuler);
-			if (circle != null)
-			{
-				circle.SetRadius(value * armLength);
-				circle.UpdateCircleRender();
-			}
+			circle.SetRadius(value * armLength);
+			circle.UpdateCircleRender();
 		}
 	}
 }

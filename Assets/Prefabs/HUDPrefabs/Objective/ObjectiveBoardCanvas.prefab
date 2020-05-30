@@ -96,7 +96,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6654412416305798592
 RectTransform:
   m_ObjectHideFlags: 0
@@ -240,7 +240,6 @@ GameObject:
   - component: {fileID: 5727653776128151623}
   - component: {fileID: 5727653776128151616}
   - component: {fileID: 5727653776128151620}
-  - component: {fileID: 4608520846440504939}
   m_Layer: 5
   m_Name: ObjectiveBoardCanvas
   m_TagString: Untagged
@@ -345,43 +344,10 @@ MonoBehaviour:
   - {fileID: 9098356191930498205, guid: 4b4ac84e0edb7aa489427b8abcbfaae0, type: 3}
   - {fileID: 7972658946372764943, guid: 7619626ef85a5474b9bdead87e497042, type: 3}
   - {fileID: 4052713573119922064, guid: f4deceade1753304ba0af888bf64555b, type: 3}
-  objectiveListingPrefab: {fileID: 5628390652875000128, guid: 523aa93081570b4448a0cda0ac49761f,
-    type: 3}
+  objectiveListingPrefabs:
+  - {fileID: 5628390652875000128, guid: 523aa93081570b4448a0cda0ac49761f, type: 3}
   listingPanel: {fileID: 5727653774763651232}
   theWholeThing: {fileID: 5371481078749074101}
-  listingCount: 6
---- !u!114 &4608520846440504939
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5727653776128151617}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7ee613a41eb51b428d8ba4b4a6eedf7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  primarySystemObjects:
-  - {fileID: 9144373088868220479, guid: 69925be8e0b27ea428fe0a7d36fca1bc, type: 3}
-  - {fileID: 9144373088868220479, guid: d8384832d5e53304d8067c56cfcad4dc, type: 3}
-  - {fileID: 9144373088868220479, guid: 5dcb28059913b934c84ada4cd06e0ea4, type: 3}
-  - {fileID: 9144373088868220479, guid: aeed42b19a0c3db43a70ec1f382f1aa8, type: 3}
-  - {fileID: 9144373088868220479, guid: 42ec6a9d67813f9498baaa51777b7515, type: 3}
-  - {fileID: 9144373088868220479, guid: aacc6438dc46baa46b1a06c442cc0724, type: 3}
-  moonObjects:
-  - {fileID: 9144373088868220479, guid: ae9597f40e5d7304cb458323fa305beb, type: 3}
-  moonObjectCountFactor: 5
-  secondarySystemObjects:
-  - {fileID: 9144373088868220479, guid: b647e7df7985768408db7ccd99499044, type: 3}
-  secondaryObjectCountFactor: 1
-  salientObjects:
-  - {fileID: 9144373088868220479, guid: b069169be6a5d7e4a9967b6fdcdcf517, type: 3}
-  - {fileID: 9144373088868220479, guid: 4c100115572d594428839b8a5e7d9b79, type: 3}
-  - {fileID: 9144373088868220479, guid: afd0de1a8074d454989b4b7c1d529738, type: 3}
-  - {fileID: 9144373088868220479, guid: 2458c34128b01904ebe13f5f3bcade26, type: 3}
-  - {fileID: 9144373088868220479, guid: 6b3103ee33ecd8e498e39fd39518c822, type: 3}
-  salientObjectCountFactor: 1
 --- !u!1 &6022743590557241850
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,7 +9,7 @@ public class Spacecraft : MonoBehaviour
 	public float mainEnginePower = 1f;
 	public float turningSpeed = 1f;
 	public float maneuverPower = 0.6f;
-	public float thrustModeDrag = 1f;
+	public float thrustModeDrag = 0.01f;
 	public float thrustPowerCost = 2f;
 	public string spacecraftName = "Spacecraft";
 	public float warpInSpeed = 100f;
@@ -44,7 +44,6 @@ public class Spacecraft : MonoBehaviour
 	private ParticleSystem[] particleComponents;
 	private TrailRenderer[] trailComponents;
 	private int numMarked = 0;
-	private float timeAtLastClick = 0f;
 	private bool bThrottling = false;
 	private float throttleVelocityTarget = 0f;
 
@@ -168,18 +167,10 @@ public class Spacecraft : MonoBehaviour
 			turningVector = transform.forward;
 	}
 
-	public void SideJets(Vector3 driveVector)
-	{
-		sideJetVector = driveVector;
-		if (driveVector == Vector3.zero)
-			sideJetVector = Vector3.zero;
-	}
-
 	public void MainEngines(float driveDirection)
 	{
 		bThrottling = false;
 		mainEnginesVector = transform.forward * driveDirection;
-		//var ps = thrustParticles.main;
 		var em = thrustParticles.emission;
 		if (Mathf.Abs(driveDirection) > 0.0f)
 		{
@@ -332,9 +323,9 @@ public class Spacecraft : MonoBehaviour
 	{
 		if (!rb)
 			rb = GetComponent<Rigidbody>();
-		float X = Random.Range(-500f, 500f);
-		float Y = 0f;
-		float Z = -500f;
+		float X = 0f;
+		float Y = 50f;
+		float Z = -350f;
 		transform.position = new Vector3(X, Y, Z);
 		PowerHUD powerHud = FindObjectOfType<PowerHUD>();
 		if (powerHud != null)
@@ -351,7 +342,6 @@ public class Spacecraft : MonoBehaviour
 	{
 		gameObject.SetActive(true);
 		Vector3 enterPosition = transform.position;
-		enterPosition.y = 0f;
 		transform.position = enterPosition;
 		Vector3 enterVelocity = (Vector3.zero - transform.position).normalized * warpInSpeed;
 		GetComponent<Rigidbody>().AddForce(enterVelocity, ForceMode.Impulse);

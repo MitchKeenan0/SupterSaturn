@@ -22,7 +22,7 @@ public class SpacecraftTrail : MonoBehaviour
 	{
 		while (true)
 		{
-			float spVelocity = rb.velocity.magnitude;
+			float spVelocity = rb.velocity.magnitude * 0.01f;
 			tr.time = spVelocity;
 			yield return new WaitForSeconds(interval);
 		}

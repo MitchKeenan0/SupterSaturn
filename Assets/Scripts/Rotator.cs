@@ -17,8 +17,7 @@ public class Rotator : MonoBehaviour
 	public bool worldPivot = false;
 
 	private Space spacePivot = Space.Self;
-
-
+	
 	void Start()
 	{
 		if (worldPivot) spacePivot = Space.World;
@@ -28,8 +27,8 @@ public class Rotator : MonoBehaviour
 			float rand2 = Random.Range(0, 360);
 			float rand3 = Random.Range(0, 360);
 			float x = Mathf.Clamp(xForceDirection * 10000f, -1f, 1f);
-			float y = Mathf.Clamp(yForceDirection * 10000f, -1f, 1f); ;
-			float z = Mathf.Clamp(zForceDirection * 10000f, -1f, 1f); ;
+			float y = Mathf.Clamp(yForceDirection * 10000f, -1f, 1f);
+			float z = Mathf.Clamp(zForceDirection * 10000f, -1f, 1f);
 			transform.Rotate((x * rand1), (y * rand2), (z * rand3), spacePivot);
 		}
 
@@ -45,5 +44,4 @@ public class Rotator : MonoBehaviour
 							, zForceDirection * deltaSpeed
 							, spacePivot);
 	}
-
 }

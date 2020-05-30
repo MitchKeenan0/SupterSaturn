@@ -28,16 +28,16 @@ public class TouchOrbit : MonoBehaviour
 	private CameraController cameraController;
 	private InputController inputController;
 	private Camera cameraMain;
+	private LocusHud locusHud;
 	private Vector3 moveInput = Vector3.zero;
-	private Vector3 moveVector = Vector3.zero;
 	private Vector3 orbitOffset = Vector3.zero;
 	private float lx = 0f;
 	private float ly = 0f;
 	private float x = 0f;
 	private float y = 0f;
 	private float twoTouchDistance = 0;
+	private float timeAtLastTargeting = 0f;
 	private bool bActivated = true;
-	private bool bMoveMode = true;
 	private Transform anchorTransform = null;
 
 	public float GetInputScale() { return orbitSpeed; }
@@ -50,6 +50,7 @@ public class TouchOrbit : MonoBehaviour
 		cameraController = FindObjectOfType<CameraController>();
 		cameraMain = Camera.main;
 		inputController = FindObjectOfType<InputController>();
+		locusHud = FindObjectOfType<LocusHud>();
 		Vector3 angles = transform.eulerAngles;
 		x = angles.y;
 		y = angles.x;
@@ -68,6 +69,7 @@ public class TouchOrbit : MonoBehaviour
 
 	void UpdateTouchControl()
 	{
+		bool bTouching = false;
 		if (Input.touchCount > 0)
 		{
 			// move input
@@ -75,7 +77,13 @@ public class TouchOrbit : MonoBehaviour
 			{
 				Touch touch = Input.GetTouch(0);
 				if (touch.phase == TouchPhase.Moved)
+				{
 					moveInput = touch.deltaPosition;
+				}
+				if (moveInput.magnitude > 5f)
+				{
+					bTouching = true;
+				}
 			}
 
 			// camera distance scoping
@@ -96,8 +104,16 @@ public class TouchOrbit : MonoBehaviour
 		else
 		{
 			float deltaT = Time.deltaTime * moveAcceleration;
-			moveVector = Vector3.Lerp(moveVector, Vector3.zero, deltaT);
 			moveInput = Vector3.Lerp(moveInput, Vector3.zero, deltaT);
+		}
+
+		// target box switch on/off
+		float targetBoxMinimumUpdateTime = 0.5f;
+		if (((Time.timeSinceLevelLoad - timeAtLastTargeting) >= targetBoxMinimumUpdateTime)
+			|| bTouching)
+		{
+			locusHud.SetTargetBoxEnabled(bTouching);
+			timeAtLastTargeting = Time.timeSinceLevelLoad;
 		}
 	}
 
@@ -135,7 +151,7 @@ public class TouchOrbit : MonoBehaviour
 		Vector3 offset = ((transform.right * offsetX) + (transform.up * offsetY)) * Mathf.Abs(distance);
 		transform.position = position + offset;
 
-		transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * turnAcceleration);
+		transform.rotation = rotation;
 	}
 
 	void LookAtFocus()
@@ -150,8 +166,8 @@ public class TouchOrbit : MonoBehaviour
 		float targetX = moveInput.x * 0.05f * xSpeed;
 		float targetY = moveInput.y * 0.05f * ySpeed;
 		float deltaT = Time.deltaTime * turnAcceleration;
-		lx = Mathf.Lerp(lx, targetX, deltaT);
-		ly = Mathf.Lerp(ly, targetY, deltaT);
+		lx = targetX;
+		ly = targetY;
 		x += lx;
 		y -= ly;
 	}
@@ -159,7 +175,6 @@ public class TouchOrbit : MonoBehaviour
 	public void SetFocusTransform(Transform value)
 	{
 		focusTransform = value;
-		Debug.Log("new focus transform " + Time.time.ToString("F1"));
 	}
 
 	public void ResetAnchor(bool overrideDistance)

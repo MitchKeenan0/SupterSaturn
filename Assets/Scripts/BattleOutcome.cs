@@ -93,8 +93,21 @@ public class BattleOutcome : MonoBehaviour
 		}
 		
 		game.SaveGame();
-		Time.timeScale = bPlayerWin ? 0.1f : 0.5f;
+		timescaleCoroutine = UpdateTimescale(0.1f);
+		StartCoroutine(timescaleCoroutine);
 		FindObjectOfType<HudController>().SetHudsEnabled(false);
+	}
+
+	private float targetTimescale = 0.1f;
+	private IEnumerator timescaleCoroutine;
+	private IEnumerator UpdateTimescale(float interval)
+	{
+		float timescale = Time.timeScale;
+		while (timescale > 0.1f)
+		{
+			Time.timeScale = Mathf.Lerp(Time.timeScale, targetTimescale, Time.unscaledDeltaTime);
+			yield return new WaitForSecondsRealtime(interval);
+		}
 	}
 
 	public void Continue()

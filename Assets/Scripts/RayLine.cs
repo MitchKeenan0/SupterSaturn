@@ -16,7 +16,6 @@ public class RayLine : MonoBehaviour
 	private bool bHit = false;
 	private bool bEnabled = false;
 	private bool bFinished = false;
-	private bool bScanningActive = false;
 	private int scanVertsHit = 0;
 
 	public bool IsEnabled() { return bEnabled; }
@@ -118,9 +117,7 @@ public class RayLine : MonoBehaviour
 	public void SetEnabled(bool value)
 	{
 		bEnabled = value;
-		if (bEnabled)
-			bScanningActive = true;
-		else
+		if (!bEnabled)
 			ResetRayLine();
 	}
 }

@@ -6,57 +6,53 @@ using UnityEngine.SceneManagement;
 public class ObjectiveBoard : MonoBehaviour
 {
 	public ObjectiveType[] objectiveTypeArray;
-	public GameObject objectiveListingPrefab;
+	public GameObject[] objectiveListingPrefabs;
 	public GameObject listingPanel;
 	public GameObject theWholeThing;
-	public int listingCount = 3;
 
-	private ObjectiveSurroundings surroundings;
 	private List<ObjectiveListing> objectiveList;
+	private int listingCount = 0;
 
 	void Start()
     {
 		objectiveList = new List<ObjectiveListing>();
-		surroundings = GetComponent<ObjectiveSurroundings>();
 		InitListingBoard();
 		SetActive(false);
 	}
 
 	void InitListingBoard()
 	{
+		listingCount = objectiveListingPrefabs.Length;
 		for(int i = 0; i < listingCount; i++)
 		{
-			ObjectiveListing listing = SpawnListing();
-			ObjectiveType type = null;
-			bool bTypeSet = false;
-			int counter = 0;
-			while (!bTypeSet && (counter < 100))
-			{
-				counter++;
-				int randomType = Random.Range(1, objectiveTypeArray.Length) - 1;
-				if (randomType < objectiveTypeArray.Length)
-				{
-					type = objectiveTypeArray[randomType];
-					if (type != null)
-						bTypeSet = true;
-				}
-			}
+			ObjectiveListing listing = SpawnListing(i);
 
-			if (type != null)
-			{
-				listing.SetObjective(type);
-
-				surroundings.CreateSurroundings(type.objectiveRating);
-				List<ObjectiveSurroundingsIcon> osiList = new List<ObjectiveSurroundingsIcon>();
-				osiList = surroundings.GetSurroundings();
-				listing.SetSurroundings(osiList);
-			}
+			/// factions
+			//ObjectiveType type = null;
+			//bool bTypeSet = false;
+			//int counter = 0;
+			//while (!bTypeSet && (counter < 100))
+			//{
+			//	counter++;
+			//	int randomType = Random.Range(1, objectiveTypeArray.Length) - 1;
+			//	if (randomType < objectiveTypeArray.Length)
+			//	{
+			//		type = objectiveTypeArray[randomType];
+			//		if (type != null)
+			//			bTypeSet = true;
+			//	}
+			//}
+			//if (type != null)
+			//{
+			//	listing.SetObjective(type);
+			//	///listing.SetSurroundings(osiList);
+			//}
 		}
 	}
 
-	ObjectiveListing SpawnListing()
+	ObjectiveListing SpawnListing(int prefabIndex)
 	{
-		GameObject listing = Instantiate(objectiveListingPrefab, listingPanel.transform);
+		GameObject listing = Instantiate(objectiveListingPrefabs[prefabIndex], listingPanel.transform);
 		RectTransform rt = listing.GetComponent<RectTransform>();
 		float marginX = Screen.width * 0.2f;
 		float marginY = Screen.height * 0.2f;
@@ -80,32 +76,6 @@ public class ObjectiveBoard : MonoBehaviour
 
 	public void Refresh()
 	{
-		int numListings = objectiveList.Count;
-		objectiveList.Clear();
-		InitListingBoard();
-		for (int i = 0; i < numListings; i++)
-		{
-			ObjectiveListing listing = objectiveList[i];
-			if (listing != null)
-			{
-				ObjectiveType type = null;
-				bool bTypeSet = false;
-				int counter = 0;
-				while (!bTypeSet && (counter < 100))
-				{
-					counter++;
-					int randomType = Random.Range(1, objectiveTypeArray.Length) - 1;
-					type = objectiveTypeArray[randomType];
-					bTypeSet = true;
-				}
-				if (type != null)
-					listing.SetObjective(type);
-
-				surroundings.CreateSurroundings(type.objectiveRating);
-				List<ObjectiveSurroundingsIcon> osiList = new List<ObjectiveSurroundingsIcon>();
-				osiList = surroundings.GetSurroundings();
-				listing.SetSurroundings(osiList);
-			}
-		}
+		
 	}
 }

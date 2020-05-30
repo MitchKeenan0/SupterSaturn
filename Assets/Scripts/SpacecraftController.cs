@@ -25,14 +25,12 @@ public class SpacecraftController : MonoBehaviour
 	private Vector3 directionVector = Vector3.zero;
 	private bool bActive = false;
 	private bool bLining = false;
-	private bool bThrottleControlActive = false;
 	private bool bStartTouchDelay = false;
 	private bool bEndTouchDelay = false;
 	public bool bUpdating = false;
 	private bool bInputting = false;
 	private bool bUpdateNavigationTarget = false;
 	private int teamID = -1;
-	private float burnDuration = 0f;
 
 	public Autopilot GetAutopilot() { return autopilot; }
 	public Spacecraft GetSpacecraft() { return spacecraft; }
@@ -165,7 +163,6 @@ public class SpacecraftController : MonoBehaviour
 			bStartTouchDelay = false;
 			bInputting = true;
 			spacecraft.SetDragMode(true);
-
 			autopilot.FireEngineBurn(99f, false);
 			orbitController.SetBackgroundUpdateInterval(0.1f);
 		}

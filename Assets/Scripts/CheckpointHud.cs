@@ -33,21 +33,20 @@ public class CheckpointHud : MonoBehaviour
 		int num = celestials.Length;
 		for(int i = 0; i < num; i++)
 		{
-			CelestialBody cb = celestials[i];
-			celestialBodyList.Add(cb);
+			CelestialBody celestialBody = celestials[i];
+			celestialBodyList.Add(celestialBody);
 
 			int randomColorIndex = Random.Range(0, colorPool.Length);
 			Color checkpointColor = colorPool[randomColorIndex];
-			Checkpoint cp = cb.gameObject.GetComponentInChildren<Checkpoint>();
-			if (cp != null)
+			Checkpoint checkpoint = celestialBody.gameObject.GetComponentInChildren<Checkpoint>();
+			if (checkpoint != null)
 			{
 				checkpoints++;
-				cp.SetColor(checkpointColor);
-
-				CheckpointListing cl = SpawnListing();
-				string checkpointName = cb.celestialBodyName;
-				cl.SetListing(checkpointName, checkpointColor, cb.transform);
-				checkpointListingList.Add(cl);
+				checkpoint.SetColor(checkpointColor);
+				string checkpointName = celestialBody.celestialBodyName;
+				CheckpointListing checkpointListing = SpawnListing();
+				checkpointListing.SetListing(checkpointName, checkpointColor, celestialBody.GetComponentInChildren<MeshRenderer>().transform);
+				checkpointListingList.Add(checkpointListing);
 			}
 		}
 	}
@@ -69,18 +68,22 @@ public class CheckpointHud : MonoBehaviour
 	{
 		if (celestialBodyList == null)
 			celestialBodyList = new List<CelestialBody>();
-		int bodyIndex = celestialBodyList.IndexOf(celestialBody);
-		CheckpointListing cl = checkpointListingList[bodyIndex];
-		cl.ClearCheckpoint();
-		clearedCheckpoints++;
-		if (clearedCheckpoints >= checkpoints)
+		int bodyIndex = celestialBodyList.IndexOf(celestialBody) - 1;
+		if (checkpointListingList[bodyIndex] != null)
 		{
-			float time = Time.timeSinceLevelLoad;
-			int objValue = FindObjectOfType<ObjectiveType>().objectiveValue;
-			float levelScore = objValue / time;
-			FindObjectOfType<ScoreHUD>().UpdateScore(Mathf.RoundToInt(levelScore));
-			outcome.BattleOver(true);
-			timer.Freeze();
+			CheckpointListing checkpointListing = checkpointListingList[bodyIndex];
+			checkpointListing.ClearCheckpoint();
+			clearedCheckpoints++;
+			if (clearedCheckpoints >= checkpoints)
+			{
+				float time = Time.timeSinceLevelLoad;
+				int objValue = FindObjectOfType<ObjectiveType>().objectiveValue;
+				float levelScore = objValue / time;
+				FindObjectOfType<ScoreHUD>().UpdateScore(Mathf.RoundToInt(levelScore));
+				if (outcome != null)
+					outcome.BattleOver(true);
+				timer.Freeze();
+			}
 		}
 	}
 }

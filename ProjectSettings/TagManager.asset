@@ -12,6 +12,8 @@ TagManager:
   - SpawnWidget
   - Hull
   - Planet
+  - Checkpoint
+  - ElementObject
   layers:
   - Default
   - TransparentFX

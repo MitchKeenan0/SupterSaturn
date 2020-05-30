@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8918615222108214622}
   m_Layer: 0
   m_Name: MoonSphere
-  m_TagString: Untagged
+  m_TagString: ElementObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30,7 +30,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 647046725692797254}
+  - {fileID: 4224170883302729218}
   m_Father: {fileID: 5273469545884070276}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -72,7 +72,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5915447a6783d8d46873752d81b95395, type: 2}
+  - {fileID: 2100000, guid: f99e7d32137dfe04c9dae8374fac0a6a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -174,8 +174,8 @@ GameObject:
   - component: {fileID: 6143951963767822069}
   - component: {fileID: 7807784826040742018}
   - component: {fileID: 2385305642852186100}
-  - component: {fileID: 7925452251586000607}
   - component: {fileID: 8823509295734374542}
+  - component: {fileID: 2536886475924974186}
   - component: {fileID: 6469468458821320962}
   - component: {fileID: 6648583129524334593}
   m_Layer: 0
@@ -215,7 +215,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bodyTransform: {fileID: 5273469545884070276}
   radius: 5000
-  strength: 150
+  strength: 300
 --- !u!114 &2385305642852186100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,8 +230,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   armLength: 100
   planetTransform: {fileID: 5273469545884070276}
-  offsetRotationScale: 0.1
---- !u!114 &7925452251586000607
+  offsetRotationScale: 0
+--- !u!114 &8823509295734374542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6143951963767822065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a45a68e7ae0ab64cb89a205a0578bfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  celestialBodyName: Moon
+--- !u!114 &2536886475924974186
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -247,22 +260,9 @@ MonoBehaviour:
   yForceDirection: 1
   zForceDirection: 0
   speedMultiplier: 1
-  bRandomRotationStart: 1
-  bRandomSpeed: 1
+  bRandomRotationStart: 0
+  bRandomSpeed: 0
   worldPivot: 0
---- !u!114 &8823509295734374542
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6143951963767822065}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a45a68e7ae0ab64cb89a205a0578bfe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  celestialBodyName: Moon
 --- !u!54 &6469468458821320962
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1414,7 +1414,7 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3617088834532264707}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &8379801389479581801
+--- !u!1001 &5057129441913753389
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -1424,22 +1424,22 @@ PrefabInstance:
     - target: {fileID: 8192906013506039955, guid: ec894d2ea5af61141836b5542ea8f39a,
         type: 3}
       propertyPath: m_Name
-      value: CheckpointSphere
+      value: CheckpointGate
       objectReference: {fileID: 0}
     - target: {fileID: 8985188572399069487, guid: ec894d2ea5af61141836b5542ea8f39a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -1.122
       objectReference: {fileID: 0}
     - target: {fileID: 8985188572399069487, guid: ec894d2ea5af61141836b5542ea8f39a,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.478
       objectReference: {fileID: 0}
     - target: {fileID: 8985188572399069487, guid: ec894d2ea5af61141836b5542ea8f39a,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.75
+      value: -0.097
       objectReference: {fileID: 0}
     - target: {fileID: 8985188572399069487, guid: ec894d2ea5af61141836b5542ea8f39a,
         type: 3}
@@ -1454,7 +1454,7 @@ PrefabInstance:
     - target: {fileID: 8985188572399069487, guid: ec894d2ea5af61141836b5542ea8f39a,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.5
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8985188572399069487, guid: ec894d2ea5af61141836b5542ea8f39a,
         type: 3}
@@ -1469,7 +1469,7 @@ PrefabInstance:
     - target: {fileID: 8985188572399069487, guid: ec894d2ea5af61141836b5542ea8f39a,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8985188572399069487, guid: ec894d2ea5af61141836b5542ea8f39a,
         type: 3}
@@ -1479,18 +1479,28 @@ PrefabInstance:
     - target: {fileID: 8985188572399069487, guid: ec894d2ea5af61141836b5542ea8f39a,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 7547022891349193255, guid: ec894d2ea5af61141836b5542ea8f39a,
+        type: 3}
+      propertyPath: rootOffset.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3628006475470200799, guid: ec894d2ea5af61141836b5542ea8f39a,
+    - target: {fileID: 7547022891349193255, guid: ec894d2ea5af61141836b5542ea8f39a,
         type: 3}
-      propertyPath: m_Size.x
-      value: 1
+      propertyPath: rootOffset.x
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 7547022891349193255, guid: ec894d2ea5af61141836b5542ea8f39a,
+        type: 3}
+      propertyPath: rootOffset.y
+      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec894d2ea5af61141836b5542ea8f39a, type: 3}
---- !u!4 &647046725692797254 stripped
+--- !u!4 &4224170883302729218 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8985188572399069487, guid: ec894d2ea5af61141836b5542ea8f39a,
     type: 3}
-  m_PrefabInstance: {fileID: 8379801389479581801}
+  m_PrefabInstance: {fileID: 5057129441913753389}
   m_PrefabAsset: {fileID: 0}
