@@ -558,7 +558,7 @@ MonoBehaviour:
   xForceDirection: 0
   yForceDirection: 0
   zForceDirection: 1
-  speedMultiplier: 3
+  speedMultiplier: -5
   bRandomRotationStart: 0
   bRandomSpeed: 0
   worldPivot: 0

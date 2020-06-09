@@ -33,4 +33,9 @@ public class ThrottleHUD : MonoBehaviour
 		if (percent == 0f)
 			inputController.AllStop(true);
 	}
+
+	public void SetDrag(float value)
+	{
+		spacecraft.SetDrag(value);
+	}
 }

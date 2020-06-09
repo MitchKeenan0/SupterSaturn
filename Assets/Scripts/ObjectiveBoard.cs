@@ -52,15 +52,19 @@ public class ObjectiveBoard : MonoBehaviour
 
 	ObjectiveListing SpawnListing(int prefabIndex)
 	{
-		GameObject listing = Instantiate(objectiveListingPrefabs[prefabIndex], listingPanel.transform);
-		RectTransform rt = listing.GetComponent<RectTransform>();
-		float marginX = Screen.width * 0.2f;
-		float marginY = Screen.height * 0.2f;
-		float x = Random.Range(marginX, Screen.width - marginX);
-		float y = Random.Range(marginY, Screen.height - marginY);
-		rt.transform.position = new Vector3(x, y, 0);
-		ObjectiveListing objListing = listing.GetComponent<ObjectiveListing>();
-		objectiveList.Add(objListing);
+		ObjectiveListing objListing = null;
+		if ((objectiveListingPrefabs != null) && (objectiveListingPrefabs.Length > prefabIndex))
+		{
+			GameObject listing = Instantiate(objectiveListingPrefabs[prefabIndex], listingPanel.transform);
+			RectTransform rt = listing.GetComponent<RectTransform>();
+			float marginX = Screen.width * 0.2f;
+			float marginY = Screen.height * 0.2f;
+			float x = Random.Range(marginX, Screen.width - marginX);
+			float y = Random.Range(marginY, Screen.height - marginY);
+			rt.transform.position = new Vector3(x, y, 0);
+			objListing = listing.GetComponent<ObjectiveListing>();
+			objectiveList.Add(objListing);
+		}
 		return objListing;
 	}
 

@@ -46,6 +46,7 @@ public class Spacecraft : MonoBehaviour
 	private int numMarked = 0;
 	private bool bThrottling = false;
 	private float throttleVelocityTarget = 0f;
+	private float originalThrustDrag = 0f;
 
 	public Agent GetAgent() { return agent; }
 	public bool IsAlive() { return (health != null) && (health.GetHealth() >= 1); }
@@ -83,6 +84,7 @@ public class Spacecraft : MonoBehaviour
 		battleOutcome = FindObjectOfType<BattleOutcome>();
 
 		angularVelocity = transform.eulerAngles;
+		originalThrustDrag = thrustModeDrag;
 
 		SetAgentEnabled(bAgentStartsEnabled);
 		//if (agent != null && (agent.teamID != 0))
@@ -128,6 +130,16 @@ public class Spacecraft : MonoBehaviour
 			//if (sideJetVector != Vector3.zero)
 			//	velocity += sideJetVector;
 
+			/// dynamic drag
+			if ((rb.drag != 0f) && (mainEnginesVector != Vector3.zero))
+			{
+				Vector3 myV = rb.velocity.normalized;
+				Vector3 myF = transform.forward.normalized;
+				float dotToTarget = Vector3.Dot(myV, myF);
+				if (dotToTarget > 0.9f)
+					rb.drag = 0f;
+			}
+			
 			/// thrust
 			if (!bThrottling)
 			{
@@ -163,8 +175,8 @@ public class Spacecraft : MonoBehaviour
 	public void Maneuver(Vector3 targetDirection)
 	{
 		turningVector = targetDirection;
-		if (turningVector == Vector3.zero)
-			turningVector = transform.forward;
+		//if (turningVector == Vector3.zero)
+		//	turningVector = transform.forward;
 	}
 
 	public void MainEngines(float driveDirection)
@@ -172,16 +184,16 @@ public class Spacecraft : MonoBehaviour
 		bThrottling = false;
 		mainEnginesVector = transform.forward * driveDirection;
 		var em = thrustParticles.emission;
-		if (Mathf.Abs(driveDirection) > 0.0f)
+		if (driveDirection > 0.0f)
 		{
 			em.enabled = true;
-			//ps.startSize = Mathf.Abs(driveDirection);
 			powerplant.AddPowerDrawOffset(-thrustPowerCost);
 		}
 		else
 		{
 			em.enabled = false;
 			powerplant.AddPowerDrawOffset(thrustPowerCost);
+			rb.drag = 0f;
 		}
 	}
 
@@ -195,6 +207,12 @@ public class Spacecraft : MonoBehaviour
 	public void SetDragMode(bool value)
 	{
 		rb.drag = value ? thrustModeDrag : 0f;
+	}
+
+	public void SetDrag(float value)
+	{
+		thrustModeDrag = originalThrustDrag * value;
+		SetDragMode(thrustModeDrag != 0f);
 	}
 
 	public void SpacecraftKnockedOut(Transform responsibleTransform)
@@ -324,7 +342,7 @@ public class Spacecraft : MonoBehaviour
 		if (!rb)
 			rb = GetComponent<Rigidbody>();
 		float X = 0f;
-		float Y = 50f;
+		float Y = -50f;
 		float Z = -350f;
 		transform.position = new Vector3(X, Y, Z);
 		PowerHUD powerHud = FindObjectOfType<PowerHUD>();

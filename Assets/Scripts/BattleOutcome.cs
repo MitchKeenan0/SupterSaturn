@@ -98,12 +98,12 @@ public class BattleOutcome : MonoBehaviour
 		FindObjectOfType<HudController>().SetHudsEnabled(false);
 	}
 
-	private float targetTimescale = 0.1f;
+	private float targetTimescale = 0.01f;
 	private IEnumerator timescaleCoroutine;
 	private IEnumerator UpdateTimescale(float interval)
 	{
 		float timescale = Time.timeScale;
-		while (timescale > 0.1f)
+		while (timescale > 0.02f)
 		{
 			Time.timeScale = Mathf.Lerp(Time.timeScale, targetTimescale, Time.unscaledDeltaTime);
 			yield return new WaitForSecondsRealtime(interval);

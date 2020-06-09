@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7474554765121666416}
   - component: {fileID: 2646432708008446901}
   - component: {fileID: 8918615222108214622}
+  - component: {fileID: 1884918134898796384}
   m_Layer: 0
   m_Name: MoonSphere
   m_TagString: ElementObject
@@ -92,6 +93,22 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &1884918134898796384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2487342662974237812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be3651d61aa7f3444a3fc1ce5e600de2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scanColliderPrefab: {fileID: 1855211054250735132, guid: 78cd46bc55791ab449d1002269a28c59,
+    type: 3}
+  vertexAccountPercentage: 0.01
+  lineExtentScale: 2
 --- !u!1 &4766638517062956649
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,7 +176,7 @@ MonoBehaviour:
   xForceDirection: 0
   yForceDirection: 1
   zForceDirection: 0
-  speedMultiplier: 1
+  speedMultiplier: 0.3
   bRandomRotationStart: 0
   bRandomSpeed: 0
   worldPivot: 0
@@ -259,7 +276,7 @@ MonoBehaviour:
   xForceDirection: 0
   yForceDirection: 1
   zForceDirection: 0
-  speedMultiplier: 1
+  speedMultiplier: 0.6
   bRandomRotationStart: 0
   bRandomSpeed: 0
   worldPivot: 0
@@ -1429,7 +1446,7 @@ PrefabInstance:
     - target: {fileID: 8985188572399069487, guid: ec894d2ea5af61141836b5542ea8f39a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.122
+      value: 0.977
       objectReference: {fileID: 0}
     - target: {fileID: 8985188572399069487, guid: ec894d2ea5af61141836b5542ea8f39a,
         type: 3}
@@ -1480,6 +1497,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985188572399069487, guid: ec894d2ea5af61141836b5542ea8f39a,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985188572399069487, guid: ec894d2ea5af61141836b5542ea8f39a,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985188572399069487, guid: ec894d2ea5af61141836b5542ea8f39a,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7547022891349193255, guid: ec894d2ea5af61141836b5542ea8f39a,
         type: 3}

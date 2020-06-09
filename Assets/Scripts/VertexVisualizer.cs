@@ -43,7 +43,6 @@ public class VertexVisualizer : MonoBehaviour
 			//transform.parent = pl.planetMesh.transform;
 			transform.localPosition = Vector3.zero;
 			transform.rotation = pl.planetMesh.transform.rotation;
-			transform.localScale = Vector3.one;
 			for(int i = 0; i < pl.GetVertexList().Count; i++)
 			{
 				if (Random.Range(0f, 1f) < vertexAccountPercentage)

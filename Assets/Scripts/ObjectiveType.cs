@@ -85,10 +85,13 @@ public class ObjectiveType : MonoBehaviour
 		int numObjects = objectiveElementList.Count;
 		for(int i = 0; i < numObjects; i++)
 		{
-			ObjectiveElement oe = Instantiate(objectiveElementList[i]);
-			Vector3 os = offsets[i];
-			Quaternion rs = rotations[i];
-			oe.Init(os, rs);
+			if ((objectiveElementList.Count > i) && (objectiveElementList[i] != null))
+			{
+				ObjectiveElement oe = Instantiate(objectiveElementList[i]);
+				Vector3 os = offsets[i];
+				Quaternion rs = rotations[i];
+				oe.Init(os, rs);
+			}
 		}
 	}
 

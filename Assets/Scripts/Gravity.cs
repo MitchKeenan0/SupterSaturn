@@ -59,7 +59,7 @@ public class Gravity : MonoBehaviour
 			if (distance <= radius)
 			{
 				Vector3 toCenter = bodyTransform.position - position;
-				float G = ((1f / distance) * (mass + strength));
+				float G = ((1f / distance) * (mass * strength));
 				gravity = toCenter.normalized * G;
 			}
 		}

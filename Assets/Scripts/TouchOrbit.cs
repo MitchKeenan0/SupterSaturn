@@ -31,6 +31,7 @@ public class TouchOrbit : MonoBehaviour
 	private LocusHud locusHud;
 	private Vector3 moveInput = Vector3.zero;
 	private Vector3 orbitOffset = Vector3.zero;
+	private Vector2 touchStartPos = Vector2.zero;
 	private float lx = 0f;
 	private float ly = 0f;
 	private float x = 0f;
@@ -38,11 +39,17 @@ public class TouchOrbit : MonoBehaviour
 	private float twoTouchDistance = 0;
 	private float timeAtLastTargeting = 0f;
 	private bool bActivated = true;
+	private bool bInputScreenCentric = false;
 	private Transform anchorTransform = null;
 
 	public float GetInputScale() { return orbitSpeed; }
 	public void SetInputScale(float value) { orbitSpeed = value; }
 	public void SetDistance(float value) { distance = value; }
+
+	public void SetInputMode(bool bScreenCentric)
+	{
+		bInputScreenCentric = bScreenCentric;
+	}
 
 	void Awake()
 	{
@@ -76,14 +83,27 @@ public class TouchOrbit : MonoBehaviour
 			if (Input.touchCount == 1)
 			{
 				Touch touch = Input.GetTouch(0);
+				if (touch.phase == TouchPhase.Began)
+				{
+					touchStartPos = touch.position;
+				}
+
 				if (touch.phase == TouchPhase.Moved)
 				{
-					moveInput = touch.deltaPosition;
+					if (bInputScreenCentric)
+					{
+						//Vector2 screenCentre = new Vector2(Screen.width / 2f, Screen.height / 2f);
+						moveInput = (touch.position - touchStartPos) * 0.01f;
+					}
+					else
+					{
+						moveInput = touch.deltaPosition;
+					}
 				}
-				if (moveInput.magnitude > 5f)
-				{
-					bTouching = true;
-				}
+			}
+			if (moveInput.magnitude > 0f)
+			{
+				bTouching = true;
 			}
 
 			// camera distance scoping
@@ -104,7 +124,7 @@ public class TouchOrbit : MonoBehaviour
 		else
 		{
 			float deltaT = Time.deltaTime * moveAcceleration;
-			moveInput = Vector3.Lerp(moveInput, Vector3.zero, deltaT);
+			moveInput = Vector3.MoveTowards(moveInput, Vector3.zero, deltaT * moveAcceleration);
 		}
 
 		// target box switch on/off
@@ -129,14 +149,15 @@ public class TouchOrbit : MonoBehaviour
 
 		if (anchorTransform != null)
 		{
-			if (((lx != 0f) || (ly != 0f)) && (moveInput.magnitude > 0.5f))
+			if (((lx != 0f) || (ly != 0f)) && (moveInput.magnitude > 0.1f))
 			{
-				lx = Mathf.MoveTowards(lx, moveInput.x * 0.5f * xSpeed, Time.deltaTime * turnAcceleration * orbitSpeed);
-				ly = Mathf.MoveTowards(ly, moveInput.y * 0.5f * ySpeed, Time.deltaTime * turnAcceleration * orbitSpeed);
+				float delta = Time.unscaledDeltaTime * turnAcceleration * orbitSpeed;
+				lx = Mathf.MoveTowards(lx, moveInput.x * 0.5f * xSpeed, delta);
+				ly = Mathf.MoveTowards(ly, moveInput.y * 0.5f * ySpeed, delta);
 				x += lx;
 				y -= ly;
 			}
-			else if (moveInput.magnitude < 0.05f)
+			else
 			{
 				if (focusTransform != null)
 					LookAtFocus();
@@ -159,15 +180,15 @@ public class TouchOrbit : MonoBehaviour
 		Vector3 localForward = cameraMain.transform.forward;
 		Vector3 localRight = cameraMain.transform.right;
 		Vector3 localUp = cameraMain.transform.up;
-		Vector3 toFocus = (focusTransform.position - cameraMain.transform.position);
+		Vector3 toFocus = (focusTransform.position - cameraMain.transform.position).normalized;
 
 		moveInput.x = Vector3.Dot(localRight, toFocus);
 		moveInput.y = Vector3.Dot(localUp, toFocus);
-		float targetX = moveInput.x * 0.05f * xSpeed;
-		float targetY = moveInput.y * 0.05f * ySpeed;
-		float deltaT = Time.deltaTime * turnAcceleration;
-		lx = targetX;
-		ly = targetY;
+		float targetX = moveInput.x * xSpeed * turnAcceleration;
+		float targetY = moveInput.y * ySpeed * turnAcceleration;
+		float delta = Time.unscaledDeltaTime * turnAcceleration * orbitSpeed;
+		lx = Mathf.MoveTowards(lx, targetX, delta);
+		ly = Mathf.MoveTowards(ly, targetY, delta);
 		x += lx;
 		y -= ly;
 	}

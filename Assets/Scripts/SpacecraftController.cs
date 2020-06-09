@@ -117,14 +117,16 @@ public class SpacecraftController : MonoBehaviour
 					Vector3 centerScreen = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
 					Vector3 onscreenDirection = new Vector3(touchPosition.x, touchPosition.y, 0f) - centerScreen;
 
+					/// turn spacecraft
 					Vector3 navigationTarget = (Quaternion.Euler(cameraMain.transform.eulerAngles) * (onscreenDirection * 0.9f));
-					navigationTarget += cameraMain.transform.forward * 500f;
-					Vector3 navigationVector = navigationTarget + transform.position;
+					navigationTarget += cameraMain.transform.forward * 300f;
+					Vector3 navigationVector = navigationTarget + spacecraft.transform.position;
 					directionVector = navigationVector;
+					autopilot.ManeuverRotationTo(directionVector);
 
 					/// touch line UI
 					touchLineRenderer.SetPosition(0, transform.position);
-					touchLineRenderer.SetPosition(1, transform.position + (spacecraft.transform.forward * 10)); /// directionVector
+					touchLineRenderer.SetPosition(1, transform.position + (directionVector * 10));
 					float lineDist = Vector3.Distance(transform.position, onscreenDirection);
 					Color lineColor = new Color(1f, lineDist, 1f);
 					float velocity = rb.velocity.magnitude * 0.01f;
@@ -134,9 +136,6 @@ public class SpacecraftController : MonoBehaviour
 					start.a = 1f;
 					touchLineRenderer.startColor = start;
 					touchLineRenderer.endColor = lineColor;
-
-					/// visualize
-					autopilot.ManeuverRotationTo(directionVector);
 				}
 			}
 		}
@@ -163,8 +162,10 @@ public class SpacecraftController : MonoBehaviour
 			bStartTouchDelay = false;
 			bInputting = true;
 			spacecraft.SetDragMode(true);
-			autopilot.FireEngineBurn(99f, false);
-			orbitController.SetBackgroundUpdateInterval(0.1f);
+			autopilot.FireEngineBurn(99f, true);
+			orbitController.SetBackgroundUpdateInterval(0.3f);
+			//TouchOrbit to = FindObjectOfType<TouchOrbit>();
+			//to.SetInputMode(true);
 		}
 	}
 
@@ -183,7 +184,6 @@ public class SpacecraftController : MonoBehaviour
 
 		yield return new WaitForSeconds(0.1f);
 
-		autopilot.ManeuverRotationTo(directionVector);
 		autopilot.MainEngineShutdown();
 		orbitController.SetBackgroundUpdateInterval(2f);
 

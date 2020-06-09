@@ -37,7 +37,7 @@ public class Checkpoint : MonoBehaviour
 			SetColor(Color.gray);
 			clearParticles.Play();
 			scoreHud.PopupScore(transform.position, 1);
-			scoreHud.ToastContext("Checkpoint clear +" + 1);
+			scoreHud.ToastContext("Checkpoint clear");
 		}
 	}
 

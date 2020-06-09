@@ -44,6 +44,7 @@ public class AbilityBoost : Ability
 	public override void EndAbility()
 	{
 		base.EndAbility();
+		autopilot.MainEngineShutdown();
 		mySpacecraft.mainEnginePower = originalEnginePower;
 	}
 }

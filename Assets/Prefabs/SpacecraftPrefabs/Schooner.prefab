@@ -159,7 +159,7 @@ MonoBehaviour:
   mainEnginePower: 291
   turningSpeed: 1
   maneuverPower: 0.2
-  thrustModeDrag: 0.1
+  thrustModeDrag: 0.15
   thrustPowerCost: 1
   spacecraftName: Schooner
   warpInSpeed: 1.5

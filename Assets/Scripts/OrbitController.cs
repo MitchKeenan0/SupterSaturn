@@ -65,44 +65,31 @@ public class OrbitController : MonoBehaviour
 		ClearTrajectory();
 
 		Spacecraft spacecraft = autopilot.gameObject.GetComponent<Spacecraft>();
-		bool bSimulateEnginePower = true;
-		if (duration <= 0f)
-		{
-			duration = Mathf.Clamp(rb.velocity.magnitude * 0.6f, 0.001f, 30f);
-			bSimulateEnginePower = false;
-		}
+		duration = Mathf.Clamp(rb.velocity.magnitude * 0.6f, 0.001f, 30f);
 
 		float simulationTime = 0f;
-		float deltaTime = 0.1f;
+		float deltaTime = Time.fixedDeltaTime;
 		Vector3 currentPosition = spacecraft.transform.position;
 		Vector3 deltaVelocity = rb.velocity;
 		Vector3 trajecto = Vector3.zero;
 		Vector3 velocity = Vector3.zero;
 		List<Gravity> gravityList = new List<Gravity>();
 		gravityList = gravityTelemetry.GetGravitiesAffecting(rb);
-		trajectoryList.Add(currentPosition);
 
+		trajectoryList.Add(currentPosition);
 		while (simulationTime < duration)
 		{
 			trajecto = deltaVelocity;
-			if (bSimulateEnginePower)
+			int numGravs = gravityList.Count;
+			for (int i = 0; i < numGravs; i++)
 			{
-				trajecto += spacecraft.transform.forward * (spacecraft.mainEnginePower * deltaTime);
-			}
-			else
-			{
-				int numGravs = gravityList.Count;
-				for (int i = 0; i < numGravs; i++)
-				{
-					Gravity gr = gravityList[i];
-					trajecto += gr.GetGravity(rb, currentPosition, rb.mass);
-				}
+				Gravity gr = gravityList[i];
+				trajecto += (gr.GetGravity(rb, currentPosition, rb.mass));
 			}
 
 			velocity = currentPosition + trajecto;
-
 			trajectoryList.Add(velocity);
-			deltaVelocity = (velocity - currentPosition);
+			deltaVelocity = trajecto;
 			currentPosition = velocity;
 			simulationTime += deltaTime;
 		}
@@ -111,7 +98,7 @@ public class OrbitController : MonoBehaviour
 	void RenderTrajectory()
 	{
 		int trajectoryCount = trajectoryList.Count;
-		for (int i = 0; i < trajectoryCount; i++)
+		for (int i = 0; i < maxLineCount; i++)
 		{
 			//bRenderFlip = !bRenderFlip;
 			//if (bRenderFlip)
@@ -122,7 +109,7 @@ public class OrbitController : MonoBehaviour
 				line = lineList[i];
 			}
 
-			if ((i < trajectoryClampedLength) && (line != null))
+			if ((i < trajectoryList.Count) && (i < trajectoryClampedLength) && (line != null))
 			{
 				Vector3 lineStart = trajectoryList[i];
 				if (trajectoryList.Count > (i + 1))

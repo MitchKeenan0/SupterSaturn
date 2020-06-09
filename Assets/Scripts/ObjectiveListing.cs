@@ -67,29 +67,32 @@ public class ObjectiveListing : MonoBehaviour
 
 	public void LaunchObjective()
 	{
-		ObjectiveType spawnedObjective = Instantiate(objectiveType, null);
-		if (surroundingsElementList.Count > 0)
+		if (objectiveType != null)
 		{
-			surroundingsElementList.Add(primaryObjElement);
-
-			ObjectiveSurroundingsIcon[] icons = surroundingsPanel.GetComponentsInChildren<ObjectiveSurroundingsIcon>();
-			foreach(ObjectiveSurroundingsIcon osi in icons)
+			ObjectiveType spawnedObjective = Instantiate(objectiveType, null);
+			if (surroundingsElementList.Count > 0)
 			{
-				Vector3 osiPosition = osi.startOrbitOffset;
-				offsetList.Add(osiPosition);
-				Quaternion osiRotation = osi.startOrbitRotation;
-				rotationList.Add(osiRotation);
+				surroundingsElementList.Add(primaryObjElement);
 
-				//ObjectiveElement objE = osi.objectiveElementPrefab;
-				//surroundingsElementList.Add(objE);
+				ObjectiveSurroundingsIcon[] icons = surroundingsPanel.GetComponentsInChildren<ObjectiveSurroundingsIcon>();
+				foreach (ObjectiveSurroundingsIcon osi in icons)
+				{
+					Vector3 osiPosition = osi.startOrbitOffset;
+					offsetList.Add(osiPosition);
+					Quaternion osiRotation = osi.startOrbitRotation;
+					rotationList.Add(osiRotation);
+
+					//ObjectiveElement objE = osi.objectiveElementPrefab;
+					//surroundingsElementList.Add(objE);
+				}
+
+				Vector3[] offsets = offsetList.ToArray();
+				Quaternion[] rotations = rotationList.ToArray();
+				spawnedObjective.SetElements(surroundingsElementList, offsets, rotations);
+				spawnedObjective.Activate();
+
+				menu.StartGame();
 			}
-
-			Vector3[] offsets = offsetList.ToArray();
-			Quaternion[] rotations = rotationList.ToArray();
-			spawnedObjective.SetElements(surroundingsElementList, offsets, rotations);
-			spawnedObjective.Activate();
-
-			menu.StartGame();
 		}
 	}
 }

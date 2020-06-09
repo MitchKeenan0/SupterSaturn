@@ -45,8 +45,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trajectoryLinePrefab: {fileID: 1717023931117533250, guid: a0d7b5bd218da6b4eadfe346386d1715,
     type: 3}
-  maxLineCount: 300
-  updateInterval: 0.5
+  maxLineCount: 100
+  updateInterval: 1
   backgroundUpdateInterval: 1.15
   lineMaterial: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   checkpointMaterial: {fileID: 2100000, guid: 8c4b5aeda36ff074b9c4132c7f832864, type: 2}

@@ -25,23 +25,15 @@ public class InputController : MonoBehaviour
 	private SkillPanel skillPanel;
 	private Image navButtonImage;
 	private CanvasGroup throttleCanvasGroup;
-	private float originalCameraScale = 1f;
 	private bool bNavigationMode = false;
-	private bool bFreeCameraMode = false;
 	private bool bStopped = false;
-	private bool bCameraScope = false;
 	private bool bThrottleEnabled = false;
-	private int cameraMode = 1;
-	private int numCameraModes = 0;
-	private List<float> distanceModes;
 
 	public bool IsStopped() { return bStopped; }
 
 	void Awake()
 	{
-		distanceModes = new List<float>();
 		touchOrbit = FindObjectOfType<TouchOrbit>();
-		originalCameraScale = touchOrbit.GetInputScale();
 	}
 
 	void Start()
@@ -52,33 +44,19 @@ public class InputController : MonoBehaviour
 		orbitController = FindObjectOfType<OrbitController>();
 		contextHeader = FindObjectOfType<ContextHeader>();
 		skillPanel = FindObjectOfType<SkillPanel>();
-		distanceModes.Add(touchOrbit.distanceMin);
-		distanceModes.Add(touchOrbit.distanceMax);
 		statusText.text = "";
-		numCameraModes = distanceModes.Count;
 		navButtonImage = navigationModeButton.GetComponent<Image>();
 		navButtonImage.preserveAspect = true;
 		throttleCanvasGroup = throttlePanel.GetComponent<CanvasGroup>();
-		SetThrottlePanelActive(false);
 
 		ActivateButton(navigationModeButton, false, true);
-		ActivateButton(cameraModeButton, false, true);
-		ActivateButton(stopButton, false, true);
-	}
-
-	void SetThrottlePanelActive(bool value)
-	{
-		throttleCanvasGroup.alpha = value ? 1f : 0f;
-		throttleCanvasGroup.interactable = value;
-		throttleCanvasGroup.blocksRaycasts = value;
-		bThrottleEnabled = value;
 	}
 
 	public void Begin()
 	{
-		CameraMode();
-		ActivateButton(stopButton, false, true);
-		UpdateStatusText("Initial approach");
+		cameraTargetFinder.SetActive(true);
+		touchOrbit.SetDistance(touchOrbit.distanceMax);
+		EnableCameraControl(true);
 	}
 
 	public void DeactivateButtonIndex(int index, bool value, bool bFinished)
@@ -113,30 +91,11 @@ public class InputController : MonoBehaviour
 		buttonColorBlock.pressedColor = Color.black;
 		buttonColorBlock.selectedColor = color;
 		button.colors = buttonColorBlock;
-
-		//if (value)
-			//skillPanel.CancelAll();
-		if (!value)
-			FallbackCheck();
 	}
 
 	public void UpdateStatusText(string value)
 	{
 		statusText.text = value;
-	}
-
-	void FallbackCheck()
-	{
-		if (!bNavigationMode && !bFreeCameraMode)
-			EnableCameraControl(true);
-	}
-
-	void SetFineCameraInput(bool value)
-	{
-		if (value)
-			touchOrbit.SetInputScale(originalCameraScale * 0.3f);
-		else
-			touchOrbit.SetInputScale(originalCameraScale);
 	}
 
 	public void SetNavigationButtonMode(int navModeIndex)
@@ -146,7 +105,6 @@ public class InputController : MonoBehaviour
 
 	public void StopButton()
 	{
-		SetThrottlePanelActive(!bThrottleEnabled);
 		ActivateButton(stopButton, bThrottleEnabled, false);
 	}
 
@@ -177,7 +135,7 @@ public class InputController : MonoBehaviour
 			bTurningOff = true;
 
 		bNavigationMode = value;
-		SetFineCameraInput(bNavigationMode);
+		//SetFineCameraInput(bNavigationMode);
 		if (spacecraft == null)
 			spacecraft = game.GetSpacecraftList()[0];
 		if (spacecraft != null)
@@ -197,39 +155,11 @@ public class InputController : MonoBehaviour
 		ActivateButton(navigationModeButton, bNavigationMode, false); /// bTurningOff
 	}
 
-	public void CameraMode()
-	{
-		EnableCameraControl(true);
-
-		if (numCameraModes > 0)
-		{
-			spacecraft = game.GetSpacecraftList()[0];
-			cameraTargetFinder.SetActive(true);
-			float dist = distanceModes[cameraMode];
-			//bool bFar = (cameraMode == 0) ? false : true;
-			//spacecraft.SetBigGhostMode(bFar);
-			touchOrbit.SetDistance(dist);
-			///cameraMain.focalLength = 1f / (Mathf.Sqrt(dist) * 0.1f) * 6f;
-			cameraMode++;
-			if (cameraMode >= numCameraModes)
-				cameraMode = 0;
-			UpdateStatusText("Camera range " + dist + " km");
-		}
-	}
-
-	public void CameraScope()
-	{
-		bCameraScope = !bCameraScope;
-		touchOrbit.SetScoped(bCameraScope);
-	}
-
 	public void EnableCameraControl(bool value)
 	{
-		bFreeCameraMode = value;
 		if (!touchOrbit)
 			touchOrbit = FindObjectOfType<TouchOrbit>();
-		touchOrbit.SetActive(bFreeCameraMode);
-		UpdateStatusText("Free camera " + (value ? ("on") : ("off")));
+		touchOrbit.SetActive(value);
 	}
 
 	public void SetCameraTarget(Transform target)
