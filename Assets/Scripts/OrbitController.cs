@@ -142,8 +142,6 @@ public class OrbitController : MonoBehaviour
 						start.a = 1f;
 						line.startColor = start;
 						line.endColor = lineColor;
-						ConstantSizer cs = line.gameObject.GetComponent<ConstantSizer>();
-						cs.scaleFactor = lineAlpha * 0.05f;
 						//line.widthMultiplier = lineAlpha * 0.1f;
 					}
 				}

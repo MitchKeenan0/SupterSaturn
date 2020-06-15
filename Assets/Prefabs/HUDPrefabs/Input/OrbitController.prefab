@@ -48,6 +48,6 @@ MonoBehaviour:
   maxLineCount: 100
   updateInterval: 1
   backgroundUpdateInterval: 1.15
-  lineMaterial: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
+  lineMaterial: {fileID: 2100000, guid: 8c4b5aeda36ff074b9c4132c7f832864, type: 2}
   checkpointMaterial: {fileID: 2100000, guid: 8c4b5aeda36ff074b9c4132c7f832864, type: 2}
-  collisionMaterial: {fileID: 2100000, guid: bc26a75b5a672bf45a6efdb7105f9f85, type: 2}
+  collisionMaterial: {fileID: 2100000, guid: 8c4b5aeda36ff074b9c4132c7f832864, type: 2}

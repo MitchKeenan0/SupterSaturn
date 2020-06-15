@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: AlphaMaterial
-  m_Shader: {fileID: 4800000, guid: 5cb9f49502cb71e4d8b1d6b899f77896, type: 3}
+  m_Shader: {fileID: 4800000, guid: 0234732797cb8c2448816ca7e7d023c0, type: 3}
   m_ShaderKeywords: _DYNAMICEMISSIONLM_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -36,7 +36,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DiffuseTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: e315c682597502a4d8e62da6b5769d3a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
@@ -44,7 +44,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 10307, guid: 0000000000000000f000000000000000, type: 0}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -60,7 +60,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecularTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: e315c682597502a4d8e62da6b5769d3a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
@@ -70,22 +70,22 @@ Material:
     - _Distance: 8
     - _DstBlend: 0
     - _DynamicEmissionLM: 1
-    - _EmissionLM: 0.5
+    - _EmissionLM: 0.1
     - _FadeCompleteDistance: 3
     - _FadeStartDistance: 8
     - _GlossMapScale: 1
-    - _Glossiness: 0.5
+    - _Glossiness: 0
     - _GlossyReflections: 1
-    - _MaxDistance: 25
+    - _MaxDistance: 20
     - _Metallic: 0
-    - _MinDistance: 10
+    - _MinDistance: 5
     - _Mode: 0
     - _OcclusionStrength: 1
-    - _Opacity: 0.301
+    - _Opacity: 0.783
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _SpecularPower: 10
+    - _SpecularPower: 1
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1

@@ -14,4 +14,6 @@ public class Save
 	public int crewPower = 1;
 	public bool fleetTutorialClosed = false;
 	public bool gameTutorialClosed = false;
+
+	public float levelOneBestTime = 0f;
 }

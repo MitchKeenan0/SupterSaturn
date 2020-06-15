@@ -81,7 +81,14 @@ public class CheckpointHud : MonoBehaviour
 				float levelScore = objValue / time;
 				FindObjectOfType<ScoreHUD>().UpdateScore(Mathf.RoundToInt(levelScore));
 				if (outcome != null)
+				{
 					outcome.BattleOver(true);
+					Checkpoint cp = celestialBody.GetComponentInChildren<Checkpoint>();
+					if (cp != null)
+					{
+						
+					}
+				}
 				timer.Freeze();
 			}
 		}

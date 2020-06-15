@@ -127,15 +127,6 @@ public class SpacecraftController : MonoBehaviour
 					/// touch line UI
 					touchLineRenderer.SetPosition(0, transform.position);
 					touchLineRenderer.SetPosition(1, transform.position + (directionVector * 10));
-					float lineDist = Vector3.Distance(transform.position, onscreenDirection);
-					Color lineColor = new Color(1f, lineDist, 1f);
-					float velocity = rb.velocity.magnitude * 0.01f;
-					lineColor.g = Mathf.Clamp(lineColor.g - velocity, 0f, 1f);
-					lineColor.b = Mathf.Clamp(lineColor.b - velocity, 0f, 1f);
-					Color start = lineColor * 0.8f;
-					start.a = 1f;
-					touchLineRenderer.startColor = start;
-					touchLineRenderer.endColor = lineColor;
 				}
 			}
 		}

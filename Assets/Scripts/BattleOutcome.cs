@@ -72,9 +72,7 @@ public class BattleOutcome : MonoBehaviour
 		lostText.text = playerLost.ToString();
 		playerNameText.text = player.playerName;
 
-		conclusionPanel.SetActive(true);
-		scorePanel.SetActive(true);
-		optionPanel.SetActive(true);
+		TransitionScreen();
 
 		if (!game)
 			game = FindObjectOfType<Game>();
@@ -93,21 +91,26 @@ public class BattleOutcome : MonoBehaviour
 		}
 		
 		game.SaveGame();
-		timescaleCoroutine = UpdateTimescale(0.1f);
+		timescaleCoroutine = DropTimescale(0.2f);
 		StartCoroutine(timescaleCoroutine);
 		FindObjectOfType<HudController>().SetHudsEnabled(false);
 	}
 
-	private float targetTimescale = 0.01f;
-	private IEnumerator timescaleCoroutine;
-	private IEnumerator UpdateTimescale(float interval)
+	void TransitionScreen()
 	{
-		float timescale = Time.timeScale;
-		while (timescale > 0.02f)
-		{
-			Time.timeScale = Mathf.Lerp(Time.timeScale, targetTimescale, Time.unscaledDeltaTime);
-			yield return new WaitForSecondsRealtime(interval);
-		}
+		conclusionPanel.SetActive(true);
+		scorePanel.SetActive(true);
+		optionPanel.SetActive(true);
+	}
+
+	private float targetTimescale = 0f;
+	private IEnumerator timescaleCoroutine;
+	private IEnumerator DropTimescale(float interval)
+	{
+		yield return new WaitForSecondsRealtime(interval);
+		Time.timeScale = 0.01f;
+		TouchOrbit to = FindObjectOfType<TouchOrbit>();
+		to.SetDistance(to.distance * 3f);
 	}
 
 	public void Continue()

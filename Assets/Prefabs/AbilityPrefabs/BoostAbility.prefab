@@ -48,7 +48,7 @@ MonoBehaviour:
   loopToggleButton: {fileID: 0}
   powerCost: 1
   warmup: 0.1
-  duration: 0.4
+  duration: 0.7
   cooldown: 1
   abilitySprite: {fileID: 21300000, guid: a9050998fc3cada44af206264b14f6f0, type: 3}
   abilityName: Boost

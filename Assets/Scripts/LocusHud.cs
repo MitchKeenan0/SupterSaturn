@@ -94,7 +94,7 @@ public class LocusHud : MonoBehaviour
 				animationTransform.localScale = Vector3.one * 10f;
 			}
 		}
-		else
+		else if (closestDistance > (Screen.width / 1.5f))
 		{
 			if (locusTransform != null)
 				previousLocusTransform = locusTransform;

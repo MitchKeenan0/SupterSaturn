@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4597052887287454994}
   - component: {fileID: 2121504605911409874}
   - component: {fileID: 4547581971292388536}
+  - component: {fileID: 2398114896779684048}
   m_Layer: 0
   m_Name: PlanetSphere
   m_TagString: ElementObject
@@ -92,6 +93,22 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &2398114896779684048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2283283701920987462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be3651d61aa7f3444a3fc1ce5e600de2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scanColliderPrefab: {fileID: 1855211054250735132, guid: 78cd46bc55791ab449d1002269a28c59,
+    type: 3}
+  vertexAccountPercentage: 0.01
+  lineExtentScale: 1.1
 --- !u!1 &4766638517062956649
 GameObject:
   m_ObjectHideFlags: 0
@@ -322,6 +339,16 @@ PrefabInstance:
     - target: {fileID: 6568094399158284832, guid: bf9afe5fb6e6614428447574ab86674d,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1768577351742227172, guid: bf9afe5fb6e6614428447574ab86674d,
+        type: 3}
+      propertyPath: prewarm
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1768577351742227172, guid: bf9afe5fb6e6614428447574ab86674d,
+        type: 3}
+      propertyPath: scalingMode
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -108,7 +108,7 @@ MonoBehaviour:
   scanColliderPrefab: {fileID: 1855211054250735132, guid: 78cd46bc55791ab449d1002269a28c59,
     type: 3}
   vertexAccountPercentage: 0.01
-  lineExtentScale: 2
+  lineExtentScale: 1.1
 --- !u!1 &4766638517062956649
 GameObject:
   m_ObjectHideFlags: 0
